@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nest_shared/nest_shared.dart';
 
-import '../../../app/app_locale.dart';
+import '../../../app/router.dart';
 import '../../../core/backend/server_health_repository.dart';
+import '../../../core/household/household_switcher.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../settings/data/profile_repository.dart';
 
-/// Phase 0 placeholder: themed, bilingual and connected to the server.
-/// Becomes the dashboard in phase 8.
-class WelcomeScreen extends ConsumerWidget {
-  const WelcomeScreen({super.key});
+/// Placeholder home screen until the dashboard is built in phase 8.
+class HomeScreen extends ConsumerWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,23 +20,32 @@ class WelcomeScreen extends ConsumerWidget {
     final textTheme = Theme.of(context).textTheme;
     final localeTag = Localizations.localeOf(context).toLanguageTag();
     final today = DateFormat.MMMMEEEEd(localeTag).format(DateTime.now());
+    final name = ref.watch(currentUserProvider).value?.name ?? '';
 
     return Scaffold(
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(NestSpacing.screen),
           children: [
+            Row(
+              children: [
+                const Flexible(child: HouseholdSwitcher()),
+                const Spacer(),
+                IconButton(
+                  tooltip: l10n.settingsTitle,
+                  icon: const Icon(Icons.settings_outlined),
+                  onPressed: () => context.go(Routes.settings),
+                ),
+              ],
+            ),
+            const SizedBox(height: NestSpacing.gap),
             Text(today.toUpperCase(), style: textTheme.labelMedium),
             const SizedBox(height: 4),
-            Text(l10n.welcomeTitle, style: textTheme.headlineMedium),
-            const SizedBox(height: 8),
-            Text(l10n.welcomeBody, style: textTheme.bodyMedium),
-            const SizedBox(height: NestSpacing.gap),
-            const _ServerCard(),
+            Text(l10n.greeting(name), style: textTheme.headlineMedium),
             const SizedBox(height: NestSpacing.gap),
             const _ComingSoonCard(),
             const SizedBox(height: NestSpacing.gap),
-            const _LanguageCard(),
+            const _ServerCard(),
           ],
         ),
       ),
@@ -128,39 +139,6 @@ class _ComingSoonCard extends StatelessWidget {
                   ),
                 ),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _LanguageCard extends ConsumerWidget {
-  const _LanguageCard();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
-    final shared = NestSharedLocalizations.of(context);
-    final textTheme = Theme.of(context).textTheme;
-    final current = Localizations.localeOf(context).languageCode;
-
-    return NestCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(l10n.languageTitle, style: textTheme.titleLarge),
-          const SizedBox(height: 12),
-          SegmentedButton<String>(
-            showSelectedIcon: false,
-            segments: [
-              ButtonSegment(value: 'en', label: Text(shared.languageEnglish)),
-              ButtonSegment(value: 'nl', label: Text(shared.languageDutch)),
-            ],
-            selected: {current},
-            onSelectionChanged: (selection) => ref
-                .read(appLocaleProvider.notifier)
-                .change(Locale(selection.single)),
           ),
         ],
       ),

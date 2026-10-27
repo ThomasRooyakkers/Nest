@@ -1,15 +1,24 @@
 import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../features/settings/data/profile_repository.dart';
+
 part 'app_locale.g.dart';
 
-/// Language chosen in the app; `null` follows the device language.
-///
-/// Not persisted yet; phase 1 stores it in the user's profile.
+/// Language picked before signing in; `null` follows the device language.
 @Riverpod(keepAlive: true)
-class AppLocale extends _$AppLocale {
+class LocaleChoice extends _$LocaleChoice {
   @override
   Locale? build() => null;
 
-  void change(Locale? locale) => state = locale;
+  void set(Locale? locale) => state = locale;
+}
+
+/// The app's language: the signed-in user's stored language, otherwise the
+/// choice made on the sign-in screen, otherwise the device language.
+@Riverpod(keepAlive: true)
+Locale? appLocale(Ref ref) {
+  final user = ref.watch(currentUserProvider).value;
+  if (user != null && user.name.isNotEmpty) return Locale(user.locale);
+  return ref.watch(localeChoiceProvider);
 }

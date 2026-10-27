@@ -1,28 +1,407 @@
 {
   "@@locale": "en",
-  "welcomeTitle": "Welcome to Nest",
-  "@welcomeTitle": {"description": "Title of the placeholder home screen."},
-  "welcomeBody": "Your family's home base. This screen is a placeholder until the first features arrive.",
-  "@welcomeBody": {"description": "Intro text on the placeholder home screen."},
   "serverCardTitle": "Server",
-  "@serverCardTitle": {"description": "Title of the card that shows the server connection."},
+  "@serverCardTitle": {
+    "description": "Title of the card that shows the server connection."
+  },
   "serverVersion": "Version {version}",
   "@serverVersion": {
     "description": "Server version shown when connected.",
-    "placeholders": {"version": {"type": "String", "example": "0.1.0"}}
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "0.1.0"
+      }
+    }
   },
   "comingSoonTitle": "Coming soon",
-  "@comingSoonTitle": {"description": "Title of the card listing upcoming features."},
+  "@comingSoonTitle": {
+    "description": "Title of the card listing upcoming features."
+  },
   "featureShopping": "Shopping",
-  "@featureShopping": {"description": "Name of the shopping list feature."},
+  "@featureShopping": {
+    "description": "Name of the shopping list feature."
+  },
   "featureMeals": "Meals",
-  "@featureMeals": {"description": "Name of the meal planning feature."},
+  "@featureMeals": {
+    "description": "Name of the meal planning feature."
+  },
   "featureTasks": "Tasks",
-  "@featureTasks": {"description": "Name of the tasks feature."},
+  "@featureTasks": {
+    "description": "Name of the tasks feature."
+  },
   "featureRecipes": "Recipes",
-  "@featureRecipes": {"description": "Name of the recipes feature."},
+  "@featureRecipes": {
+    "description": "Name of the recipes feature."
+  },
   "featureWatchlist": "Watchlist",
-  "@featureWatchlist": {"description": "Name of the watchlist feature."},
-  "languageTitle": "Language",
-  "@languageTitle": {"description": "Title of the language picker."}
+  "@featureWatchlist": {
+    "description": "Name of the watchlist feature."
+  },
+  "errorNotSignedIn": "Please sign in again.",
+  "@errorNotSignedIn": {
+    "description": "Error: session expired."
+  },
+  "errorUserDisabled": "Your account has been disabled.",
+  "@errorUserDisabled": {
+    "description": "Error: user disabled by an admin."
+  },
+  "errorNotAMember": "You are not a member of this household.",
+  "@errorNotAMember": {
+    "description": "Error: not a member."
+  },
+  "errorNotAnOwner": "Only owners of the household can do this.",
+  "@errorNotAnOwner": {
+    "description": "Error: owner-only action."
+  },
+  "errorHouseholdSuspended": "This household has been suspended.",
+  "@errorHouseholdSuspended": {
+    "description": "Error: household suspended by an admin."
+  },
+  "errorNotAdmin": "This is for administrators only.",
+  "@errorNotAdmin": {
+    "description": "Error: admin-only action."
+  },
+  "errorInvalidInput": "Please check what you entered.",
+  "@errorInvalidInput": {
+    "description": "Error: invalid input."
+  },
+  "errorInvalidInviteCode": "This invite code doesn't exist.",
+  "@errorInvalidInviteCode": {
+    "description": "Error: unknown invite code."
+  },
+  "errorInviteExpired": "This invite code has expired. Ask for a new one.",
+  "@errorInviteExpired": {
+    "description": "Error: expired invite code."
+  },
+  "errorAlreadyMember": "You are already a member of this household.",
+  "@errorAlreadyMember": {
+    "description": "Error: already a member."
+  },
+  "errorLastOwner": "The last owner can't leave the household.",
+  "@errorLastOwner": {
+    "description": "Error: last owner tried to leave."
+  },
+  "errorNotFound": "This doesn't exist (anymore).",
+  "@errorNotFound": {
+    "description": "Error: not found."
+  },
+  "errorNetwork": "Can't reach the server. Check your connection.",
+  "@errorNetwork": {
+    "description": "Error: network problem."
+  },
+  "errorUnknown": "Something went wrong. Please try again.",
+  "@errorUnknown": {
+    "description": "Error: anything else."
+  },
+  "authErrorInvalidCredentials": "Wrong email address or password.",
+  "@authErrorInvalidCredentials": {
+    "description": "Sign-in error."
+  },
+  "authErrorTooManyAttempts": "Too many attempts. Try again later.",
+  "@authErrorTooManyAttempts": {
+    "description": "Sign-in error: rate limited."
+  },
+  "authErrorCodeExpired": "This code has expired. Request a new one.",
+  "@authErrorCodeExpired": {
+    "description": "Sign-in error: verification code expired."
+  },
+  "authErrorCodeInvalid": "This code is not correct.",
+  "@authErrorCodeInvalid": {
+    "description": "Sign-in error: wrong verification code."
+  },
+  "authErrorInvalidEmail": "Enter a valid email address.",
+  "@authErrorInvalidEmail": {
+    "description": "Sign-in error: invalid email."
+  },
+  "signInTitle": "Sign in",
+  "@signInTitle": {
+    "description": "Title of the sign-in screen and its button."
+  },
+  "signInSubtitle": "Your family's home base.",
+  "@signInSubtitle": {
+    "description": "Tagline on the sign-in screen."
+  },
+  "emailLabel": "Email address",
+  "@emailLabel": {
+    "description": "Label of the email field."
+  },
+  "passwordLabel": "Password",
+  "@passwordLabel": {
+    "description": "Label of the password field."
+  },
+  "newPasswordLabel": "New password",
+  "@newPasswordLabel": {
+    "description": "Label of the new password field."
+  },
+  "passwordRequirement": "At least 8 characters, no spaces at the start or end.",
+  "@passwordRequirement": {
+    "description": "Password rule shown under the password field."
+  },
+  "showPassword": "Show password",
+  "@showPassword": {
+    "description": "Semantic label of the show-password button."
+  },
+  "hidePassword": "Hide password",
+  "@hidePassword": {
+    "description": "Semantic label of the hide-password button."
+  },
+  "forgotPassword": "Forgot password?",
+  "@forgotPassword": {
+    "description": "Link to reset the password."
+  },
+  "noAccountYet": "New to Nest?",
+  "@noAccountYet": {
+    "description": "Text before the create-account button."
+  },
+  "createAccount": "Create account",
+  "@createAccount": {
+    "description": "Button and title for registration."
+  },
+  "createAccountSubtitle": "We'll send a code to your email address.",
+  "@createAccountSubtitle": {
+    "description": "Explains the registration flow."
+  },
+  "continueButton": "Continue",
+  "@continueButton": {
+    "description": "Generic continue button."
+  },
+  "backToSignIn": "Back to sign in",
+  "@backToSignIn": {
+    "description": "Link back to sign in."
+  },
+  "verifyTitle": "Check your email",
+  "@verifyTitle": {
+    "description": "Title of the verification code screen."
+  },
+  "verifyMessage": "Enter the code we sent to {email}.",
+  "@verifyMessage": {
+    "description": "Verification code instructions.",
+    "placeholders": {
+      "email": {
+        "type": "String",
+        "example": "thomas@example.com"
+      }
+    }
+  },
+  "verificationCodeLabel": "Code",
+  "@verificationCodeLabel": {
+    "description": "Label of the verification code field."
+  },
+  "verifyButton": "Verify",
+  "@verifyButton": {
+    "description": "Button to check the verification code."
+  },
+  "resendCode": "Send a new code",
+  "@resendCode": {
+    "description": "Button to resend the verification code."
+  },
+  "choosePasswordTitle": "Choose a password",
+  "@choosePasswordTitle": {
+    "description": "Title of the set-password step."
+  },
+  "resetPasswordTitle": "Reset password",
+  "@resetPasswordTitle": {
+    "description": "Title of the password reset screen."
+  },
+  "resetPasswordSubtitle": "Enter your email address and we'll send you a code.",
+  "@resetPasswordSubtitle": {
+    "description": "Password reset instructions."
+  },
+  "sendCode": "Send code",
+  "@sendCode": {
+    "description": "Button that sends a reset code."
+  },
+  "setPasswordButton": "Save password",
+  "@setPasswordButton": {
+    "description": "Button that saves the new password."
+  },
+  "loadingLabel": "Loading…",
+  "@loadingLabel": {
+    "description": "Shown while the app loads."
+  },
+  "signOut": "Sign out",
+  "@signOut": {
+    "description": "Sign-out button."
+  },
+  "onboardingNameTitle": "What's your name?",
+  "@onboardingNameTitle": {
+    "description": "Title of the name step after registering."
+  },
+  "onboardingNameSubtitle": "This is how your family sees you in Nest.",
+  "@onboardingNameSubtitle": {
+    "description": "Explains why we ask the name."
+  },
+  "nameLabel": "Name",
+  "@nameLabel": {
+    "description": "Label of the name field."
+  },
+  "onboardingHouseholdTitle": "Set up your household",
+  "@onboardingHouseholdTitle": {
+    "description": "Title of the household step."
+  },
+  "onboardingHouseholdSubtitle": "Start a new household or join your family with an invite code.",
+  "@onboardingHouseholdSubtitle": {
+    "description": "Explains the household step."
+  },
+  "createHouseholdTitle": "Start a household",
+  "@createHouseholdTitle": {
+    "description": "Card title to create a household."
+  },
+  "householdNameLabel": "Household name",
+  "@householdNameLabel": {
+    "description": "Label of the household name field."
+  },
+  "householdNameHint": "For example: Home",
+  "@householdNameHint": {
+    "description": "Hint in the household name field."
+  },
+  "createHouseholdButton": "Create household",
+  "@createHouseholdButton": {
+    "description": "Button to create a household."
+  },
+  "joinHouseholdTitle": "Join with a code",
+  "@joinHouseholdTitle": {
+    "description": "Card title to join a household."
+  },
+  "inviteCodeLabel": "Invite code",
+  "@inviteCodeLabel": {
+    "description": "Label of the invite code field."
+  },
+  "joinHouseholdButton": "Join household",
+  "@joinHouseholdButton": {
+    "description": "Button to join a household."
+  },
+  "greeting": "Hi {name}",
+  "@greeting": {
+    "description": "Greeting on the home screen.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Thomas"
+      }
+    }
+  },
+  "switchHousehold": "Switch household",
+  "@switchHousehold": {
+    "description": "Semantic label / tooltip of the household switcher."
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "Settings screen title and button label."
+  },
+  "profileSection": "Profile",
+  "@profileSection": {
+    "description": "Settings section title."
+  },
+  "saveButton": "Save",
+  "@saveButton": {
+    "description": "Generic save button."
+  },
+  "savedMessage": "Saved",
+  "@savedMessage": {
+    "description": "Shown after saving."
+  },
+  "householdSection": "Household",
+  "@householdSection": {
+    "description": "Settings section title."
+  },
+  "membersTitle": "Members",
+  "@membersTitle": {
+    "description": "Title of the member list."
+  },
+  "roleOwner": "Owner",
+  "@roleOwner": {
+    "description": "Membership role."
+  },
+  "roleMember": "Member",
+  "@roleMember": {
+    "description": "Membership role."
+  },
+  "youSuffix": "{name} (you)",
+  "@youSuffix": {
+    "description": "Marks the signed-in user in the member list.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Thomas"
+      }
+    }
+  },
+  "inviteTitle": "Invite someone",
+  "@inviteTitle": {
+    "description": "Title of the invite part."
+  },
+  "inviteExplanation": "Share this code. It works for 7 days.",
+  "@inviteExplanation": {
+    "description": "Explains the invite code."
+  },
+  "inviteValidUntil": "Valid until {date}",
+  "@inviteValidUntil": {
+    "description": "Invite code expiry.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "3 November"
+      }
+    }
+  },
+  "createInviteButton": "Create invite code",
+  "@createInviteButton": {
+    "description": "Button to create an invite code."
+  },
+  "newInviteButton": "New code",
+  "@newInviteButton": {
+    "description": "Button to replace the invite code."
+  },
+  "revokeInviteButton": "Stop code",
+  "@revokeInviteButton": {
+    "description": "Button to revoke the invite code."
+  },
+  "copyCode": "Copy code",
+  "@copyCode": {
+    "description": "Semantic label of the copy button."
+  },
+  "copiedMessage": "Code copied",
+  "@copiedMessage": {
+    "description": "Shown after copying the invite code."
+  },
+  "renameHousehold": "Rename household",
+  "@renameHousehold": {
+    "description": "Button / dialog title to rename."
+  },
+  "leaveHousehold": "Leave household",
+  "@leaveHousehold": {
+    "description": "Button to leave the household."
+  },
+  "leaveHouseholdConfirm": "Leave {household}? You will lose access to its lists, recipes and tasks.",
+  "@leaveHouseholdConfirm": {
+    "description": "Confirmation text before leaving.",
+    "placeholders": {
+      "household": {
+        "type": "String",
+        "example": "Home"
+      }
+    }
+  },
+  "cancelButton": "Cancel",
+  "@cancelButton": {
+    "description": "Generic cancel button."
+  },
+  "yourHouseholdsSection": "Your households",
+  "@yourHouseholdsSection": {
+    "description": "Settings section listing all households."
+  },
+  "activeLabel": "Active",
+  "@activeLabel": {
+    "description": "Marks the active household."
+  },
+  "addHouseholdButton": "Add or join a household",
+  "@addHouseholdButton": {
+    "description": "Opens create/join from settings."
+  },
+  "languageSection": "Language",
+  "@languageSection": {
+    "description": "Settings section title."
+  }
 }
