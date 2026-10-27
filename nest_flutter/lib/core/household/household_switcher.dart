@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nest_client/nest_client.dart';
 import 'package:nest_shared/nest_shared.dart';
 
 import '../../l10n/app_localizations.dart';
@@ -49,19 +50,60 @@ class HouseholdSwitcher extends ConsumerWidget {
 
     if (!canSwitch) return pill;
 
-    return PopupMenuButton<int>(
-      tooltip: l10n.switchHousehold,
-      position: PopupMenuPosition.under,
-      onSelected: ref.read(selectedHouseholdIdProvider.notifier).select,
-      itemBuilder: (context) => [
-        for (final h in households)
-          CheckedPopupMenuItem(
-            value: h.household.id!,
-            checked: h.household.id == active.household.id,
-            child: Text(h.household.name),
-          ),
-      ],
-      child: pill,
+    return Semantics(
+      button: true,
+      label: l10n.switchHousehold,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(NestRadii.pill),
+        onTap: () => _showPicker(context, ref, households, active),
+        child: pill,
+      ),
     );
+  }
+
+  Future<void> _showPicker(
+    BuildContext context,
+    WidgetRef ref,
+    List<MyHousehold> households,
+    MyHousehold active,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final colors = NestColors.of(context);
+    final textTheme = Theme.of(context).textTheme;
+
+    final picked = await showModalBottomSheet<int>(
+      context: context,
+      showDragHandle: true,
+      backgroundColor: colors.surface,
+      builder: (context) => SafeArea(
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.fromLTRB(
+            NestSpacing.screen,
+            0,
+            NestSpacing.screen,
+            NestSpacing.screen,
+          ),
+          children: [
+            Text(l10n.switchHousehold, style: textTheme.titleLarge),
+            const SizedBox(height: 8),
+            for (final h in households)
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                minTileHeight: NestSizes.minTouchTarget,
+                title: Text(h.household.name, style: textTheme.bodyLarge),
+                selected: h.household.id == active.household.id,
+                trailing: h.household.id == active.household.id
+                    ? Icon(Icons.check, color: colors.accent)
+                    : null,
+                onTap: () => Navigator.pop(context, h.household.id),
+              ),
+          ],
+        ),
+      ),
+    );
+    if (picked != null) {
+      ref.read(selectedHouseholdIdProvider.notifier).select(picked);
+    }
   }
 }

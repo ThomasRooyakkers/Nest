@@ -1,4 +1,5 @@
 import 'package:nest_server/src/generated/protocol.dart';
+import 'package:serverpod_auth_idp_server/core.dart';
 import 'package:test/test.dart';
 
 import 'test_helpers.dart';
@@ -176,6 +177,28 @@ void main() {
   });
 
   withServerpod('Given the profile endpoint', (sessionBuilder, endpoints) {
+    test('a new email user starts without a name, so the app asks', () async {
+      final session = sessionBuilder.build();
+      final authUser = await AuthUser.db.insertRow(
+        session,
+        AuthUser(scopeNames: {}),
+      );
+      await UserProfile.db.insertRow(
+        session,
+        UserProfile(authUserId: authUser.id!, email: 'lotte@nest.test'),
+      );
+      final me = await endpoints.profile.me(
+        sessionBuilder.copyWith(
+          authentication: AuthenticationOverride.authenticationInfo(
+            authUser.id!.uuid,
+            {},
+          ),
+        ),
+      );
+      expect(me.name, isEmpty);
+      expect(me.locale, 'en');
+    });
+
     test('updateMe stores name and locale', () async {
       final user = await signedInUser(sessionBuilder);
       final updated = await endpoints.profile.updateMe(user, ' Thomas ', 'nl');

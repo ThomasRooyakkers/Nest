@@ -121,7 +121,7 @@ void main() {
       await pumpNestApp(tester, households: two);
       expect(find.text('Home'), findsOneWidget);
 
-      await tester.tap(find.byTooltip('Switch household'));
+      await tester.tap(find.text('Home'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Test family').last);
       await tester.pumpAndSettle();

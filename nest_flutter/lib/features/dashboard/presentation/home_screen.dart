@@ -29,8 +29,12 @@ class HomeScreen extends ConsumerWidget {
           children: [
             Row(
               children: [
-                const Flexible(child: HouseholdSwitcher()),
-                const Spacer(),
+                const Expanded(
+                  child: Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: HouseholdSwitcher(),
+                  ),
+                ),
                 IconButton(
                   tooltip: l10n.settingsTitle,
                   icon: const Icon(Icons.settings_outlined),

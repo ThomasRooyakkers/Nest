@@ -37,11 +37,9 @@ abstract final class NestUsers {
       session,
       where: (t) => t.authUserId.equals(authUserId),
     );
-    final name =
-        profile?.userName ??
-        profile?.fullName ??
-        profile?.email?.split('@').first ??
-        '';
+    // Use a real name when the identity provider gave one (e.g. Google
+    // later). Email sign-up has none; the app then asks for it.
+    final name = profile?.userName ?? profile?.fullName ?? '';
 
     try {
       return await NestUser.db.insertRow(

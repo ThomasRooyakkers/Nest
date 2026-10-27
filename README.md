@@ -39,6 +39,23 @@ Fill in random values for every `CHANGE_ME` (for example with
 flutter pub get
 ```
 
+## Sample data
+
+Set `seedPassword` under `development:` in `nest_server/config/passwords.yaml`,
+then:
+
+```bash
+cd nest_server && dart bin/seed.dart --apply-migrations
+```
+
+This creates the households "Home" and "Test family" and the users
+`thomas@nest.test` (super-admin), `sarah@`, `emma@`, `oma@` (in both
+households) and `jan@nest.test`, all with the `seedPassword`. It can run while
+`serverpod start` is running and does nothing if the data already exists.
+
+New accounts: in development the registration and password-reset codes are
+printed in the server log instead of being emailed.
+
 ## Run everything (recommended)
 
 ```bash
