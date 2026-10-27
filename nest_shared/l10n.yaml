@@ -1,0 +1,5 @@
+arb-dir: lib/src/l10n
+template-arb-file: shared_en.arb
+output-localization-file: nest_shared_localizations.dart
+output-class: NestSharedLocalizations
+nullable-getter: false

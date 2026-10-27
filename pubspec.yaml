@@ -8,4 +8,6 @@ workspace:
   - nest_client
   - nest_server
   - nest_flutter
+  - nest_shared
+  - nest_admin
 

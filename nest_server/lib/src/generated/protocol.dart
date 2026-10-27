@@ -17,8 +17,8 @@ import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
-import 'greetings/greeting.dart' as _izw8z7ou;
-export 'greetings/greeting.dart';
+import 'server_ping.dart' as _i7aj6ss6;
+export 'server_ping.dart';
 
 class Protocol extends _is.DatabaseSerializationManager {
   Protocol._();
@@ -60,11 +60,11 @@ class Protocol extends _is.DatabaseSerializationManager {
       }
     }
 
-    if (t == _izw8z7ou.Greeting) {
-      return _izw8z7ou.Greeting.fromJson(data) as T;
+    if (t == _i7aj6ss6.ServerPing) {
+      return _i7aj6ss6.ServerPing.fromJson(data) as T;
     }
-    if (t == _is.getType<_izw8z7ou.Greeting?>()) {
-      return (data != null ? _izw8z7ou.Greeting.fromJson(data) : null) as T;
+    if (t == _is.getType<_i7aj6ss6.ServerPing?>()) {
+      return (data != null ? _i7aj6ss6.ServerPing.fromJson(data) : null) as T;
     }
     try {
       return _iais.Protocol().deserialize<T>(data, t);
@@ -80,7 +80,7 @@ class Protocol extends _is.DatabaseSerializationManager {
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
-      _izw8z7ou.Greeting => 'Greeting',
+      _i7aj6ss6.ServerPing => 'ServerPing',
       _ => null,
     };
   }
@@ -95,8 +95,8 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
 
     switch (data) {
-      case _izw8z7ou.Greeting():
-        return 'Greeting';
+      case _i7aj6ss6.ServerPing():
+        return 'ServerPing';
     }
     className = _iais.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -123,8 +123,8 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
     }
-    if (dataClassName == 'Greeting') {
-      return deserialize<_izw8z7ou.Greeting>(data['data']);
+    if (dataClassName == 'ServerPing') {
+      return deserialize<_i7aj6ss6.ServerPing>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);

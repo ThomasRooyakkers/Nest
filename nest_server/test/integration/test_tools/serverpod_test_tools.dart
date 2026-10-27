@@ -13,7 +13,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
 import 'dart:io' as _idi;
-import 'package:nest_server/src/generated/greetings/greeting.dart' as _inv6lzcf;
+import 'package:nest_server/src/generated/server_ping.dart' as _ij8oiwn4;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
@@ -155,7 +155,7 @@ class TestEndpoints {
 
   late final _JwtRefreshEndpoint jwtRefresh;
 
-  late final _GreetingEndpoint greeting;
+  late final _HealthEndpoint health;
 }
 
 class _InternalTestEndpoints extends TestEndpoints
@@ -173,7 +173,7 @@ class _InternalTestEndpoints extends TestEndpoints
       endpoints,
       serializationManager,
     );
-    greeting = _GreetingEndpoint(
+    health = _HealthEndpoint(
       endpoints,
       serializationManager,
     );
@@ -498,8 +498,8 @@ class _JwtRefreshEndpoint {
   }
 }
 
-class _GreetingEndpoint {
-  _GreetingEndpoint(
+class _HealthEndpoint {
+  _HealthEndpoint(
     this._endpointDispatch,
     this._serializationManager,
   );
@@ -508,22 +508,21 @@ class _GreetingEndpoint {
 
   final _is.SerializationManager _serializationManager;
 
-  _ida.Future<_inv6lzcf.Greeting> hello(
+  _ida.Future<_ij8oiwn4.ServerPing> ping(
     _ist.TestSessionBuilder sessionBuilder,
-    String name,
   ) async {
     return _ist.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
-            endpoint: 'greeting',
-            method: 'hello',
+            endpoint: 'health',
+            method: 'ping',
           );
       try {
         var _localCallContext = await _endpointDispatch.getMethodCallContext(
           createSessionCallback: (_) => _localUniqueSession,
-          endpointPath: 'greeting',
-          methodName: 'hello',
-          parameters: _ist.testObjectToJson({'name': name}),
+          endpointPath: 'health',
+          methodName: 'ping',
+          parameters: _ist.testObjectToJson({}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =
@@ -531,7 +530,7 @@ class _GreetingEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _ida.Future<_inv6lzcf.Greeting>);
+                as _ida.Future<_ij8oiwn4.ServerPing>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

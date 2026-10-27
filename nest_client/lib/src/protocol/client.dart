@@ -12,7 +12,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
 import 'package:http/http.dart' as _i85jenna;
-import 'package:nest_client/src/protocol/greetings/greeting.dart' as _i68mzn71;
+import 'package:nest_client/src/protocol/server_ping.dart' as _i4l166nw;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _iacc;
 import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
@@ -245,21 +245,20 @@ class EndpointJwtRefresh extends _iacc.EndpointRefreshJwtTokens {
       );
 }
 
-/// This is an example endpoint that returns a greeting message through
-/// its [hello] method.
+/// Public health check. Not household-scoped and returns no household data.
 /// {@category Endpoint}
-class EndpointGreeting extends _isc.EndpointRef {
-  EndpointGreeting(_isc.EndpointCaller caller) : super(caller);
+class EndpointHealth extends _isc.EndpointRef {
+  EndpointHealth(_isc.EndpointCaller caller) : super(caller);
 
   @override
-  String get name => 'greeting';
+  String get name => 'health';
 
-  /// Returns a personalized greeting message: "Hello {name}".
-  _ida.Future<_i68mzn71.Greeting> hello(String name) =>
-      caller.callServerEndpoint<_i68mzn71.Greeting>(
-        'greeting',
-        'hello',
-        {'name': name},
+  /// Returns the server time and version so the app can show it is connected.
+  _ida.Future<_i4l166nw.ServerPing> ping() =>
+      caller.callServerEndpoint<_i4l166nw.ServerPing>(
+        'health',
+        'ping',
+        {},
       );
 }
 
@@ -303,7 +302,7 @@ class Client extends _isc.ServerpodClientShared {
        ) {
     emailIdp = EndpointEmailIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
-    greeting = EndpointGreeting(this);
+    health = EndpointHealth(this);
     modules = Modules(this);
   }
 
@@ -311,7 +310,7 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointJwtRefresh jwtRefresh;
 
-  late final EndpointGreeting greeting;
+  late final EndpointHealth health;
 
   late final Modules modules;
 
@@ -319,7 +318,7 @@ class Client extends _isc.ServerpodClientShared {
   Map<String, _isc.EndpointRef> get endpointRefLookup => {
     'emailIdp': emailIdp,
     'jwtRefresh': jwtRefresh,
-    'greeting': greeting,
+    'health': health,
   };
 
   @override

@@ -23,7 +23,7 @@ Nest is a private, bilingual (English + Dutch) family app for iOS, Android and w
 - **Small steps, always green.** After each meaningful change: run `serverpod generate` if models or endpoints changed, run the tests, fix failures, then commit with a short conventional message (`feat:`, `fix:`, `test:`, `chore:`, `docs:`).
 - **Ask before** adding a dependency that is not listed in section 4, changing a decision in this file, or deleting data or migrations. When something is ambiguous, ask one clear question rather than guessing.
 - **Keep `docs/STATUS.md` current:** current phase, what is done, what is next, open questions, and any deviations from this file with the reason.
-- **Verify versions.** Use the latest stable Flutter and Serverpod 3.x releases. Check the official Serverpod documentation for the exact CLI install command, auth module and APIs of the installed version rather than relying on memory, and pin versions in `pubspec.yaml`.
+- **Verify versions.** Use the latest stable Flutter and Serverpod 4.x releases (decided 2026-10-27, replacing 3.x). Check the official Serverpod documentation for the exact CLI install command, auth module and APIs of the installed version rather than relying on memory, and pin versions in `pubspec.yaml`.
 
 ---
 
@@ -48,8 +48,8 @@ Nest is a private, bilingual (English + Dutch) family app for iOS, Android and w
 | Navigation | `go_router` (deep links, also from notifications; auth redirects) |
 | Localization | `flutter_localizations`, gen-l10n (ARB), `intl` |
 | Local cache / offline | `drift` (SQLite) for shopping list, tasks and recipes |
-| Backend | Serverpod 3.x (Dart): endpoints, generated client, ORM, migrations |
-| Database | PostgreSQL (Docker locally, or Serverpod's embedded Postgres if the installed version offers it) |
+| Backend | Serverpod 4.x (Dart): endpoints, generated client, ORM, migrations |
+| Database | PostgreSQL 16+ (Serverpod's embedded Postgres locally and in tests, no Docker needed; Postgres in Docker on the Pi in production) |
 | Realtime | Serverpod streaming (WebSockets) for shopping list and tasks |
 | Scheduling | Serverpod future calls for reminders, overdue checks and the daily summary |
 | Auth | Serverpod's official auth module: email + password now; Google sign-in, and Sign in with Apple on iOS, later |

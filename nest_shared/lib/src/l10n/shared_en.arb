@@ -1,0 +1,17 @@
+{
+  "@@locale": "en",
+  "appName": "Nest",
+  "@appName": {"description": "Product name, not translated."},
+  "connectionChecking": "Connecting…",
+  "@connectionChecking": {"description": "Shown while the app checks whether the server can be reached."},
+  "connectionOnline": "Connected to the server",
+  "@connectionOnline": {"description": "Shown when the server can be reached."},
+  "connectionOffline": "Can't reach the server",
+  "@connectionOffline": {"description": "Shown when the server cannot be reached."},
+  "retry": "Try again",
+  "@retry": {"description": "Button that retries a failed action."},
+  "languageEnglish": "English",
+  "@languageEnglish": {"description": "Name of the English language, shown in its own language."},
+  "languageDutch": "Nederlands",
+  "@languageDutch": {"description": "Name of the Dutch language, shown in its own language."}
+}

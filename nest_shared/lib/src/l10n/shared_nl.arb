@@ -1,0 +1,10 @@
+{
+  "@@locale": "nl",
+  "appName": "Nest",
+  "connectionChecking": "Verbinden…",
+  "connectionOnline": "Verbonden met de server",
+  "connectionOffline": "Kan de server niet bereiken",
+  "retry": "Opnieuw proberen",
+  "languageEnglish": "English",
+  "languageDutch": "Nederlands"
+}

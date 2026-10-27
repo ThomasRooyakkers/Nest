@@ -1,0 +1,8 @@
+### Answer of the public health check, used by the apps to show connection state.
+class: ServerPing
+
+fields:
+  ### Server time when the ping was answered (UTC).
+  serverTime: DateTime
+  ### Nest server version.
+  version: String

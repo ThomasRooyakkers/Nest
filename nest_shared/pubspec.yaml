@@ -1,0 +1,31 @@
+name: nest_shared
+description: Nest design system, shared widgets and shared localizations.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.12.2
+  flutter: ^3.44.4
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  generate: true
+  fonts:
+    # Nunito variable font (SIL OFL 1.1, see assets/fonts/OFL.txt).
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-Variable.ttf
+        - asset: assets/fonts/Nunito-Italic-Variable.ttf
+          style: italic
