@@ -1,4 +1,4 @@
-package com.example.nest_flutter
+package be.g3cko.nest
 
 import io.flutter.embedding.android.FlutterActivity
 
