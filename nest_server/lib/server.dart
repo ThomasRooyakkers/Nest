@@ -6,9 +6,19 @@ import 'src/generated/serverpod.dart';
 
 /// The starting point of the Serverpod server.
 void run(List<String> args) async {
-  // Initialize Serverpod. The generated Serverpod class is already connected
-  // with your project's generated code.
-  final pod = Serverpod(args);
+  final pod = await createServerpod(args);
+  await pod.start();
+}
+
+/// Creates and configures the Nest [Serverpod] without starting it.
+///
+/// [configOverride] lets tools such as the seed command change the
+/// configuration, e.g. to listen on free ports next to a running server.
+Future<Serverpod> createServerpod(
+  List<String> args, {
+  ServerpodConfig Function(ServerpodConfig)? configOverride,
+}) async {
+  final pod = Serverpod(args, configOverride: configOverride);
 
   // Initialize authentication services for the server.
   // Token managers will be used to validate and issue authentication keys,
@@ -19,15 +29,10 @@ void run(List<String> args) async {
       JwtConfigFromPasswords(),
     ],
     identityProviderBuilders: [
-      // Configure the email identity provider for email/password authentication.
-      // The default setup works with Serverpod Cloud without configuration. In
-      // development the verification codes are logged to the console, and in
-      // staging and production they are sent through the Serverpod Cloud email
-      // service. If you want to use a custom provider for sending emails, use
-      // `EmailIdpConfigFromPasswords`.
-      ServerpodCloudEmailIdpConfig(
-        appDisplayName: 'Nest',
-      ),
+      // Email/password sign-in. In development the verification codes are
+      // logged to the console. Production needs a real email sender (see
+      // docs/STATUS.md).
+      ServerpodCloudEmailIdpConfig(appDisplayName: 'Nest'),
     ],
   );
 
@@ -46,6 +51,5 @@ void run(List<String> args) async {
     ),
   );
 
-  // Start the server.
-  await pod.start();
+  return pod;
 }
