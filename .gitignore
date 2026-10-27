@@ -1,0 +1,36 @@
+# Files and directories created by pub
+.dart_tool/
+.packages
+
+# Pubspec overrides
+pubspec_overrides.yaml
+
+# Agents
+.dart_skills/
+.agents/
+.claude/
+.gemini/
+.cursor/
+.vscode/mcp.json
+.codex/
+.mcp.json
+
+# Serverpod Cloud CLI
+.scloud/
+
+# Secrets (commit only *.example versions)
+.env
+.env.*
+!.env.example
+*.env
+!*.env.example
+**/config/passwords.yaml
+**/config/*service_account*.json
+**/restic-password*
+**/rclone.conf
+
+# macOS
+.DS_Store
+
+# Build output
+build/

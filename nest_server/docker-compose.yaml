@@ -1,0 +1,30 @@
+services:
+  # Development services
+  postgres:
+    image: ghcr.io/serverpod/postgres:16
+    ports:
+      - "8090:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: nest
+      POSTGRES_PASSWORD: "SN3t2N7YwN8NdEtF3kc_cWKWoCefTXua"
+    volumes:
+      - nest_data:/var/lib/postgresql/data
+
+
+  # Test services
+  postgres_test:
+    image: ghcr.io/serverpod/postgres:16
+    ports:
+      - "9090:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: nest_test
+      POSTGRES_PASSWORD: "ze0OuOc_3oBliVz7wkr-NroF1810ThQ-"
+    volumes:
+      - nest_test_data:/var/lib/postgresql/data
+
+
+volumes:
+  nest_data:
+  nest_test_data:
