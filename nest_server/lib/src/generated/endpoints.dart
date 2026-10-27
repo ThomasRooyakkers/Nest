@@ -10,6 +10,8 @@
 // ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:nest_server/src/generated/household_feature.dart' as _iez4op0n;
+import 'package:nest_server/src/generated/household_status.dart' as _i544oeia;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
@@ -17,7 +19,10 @@ import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
 import '../auth/email_idp_endpoint.dart' as _iuc1hd5t;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
+import '../endpoints/admin/admin_households_endpoint.dart' as _iy84ve0g;
 import '../endpoints/health_endpoint.dart' as _ica9y4w0;
+import '../endpoints/household_endpoint.dart' as _izqmqbob;
+import '../endpoints/profile_endpoint.dart' as _i2cx2pww;
 
 class Endpoints extends _is.EndpointDispatch {
   @override
@@ -35,10 +40,28 @@ class Endpoints extends _is.EndpointDispatch {
           'jwtRefresh',
           null,
         ),
+      'adminHouseholds': _iy84ve0g.AdminHouseholdsEndpoint()
+        ..initialize(
+          server,
+          'adminHouseholds',
+          null,
+        ),
       'health': _ica9y4w0.HealthEndpoint()
         ..initialize(
           server,
           'health',
+          null,
+        ),
+      'household': _izqmqbob.HouseholdEndpoint()
+        ..initialize(
+          server,
+          'household',
+          null,
+        ),
+      'profile': _i2cx2pww.ProfileEndpoint()
+        ..initialize(
+          server,
+          'profile',
           null,
         ),
     };
@@ -248,6 +271,51 @@ class Endpoints extends _is.EndpointDispatch {
         ),
       },
     );
+    connectors['adminHouseholds'] = _is.EndpointConnector(
+      name: 'adminHouseholds',
+      endpoint: endpoints['adminHouseholds']!,
+      methodConnectors: {
+        'list': _is.MethodConnector(
+          name: 'list',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminHouseholds']
+                          as _iy84ve0g.AdminHouseholdsEndpoint)
+                      .list(session),
+        ),
+        'setStatus': _is.MethodConnector(
+          name: 'setStatus',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'status': _is.ParameterDescription(
+              name: 'status',
+              type: _is.getType<_i544oeia.HouseholdStatus>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminHouseholds']
+                          as _iy84ve0g.AdminHouseholdsEndpoint)
+                      .setStatus(
+                        session,
+                        params['householdId'],
+                        params['status'],
+                      ),
+        ),
+      },
+    );
     connectors['health'] = _is.EndpointConnector(
       name: 'health',
       endpoint: endpoints['health']!,
@@ -262,6 +330,247 @@ class Endpoints extends _is.EndpointDispatch {
               ) async => (endpoints['health'] as _ica9y4w0.HealthEndpoint).ping(
                 session,
               ),
+        ),
+      },
+    );
+    connectors['household'] = _is.EndpointConnector(
+      name: 'household',
+      endpoint: endpoints['household']!,
+      methodConnectors: {
+        'listMine': _is.MethodConnector(
+          name: 'listMine',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['household'] as _izqmqbob.HouseholdEndpoint)
+                  .listMine(session),
+        ),
+        'create': _is.MethodConnector(
+          name: 'create',
+          params: {
+            'name': _is.ParameterDescription(
+              name: 'name',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['household'] as _izqmqbob.HouseholdEndpoint)
+                  .create(
+                    session,
+                    params['name'],
+                  ),
+        ),
+        'get': _is.MethodConnector(
+          name: 'get',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['household'] as _izqmqbob.HouseholdEndpoint).get(
+                    session,
+                    params['householdId'],
+                  ),
+        ),
+        'members': _is.MethodConnector(
+          name: 'members',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['household'] as _izqmqbob.HouseholdEndpoint)
+                  .members(
+                    session,
+                    params['householdId'],
+                  ),
+        ),
+        'rename': _is.MethodConnector(
+          name: 'rename',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'name': _is.ParameterDescription(
+              name: 'name',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['household'] as _izqmqbob.HouseholdEndpoint)
+                  .rename(
+                    session,
+                    params['householdId'],
+                    params['name'],
+                  ),
+        ),
+        'setFeatures': _is.MethodConnector(
+          name: 'setFeatures',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'features': _is.ParameterDescription(
+              name: 'features',
+              type: _is.getType<List<_iez4op0n.HouseholdFeature>>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['household'] as _izqmqbob.HouseholdEndpoint)
+                  .setFeatures(
+                    session,
+                    params['householdId'],
+                    params['features'],
+                  ),
+        ),
+        'createInvite': _is.MethodConnector(
+          name: 'createInvite',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['household'] as _izqmqbob.HouseholdEndpoint)
+                  .createInvite(
+                    session,
+                    params['householdId'],
+                  ),
+        ),
+        'revokeInvite': _is.MethodConnector(
+          name: 'revokeInvite',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['household'] as _izqmqbob.HouseholdEndpoint)
+                  .revokeInvite(
+                    session,
+                    params['householdId'],
+                  ),
+        ),
+        'join': _is.MethodConnector(
+          name: 'join',
+          params: {
+            'code': _is.ParameterDescription(
+              name: 'code',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['household'] as _izqmqbob.HouseholdEndpoint).join(
+                    session,
+                    params['code'],
+                  ),
+        ),
+        'leave': _is.MethodConnector(
+          name: 'leave',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['household'] as _izqmqbob.HouseholdEndpoint).leave(
+                    session,
+                    params['householdId'],
+                  ),
+        ),
+      },
+    );
+    connectors['profile'] = _is.EndpointConnector(
+      name: 'profile',
+      endpoint: endpoints['profile']!,
+      methodConnectors: {
+        'me': _is.MethodConnector(
+          name: 'me',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['profile'] as _i2cx2pww.ProfileEndpoint).me(
+                session,
+              ),
+        ),
+        'updateMe': _is.MethodConnector(
+          name: 'updateMe',
+          params: {
+            'name': _is.ParameterDescription(
+              name: 'name',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'locale': _is.ParameterDescription(
+              name: 'locale',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['profile'] as _i2cx2pww.ProfileEndpoint).updateMe(
+                    session,
+                    params['name'],
+                    params['locale'],
+                  ),
         ),
       },
     );

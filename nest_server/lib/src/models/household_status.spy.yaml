@@ -1,0 +1,5 @@
+enum: HouseholdStatus
+serialized: byName
+values:
+  - active
+  - suspended

@@ -1,0 +1,5 @@
+### A household as seen by one of its members.
+class: MyHousehold
+fields:
+  household: Household
+  role: MembershipRole

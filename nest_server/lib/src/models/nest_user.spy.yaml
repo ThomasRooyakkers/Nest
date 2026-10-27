@@ -1,0 +1,20 @@
+### A Nest user: the app-level profile next to Serverpod's auth user.
+class: NestUser
+table: nest_user
+fields:
+  ### The auth module user this profile belongs to.
+  authUser: module:serverpod_auth_core:AuthUser?, relation(onDelete=Cascade)
+  ### Display name shown to household members.
+  name: String
+  ### Preferred language: `en` or `nl`. Also used for push texts.
+  locale: String, default='en'
+  ### Super-admin (Thomas). Only settable on the server.
+  isSuperAdmin: bool, default=false
+  ### Set when an admin disabled the user; disabled users get no access.
+  disabledAt: DateTime?
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now
+indexes:
+  nest_user_auth_user_idx:
+    fields: authUserId
+    unique: true

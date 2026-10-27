@@ -1,0 +1,15 @@
+### Links a user to a household. A user can belong to several households.
+class: Membership
+table: membership
+fields:
+  user: NestUser?, relation(onDelete=Cascade)
+  household: Household?, relation(onDelete=Cascade)
+  role: MembershipRole
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now
+indexes:
+  membership_user_household_idx:
+    fields: userId, householdId
+    unique: true
+  membership_household_idx:
+    fields: householdId

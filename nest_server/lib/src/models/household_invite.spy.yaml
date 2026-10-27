@@ -1,0 +1,5 @@
+### An invite code that lets someone join a household.
+class: HouseholdInvite
+fields:
+  code: String
+  expiresAt: DateTime

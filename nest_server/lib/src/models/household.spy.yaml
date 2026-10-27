@@ -1,0 +1,17 @@
+### A family. All feature data is scoped to a household.
+class: Household
+table: household
+fields:
+  name: String
+  status: HouseholdStatus, default=active
+  ### Features switched on for this household.
+  enabledFeatures: List<HouseholdFeature>
+  ### Current invite code; only returned to owners.
+  inviteCode: String?
+  inviteExpiresAt: DateTime?
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now
+indexes:
+  household_invite_code_idx:
+    fields: inviteCode
+    unique: true

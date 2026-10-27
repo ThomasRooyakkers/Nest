@@ -1,0 +1,4 @@
+### Error returned to the app. The app shows a localized text per [code].
+exception: NestException
+fields:
+  code: NestErrorCode

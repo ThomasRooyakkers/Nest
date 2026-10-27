@@ -1,0 +1,9 @@
+### Features that can be switched on or off per household.
+enum: HouseholdFeature
+serialized: byName
+values:
+  - shopping
+  - recipes
+  - mealPlanning
+  - tasks
+  - watchlist

@@ -1,0 +1,15 @@
+enum: NestErrorCode
+serialized: byName
+values:
+  - notSignedIn
+  - userDisabled
+  - notAMember
+  - notAnOwner
+  - householdSuspended
+  - notAdmin
+  - invalidInput
+  - invalidInviteCode
+  - inviteExpired
+  - alreadyMember
+  - lastOwner
+  - notFound

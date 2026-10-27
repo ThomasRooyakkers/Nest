@@ -1,0 +1,6 @@
+### A member of a household, as shown to other members.
+class: HouseholdMember
+fields:
+  userId: int
+  name: String
+  role: MembershipRole

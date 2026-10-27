@@ -1,0 +1,10 @@
+### Household metadata for the admin portal. Never contains household content.
+class: AdminHouseholdSummary
+fields:
+  id: int
+  name: String
+  status: HouseholdStatus
+  memberCount: int
+  ownerNames: List<String>
+  enabledFeatures: List<HouseholdFeature>
+  createdAt: DateTime

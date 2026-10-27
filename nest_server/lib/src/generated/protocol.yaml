@@ -9,5 +9,22 @@ emailIdp:
   - hasAccount:
 jwtRefresh:
   - refreshAccessToken:
+adminHouseholds:
+  - list:
+  - setStatus:
 health:
   - ping:
+household:
+  - listMine:
+  - create:
+  - get:
+  - members:
+  - rename:
+  - setFeatures:
+  - createInvite:
+  - revokeInvite:
+  - join:
+  - leave:
+profile:
+  - me:
+  - updateMe:

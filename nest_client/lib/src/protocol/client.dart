@@ -12,6 +12,14 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
 import 'package:http/http.dart' as _i85jenna;
+import 'package:nest_client/src/protocol/admin_household_summary.dart'
+    as _ipf5tkzm;
+import 'package:nest_client/src/protocol/household_feature.dart' as _iejl7hre;
+import 'package:nest_client/src/protocol/household_invite.dart' as _iidsgy2i;
+import 'package:nest_client/src/protocol/household_member.dart' as _ihqqoxyh;
+import 'package:nest_client/src/protocol/household_status.dart' as _iluf117q;
+import 'package:nest_client/src/protocol/my_household.dart' as _itexq6j2;
+import 'package:nest_client/src/protocol/nest_user.dart' as _i7k4hj0f;
 import 'package:nest_client/src/protocol/server_ping.dart' as _i4l166nw;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _iacc;
@@ -245,6 +253,36 @@ class EndpointJwtRefresh extends _iacc.EndpointRefreshJwtTokens {
       );
 }
 
+/// Household management for the admin portal. Metadata and counts only.
+/// {@category Endpoint}
+class EndpointAdminHouseholds extends _isc.EndpointRef {
+  EndpointAdminHouseholds(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'adminHouseholds';
+
+  /// All households with member counts and owner names.
+  _ida.Future<List<_ipf5tkzm.AdminHouseholdSummary>> list() =>
+      caller.callServerEndpoint<List<_ipf5tkzm.AdminHouseholdSummary>>(
+        'adminHouseholds',
+        'list',
+        {},
+      );
+
+  /// Suspends or reactivates a household.
+  _ida.Future<_ipf5tkzm.AdminHouseholdSummary> setStatus(
+    int householdId,
+    _iluf117q.HouseholdStatus status,
+  ) => caller.callServerEndpoint<_ipf5tkzm.AdminHouseholdSummary>(
+    'adminHouseholds',
+    'setStatus',
+    {
+      'householdId': householdId,
+      'status': status,
+    },
+  );
+}
+
 /// Public health check. Not household-scoped and returns no household data.
 /// {@category Endpoint}
 class EndpointHealth extends _isc.EndpointRef {
@@ -260,6 +298,134 @@ class EndpointHealth extends _isc.EndpointRef {
         'ping',
         {},
       );
+}
+
+/// Households, memberships and invite codes.
+/// {@category Endpoint}
+class EndpointHousehold extends _isc.EndpointRef {
+  EndpointHousehold(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'household';
+
+  /// Active households the signed-in user belongs to, sorted by name.
+  _ida.Future<List<_itexq6j2.MyHousehold>> listMine() =>
+      caller.callServerEndpoint<List<_itexq6j2.MyHousehold>>(
+        'household',
+        'listMine',
+        {},
+      );
+
+  /// Creates a household with the signed-in user as owner.
+  _ida.Future<_itexq6j2.MyHousehold> create(String name) =>
+      caller.callServerEndpoint<_itexq6j2.MyHousehold>(
+        'household',
+        'create',
+        {'name': name},
+      );
+
+  /// A household the signed-in user belongs to.
+  _ida.Future<_itexq6j2.MyHousehold> get(int householdId) =>
+      caller.callServerEndpoint<_itexq6j2.MyHousehold>(
+        'household',
+        'get',
+        {'householdId': householdId},
+      );
+
+  /// Members of a household, owners first, then by name.
+  _ida.Future<List<_ihqqoxyh.HouseholdMember>> members(int householdId) =>
+      caller.callServerEndpoint<List<_ihqqoxyh.HouseholdMember>>(
+        'household',
+        'members',
+        {'householdId': householdId},
+      );
+
+  /// Renames a household. Owners only.
+  _ida.Future<_itexq6j2.MyHousehold> rename(
+    int householdId,
+    String name,
+  ) => caller.callServerEndpoint<_itexq6j2.MyHousehold>(
+    'household',
+    'rename',
+    {
+      'householdId': householdId,
+      'name': name,
+    },
+  );
+
+  /// Switches features on or off for a household. Owners only.
+  _ida.Future<_itexq6j2.MyHousehold> setFeatures(
+    int householdId,
+    List<_iejl7hre.HouseholdFeature> features,
+  ) => caller.callServerEndpoint<_itexq6j2.MyHousehold>(
+    'household',
+    'setFeatures',
+    {
+      'householdId': householdId,
+      'features': features,
+    },
+  );
+
+  /// Creates a new invite code, replacing any previous one. Owners only.
+  _ida.Future<_iidsgy2i.HouseholdInvite> createInvite(int householdId) =>
+      caller.callServerEndpoint<_iidsgy2i.HouseholdInvite>(
+        'household',
+        'createInvite',
+        {'householdId': householdId},
+      );
+
+  /// Removes the current invite code. Owners only.
+  _ida.Future<void> revokeInvite(int householdId) =>
+      caller.callServerEndpoint<void>(
+        'household',
+        'revokeInvite',
+        {'householdId': householdId},
+      );
+
+  /// Joins the household that owns [code] as a member.
+  _ida.Future<_itexq6j2.MyHousehold> join(String code) =>
+      caller.callServerEndpoint<_itexq6j2.MyHousehold>(
+        'household',
+        'join',
+        {'code': code},
+      );
+
+  /// Leaves a household. The last owner cannot leave while others remain.
+  _ida.Future<void> leave(int householdId) => caller.callServerEndpoint<void>(
+    'household',
+    'leave',
+    {'householdId': householdId},
+  );
+}
+
+/// The signed-in user's own profile. Not household-scoped.
+/// {@category Endpoint}
+class EndpointProfile extends _isc.EndpointRef {
+  EndpointProfile(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'profile';
+
+  /// Returns the signed-in user, creating the Nest profile on first use.
+  _ida.Future<_i7k4hj0f.NestUser> me() =>
+      caller.callServerEndpoint<_i7k4hj0f.NestUser>(
+        'profile',
+        'me',
+        {},
+      );
+
+  /// Updates the signed-in user's name and language.
+  _ida.Future<_i7k4hj0f.NestUser> updateMe(
+    String name,
+    String locale,
+  ) => caller.callServerEndpoint<_i7k4hj0f.NestUser>(
+    'profile',
+    'updateMe',
+    {
+      'name': name,
+      'locale': locale,
+    },
+  );
 }
 
 class Modules {
@@ -302,7 +468,10 @@ class Client extends _isc.ServerpodClientShared {
        ) {
     emailIdp = EndpointEmailIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
+    adminHouseholds = EndpointAdminHouseholds(this);
     health = EndpointHealth(this);
+    household = EndpointHousehold(this);
+    profile = EndpointProfile(this);
     modules = Modules(this);
   }
 
@@ -310,7 +479,13 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointJwtRefresh jwtRefresh;
 
+  late final EndpointAdminHouseholds adminHouseholds;
+
   late final EndpointHealth health;
+
+  late final EndpointHousehold household;
+
+  late final EndpointProfile profile;
 
   late final Modules modules;
 
@@ -318,7 +493,10 @@ class Client extends _isc.ServerpodClientShared {
   Map<String, _isc.EndpointRef> get endpointRefLookup => {
     'emailIdp': emailIdp,
     'jwtRefresh': jwtRefresh,
+    'adminHouseholds': adminHouseholds,
     'health': health,
+    'household': household,
+    'profile': profile,
   };
 
   @override

@@ -1,0 +1,16 @@
+### Append-only record of every admin action.
+class: AdminAuditLog
+table: admin_audit_log
+fields:
+  ### `NestUser.id` of the admin who acted.
+  adminId: int
+  ### What was done, e.g. `household.suspend`.
+  action: String
+  targetType: String
+  targetId: String?
+  ### Free-form metadata. Never household content.
+  details: String?
+  at: DateTime, default=now
+indexes:
+  admin_audit_log_at_idx:
+    fields: at

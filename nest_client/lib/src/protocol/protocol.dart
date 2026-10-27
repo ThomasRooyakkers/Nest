@@ -11,12 +11,43 @@
 // ignore_for_file: dead_code, unnecessary_type_check
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:nest_client/src/protocol/admin_household_summary.dart'
+    as _ipf5tkzm;
+import 'package:nest_client/src/protocol/household_feature.dart' as _iejl7hre;
+import 'package:nest_client/src/protocol/household_member.dart' as _ihqqoxyh;
+import 'package:nest_client/src/protocol/my_household.dart' as _itexq6j2;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _iacc;
 import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
     as _iaic;
 import 'package:serverpod_client/serverpod_client.dart' as _isc;
+import 'admin_audit_log.dart' as _ihc3ja42;
+import 'admin_household_summary.dart' as _isoedyc0;
+import 'household.dart' as _ijonbu5t;
+import 'household_feature.dart' as _idhxy0am;
+import 'household_invite.dart' as _itc130bt;
+import 'household_member.dart' as _iv10erpj;
+import 'household_status.dart' as _imk37xix;
+import 'membership.dart' as _iu35fd1a;
+import 'membership_role.dart' as _iur1rrwm;
+import 'my_household.dart' as _i46wom1w;
+import 'nest_error_code.dart' as _i11cf01m;
+import 'nest_exception.dart' as _id4drunt;
+import 'nest_user.dart' as _iasjmgi7;
 import 'server_ping.dart' as _i7aj6ss6;
+export 'admin_audit_log.dart';
+export 'admin_household_summary.dart';
+export 'household.dart';
+export 'household_feature.dart';
+export 'household_invite.dart';
+export 'household_member.dart';
+export 'household_status.dart';
+export 'membership.dart';
+export 'membership_role.dart';
+export 'my_household.dart';
+export 'nest_error_code.dart';
+export 'nest_exception.dart';
+export 'nest_user.dart';
 export 'server_ping.dart';
 export 'client.dart';
 
@@ -54,11 +85,133 @@ class Protocol extends _isc.SerializationManager {
       }
     }
 
+    if (t == _ihc3ja42.AdminAuditLog) {
+      return _ihc3ja42.AdminAuditLog.fromJson(data) as T;
+    }
+    if (t == _isoedyc0.AdminHouseholdSummary) {
+      return _isoedyc0.AdminHouseholdSummary.fromJson(data) as T;
+    }
+    if (t == _ijonbu5t.Household) {
+      return _ijonbu5t.Household.fromJson(data) as T;
+    }
+    if (t == _idhxy0am.HouseholdFeature) {
+      return _idhxy0am.HouseholdFeature.fromJson(data) as T;
+    }
+    if (t == _itc130bt.HouseholdInvite) {
+      return _itc130bt.HouseholdInvite.fromJson(data) as T;
+    }
+    if (t == _iv10erpj.HouseholdMember) {
+      return _iv10erpj.HouseholdMember.fromJson(data) as T;
+    }
+    if (t == _imk37xix.HouseholdStatus) {
+      return _imk37xix.HouseholdStatus.fromJson(data) as T;
+    }
+    if (t == _iu35fd1a.Membership) {
+      return _iu35fd1a.Membership.fromJson(data) as T;
+    }
+    if (t == _iur1rrwm.MembershipRole) {
+      return _iur1rrwm.MembershipRole.fromJson(data) as T;
+    }
+    if (t == _i46wom1w.MyHousehold) {
+      return _i46wom1w.MyHousehold.fromJson(data) as T;
+    }
+    if (t == _i11cf01m.NestErrorCode) {
+      return _i11cf01m.NestErrorCode.fromJson(data) as T;
+    }
+    if (t == _id4drunt.NestException) {
+      return _id4drunt.NestException.fromJson(data) as T;
+    }
+    if (t == _iasjmgi7.NestUser) {
+      return _iasjmgi7.NestUser.fromJson(data) as T;
+    }
     if (t == _i7aj6ss6.ServerPing) {
       return _i7aj6ss6.ServerPing.fromJson(data) as T;
     }
+    if (t == _isc.getType<_ihc3ja42.AdminAuditLog?>()) {
+      return (data != null ? _ihc3ja42.AdminAuditLog.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_isoedyc0.AdminHouseholdSummary?>()) {
+      return (data != null
+              ? _isoedyc0.AdminHouseholdSummary.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_ijonbu5t.Household?>()) {
+      return (data != null ? _ijonbu5t.Household.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_idhxy0am.HouseholdFeature?>()) {
+      return (data != null ? _idhxy0am.HouseholdFeature.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_itc130bt.HouseholdInvite?>()) {
+      return (data != null ? _itc130bt.HouseholdInvite.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iv10erpj.HouseholdMember?>()) {
+      return (data != null ? _iv10erpj.HouseholdMember.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_imk37xix.HouseholdStatus?>()) {
+      return (data != null ? _imk37xix.HouseholdStatus.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iu35fd1a.Membership?>()) {
+      return (data != null ? _iu35fd1a.Membership.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_iur1rrwm.MembershipRole?>()) {
+      return (data != null ? _iur1rrwm.MembershipRole.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i46wom1w.MyHousehold?>()) {
+      return (data != null ? _i46wom1w.MyHousehold.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i11cf01m.NestErrorCode?>()) {
+      return (data != null ? _i11cf01m.NestErrorCode.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_id4drunt.NestException?>()) {
+      return (data != null ? _id4drunt.NestException.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iasjmgi7.NestUser?>()) {
+      return (data != null ? _iasjmgi7.NestUser.fromJson(data) : null) as T;
+    }
     if (t == _isc.getType<_i7aj6ss6.ServerPing?>()) {
       return (data != null ? _i7aj6ss6.ServerPing.fromJson(data) : null) as T;
+    }
+    if (t == List<String>) {
+      return (data as List).map((e) => deserialize<String>(e)).toList() as T;
+    }
+    if (t == List<_idhxy0am.HouseholdFeature>) {
+      return (data as List)
+              .map((e) => deserialize<_idhxy0am.HouseholdFeature>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_ipf5tkzm.AdminHouseholdSummary>) {
+      return (data as List)
+              .map((e) => deserialize<_ipf5tkzm.AdminHouseholdSummary>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_itexq6j2.MyHousehold>) {
+      return (data as List)
+              .map((e) => deserialize<_itexq6j2.MyHousehold>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_ihqqoxyh.HouseholdMember>) {
+      return (data as List)
+              .map((e) => deserialize<_ihqqoxyh.HouseholdMember>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_iejl7hre.HouseholdFeature>) {
+      return (data as List)
+              .map((e) => deserialize<_iejl7hre.HouseholdFeature>(e))
+              .toList()
+          as T;
     }
     try {
       return _iaic.Protocol().deserialize<T>(data, t);
@@ -71,6 +224,19 @@ class Protocol extends _isc.SerializationManager {
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
+      _ihc3ja42.AdminAuditLog => 'AdminAuditLog',
+      _isoedyc0.AdminHouseholdSummary => 'AdminHouseholdSummary',
+      _ijonbu5t.Household => 'Household',
+      _idhxy0am.HouseholdFeature => 'HouseholdFeature',
+      _itc130bt.HouseholdInvite => 'HouseholdInvite',
+      _iv10erpj.HouseholdMember => 'HouseholdMember',
+      _imk37xix.HouseholdStatus => 'HouseholdStatus',
+      _iu35fd1a.Membership => 'Membership',
+      _iur1rrwm.MembershipRole => 'MembershipRole',
+      _i46wom1w.MyHousehold => 'MyHousehold',
+      _i11cf01m.NestErrorCode => 'NestErrorCode',
+      _id4drunt.NestException => 'NestException',
+      _iasjmgi7.NestUser => 'NestUser',
       _i7aj6ss6.ServerPing => 'ServerPing',
       _ => null,
     };
@@ -86,6 +252,32 @@ class Protocol extends _isc.SerializationManager {
     }
 
     switch (data) {
+      case _ihc3ja42.AdminAuditLog():
+        return 'AdminAuditLog';
+      case _isoedyc0.AdminHouseholdSummary():
+        return 'AdminHouseholdSummary';
+      case _ijonbu5t.Household():
+        return 'Household';
+      case _idhxy0am.HouseholdFeature():
+        return 'HouseholdFeature';
+      case _itc130bt.HouseholdInvite():
+        return 'HouseholdInvite';
+      case _iv10erpj.HouseholdMember():
+        return 'HouseholdMember';
+      case _imk37xix.HouseholdStatus():
+        return 'HouseholdStatus';
+      case _iu35fd1a.Membership():
+        return 'Membership';
+      case _iur1rrwm.MembershipRole():
+        return 'MembershipRole';
+      case _i46wom1w.MyHousehold():
+        return 'MyHousehold';
+      case _i11cf01m.NestErrorCode():
+        return 'NestErrorCode';
+      case _id4drunt.NestException():
+        return 'NestException';
+      case _iasjmgi7.NestUser():
+        return 'NestUser';
       case _i7aj6ss6.ServerPing():
         return 'ServerPing';
     }
@@ -109,6 +301,45 @@ class Protocol extends _isc.SerializationManager {
     var dataClassName = data['className'];
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
+    }
+    if (dataClassName == 'AdminAuditLog') {
+      return deserialize<_ihc3ja42.AdminAuditLog>(data['data']);
+    }
+    if (dataClassName == 'AdminHouseholdSummary') {
+      return deserialize<_isoedyc0.AdminHouseholdSummary>(data['data']);
+    }
+    if (dataClassName == 'Household') {
+      return deserialize<_ijonbu5t.Household>(data['data']);
+    }
+    if (dataClassName == 'HouseholdFeature') {
+      return deserialize<_idhxy0am.HouseholdFeature>(data['data']);
+    }
+    if (dataClassName == 'HouseholdInvite') {
+      return deserialize<_itc130bt.HouseholdInvite>(data['data']);
+    }
+    if (dataClassName == 'HouseholdMember') {
+      return deserialize<_iv10erpj.HouseholdMember>(data['data']);
+    }
+    if (dataClassName == 'HouseholdStatus') {
+      return deserialize<_imk37xix.HouseholdStatus>(data['data']);
+    }
+    if (dataClassName == 'Membership') {
+      return deserialize<_iu35fd1a.Membership>(data['data']);
+    }
+    if (dataClassName == 'MembershipRole') {
+      return deserialize<_iur1rrwm.MembershipRole>(data['data']);
+    }
+    if (dataClassName == 'MyHousehold') {
+      return deserialize<_i46wom1w.MyHousehold>(data['data']);
+    }
+    if (dataClassName == 'NestErrorCode') {
+      return deserialize<_i11cf01m.NestErrorCode>(data['data']);
+    }
+    if (dataClassName == 'NestException') {
+      return deserialize<_id4drunt.NestException>(data['data']);
+    }
+    if (dataClassName == 'NestUser') {
+      return deserialize<_iasjmgi7.NestUser>(data['data']);
     }
     if (dataClassName == 'ServerPing') {
       return deserialize<_i7aj6ss6.ServerPing>(data['data']);
