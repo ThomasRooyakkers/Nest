@@ -1,0 +1,14 @@
+{
+  "@@locale": "nl",
+  "welcomeTitle": "Welkom bij Nest",
+  "welcomeBody": "De thuisbasis van je gezin. Dit scherm is tijdelijk, tot de eerste functies er zijn.",
+  "serverCardTitle": "Server",
+  "serverVersion": "Versie {version}",
+  "comingSoonTitle": "Binnenkort",
+  "featureShopping": "Boodschappen",
+  "featureMeals": "Maaltijden",
+  "featureTasks": "Taken",
+  "featureRecipes": "Recepten",
+  "featureWatchlist": "Kijklijst",
+  "languageTitle": "Taal"
+}

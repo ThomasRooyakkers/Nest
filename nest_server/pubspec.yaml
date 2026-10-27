@@ -62,3 +62,8 @@ serverpod:
       displayName: "Nest app"
       auto_launch: true
       target: lib/driver.dart
+    admin:
+      path: ../nest_admin
+      displayName: "Nest admin"
+      auto_launch: false
+      web-port: 8083

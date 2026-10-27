@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "adminTitle": "Nest admin",
+  "@adminTitle": {"description": "Title of the admin portal."},
+  "adminPlaceholderBody": "Households, users, backups and system health will be managed here.",
+  "@adminPlaceholderBody": {"description": "Placeholder text on the admin portal's first screen."}
+}

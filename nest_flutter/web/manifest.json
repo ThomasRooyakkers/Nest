@@ -1,11 +1,11 @@
 {
-    "name": "nest_flutter",
-    "short_name": "nest_flutter",
+    "name": "Nest",
+    "short_name": "Nest",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#FAF5EE",
+    "theme_color": "#3F6B57",
+    "description": "Nest family app",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

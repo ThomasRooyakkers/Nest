@@ -1,0 +1,28 @@
+{
+  "@@locale": "en",
+  "welcomeTitle": "Welcome to Nest",
+  "@welcomeTitle": {"description": "Title of the placeholder home screen."},
+  "welcomeBody": "Your family's home base. This screen is a placeholder until the first features arrive.",
+  "@welcomeBody": {"description": "Intro text on the placeholder home screen."},
+  "serverCardTitle": "Server",
+  "@serverCardTitle": {"description": "Title of the card that shows the server connection."},
+  "serverVersion": "Version {version}",
+  "@serverVersion": {
+    "description": "Server version shown when connected.",
+    "placeholders": {"version": {"type": "String", "example": "0.1.0"}}
+  },
+  "comingSoonTitle": "Coming soon",
+  "@comingSoonTitle": {"description": "Title of the card listing upcoming features."},
+  "featureShopping": "Shopping",
+  "@featureShopping": {"description": "Name of the shopping list feature."},
+  "featureMeals": "Meals",
+  "@featureMeals": {"description": "Name of the meal planning feature."},
+  "featureTasks": "Tasks",
+  "@featureTasks": {"description": "Name of the tasks feature."},
+  "featureRecipes": "Recipes",
+  "@featureRecipes": {"description": "Name of the recipes feature."},
+  "featureWatchlist": "Watchlist",
+  "@featureWatchlist": {"description": "Name of the watchlist feature."},
+  "languageTitle": "Language",
+  "@languageTitle": {"description": "Title of the language picker."}
+}
