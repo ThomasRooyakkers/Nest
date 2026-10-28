@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:nest_client/nest_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -82,7 +83,8 @@ class ServerChecker {
   Future<ServerPing?> _tryPing(Uri apiUrl) async {
     try {
       return await _ping(apiUrl);
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Nest server check: no answer from $apiUrl: $e');
       return null;
     }
   }
