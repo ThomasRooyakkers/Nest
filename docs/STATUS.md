@@ -2,9 +2,8 @@
 
 ## Current phase
 
-**Phase 5 — Recipes: built and verified locally (2026-10-28), not released.**
-Server 0.4.0 / API level 4 is committed; the Pi still runs 0.3.0. Waiting for
-Thomas's OK to release, then phase 6 (Meal Planning).
+**Phase 5 — Recipes: done and released (2026-10-28).** Server 0.4.0 / API
+level 4 runs on the Pi. Waiting for Thomas before phase 6 (Meal Planning).
 
 Phase 4 (Tasks) is done and released as 0.3.0.
 
@@ -444,22 +443,29 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   add-to-list preview missed items named in the other language, now fixed.
   **Not verified:** picking a photo through the file or camera picker (the
   upload path itself was verified over HTTP), and the app on a phone.
+- **Released (2026-10-28, with Thomas's OK):** tag `v0.4.0`; CI (analyze,
+  format, tests) passed and the "Server image" workflow published
+  `ghcr.io/thomasrooyakkers/nest-server:0.4.0` and `:latest`. Pi:
+  `NEST_VERSION=0.4.0` in `~/nest/deploy/.env` (backup `.env.bak-*` next to
+  it), `deploy/deploy.sh` (dump `nest-pre-update-20261028-192459.sql.gz`).
+  Verified over https: health 0.4.0 / API 4, migration `20261028180741556`
+  applied (no recipes yet), `recipe.recipes` answers `notSignedIn` without
+  a login, web app and served config OK. The recipe screens were not opened
+  on production (no account used).
 
 ## Next
 
-1. **Thomas:** OK to release 0.4.0 (tag `v0.4.0`, image, Pi update as for
-   0.3.0). Existing households already have the recipes feature switched on.
-2. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
+1. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
    `docker compose logs nest` until Resend is set up) and use the list daily.
    For the iPhone, build with `--dart-define=SERVER_URL=https://nest-api.g3cko.be/`.
-3. Resend: account + domain `g3cko.be` (DNS records can be added in Cloudflare),
+2. Resend: account + domain `g3cko.be` (DNS records can be added in Cloudflare),
    then `RESEND_API_KEY` in `~/nest/deploy/.env` and `docker compose up -d nest`.
-4. **Thomas:** remove the second server when no longer needed
+3. **Thomas:** remove the second server when no longer needed
    (`cd ~/nest-test && docker compose down -v`, then delete the "Nest test"
    tunnel and its two hostnames in Cloudflare, and the folder).
-5. **Thomas:** try Tasks and Recipes on the web and on the iPhone build
+4. **Thomas:** try Tasks and Recipes on the web and on the iPhone build
    (taking a photo needs the phone).
-6. Phase 6 — Meal Planning (CLAUDE.md section 10).
+5. Phase 6 — Meal Planning (CLAUDE.md section 10).
 
 ## Open questions
 
