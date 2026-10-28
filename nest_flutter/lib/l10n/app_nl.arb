@@ -20,6 +20,7 @@
   "errorAlreadyMember": "Je bent al lid van dit huishouden.",
   "errorLastOwner": "De laatste eigenaar kan het huishouden niet verlaten.",
   "errorNotFound": "Dit bestaat niet (meer).",
+  "errorFeatureDisabled": "Deze functie staat uit voor dit huishouden.",
   "errorNetwork": "Kan de server niet bereiken. Controleer je verbinding.",
   "errorUnknown": "Er ging iets mis. Probeer het opnieuw.",
   "authErrorInvalidCredentials": "Onjuist e-mailadres of wachtwoord.",

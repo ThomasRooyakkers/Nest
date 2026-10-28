@@ -3,11 +3,19 @@ import 'package:serverpod_auth_idp_server/providers/email.dart';
 import 'package:serverpod_cloud_storage/serverpod_cloud_storage.dart';
 
 import 'src/generated/serverpod.dart';
+import 'src/services/built_in_catalog.dart';
 
 /// The starting point of the Serverpod server.
 void run(List<String> args) async {
   final pod = await createServerpod(args);
   await pod.start();
+
+  final session = await pod.createSession();
+  try {
+    await BuiltInCatalog.sync(session);
+  } finally {
+    await session.close();
+  }
 }
 
 /// Creates and configures the Nest [Serverpod] without starting it.

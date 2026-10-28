@@ -86,6 +86,10 @@
   "@errorNotFound": {
     "description": "Error: not found."
   },
+  "errorFeatureDisabled": "This feature is switched off for this household.",
+  "@errorFeatureDisabled": {
+    "description": "Error: the feature is disabled for the household."
+  },
   "errorNetwork": "Can't reach the server. Check your connection.",
   "@errorNetwork": {
     "description": "Error: network problem."

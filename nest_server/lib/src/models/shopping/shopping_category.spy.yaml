@@ -1,0 +1,19 @@
+### Aisle categories of the shopping catalog. Stores order them by layout.
+enum: ShoppingCategory
+serialized: byName
+values:
+  - fruitVegetables
+  - bakery
+  - dairyEggs
+  - meatFish
+  - cheeseDeli
+  - frozen
+  - pantry
+  - breakfast
+  - snacks
+  - drinks
+  - household
+  - personalCare
+  - baby
+  - pets
+  - other

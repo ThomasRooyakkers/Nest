@@ -1,0 +1,6 @@
+### Where a tile is shown: in "To buy" or in "Recently used".
+enum: ShoppingItemStatus
+serialized: byName
+values:
+  - toBuy
+  - recent

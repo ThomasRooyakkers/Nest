@@ -1,0 +1,16 @@
+### A store added by the household. Items can be limited to stores.
+class: Store
+table: store
+fields:
+  household: Household?, relation(onDelete=Cascade)
+  name: String
+  color: StoreColor, default=sage
+  address: String?
+  ### Categories in the order of the store's layout. Categories missing
+  ### here come after these, in their default order.
+  categoryOrder: List<ShoppingCategory>
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now
+indexes:
+  store_household_idx:
+    fields: householdId

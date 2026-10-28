@@ -1,0 +1,14 @@
+### A shopping list of a household (e.g. weekly shop, DIY store).
+class: ShoppingList
+table: shopping_list
+fields:
+  household: Household?, relation(onDelete=Cascade)
+  name: String
+  ### Household members who use this list (shown as avatars). All members
+  ### of the household can see and edit every list.
+  memberIds: List<int>
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now
+indexes:
+  shopping_list_household_idx:
+    fields: householdId

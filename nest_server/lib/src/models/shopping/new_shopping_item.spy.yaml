@@ -1,0 +1,8 @@
+### What the app sends to add an item to a list.
+class: NewShoppingItem
+fields:
+  ### A catalog item, or null to add an own item by [name].
+  catalogItemId: int?
+  name: String
+  spec: String, default=''
+  storeIds: List<int>

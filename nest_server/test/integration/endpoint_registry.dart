@@ -13,6 +13,19 @@ const householdScopedMethods = {
   'household.createInvite',
   'household.revokeInvite',
   'household.leave',
+  'shopping.lists',
+  'shopping.saveList',
+  'shopping.deleteList',
+  'shopping.stores',
+  'shopping.saveStore',
+  'shopping.deleteStore',
+  'shopping.catalog',
+  'shopping.items',
+  'shopping.addItem',
+  'shopping.updateItem',
+  'shopping.setItemStatus',
+  'shopping.removeItem',
+  'shopping.watch',
 };
 
 /// Admin methods (start with `AdminGuard`). Each one must be exercised in

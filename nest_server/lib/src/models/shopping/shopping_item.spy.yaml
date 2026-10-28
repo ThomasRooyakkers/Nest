@@ -1,0 +1,30 @@
+### A tile on a shopping list, either to buy or recently used.
+class: ShoppingItem
+table: shopping_item
+fields:
+  household: Household?, relation(onDelete=Cascade)
+  list: ShoppingList?, relation(onDelete=Cascade)
+  catalogItem: CatalogItem?, relation(optional, onDelete=SetNull)
+  ### Name as entered (or the catalog name in the adder's language).
+  name: String
+  ### Free text such as "2 l" or "organic".
+  spec: String, default=''
+  ### Copied from the catalog item so lists can be sorted offline.
+  category: ShoppingCategory
+  iconKey: String
+  ### Stores this item should be bought at; empty means any store.
+  storeIds: List<int>
+  status: ShoppingItemStatus
+  ### When the item last moved between To buy and Recently used.
+  statusChangedAt: DateTime, default=now
+  addedBy: NestUser?, relation(optional, onDelete=SetNull)
+  ### Recipe the item was added from (phase 4).
+  sourceRecipeId: int?
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now
+indexes:
+  shopping_item_list_idx:
+    fields: listId
+  shopping_item_list_catalog_idx:
+    fields: listId, catalogItemId
+    unique: true

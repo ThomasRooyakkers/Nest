@@ -1,0 +1,10 @@
+### Colour of a store chip, mapped to the design tokens in the app.
+enum: StoreColor
+serialized: byName
+values:
+  - sage
+  - honey
+  - apricot
+  - lavender
+  - rose
+  - neutral

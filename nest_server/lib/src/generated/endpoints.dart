@@ -12,6 +12,13 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:nest_server/src/generated/household_feature.dart' as _iez4op0n;
 import 'package:nest_server/src/generated/household_status.dart' as _i544oeia;
+import 'package:nest_server/src/generated/shopping/new_shopping_item.dart'
+    as _i97lm970;
+import 'package:nest_server/src/generated/shopping/shopping_item_status.dart'
+    as _id8ue2wm;
+import 'package:nest_server/src/generated/shopping/shopping_list.dart'
+    as _iustknb5;
+import 'package:nest_server/src/generated/shopping/store.dart' as _iq3p81du;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
@@ -23,6 +30,7 @@ import '../endpoints/admin/admin_households_endpoint.dart' as _iy84ve0g;
 import '../endpoints/health_endpoint.dart' as _ica9y4w0;
 import '../endpoints/household_endpoint.dart' as _izqmqbob;
 import '../endpoints/profile_endpoint.dart' as _i2cx2pww;
+import '../endpoints/shopping_endpoint.dart' as _i0uz9s3h;
 
 class Endpoints extends _is.EndpointDispatch {
   @override
@@ -62,6 +70,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'profile',
+          null,
+        ),
+      'shopping': _i0uz9s3h.ShoppingEndpoint()
+        ..initialize(
+          server,
+          'shopping',
           null,
         ),
     };
@@ -571,6 +585,333 @@ class Endpoints extends _is.EndpointDispatch {
                     params['name'],
                     params['locale'],
                   ),
+        ),
+      },
+    );
+    connectors['shopping'] = _is.EndpointConnector(
+      name: 'shopping',
+      endpoint: endpoints['shopping']!,
+      methodConnectors: {
+        'lists': _is.MethodConnector(
+          name: 'lists',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint).lists(
+                    session,
+                    params['householdId'],
+                  ),
+        ),
+        'saveList': _is.MethodConnector(
+          name: 'saveList',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'list': _is.ParameterDescription(
+              name: 'list',
+              type: _is.getType<_iustknb5.ShoppingList>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint)
+                  .saveList(
+                    session,
+                    params['householdId'],
+                    params['list'],
+                  ),
+        ),
+        'deleteList': _is.MethodConnector(
+          name: 'deleteList',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'listId': _is.ParameterDescription(
+              name: 'listId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint)
+                  .deleteList(
+                    session,
+                    params['householdId'],
+                    params['listId'],
+                  ),
+        ),
+        'stores': _is.MethodConnector(
+          name: 'stores',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint).stores(
+                    session,
+                    params['householdId'],
+                  ),
+        ),
+        'saveStore': _is.MethodConnector(
+          name: 'saveStore',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'store': _is.ParameterDescription(
+              name: 'store',
+              type: _is.getType<_iq3p81du.Store>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint)
+                  .saveStore(
+                    session,
+                    params['householdId'],
+                    params['store'],
+                  ),
+        ),
+        'deleteStore': _is.MethodConnector(
+          name: 'deleteStore',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'storeId': _is.ParameterDescription(
+              name: 'storeId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint)
+                  .deleteStore(
+                    session,
+                    params['householdId'],
+                    params['storeId'],
+                  ),
+        ),
+        'catalog': _is.MethodConnector(
+          name: 'catalog',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint).catalog(
+                    session,
+                    params['householdId'],
+                  ),
+        ),
+        'items': _is.MethodConnector(
+          name: 'items',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint).items(
+                    session,
+                    params['householdId'],
+                  ),
+        ),
+        'addItem': _is.MethodConnector(
+          name: 'addItem',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'listId': _is.ParameterDescription(
+              name: 'listId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'newItem': _is.ParameterDescription(
+              name: 'newItem',
+              type: _is.getType<_i97lm970.NewShoppingItem>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint).addItem(
+                    session,
+                    params['householdId'],
+                    params['listId'],
+                    params['newItem'],
+                  ),
+        ),
+        'updateItem': _is.MethodConnector(
+          name: 'updateItem',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'itemId': _is.ParameterDescription(
+              name: 'itemId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'spec': _is.ParameterDescription(
+              name: 'spec',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'storeIds': _is.ParameterDescription(
+              name: 'storeIds',
+              type: _is.getType<List<int>>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint)
+                  .updateItem(
+                    session,
+                    params['householdId'],
+                    params['itemId'],
+                    params['spec'],
+                    params['storeIds'],
+                  ),
+        ),
+        'setItemStatus': _is.MethodConnector(
+          name: 'setItemStatus',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'itemId': _is.ParameterDescription(
+              name: 'itemId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'status': _is.ParameterDescription(
+              name: 'status',
+              type: _is.getType<_id8ue2wm.ShoppingItemStatus>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint)
+                  .setItemStatus(
+                    session,
+                    params['householdId'],
+                    params['itemId'],
+                    params['status'],
+                  ),
+        ),
+        'removeItem': _is.MethodConnector(
+          name: 'removeItem',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'itemId': _is.ParameterDescription(
+              name: 'itemId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint)
+                  .removeItem(
+                    session,
+                    params['householdId'],
+                    params['itemId'],
+                  ),
+        ),
+        'watch': _is.MethodStreamConnector(
+          name: 'watch',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          streamParams: {},
+          returnType: _is.MethodStreamReturnType.streamType,
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+                Map<String, Stream> streamParams,
+              ) => (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint).watch(
+                session,
+                params['householdId'],
+              ),
         ),
       },
     );

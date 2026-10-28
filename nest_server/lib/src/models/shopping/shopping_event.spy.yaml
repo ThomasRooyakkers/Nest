@@ -1,0 +1,12 @@
+### A change in a household's shopping data, sent to everyone watching.
+### Holds only the rows that changed.
+class: ShoppingEvent
+fields:
+  householdId: int
+  lists: List<ShoppingList>?
+  removedListIds: List<int>?
+  stores: List<Store>?
+  removedStoreIds: List<int>?
+  catalogItems: List<CatalogItem>?
+  items: List<ShoppingItem>?
+  removedItemIds: List<int>?

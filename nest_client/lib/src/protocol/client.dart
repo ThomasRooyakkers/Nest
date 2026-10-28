@@ -21,6 +21,19 @@ import 'package:nest_client/src/protocol/household_status.dart' as _iluf117q;
 import 'package:nest_client/src/protocol/my_household.dart' as _itexq6j2;
 import 'package:nest_client/src/protocol/nest_user.dart' as _i7k4hj0f;
 import 'package:nest_client/src/protocol/server_ping.dart' as _i4l166nw;
+import 'package:nest_client/src/protocol/shopping/catalog_item.dart'
+    as _it9evoh8;
+import 'package:nest_client/src/protocol/shopping/new_shopping_item.dart'
+    as _iw62wp9a;
+import 'package:nest_client/src/protocol/shopping/shopping_event.dart'
+    as _ik38nayf;
+import 'package:nest_client/src/protocol/shopping/shopping_item.dart'
+    as _ihcj2s21;
+import 'package:nest_client/src/protocol/shopping/shopping_item_status.dart'
+    as _iobprl20;
+import 'package:nest_client/src/protocol/shopping/shopping_list.dart'
+    as _i9yltxrs;
+import 'package:nest_client/src/protocol/shopping/store.dart' as _i4n9gtf6;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _iacc;
 import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
@@ -428,6 +441,182 @@ class EndpointProfile extends _isc.EndpointRef {
   );
 }
 
+/// Shopping lists, stores, the catalog and the items on the lists.
+///
+/// Every change is also sent to [watch], so all members see it live.
+/// {@category Endpoint}
+class EndpointShopping extends _isc.EndpointRef {
+  EndpointShopping(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'shopping';
+
+  /// The household's shopping lists, oldest first. Creates a first list
+  /// (named in the caller's language) when the household has none yet.
+  _ida.Future<List<_i9yltxrs.ShoppingList>> lists(int householdId) =>
+      caller.callServerEndpoint<List<_i9yltxrs.ShoppingList>>(
+        'shopping',
+        'lists',
+        {'householdId': householdId},
+      );
+
+  /// Creates a list (when [list] has no id) or renames it and changes its
+  /// members.
+  _ida.Future<_i9yltxrs.ShoppingList> saveList(
+    int householdId,
+    _i9yltxrs.ShoppingList list,
+  ) => caller.callServerEndpoint<_i9yltxrs.ShoppingList>(
+    'shopping',
+    'saveList',
+    {
+      'householdId': householdId,
+      'list': list,
+    },
+  );
+
+  /// Deletes a list and its items. The last list cannot be deleted.
+  _ida.Future<void> deleteList(
+    int householdId,
+    int listId,
+  ) => caller.callServerEndpoint<void>(
+    'shopping',
+    'deleteList',
+    {
+      'householdId': householdId,
+      'listId': listId,
+    },
+  );
+
+  /// The household's stores, sorted by name.
+  _ida.Future<List<_i4n9gtf6.Store>> stores(int householdId) =>
+      caller.callServerEndpoint<List<_i4n9gtf6.Store>>(
+        'shopping',
+        'stores',
+        {'householdId': householdId},
+      );
+
+  /// Creates a store (when [store] has no id) or updates it.
+  _ida.Future<_i4n9gtf6.Store> saveStore(
+    int householdId,
+    _i4n9gtf6.Store store,
+  ) => caller.callServerEndpoint<_i4n9gtf6.Store>(
+    'shopping',
+    'saveStore',
+    {
+      'householdId': householdId,
+      'store': store,
+    },
+  );
+
+  /// Deletes a store. Items limited to it become "any store" items when it
+  /// was their only store.
+  _ida.Future<void> deleteStore(
+    int householdId,
+    int storeId,
+  ) => caller.callServerEndpoint<void>(
+    'shopping',
+    'deleteStore',
+    {
+      'householdId': householdId,
+      'storeId': storeId,
+    },
+  );
+
+  /// The built-in catalog plus the household's own items.
+  _ida.Future<List<_it9evoh8.CatalogItem>> catalog(int householdId) =>
+      caller.callServerEndpoint<List<_it9evoh8.CatalogItem>>(
+        'shopping',
+        'catalog',
+        {'householdId': householdId},
+      );
+
+  /// All items on all of the household's lists.
+  _ida.Future<List<_ihcj2s21.ShoppingItem>> items(int householdId) =>
+      caller.callServerEndpoint<List<_ihcj2s21.ShoppingItem>>(
+        'shopping',
+        'items',
+        {'householdId': householdId},
+      );
+
+  /// Puts an item on a list as "to buy".
+  ///
+  /// Without a catalog item id, [NewShoppingItem.name] is matched against the
+  /// catalog (in both languages); an unknown name becomes one of the
+  /// household's own catalog items. An item that is already on the list
+  /// (also under Recently used) is moved to "to buy" instead of duplicated.
+  _ida.Future<_ihcj2s21.ShoppingItem> addItem(
+    int householdId,
+    int listId,
+    _iw62wp9a.NewShoppingItem newItem,
+  ) => caller.callServerEndpoint<_ihcj2s21.ShoppingItem>(
+    'shopping',
+    'addItem',
+    {
+      'householdId': householdId,
+      'listId': listId,
+      'newItem': newItem,
+    },
+  );
+
+  /// Changes an item's spec and stores.
+  _ida.Future<_ihcj2s21.ShoppingItem> updateItem(
+    int householdId,
+    int itemId,
+    String spec,
+    List<int> storeIds,
+  ) => caller.callServerEndpoint<_ihcj2s21.ShoppingItem>(
+    'shopping',
+    'updateItem',
+    {
+      'householdId': householdId,
+      'itemId': itemId,
+      'spec': spec,
+      'storeIds': storeIds,
+    },
+  );
+
+  /// Moves an item between "to buy" and "recently used".
+  _ida.Future<_ihcj2s21.ShoppingItem> setItemStatus(
+    int householdId,
+    int itemId,
+    _iobprl20.ShoppingItemStatus status,
+  ) => caller.callServerEndpoint<_ihcj2s21.ShoppingItem>(
+    'shopping',
+    'setItemStatus',
+    {
+      'householdId': householdId,
+      'itemId': itemId,
+      'status': status,
+    },
+  );
+
+  /// Removes an item from its list entirely (also from Recently used).
+  _ida.Future<void> removeItem(
+    int householdId,
+    int itemId,
+  ) => caller.callServerEndpoint<void>(
+    'shopping',
+    'removeItem',
+    {
+      'householdId': householdId,
+      'itemId': itemId,
+    },
+  );
+
+  /// Changes to the household's shopping data as they happen. The app loads
+  /// the full data first and then applies these events.
+  _ida.Stream<_ik38nayf.ShoppingEvent> watch(int householdId) =>
+      caller.callStreamingServerEndpoint<
+        _ida.Stream<_ik38nayf.ShoppingEvent>,
+        _ik38nayf.ShoppingEvent
+      >(
+        'shopping',
+        'watch',
+        {'householdId': householdId},
+        {},
+      );
+}
+
 class Modules {
   Modules(Client client) {
     serverpod_auth_idp = _iaic.Caller(client);
@@ -472,6 +661,7 @@ class Client extends _isc.ServerpodClientShared {
     health = EndpointHealth(this);
     household = EndpointHousehold(this);
     profile = EndpointProfile(this);
+    shopping = EndpointShopping(this);
     modules = Modules(this);
   }
 
@@ -487,6 +677,8 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointProfile profile;
 
+  late final EndpointShopping shopping;
+
   late final Modules modules;
 
   @override
@@ -497,6 +689,7 @@ class Client extends _isc.ServerpodClientShared {
     'health': health,
     'household': household,
     'profile': profile,
+    'shopping': shopping,
   };
 
   @override

@@ -13,3 +13,4 @@ values:
   - alreadyMember
   - lastOwner
   - notFound
+  - featureDisabled

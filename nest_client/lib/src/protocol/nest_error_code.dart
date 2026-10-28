@@ -24,7 +24,8 @@ enum NestErrorCode implements _isc.SerializableModel {
   inviteExpired,
   alreadyMember,
   lastOwner,
-  notFound;
+  notFound,
+  featureDisabled;
 
   static NestErrorCode fromJson(String name) {
     switch (name) {
@@ -52,6 +53,8 @@ enum NestErrorCode implements _isc.SerializableModel {
         return NestErrorCode.lastOwner;
       case 'notFound':
         return NestErrorCode.notFound;
+      case 'featureDisabled':
+        return NestErrorCode.featureDisabled;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "NestErrorCode"',

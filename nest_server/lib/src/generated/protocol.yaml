@@ -28,3 +28,17 @@ household:
 profile:
   - me:
   - updateMe:
+shopping:
+  - lists:
+  - saveList:
+  - deleteList:
+  - stores:
+  - saveStore:
+  - deleteStore:
+  - catalog:
+  - items:
+  - addItem:
+  - updateItem:
+  - setItemStatus:
+  - removeItem:
+  - watch:

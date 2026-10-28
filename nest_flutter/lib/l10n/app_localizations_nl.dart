@@ -74,6 +74,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get errorNotFound => 'Dit bestaat niet (meer).';
 
   @override
+  String get errorFeatureDisabled =>
+      'Deze functie staat uit voor dit huishouden.';
+
+  @override
   String get errorNetwork =>
       'Kan de server niet bereiken. Controleer je verbinding.';
 

@@ -1,0 +1,22 @@
+### An item that can be added to a shopping list: built in (no household)
+### or created by a household.
+class: CatalogItem
+table: catalog_item
+fields:
+  ### Null for built-in items.
+  household: Household?, relation(optional, onDelete=Cascade)
+  ### Stable key of a built-in item (e.g. `milk`); null for own items.
+  builtInKey: String?
+  nameEn: String
+  nameNl: String
+  ### Icon name in the app's icon set (Lucide).
+  iconKey: String
+  category: ShoppingCategory
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now
+indexes:
+  catalog_item_household_idx:
+    fields: householdId
+  catalog_item_built_in_key_idx:
+    fields: builtInKey
+    unique: true

@@ -20,14 +20,16 @@ class HouseholdAccess {
 /// with [HouseholdGuard.require].
 abstract final class HouseholdGuard {
   /// Verifies that the signed-in user is a member of [householdId] and that
-  /// the household is active.
+  /// the household is active. With [feature], also requires that feature to
+  /// be switched on for the household.
   ///
   /// A household that does not exist gives the same error as one the user is
   /// not a member of, so ids of other households cannot be probed.
   static Future<HouseholdAccess> require(
     Session session,
-    int householdId,
-  ) async {
+    int householdId, {
+    HouseholdFeature? feature,
+  }) async {
     final user = await NestUsers.require(session);
 
     final membership = await Membership.db.findFirstRow(
@@ -42,6 +44,9 @@ abstract final class HouseholdGuard {
     }
     if (household.status != HouseholdStatus.active) {
       throw NestException(code: NestErrorCode.householdSuspended);
+    }
+    if (feature != null && !household.enabledFeatures.contains(feature)) {
+      throw NestException(code: NestErrorCode.featureDisabled);
     }
     return HouseholdAccess(user, household, membership);
   }

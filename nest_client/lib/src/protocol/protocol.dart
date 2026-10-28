@@ -16,6 +16,13 @@ import 'package:nest_client/src/protocol/admin_household_summary.dart'
 import 'package:nest_client/src/protocol/household_feature.dart' as _iejl7hre;
 import 'package:nest_client/src/protocol/household_member.dart' as _ihqqoxyh;
 import 'package:nest_client/src/protocol/my_household.dart' as _itexq6j2;
+import 'package:nest_client/src/protocol/shopping/catalog_item.dart'
+    as _it9evoh8;
+import 'package:nest_client/src/protocol/shopping/shopping_item.dart'
+    as _ihcj2s21;
+import 'package:nest_client/src/protocol/shopping/shopping_list.dart'
+    as _i9yltxrs;
+import 'package:nest_client/src/protocol/shopping/store.dart' as _i4n9gtf6;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _iacc;
 import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
@@ -35,6 +42,15 @@ import 'nest_error_code.dart' as _i11cf01m;
 import 'nest_exception.dart' as _id4drunt;
 import 'nest_user.dart' as _iasjmgi7;
 import 'server_ping.dart' as _i7aj6ss6;
+import 'shopping/catalog_item.dart' as _ivm0zj1y;
+import 'shopping/new_shopping_item.dart' as _ii7fl845;
+import 'shopping/shopping_category.dart' as _iplosgx6;
+import 'shopping/shopping_event.dart' as _iuoywej7;
+import 'shopping/shopping_item.dart' as _iiy01kib;
+import 'shopping/shopping_item_status.dart' as _ivkuu3ll;
+import 'shopping/shopping_list.dart' as _i8tkdv3k;
+import 'shopping/store.dart' as _icm155bx;
+import 'shopping/store_color.dart' as _ip61som0;
 export 'admin_audit_log.dart';
 export 'admin_household_summary.dart';
 export 'household.dart';
@@ -49,6 +65,15 @@ export 'nest_error_code.dart';
 export 'nest_exception.dart';
 export 'nest_user.dart';
 export 'server_ping.dart';
+export 'shopping/catalog_item.dart';
+export 'shopping/new_shopping_item.dart';
+export 'shopping/shopping_category.dart';
+export 'shopping/shopping_event.dart';
+export 'shopping/shopping_item.dart';
+export 'shopping/shopping_item_status.dart';
+export 'shopping/shopping_list.dart';
+export 'shopping/store.dart';
+export 'shopping/store_color.dart';
 export 'client.dart';
 
 class Protocol extends _isc.SerializationManager {
@@ -127,6 +152,33 @@ class Protocol extends _isc.SerializationManager {
     if (t == _i7aj6ss6.ServerPing) {
       return _i7aj6ss6.ServerPing.fromJson(data) as T;
     }
+    if (t == _ivm0zj1y.CatalogItem) {
+      return _ivm0zj1y.CatalogItem.fromJson(data) as T;
+    }
+    if (t == _ii7fl845.NewShoppingItem) {
+      return _ii7fl845.NewShoppingItem.fromJson(data) as T;
+    }
+    if (t == _iplosgx6.ShoppingCategory) {
+      return _iplosgx6.ShoppingCategory.fromJson(data) as T;
+    }
+    if (t == _iuoywej7.ShoppingEvent) {
+      return _iuoywej7.ShoppingEvent.fromJson(data) as T;
+    }
+    if (t == _iiy01kib.ShoppingItem) {
+      return _iiy01kib.ShoppingItem.fromJson(data) as T;
+    }
+    if (t == _ivkuu3ll.ShoppingItemStatus) {
+      return _ivkuu3ll.ShoppingItemStatus.fromJson(data) as T;
+    }
+    if (t == _i8tkdv3k.ShoppingList) {
+      return _i8tkdv3k.ShoppingList.fromJson(data) as T;
+    }
+    if (t == _icm155bx.Store) {
+      return _icm155bx.Store.fromJson(data) as T;
+    }
+    if (t == _ip61som0.StoreColor) {
+      return _ip61som0.StoreColor.fromJson(data) as T;
+    }
     if (t == _isc.getType<_ihc3ja42.AdminAuditLog?>()) {
       return (data != null ? _ihc3ja42.AdminAuditLog.fromJson(data) : null)
           as T;
@@ -180,12 +232,112 @@ class Protocol extends _isc.SerializationManager {
     if (t == _isc.getType<_i7aj6ss6.ServerPing?>()) {
       return (data != null ? _i7aj6ss6.ServerPing.fromJson(data) : null) as T;
     }
+    if (t == _isc.getType<_ivm0zj1y.CatalogItem?>()) {
+      return (data != null ? _ivm0zj1y.CatalogItem.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ii7fl845.NewShoppingItem?>()) {
+      return (data != null ? _ii7fl845.NewShoppingItem.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iplosgx6.ShoppingCategory?>()) {
+      return (data != null ? _iplosgx6.ShoppingCategory.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iuoywej7.ShoppingEvent?>()) {
+      return (data != null ? _iuoywej7.ShoppingEvent.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iiy01kib.ShoppingItem?>()) {
+      return (data != null ? _iiy01kib.ShoppingItem.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ivkuu3ll.ShoppingItemStatus?>()) {
+      return (data != null ? _ivkuu3ll.ShoppingItemStatus.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i8tkdv3k.ShoppingList?>()) {
+      return (data != null ? _i8tkdv3k.ShoppingList.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_icm155bx.Store?>()) {
+      return (data != null ? _icm155bx.Store.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ip61som0.StoreColor?>()) {
+      return (data != null ? _ip61som0.StoreColor.fromJson(data) : null) as T;
+    }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
     if (t == List<_idhxy0am.HouseholdFeature>) {
       return (data as List)
               .map((e) => deserialize<_idhxy0am.HouseholdFeature>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<int>) {
+      return (data as List).map((e) => deserialize<int>(e)).toList() as T;
+    }
+    if (t == List<_i8tkdv3k.ShoppingList>) {
+      return (data as List)
+              .map((e) => deserialize<_i8tkdv3k.ShoppingList>(e))
+              .toList()
+          as T;
+    }
+    if (t == _isc.getType<List<_i8tkdv3k.ShoppingList>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i8tkdv3k.ShoppingList>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<List<int>?>()) {
+      return (data != null
+              ? (data as List).map((e) => deserialize<int>(e)).toList()
+              : null)
+          as T;
+    }
+    if (t == List<_icm155bx.Store>) {
+      return (data as List).map((e) => deserialize<_icm155bx.Store>(e)).toList()
+          as T;
+    }
+    if (t == _isc.getType<List<_icm155bx.Store>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_icm155bx.Store>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<_ivm0zj1y.CatalogItem>) {
+      return (data as List)
+              .map((e) => deserialize<_ivm0zj1y.CatalogItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == _isc.getType<List<_ivm0zj1y.CatalogItem>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_ivm0zj1y.CatalogItem>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<_iiy01kib.ShoppingItem>) {
+      return (data as List)
+              .map((e) => deserialize<_iiy01kib.ShoppingItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == _isc.getType<List<_iiy01kib.ShoppingItem>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_iiy01kib.ShoppingItem>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<_iplosgx6.ShoppingCategory>) {
+      return (data as List)
+              .map((e) => deserialize<_iplosgx6.ShoppingCategory>(e))
               .toList()
           as T;
     }
@@ -213,6 +365,31 @@ class Protocol extends _isc.SerializationManager {
               .toList()
           as T;
     }
+    if (t == List<_i9yltxrs.ShoppingList>) {
+      return (data as List)
+              .map((e) => deserialize<_i9yltxrs.ShoppingList>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_i4n9gtf6.Store>) {
+      return (data as List).map((e) => deserialize<_i4n9gtf6.Store>(e)).toList()
+          as T;
+    }
+    if (t == List<_it9evoh8.CatalogItem>) {
+      return (data as List)
+              .map((e) => deserialize<_it9evoh8.CatalogItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_ihcj2s21.ShoppingItem>) {
+      return (data as List)
+              .map((e) => deserialize<_ihcj2s21.ShoppingItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<int>) {
+      return (data as List).map((e) => deserialize<int>(e)).toList() as T;
+    }
     try {
       return _iaic.Protocol().deserialize<T>(data, t);
     } on _isc.DeserializationTypeNotFoundException catch (_) {}
@@ -238,6 +415,15 @@ class Protocol extends _isc.SerializationManager {
       _id4drunt.NestException => 'NestException',
       _iasjmgi7.NestUser => 'NestUser',
       _i7aj6ss6.ServerPing => 'ServerPing',
+      _ivm0zj1y.CatalogItem => 'CatalogItem',
+      _ii7fl845.NewShoppingItem => 'NewShoppingItem',
+      _iplosgx6.ShoppingCategory => 'ShoppingCategory',
+      _iuoywej7.ShoppingEvent => 'ShoppingEvent',
+      _iiy01kib.ShoppingItem => 'ShoppingItem',
+      _ivkuu3ll.ShoppingItemStatus => 'ShoppingItemStatus',
+      _i8tkdv3k.ShoppingList => 'ShoppingList',
+      _icm155bx.Store => 'Store',
+      _ip61som0.StoreColor => 'StoreColor',
       _ => null,
     };
   }
@@ -280,6 +466,24 @@ class Protocol extends _isc.SerializationManager {
         return 'NestUser';
       case _i7aj6ss6.ServerPing():
         return 'ServerPing';
+      case _ivm0zj1y.CatalogItem():
+        return 'CatalogItem';
+      case _ii7fl845.NewShoppingItem():
+        return 'NewShoppingItem';
+      case _iplosgx6.ShoppingCategory():
+        return 'ShoppingCategory';
+      case _iuoywej7.ShoppingEvent():
+        return 'ShoppingEvent';
+      case _iiy01kib.ShoppingItem():
+        return 'ShoppingItem';
+      case _ivkuu3ll.ShoppingItemStatus():
+        return 'ShoppingItemStatus';
+      case _i8tkdv3k.ShoppingList():
+        return 'ShoppingList';
+      case _icm155bx.Store():
+        return 'Store';
+      case _ip61som0.StoreColor():
+        return 'StoreColor';
     }
     className = _iaic.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -343,6 +547,33 @@ class Protocol extends _isc.SerializationManager {
     }
     if (dataClassName == 'ServerPing') {
       return deserialize<_i7aj6ss6.ServerPing>(data['data']);
+    }
+    if (dataClassName == 'CatalogItem') {
+      return deserialize<_ivm0zj1y.CatalogItem>(data['data']);
+    }
+    if (dataClassName == 'NewShoppingItem') {
+      return deserialize<_ii7fl845.NewShoppingItem>(data['data']);
+    }
+    if (dataClassName == 'ShoppingCategory') {
+      return deserialize<_iplosgx6.ShoppingCategory>(data['data']);
+    }
+    if (dataClassName == 'ShoppingEvent') {
+      return deserialize<_iuoywej7.ShoppingEvent>(data['data']);
+    }
+    if (dataClassName == 'ShoppingItem') {
+      return deserialize<_iiy01kib.ShoppingItem>(data['data']);
+    }
+    if (dataClassName == 'ShoppingItemStatus') {
+      return deserialize<_ivkuu3ll.ShoppingItemStatus>(data['data']);
+    }
+    if (dataClassName == 'ShoppingList') {
+      return deserialize<_i8tkdv3k.ShoppingList>(data['data']);
+    }
+    if (dataClassName == 'Store') {
+      return deserialize<_icm155bx.Store>(data['data']);
+    }
+    if (dataClassName == 'StoreColor') {
+      return deserialize<_ip61som0.StoreColor>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);

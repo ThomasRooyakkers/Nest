@@ -73,6 +73,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorNotFound => 'This doesn\'t exist (anymore).';
 
   @override
+  String get errorFeatureDisabled =>
+      'This feature is switched off for this household.';
+
+  @override
   String get errorNetwork => 'Can\'t reach the server. Check your connection.';
 
   @override

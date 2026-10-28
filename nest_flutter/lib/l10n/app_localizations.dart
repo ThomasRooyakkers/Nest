@@ -218,6 +218,12 @@ abstract class AppLocalizations {
   /// **'This doesn\'t exist (anymore).'**
   String get errorNotFound;
 
+  /// Error: the feature is disabled for the household.
+  ///
+  /// In en, this message translates to:
+  /// **'This feature is switched off for this household.'**
+  String get errorFeatureDisabled;
+
   /// Error: network problem.
   ///
   /// In en, this message translates to:

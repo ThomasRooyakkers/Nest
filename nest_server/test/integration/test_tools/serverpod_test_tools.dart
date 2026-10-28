@@ -22,6 +22,19 @@ import 'package:nest_server/src/generated/household_status.dart' as _i544oeia;
 import 'package:nest_server/src/generated/my_household.dart' as _i87acs67;
 import 'package:nest_server/src/generated/nest_user.dart' as _io4rmg6h;
 import 'package:nest_server/src/generated/server_ping.dart' as _ij8oiwn4;
+import 'package:nest_server/src/generated/shopping/catalog_item.dart'
+    as _iped7yon;
+import 'package:nest_server/src/generated/shopping/new_shopping_item.dart'
+    as _i97lm970;
+import 'package:nest_server/src/generated/shopping/shopping_event.dart'
+    as _i6agjzjs;
+import 'package:nest_server/src/generated/shopping/shopping_item.dart'
+    as _i8kxgwhu;
+import 'package:nest_server/src/generated/shopping/shopping_item_status.dart'
+    as _id8ue2wm;
+import 'package:nest_server/src/generated/shopping/shopping_list.dart'
+    as _iustknb5;
+import 'package:nest_server/src/generated/shopping/store.dart' as _iq3p81du;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
@@ -170,6 +183,8 @@ class TestEndpoints {
   late final _HouseholdEndpoint household;
 
   late final _ProfileEndpoint profile;
+
+  late final _ShoppingEndpoint shopping;
 }
 
 class _InternalTestEndpoints extends TestEndpoints
@@ -200,6 +215,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     profile = _ProfileEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    shopping = _ShoppingEndpoint(
       endpoints,
       serializationManager,
     );
@@ -1042,5 +1061,461 @@ class _ProfileEndpoint {
         await _localUniqueSession.close();
       }
     });
+  }
+}
+
+class _ShoppingEndpoint {
+  _ShoppingEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<List<_iustknb5.ShoppingList>> lists(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shopping',
+            method: 'lists',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shopping',
+          methodName: 'lists',
+          parameters: _ist.testObjectToJson({'householdId': householdId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_iustknb5.ShoppingList>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_iustknb5.ShoppingList> saveList(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    _iustknb5.ShoppingList list,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shopping',
+            method: 'saveList',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shopping',
+          methodName: 'saveList',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'list': list,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_iustknb5.ShoppingList>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<void> deleteList(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int listId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shopping',
+            method: 'deleteList',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shopping',
+          methodName: 'deleteList',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'listId': listId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<List<_iq3p81du.Store>> stores(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shopping',
+            method: 'stores',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shopping',
+          methodName: 'stores',
+          parameters: _ist.testObjectToJson({'householdId': householdId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_iq3p81du.Store>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_iq3p81du.Store> saveStore(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    _iq3p81du.Store store,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shopping',
+            method: 'saveStore',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shopping',
+          methodName: 'saveStore',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'store': store,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_iq3p81du.Store>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<void> deleteStore(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int storeId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shopping',
+            method: 'deleteStore',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shopping',
+          methodName: 'deleteStore',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'storeId': storeId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<List<_iped7yon.CatalogItem>> catalog(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shopping',
+            method: 'catalog',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shopping',
+          methodName: 'catalog',
+          parameters: _ist.testObjectToJson({'householdId': householdId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_iped7yon.CatalogItem>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<List<_i8kxgwhu.ShoppingItem>> items(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shopping',
+            method: 'items',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shopping',
+          methodName: 'items',
+          parameters: _ist.testObjectToJson({'householdId': householdId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_i8kxgwhu.ShoppingItem>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_i8kxgwhu.ShoppingItem> addItem(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int listId,
+    _i97lm970.NewShoppingItem newItem,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shopping',
+            method: 'addItem',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shopping',
+          methodName: 'addItem',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'listId': listId,
+            'newItem': newItem,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i8kxgwhu.ShoppingItem>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_i8kxgwhu.ShoppingItem> updateItem(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int itemId,
+    String spec,
+    List<int> storeIds,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shopping',
+            method: 'updateItem',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shopping',
+          methodName: 'updateItem',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'itemId': itemId,
+            'spec': spec,
+            'storeIds': storeIds,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i8kxgwhu.ShoppingItem>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_i8kxgwhu.ShoppingItem> setItemStatus(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int itemId,
+    _id8ue2wm.ShoppingItemStatus status,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shopping',
+            method: 'setItemStatus',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shopping',
+          methodName: 'setItemStatus',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'itemId': itemId,
+            'status': status,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i8kxgwhu.ShoppingItem>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<void> removeItem(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int itemId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shopping',
+            method: 'removeItem',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shopping',
+          methodName: 'removeItem',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'itemId': itemId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Stream<_i6agjzjs.ShoppingEvent> watch(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+  ) {
+    var _localTestStreamManager =
+        _ist.TestStreamManager<_i6agjzjs.ShoppingEvent>();
+    _ist.callStreamFunctionAndHandleExceptions(
+      () async {
+        var _localUniqueSession =
+            (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+              endpoint: 'shopping',
+              method: 'watch',
+            );
+        var _localCallContext = await _endpointDispatch
+            .getMethodStreamCallContext(
+              createSessionCallback: (_) => _localUniqueSession,
+              endpointPath: 'shopping',
+              methodName: 'watch',
+              arguments: {'householdId': householdId},
+              requestedInputStreams: [],
+              serializationManager: _serializationManager,
+            );
+        await _localTestStreamManager.callStreamMethod(
+          _localCallContext,
+          _localUniqueSession,
+          {},
+        );
+      },
+      _localTestStreamManager.outputStreamController,
+    );
+    return _localTestStreamManager.outputStreamController.stream;
   }
 }
