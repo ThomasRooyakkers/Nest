@@ -3,7 +3,6 @@ import 'package:nest_server/src/services/host_settings.dart';
 import 'package:nest_server/src/services/sign_up_policy.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_idp_server/core.dart';
-import 'package:serverpod_auth_idp_server/providers/email.dart';
 import 'package:test/test.dart';
 
 import 'test_helpers.dart';
