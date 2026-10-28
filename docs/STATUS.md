@@ -9,8 +9,8 @@ between the two. Waiting for Thomas before phase 4 (Tasks).
 
 Phase 2 (Shopping List) is deployed at https://nest.g3cko.be (API
 https://nest-api.g3cko.be); its gate ("Thomas's household can use it daily")
-is with Thomas. The web shopping list bug is fixed in the source (see
-"Web shopping list fix" below) but not yet released to the Pi.
+is with Thomas. The web shopping list bug is fixed and released in 0.2.1
+(see "Web shopping list fix" below).
 
 **Plan change (2026-10-28, Thomas):** notifications are dropped from v1 and Nest
 becomes *bring your own backend*. Phase 3 is now "Bring your own backend"; Tasks
@@ -280,9 +280,14 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   as seed user Jan, Shopping loads (Weekly shop, stores, 9 to buy), a tap
   moves Bananen to Recently used and survives a reload. The same build with
   the headers reproduces the spinner. 130 server tests pass.
-- **To release:** new image version (0.2.1) through the "Server image"
-  workflow, then `NEST_VERSION=0.2.1` in the Pi's `.env` and
-  `deploy/deploy.sh`. Not done yet (needs Thomas's OK).
+- **Released (2026-10-28, with Thomas's OK):** server version 0.2.1, tag
+  `v0.2.1`; the tag push triggered the "Server image" workflow this time and
+  published `ghcr.io/thomasrooyakkers/nest-server:0.2.1` and `:latest`.
+  Pi: `NEST_VERSION=0.2.1` in `~/nest/deploy/.env` (backup `.env.bak-*` next
+  to it), `deploy/deploy.sh` (dump `nest-pre-update-20261028-164608.sql.gz`).
+  Verified over https: health 0.2.1, no COOP/COEP headers, and the live web
+  app opens its database as `sharedIndexedDb` in headless Brave. The
+  shopping screen itself was not opened on production (no account used).
 - Browsers that already opened https://nest.g3cko.be may have a stuck OPFS
   database; the app opens a different storage after the fix, so no clean-up
   is expected, but check once after the release.
@@ -297,8 +302,7 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 3. **Thomas:** remove the second server when no longer needed
    (`cd ~/nest-test && docker compose down -v`, then delete the "Nest test"
    tunnel and its two hostnames in Cloudflare, and the folder).
-4. Release the web shopping list fix (0.2.1) to the Pi, with Thomas's OK.
-5. Phase 4 — Tasks (CLAUDE.md section 10).
+4. Phase 4 — Tasks (CLAUDE.md section 10).
 
 ## Open questions
 
