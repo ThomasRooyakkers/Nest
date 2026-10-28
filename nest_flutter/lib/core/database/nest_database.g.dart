@@ -340,6 +340,18 @@ class $PendingOpsTable extends PendingOps
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _featureMeta = const VerificationMeta(
+    'feature',
+  );
+  @override
+  late final GeneratedColumn<String> feature = GeneratedColumn<String>(
+    'feature',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('shopping'),
+  );
   static const VerificationMeta _jsonMeta = const VerificationMeta('json');
   @override
   late final GeneratedColumn<String> json = GeneratedColumn<String>(
@@ -350,7 +362,7 @@ class $PendingOpsTable extends PendingOps
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, householdId, json];
+  List<GeneratedColumn> get $columns => [id, householdId, feature, json];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -377,6 +389,12 @@ class $PendingOpsTable extends PendingOps
     } else if (isInserting) {
       context.missing(_householdIdMeta);
     }
+    if (data.containsKey('feature')) {
+      context.handle(
+        _featureMeta,
+        feature.isAcceptableOrUnknown(data['feature']!, _featureMeta),
+      );
+    }
     if (data.containsKey('json')) {
       context.handle(
         _jsonMeta,
@@ -402,6 +420,10 @@ class $PendingOpsTable extends PendingOps
         DriftSqlType.int,
         data['${effectivePrefix}household_id'],
       )!,
+      feature: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}feature'],
+      )!,
       json: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}json'],
@@ -418,10 +440,12 @@ class $PendingOpsTable extends PendingOps
 class PendingOp extends DataClass implements Insertable<PendingOp> {
   final int id;
   final int householdId;
+  final String feature;
   final String json;
   const PendingOp({
     required this.id,
     required this.householdId,
+    required this.feature,
     required this.json,
   });
   @override
@@ -429,6 +453,7 @@ class PendingOp extends DataClass implements Insertable<PendingOp> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['household_id'] = Variable<int>(householdId);
+    map['feature'] = Variable<String>(feature);
     map['json'] = Variable<String>(json);
     return map;
   }
@@ -437,6 +462,7 @@ class PendingOp extends DataClass implements Insertable<PendingOp> {
     return PendingOpsCompanion(
       id: Value(id),
       householdId: Value(householdId),
+      feature: Value(feature),
       json: Value(json),
     );
   }
@@ -449,6 +475,7 @@ class PendingOp extends DataClass implements Insertable<PendingOp> {
     return PendingOp(
       id: serializer.fromJson<int>(json['id']),
       householdId: serializer.fromJson<int>(json['householdId']),
+      feature: serializer.fromJson<String>(json['feature']),
       json: serializer.fromJson<String>(json['json']),
     );
   }
@@ -458,13 +485,20 @@ class PendingOp extends DataClass implements Insertable<PendingOp> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'householdId': serializer.toJson<int>(householdId),
+      'feature': serializer.toJson<String>(feature),
       'json': serializer.toJson<String>(json),
     };
   }
 
-  PendingOp copyWith({int? id, int? householdId, String? json}) => PendingOp(
+  PendingOp copyWith({
+    int? id,
+    int? householdId,
+    String? feature,
+    String? json,
+  }) => PendingOp(
     id: id ?? this.id,
     householdId: householdId ?? this.householdId,
+    feature: feature ?? this.feature,
     json: json ?? this.json,
   );
   PendingOp copyWithCompanion(PendingOpsCompanion data) {
@@ -473,6 +507,7 @@ class PendingOp extends DataClass implements Insertable<PendingOp> {
       householdId: data.householdId.present
           ? data.householdId.value
           : this.householdId,
+      feature: data.feature.present ? data.feature.value : this.feature,
       json: data.json.present ? data.json.value : this.json,
     );
   }
@@ -482,45 +517,52 @@ class PendingOp extends DataClass implements Insertable<PendingOp> {
     return (StringBuffer('PendingOp(')
           ..write('id: $id, ')
           ..write('householdId: $householdId, ')
+          ..write('feature: $feature, ')
           ..write('json: $json')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, householdId, json);
+  int get hashCode => Object.hash(id, householdId, feature, json);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is PendingOp &&
           other.id == this.id &&
           other.householdId == this.householdId &&
+          other.feature == this.feature &&
           other.json == this.json);
 }
 
 class PendingOpsCompanion extends UpdateCompanion<PendingOp> {
   final Value<int> id;
   final Value<int> householdId;
+  final Value<String> feature;
   final Value<String> json;
   const PendingOpsCompanion({
     this.id = const Value.absent(),
     this.householdId = const Value.absent(),
+    this.feature = const Value.absent(),
     this.json = const Value.absent(),
   });
   PendingOpsCompanion.insert({
     this.id = const Value.absent(),
     required int householdId,
+    this.feature = const Value.absent(),
     required String json,
   }) : householdId = Value(householdId),
        json = Value(json);
   static Insertable<PendingOp> custom({
     Expression<int>? id,
     Expression<int>? householdId,
+    Expression<String>? feature,
     Expression<String>? json,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (householdId != null) 'household_id': householdId,
+      if (feature != null) 'feature': feature,
       if (json != null) 'json': json,
     });
   }
@@ -528,11 +570,13 @@ class PendingOpsCompanion extends UpdateCompanion<PendingOp> {
   PendingOpsCompanion copyWith({
     Value<int>? id,
     Value<int>? householdId,
+    Value<String>? feature,
     Value<String>? json,
   }) {
     return PendingOpsCompanion(
       id: id ?? this.id,
       householdId: householdId ?? this.householdId,
+      feature: feature ?? this.feature,
       json: json ?? this.json,
     );
   }
@@ -546,6 +590,9 @@ class PendingOpsCompanion extends UpdateCompanion<PendingOp> {
     if (householdId.present) {
       map['household_id'] = Variable<int>(householdId.value);
     }
+    if (feature.present) {
+      map['feature'] = Variable<String>(feature.value);
+    }
     if (json.present) {
       map['json'] = Variable<String>(json.value);
     }
@@ -557,6 +604,7 @@ class PendingOpsCompanion extends UpdateCompanion<PendingOp> {
     return (StringBuffer('PendingOpsCompanion(')
           ..write('id: $id, ')
           ..write('householdId: $householdId, ')
+          ..write('feature: $feature, ')
           ..write('json: $json')
           ..write(')'))
         .toString();
@@ -970,12 +1018,14 @@ typedef $$PendingOpsTableCreateCompanionBuilder =
     PendingOpsCompanion Function({
       Value<int> id,
       required int householdId,
+      Value<String> feature,
       required String json,
     });
 typedef $$PendingOpsTableUpdateCompanionBuilder =
     PendingOpsCompanion Function({
       Value<int> id,
       Value<int> householdId,
+      Value<String> feature,
       Value<String> json,
     });
 
@@ -995,6 +1045,11 @@ class $$PendingOpsTableFilterComposer
 
   ColumnFilters<int> get householdId => $composableBuilder(
     column: $table.householdId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get feature => $composableBuilder(
+    column: $table.feature,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1023,6 +1078,11 @@ class $$PendingOpsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get feature => $composableBuilder(
+    column: $table.feature,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get json => $composableBuilder(
     column: $table.json,
     builder: (column) => ColumnOrderings(column),
@@ -1045,6 +1105,9 @@ class $$PendingOpsTableAnnotationComposer
     column: $table.householdId,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get feature =>
+      $composableBuilder(column: $table.feature, builder: (column) => column);
 
   GeneratedColumn<String> get json =>
       $composableBuilder(column: $table.json, builder: (column) => column);
@@ -1083,20 +1146,24 @@ class $$PendingOpsTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<int> householdId = const Value.absent(),
+                Value<String> feature = const Value.absent(),
                 Value<String> json = const Value.absent(),
               }) => PendingOpsCompanion(
                 id: id,
                 householdId: householdId,
+                feature: feature,
                 json: json,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required int householdId,
+                Value<String> feature = const Value.absent(),
                 required String json,
               }) => PendingOpsCompanion.insert(
                 id: id,
                 householdId: householdId,
+                feature: feature,
                 json: json,
               ),
           withReferenceMapper: (p0) => p0

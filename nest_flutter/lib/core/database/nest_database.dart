@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:nest_client/nest_client.dart' show SerializableModel;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'nest_database.g.dart';
@@ -22,9 +23,11 @@ class CachedRows extends Table {
 }
 
 /// Changes made offline (or not yet confirmed), sent to the server in order.
+/// Each feature (e.g. `shopping`, `tasks`) sends its own queue.
 class PendingOps extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get householdId => integer()();
+  TextColumn get feature => text().withDefault(const Constant('shopping'))();
   TextColumn get json => text()();
 }
 
@@ -36,6 +39,14 @@ class KeyValues extends Table {
   @override
   Set<Column> get primaryKey => {key};
 }
+
+/// Server models as `(id, json)` rows for [NestDatabase.upsertRows].
+List<(int, Map<String, dynamic>)> cacheRows(
+  Iterable<SerializableModel> models,
+) => [
+  for (final model in models)
+    ((model.toJson() as Map<String, dynamic>)['id'] as int, model.toJson()),
+];
 
 /// A queued change and its database id.
 typedef QueuedOp = ({int id, Map<String, dynamic> data});
@@ -58,7 +69,15 @@ class NestDatabase extends _$NestDatabase {
       );
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onUpgrade: (m, from, to) async {
+      // 2: queued changes per feature; older ones were all shopping.
+      if (from < 2) await m.addColumn(pendingOps, pendingOps.feature);
+    },
+  );
 
   // Cached rows.
 
@@ -137,19 +156,27 @@ class NestDatabase extends _$NestDatabase {
 
   // Pending changes.
 
-  Future<void> addPendingOp(int householdId, Map<String, dynamic> data) =>
-      into(pendingOps).insert(
-        PendingOpsCompanion.insert(
-          householdId: householdId,
-          json: jsonEncode(data),
-        ),
-      );
+  Future<void> addPendingOp(
+    String feature,
+    int householdId,
+    Map<String, dynamic> data,
+  ) => into(pendingOps).insert(
+    PendingOpsCompanion.insert(
+      householdId: householdId,
+      feature: Value(feature),
+      json: jsonEncode(data),
+    ),
+  );
 
-  /// Queued changes of a household, oldest first.
-  Future<List<QueuedOp>> readPendingOps(int householdId) async {
+  /// Queued changes of a feature in a household, oldest first.
+  Future<List<QueuedOp>> readPendingOps(String feature, int householdId) async {
     final rows =
         await (select(pendingOps)
-              ..where((o) => o.householdId.equals(householdId))
+              ..where(
+                (o) =>
+                    o.householdId.equals(householdId) &
+                    o.feature.equals(feature),
+              )
               ..orderBy([(o) => OrderingTerm.asc(o.id)]))
             .get();
     return [
@@ -158,12 +185,16 @@ class NestDatabase extends _$NestDatabase {
     ];
   }
 
-  /// Number of queued changes of a household, updated on every change.
-  Stream<int> watchPendingCount(int householdId) {
+  /// Number of queued changes of a feature in a household, updated on every
+  /// change.
+  Stream<int> watchPendingCount(String feature, int householdId) {
     final count = pendingOps.id.count();
     final query = selectOnly(pendingOps)
       ..addColumns([count])
-      ..where(pendingOps.householdId.equals(householdId));
+      ..where(
+        pendingOps.householdId.equals(householdId) &
+            pendingOps.feature.equals(feature),
+      );
     return query.watchSingle().map((row) => row.read(count) ?? 0);
   }
 

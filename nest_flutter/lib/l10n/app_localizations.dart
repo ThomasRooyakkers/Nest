@@ -1237,6 +1237,228 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This server only accepts new accounts with an invite code from a household.'**
   String get errorInviteRequired;
+
+  /// Filter chip: open tasks assigned to me.
+  ///
+  /// In en, this message translates to:
+  /// **'Mine'**
+  String get tasksFilterMine;
+
+  /// Filter chip: all open tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone'**
+  String get tasksFilterEveryone;
+
+  /// Filter chip: open tasks past their due time.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get tasksFilterOverdue;
+
+  /// Filter chip: tasks checked off recently.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get tasksFilterDone;
+
+  /// Empty state of the Mine filter.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing assigned to you.'**
+  String get tasksEmptyMine;
+
+  /// Empty state of the Everyone filter.
+  ///
+  /// In en, this message translates to:
+  /// **'No open tasks. Add one with +.'**
+  String get tasksEmptyEveryone;
+
+  /// Empty state of the Overdue filter.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing overdue.'**
+  String get tasksEmptyOverdue;
+
+  /// Empty state of the Done filter.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks you check off stay here for 30 days.'**
+  String get tasksEmptyDone;
+
+  /// Title of the new-task sheet and label of the + button.
+  ///
+  /// In en, this message translates to:
+  /// **'New task'**
+  String get taskNew;
+
+  /// Title of the sheet that edits a task.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit task'**
+  String get taskEdit;
+
+  /// Label of the task title field.
+  ///
+  /// In en, this message translates to:
+  /// **'What needs doing?'**
+  String get taskTitleLabel;
+
+  /// Label of the task notes field.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get taskNotesLabel;
+
+  /// Section label: who the task is assigned to.
+  ///
+  /// In en, this message translates to:
+  /// **'Who'**
+  String get taskAssigneeLabel;
+
+  /// Chip: the task is not assigned to a member.
+  ///
+  /// In en, this message translates to:
+  /// **'Anyone'**
+  String get taskAssigneeAnyone;
+
+  /// Section label: when the task is due.
+  ///
+  /// In en, this message translates to:
+  /// **'When'**
+  String get taskDueLabel;
+
+  /// Chip: the task has no due date.
+  ///
+  /// In en, this message translates to:
+  /// **'No date'**
+  String get taskDueNone;
+
+  /// Due today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get taskDueToday;
+
+  /// Due tomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get taskDueTomorrow;
+
+  /// Was due yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get taskDueYesterday;
+
+  /// Chip that opens the date picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a date'**
+  String get taskDuePick;
+
+  /// Chip that opens the time picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a time'**
+  String get taskTimeAdd;
+
+  /// Tooltip of the button that removes the due time.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove time'**
+  String get taskTimeRemove;
+
+  /// Section label: how often the task comes back.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat'**
+  String get taskRepeatLabel;
+
+  /// Recurrence: not repeating.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get taskRepeatNone;
+
+  /// Recurrence: every day.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get taskRepeatDaily;
+
+  /// Recurrence: every week.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get taskRepeatWeekly;
+
+  /// Recurrence: every month.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get taskRepeatMonthly;
+
+  /// Hint under the repeat chips of a repeating task.
+  ///
+  /// In en, this message translates to:
+  /// **'When you check it off, the next one is added.'**
+  String get taskRepeatHint;
+
+  /// Button that deletes a task.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete task'**
+  String get taskDelete;
+
+  /// Shown in front of the due date of an overdue task.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get taskOverdue;
+
+  /// Snack bar action that undoes the last change.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undoButton;
+
+  /// Snack bar after checking a task off.
+  ///
+  /// In en, this message translates to:
+  /// **'Done: {title}'**
+  String taskDoneMessage(String title);
+
+  /// Who checked a done task off.
+  ///
+  /// In en, this message translates to:
+  /// **'Done by {name}'**
+  String taskDoneBy(String name);
+
+  /// Screen-reader label of the assignee avatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to {name}'**
+  String taskAssignedTo(String name);
+
+  /// Screen-reader label of an open task's checkbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Check off {title}'**
+  String taskCheckOff(String title);
+
+  /// Screen-reader label of a done task's checkbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Reopen {title}'**
+  String taskReopen(String title);
+
+  /// Screen-reader label of the repeat icon.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeats: {recurrence}'**
+  String taskRepeats(String recurrence);
 }
 
 class _AppLocalizationsDelegate

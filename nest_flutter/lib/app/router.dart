@@ -12,6 +12,7 @@ import '../features/settings/presentation/server_screen.dart';
 import '../features/settings/presentation/settings_screen.dart';
 import '../features/shopping_list/presentation/shopping_screen.dart';
 import '../features/shopping_list/presentation/store_editor_screen.dart';
+import '../features/tasks/presentation/tasks_screen.dart';
 import '../l10n/app_localizations.dart';
 import 'app_gate.dart';
 import 'nest_shell.dart';
@@ -84,6 +85,20 @@ String? _safeFrom(String? from) =>
     from != null && from.startsWith('/') && !from.startsWith('//')
     ? from
     : null;
+
+/// A tab whose feature is built in a later phase.
+StatefulShellBranch _comingSoonBranch(
+  String path,
+  String Function(AppLocalizations l10n) title,
+) => StatefulShellBranch(
+  routes: [
+    GoRoute(
+      path: path,
+      builder: (context, state) =>
+          ComingSoonScreen(title: title(AppLocalizations.of(context))),
+    ),
+  ],
+);
 
 @Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {
@@ -165,22 +180,16 @@ GoRouter router(Ref ref) {
               ),
             ],
           ),
-          for (final (path, title)
-              in <(String, String Function(AppLocalizations))>[
-                (Routes.meals, (l10n) => l10n.featureMeals),
-                (Routes.tasks, (l10n) => l10n.featureTasks),
-                (Routes.watch, (l10n) => l10n.featureWatchlist),
-              ])
-            StatefulShellBranch(
-              routes: [
-                GoRoute(
-                  path: path,
-                  builder: (context, state) => ComingSoonScreen(
-                    title: title(AppLocalizations.of(context)),
-                  ),
-                ),
-              ],
-            ),
+          _comingSoonBranch(Routes.meals, (l10n) => l10n.featureMeals),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: Routes.tasks,
+                builder: (context, state) => const TasksScreen(),
+              ),
+            ],
+          ),
+          _comingSoonBranch(Routes.watch, (l10n) => l10n.featureWatchlist),
         ],
       ),
       GoRoute(

@@ -15,6 +15,9 @@ abstract final class ShoppingKinds {
   static const store = 'shopping.store';
   static const catalog = 'shopping.catalog';
   static const item = 'shopping.item';
+
+  /// Feature name of the shopping queue of pending changes.
+  static const queue = 'shopping';
 }
 
 /// Shopping lists, stores, catalog and items.
@@ -50,7 +53,7 @@ class ShoppingRepository {
 
   /// Number of changes not yet confirmed by the server.
   Stream<int> watchPendingCount(int householdId) =>
-      _db.watchPendingCount(householdId);
+      _db.watchPendingCount(ShoppingKinds.queue, householdId);
 
   // Syncing.
 
@@ -70,17 +73,21 @@ class ShoppingRepository {
       _client.shopping.items(householdId),
     ).wait;
     await _db.transaction(() async {
-      await _db.replaceRows(ShoppingKinds.list, householdId, _rows(lists));
-      await _db.replaceRows(ShoppingKinds.store, householdId, _rows(stores));
+      await _db.replaceRows(ShoppingKinds.list, householdId, cacheRows(lists));
+      await _db.replaceRows(
+        ShoppingKinds.store,
+        householdId,
+        cacheRows(stores),
+      );
       await _db.replaceRows(
         ShoppingKinds.catalog,
         householdId,
-        _rows(catalog),
+        cacheRows(catalog),
       );
       // Keep items created offline that are still on their way.
       await _db.replaceRows(ShoppingKinds.item, householdId, [
-        ..._rows(items),
-        ..._rows(
+        ...cacheRows(items),
+        ...cacheRows(
           (await _readItems(householdId)).where((i) => i.id! < 0),
         ),
       ]);
@@ -92,7 +99,7 @@ class ShoppingRepository {
     final householdId = event.householdId;
     await _db.transaction(() async {
       if (event.lists case final lists?) {
-        await _db.upsertRows(ShoppingKinds.list, householdId, _rows(lists));
+        await _db.upsertRows(ShoppingKinds.list, householdId, cacheRows(lists));
       }
       if (event.removedListIds case final ids?) {
         await _db.deleteRows(ShoppingKinds.list, householdId, ids);
@@ -103,7 +110,11 @@ class ShoppingRepository {
         ]);
       }
       if (event.stores case final stores?) {
-        await _db.upsertRows(ShoppingKinds.store, householdId, _rows(stores));
+        await _db.upsertRows(
+          ShoppingKinds.store,
+          householdId,
+          cacheRows(stores),
+        );
       }
       if (event.removedStoreIds case final ids?) {
         await _db.deleteRows(ShoppingKinds.store, householdId, ids);
@@ -112,7 +123,7 @@ class ShoppingRepository {
         await _db.upsertRows(
           ShoppingKinds.catalog,
           householdId,
-          _rows(catalogItems),
+          cacheRows(catalogItems),
         );
       }
       if (event.items case final items?) {
@@ -148,7 +159,10 @@ class ShoppingRepository {
     // Read the queue again after each change: sending an item created
     // offline gives the changes queued after it the item's real id.
     while (true) {
-      final op = (await _db.readPendingOps(householdId)).firstOrNull;
+      final op = (await _db.readPendingOps(
+        ShoppingKinds.queue,
+        householdId,
+      )).firstOrNull;
       if (op == null) break;
       try {
         await _send(householdId, op);
@@ -218,7 +232,10 @@ class ShoppingRepository {
     ShoppingItem saved,
   ) async {
     await _db.deleteRows(ShoppingKinds.item, householdId, [tempId]);
-    for (final op in await _db.readPendingOps(householdId)) {
+    for (final op in await _db.readPendingOps(
+      ShoppingKinds.queue,
+      householdId,
+    )) {
       if (op.data['itemId'] == tempId) {
         await _db.updatePendingOp(op.id, {...op.data, 'itemId': saved.id});
       }
@@ -237,7 +254,7 @@ class ShoppingRepository {
       for (final temp in temps)
         if (items.any((i) => isSameItem(i, temp))) temp.id!,
     ]);
-    await _db.upsertRows(ShoppingKinds.item, householdId, _rows(items));
+    await _db.upsertRows(ShoppingKinds.item, householdId, cacheRows(items));
   }
 
   // Item changes (work offline).
@@ -295,7 +312,7 @@ class ShoppingRepository {
         updatedAt: now,
       );
     }
-    await _db.upsertRows(ShoppingKinds.item, householdId, _rows([local]));
+    await _db.upsertRows(ShoppingKinds.item, householdId, cacheRows([local]));
     await _queue(householdId, {
       'op': 'add',
       'listId': listId,
@@ -318,7 +335,9 @@ class ShoppingRepository {
     await _db.upsertRows(
       ShoppingKinds.item,
       householdId,
-      _rows([item.copyWith(status: status, statusChangedAt: DateTime.now())]),
+      cacheRows([
+        item.copyWith(status: status, statusChangedAt: DateTime.now()),
+      ]),
     );
     await _queue(householdId, {
       'op': 'status',
@@ -339,7 +358,7 @@ class ShoppingRepository {
     await _db.upsertRows(
       ShoppingKinds.item,
       householdId,
-      _rows([item.copyWith(spec: spec.trim(), storeIds: storeIds)]),
+      cacheRows([item.copyWith(spec: spec.trim(), storeIds: storeIds)]),
     );
     await _queue(householdId, {
       'op': 'update',
@@ -358,7 +377,7 @@ class ShoppingRepository {
   }
 
   Future<void> _queue(int householdId, Map<String, dynamic> op) async {
-    await _db.addPendingOp(householdId, op);
+    await _db.addPendingOp(ShoppingKinds.queue, householdId, op);
     // Offline the change simply stays queued until the next refresh.
     unawaited(flush(householdId).catchError((_) => false));
   }
@@ -367,7 +386,7 @@ class ShoppingRepository {
 
   Future<ShoppingList> saveList(int householdId, ShoppingList list) async {
     final saved = await _client.shopping.saveList(householdId, list);
-    await _db.upsertRows(ShoppingKinds.list, householdId, _rows([saved]));
+    await _db.upsertRows(ShoppingKinds.list, householdId, cacheRows([saved]));
     return saved;
   }
 
@@ -380,7 +399,7 @@ class ShoppingRepository {
 
   Future<Store> saveStore(int householdId, Store store) async {
     final saved = await _client.shopping.saveStore(householdId, store);
-    await _db.upsertRows(ShoppingKinds.store, householdId, _rows([saved]));
+    await _db.upsertRows(ShoppingKinds.store, householdId, cacheRows([saved]));
     return saved;
   }
 
@@ -414,13 +433,6 @@ class ShoppingRepository {
 
   Future<List<ShoppingItem>> _readItems(int householdId) =>
       _db.readRows(ShoppingKinds.item, householdId, ShoppingItem.fromJson);
-
-  static List<(int, Map<String, dynamic>)> _rows(
-    Iterable<SerializableModel> models,
-  ) => [
-    for (final model in models)
-      ((model.toJson() as Map<String, dynamic>)['id'] as int, model.toJson()),
-  ];
 }
 
 @Riverpod(keepAlive: true)

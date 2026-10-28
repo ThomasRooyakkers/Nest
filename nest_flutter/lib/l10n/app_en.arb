@@ -875,5 +875,189 @@
   "errorInviteRequired": "This server only accepts new accounts with an invite code from a household.",
   "@errorInviteRequired": {
     "description": "Error when signing up without invite code on an invite-only server."
+  },
+  "tasksFilterMine": "Mine",
+  "@tasksFilterMine": {
+    "description": "Filter chip: open tasks assigned to me."
+  },
+  "tasksFilterEveryone": "Everyone",
+  "@tasksFilterEveryone": {
+    "description": "Filter chip: all open tasks."
+  },
+  "tasksFilterOverdue": "Overdue",
+  "@tasksFilterOverdue": {
+    "description": "Filter chip: open tasks past their due time."
+  },
+  "tasksFilterDone": "Done",
+  "@tasksFilterDone": {
+    "description": "Filter chip: tasks checked off recently."
+  },
+  "tasksEmptyMine": "Nothing assigned to you.",
+  "@tasksEmptyMine": {
+    "description": "Empty state of the Mine filter."
+  },
+  "tasksEmptyEveryone": "No open tasks. Add one with +.",
+  "@tasksEmptyEveryone": {
+    "description": "Empty state of the Everyone filter."
+  },
+  "tasksEmptyOverdue": "Nothing overdue.",
+  "@tasksEmptyOverdue": {
+    "description": "Empty state of the Overdue filter."
+  },
+  "tasksEmptyDone": "Tasks you check off stay here for 30 days.",
+  "@tasksEmptyDone": {
+    "description": "Empty state of the Done filter."
+  },
+  "taskNew": "New task",
+  "@taskNew": {
+    "description": "Title of the new-task sheet and label of the + button."
+  },
+  "taskEdit": "Edit task",
+  "@taskEdit": {
+    "description": "Title of the sheet that edits a task."
+  },
+  "taskTitleLabel": "What needs doing?",
+  "@taskTitleLabel": {
+    "description": "Label of the task title field."
+  },
+  "taskNotesLabel": "Notes",
+  "@taskNotesLabel": {
+    "description": "Label of the task notes field."
+  },
+  "taskAssigneeLabel": "Who",
+  "@taskAssigneeLabel": {
+    "description": "Section label: who the task is assigned to."
+  },
+  "taskAssigneeAnyone": "Anyone",
+  "@taskAssigneeAnyone": {
+    "description": "Chip: the task is not assigned to a member."
+  },
+  "taskDueLabel": "When",
+  "@taskDueLabel": {
+    "description": "Section label: when the task is due."
+  },
+  "taskDueNone": "No date",
+  "@taskDueNone": {
+    "description": "Chip: the task has no due date."
+  },
+  "taskDueToday": "Today",
+  "@taskDueToday": {
+    "description": "Due today."
+  },
+  "taskDueTomorrow": "Tomorrow",
+  "@taskDueTomorrow": {
+    "description": "Due tomorrow."
+  },
+  "taskDueYesterday": "Yesterday",
+  "@taskDueYesterday": {
+    "description": "Was due yesterday."
+  },
+  "taskDuePick": "Pick a date",
+  "@taskDuePick": {
+    "description": "Chip that opens the date picker."
+  },
+  "taskTimeAdd": "Add a time",
+  "@taskTimeAdd": {
+    "description": "Chip that opens the time picker."
+  },
+  "taskTimeRemove": "Remove time",
+  "@taskTimeRemove": {
+    "description": "Tooltip of the button that removes the due time."
+  },
+  "taskRepeatLabel": "Repeat",
+  "@taskRepeatLabel": {
+    "description": "Section label: how often the task comes back."
+  },
+  "taskRepeatNone": "Never",
+  "@taskRepeatNone": {
+    "description": "Recurrence: not repeating."
+  },
+  "taskRepeatDaily": "Daily",
+  "@taskRepeatDaily": {
+    "description": "Recurrence: every day."
+  },
+  "taskRepeatWeekly": "Weekly",
+  "@taskRepeatWeekly": {
+    "description": "Recurrence: every week."
+  },
+  "taskRepeatMonthly": "Monthly",
+  "@taskRepeatMonthly": {
+    "description": "Recurrence: every month."
+  },
+  "taskRepeatHint": "When you check it off, the next one is added.",
+  "@taskRepeatHint": {
+    "description": "Hint under the repeat chips of a repeating task."
+  },
+  "taskDelete": "Delete task",
+  "@taskDelete": {
+    "description": "Button that deletes a task."
+  },
+  "taskOverdue": "Overdue",
+  "@taskOverdue": {
+    "description": "Shown in front of the due date of an overdue task."
+  },
+  "undoButton": "Undo",
+  "@undoButton": {
+    "description": "Snack bar action that undoes the last change."
+  },
+  "taskDoneMessage": "Done: {title}",
+  "@taskDoneMessage": {
+    "description": "Snack bar after checking a task off.",
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Take out the bins"
+      }
+    }
+  },
+  "taskDoneBy": "Done by {name}",
+  "@taskDoneBy": {
+    "description": "Who checked a done task off.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Sarah"
+      }
+    }
+  },
+  "taskAssignedTo": "Assigned to {name}",
+  "@taskAssignedTo": {
+    "description": "Screen-reader label of the assignee avatar.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Sarah"
+      }
+    }
+  },
+  "taskCheckOff": "Check off {title}",
+  "@taskCheckOff": {
+    "description": "Screen-reader label of an open task's checkbox.",
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Take out the bins"
+      }
+    }
+  },
+  "taskReopen": "Reopen {title}",
+  "@taskReopen": {
+    "description": "Screen-reader label of a done task's checkbox.",
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Take out the bins"
+      }
+    }
+  },
+  "taskRepeats": "Repeats: {recurrence}",
+  "@taskRepeats": {
+    "description": "Screen-reader label of the repeat icon.",
+    "placeholders": {
+      "recurrence": {
+        "type": "String",
+        "example": "Weekly"
+      }
+    }
   }
 }

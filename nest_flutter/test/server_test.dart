@@ -223,7 +223,7 @@ void main() {
       await tester.tap(find.text('About Nest'));
       await tester.pumpAndSettle();
       expect(find.text('App version $appVersion'), findsOneWidget);
-      expect(find.text('Version 0.2.0 · API level 2'), findsOneWidget);
+      expect(find.text('Version 0.2.0 · API level 3'), findsOneWidget);
       expect(find.text('nest.test'), findsOneWidget);
       expect(find.byType(Scaffold), findsWidgets);
     });

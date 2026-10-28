@@ -1,6 +1,7 @@
 import 'package:nest_client/nest_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../server/server_compatibility.dart';
 import 'nest_client.dart';
 
 part 'server_health_repository.g.dart';
@@ -22,3 +23,12 @@ ServerHealthRepository serverHealthRepository(Ref ref) =>
 @riverpod
 Future<ServerPing> serverPing(Ref ref) =>
     ref.watch(serverHealthRepositoryProvider).ping();
+
+/// Whether the server's API level is at least [apiVersion]. While the
+/// server has not answered (or is unreachable) this is true, so features
+/// with cached data stay reachable offline.
+@riverpod
+bool serverSupports(Ref ref, int apiVersion) {
+  final ping = ref.watch(serverPingProvider).value;
+  return ping == null || serverApiVersion(ping) >= apiVersion;
+}

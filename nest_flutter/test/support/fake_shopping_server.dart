@@ -2,14 +2,19 @@ import 'dart:async';
 
 import 'package:nest_client/nest_client.dart';
 
-/// A Serverpod [Client] whose shopping endpoint is served from memory.
-/// Other endpoints are not used by the tests (their repositories are faked).
+import 'fake_task_server.dart';
+
+/// A Serverpod [Client] whose shopping and task endpoints are served from
+/// memory. Other endpoints are not used by the tests (their repositories
+/// are faked).
 class FakeNestClient extends Client {
-  FakeNestClient({FakeShoppingServer? server})
+  FakeNestClient({FakeShoppingServer? server, FakeTaskServer? taskServer})
     : server = server ?? FakeShoppingServer(),
+      taskServer = taskServer ?? FakeTaskServer(),
       super('http://localhost:1/');
 
   final FakeShoppingServer server;
+  final FakeTaskServer taskServer;
 
   /// Sign-up calls (`endpoint.method`) in order.
   final signUpCalls = <String>[];
@@ -35,6 +40,7 @@ class FakeNestClient extends Client {
       signUpCalls.add('$endpoint.$method');
       return UuidValue.fromString('0190f0a0-0000-7000-8000-000000000002') as T;
     }
+    if (endpoint == 'task') return await taskServer.call(method, args) as T;
     if (endpoint != 'shopping') {
       throw UnimplementedError('$endpoint.$method');
     }
@@ -48,7 +54,7 @@ class FakeNestClient extends Client {
     Map<String, dynamic> args,
     Map<String, Stream> streams, {
     bool authenticated = true,
-  }) => server.watch();
+  }) => endpoint == 'task' ? taskServer.watch() : server.watch();
 }
 
 /// In-memory stand-in for the server's shopping endpoint, with a switch to

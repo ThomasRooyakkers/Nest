@@ -5,13 +5,21 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nest_client/nest_client.dart';
 import 'package:nest_shared/nest_shared.dart';
 
+import '../core/backend/server_health_repository.dart';
 import '../core/household/household_repository.dart';
+import '../core/server/server_compatibility.dart';
 import '../l10n/app_localizations.dart';
 
 /// A tab of the bottom tab bar. [branch] is the index of its branch in the
 /// router's shell route.
 class _Tab {
-  const _Tab(this.branch, this.icon, this.label, [this.feature]);
+  const _Tab(
+    this.branch,
+    this.icon,
+    this.label, [
+    this.feature,
+    this.minServerApiVersion = 1,
+  ]);
 
   final int branch;
   final IconData icon;
@@ -19,6 +27,9 @@ class _Tab {
 
   /// The household feature the tab belongs to; hidden when switched off.
   final HouseholdFeature? feature;
+
+  /// Server API level the tab needs; hidden on older servers.
+  final int minServerApiVersion;
 }
 
 final _tabs = [
@@ -40,6 +51,7 @@ final _tabs = [
     LucideIcons.listChecks,
     (l10n) => l10n.tabTasks,
     HouseholdFeature.tasks,
+    tasksApiVersion,
   ),
   _Tab(
     4,
@@ -63,7 +75,9 @@ class NestShell extends ConsumerWidget {
         const <HouseholdFeature>[];
     final tabs = [
       for (final tab in _tabs)
-        if (tab.feature == null || features.contains(tab.feature)) tab,
+        if ((tab.feature == null || features.contains(tab.feature)) &&
+            ref.watch(serverSupportsProvider(tab.minServerApiVersion)))
+          tab,
     ];
     if (!tabs.any((t) => t.branch == shell.currentIndex)) {
       // The feature of the open tab was switched off: go home.

@@ -11,11 +11,14 @@ import 'package:nest_flutter/core/database/nest_database.dart';
 import 'package:nest_flutter/core/household/household_repository.dart';
 import 'package:nest_flutter/core/server/server_address.dart';
 import 'package:nest_flutter/core/server/server_check.dart';
+import 'package:nest_flutter/core/server/server_compatibility.dart';
 import 'package:nest_flutter/core/server/server_session.dart';
 import 'package:nest_flutter/features/auth/data/auth_repository.dart';
 import 'package:nest_flutter/features/settings/data/profile_repository.dart';
+import 'package:nest_flutter/features/tasks/presentation/task_providers.dart';
 
 import 'fake_shopping_server.dart';
+import 'fake_task_server.dart';
 
 class FakeProfileRepository implements ProfileRepository {
   FakeProfileRepository(this.user);
@@ -73,7 +76,7 @@ class FakeHouseholdRepository implements HouseholdRepository {
 
 class FakeHealthRepository implements ServerHealthRepository {
   FakeHealthRepository({
-    this.apiVersion = 2,
+    this.apiVersion = appApiVersion,
     this.minClientApiVersion = 1,
     this.signUpMode = SignUpMode.inviteOnly,
   });
@@ -143,11 +146,13 @@ Future<ProviderContainer> pumpNestApp(
   Locale? deviceLocale,
   double textScale = 1,
   FakeShoppingServer? shoppingServer,
+  FakeTaskServer? taskServer,
   NestDatabase? database,
   FakeHealthRepository? health,
   FakeServerSwitcher? serverSwitcher,
   ServerChecker? serverChecker,
   FakeNestClient? client,
+  DateTime Function()? clock,
 }) async {
   tester.view.physicalSize = const Size(375, 812);
   tester.view.devicePixelRatio = 1;
@@ -167,7 +172,8 @@ Future<ProviderContainer> pumpNestApp(
       // Serves the shopping endpoint from memory; the other repositories are
       // faked. The sign-in screen only hands it to EmailAuthController.
       nestClientProvider.overrideWithValue(
-        client ?? FakeNestClient(server: shoppingServer),
+        client ??
+            FakeNestClient(server: shoppingServer, taskServer: taskServer),
       ),
       nestDatabaseProvider.overrideWithValue(db),
       signedInProvider.overrideWithBuild((ref, notifier) => signedIn),
@@ -189,6 +195,7 @@ Future<ProviderContainer> pumpNestApp(
       ),
       if (serverChecker != null)
         serverCheckerProvider.overrideWithValue(serverChecker),
+      if (clock != null) clockProvider.overrideWithValue(clock),
     ],
   );
   addTearDown(container.dispose);

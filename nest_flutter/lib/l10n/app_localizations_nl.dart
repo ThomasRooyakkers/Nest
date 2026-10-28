@@ -662,4 +662,128 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get errorInviteRequired =>
       'Deze server aanvaardt alleen nieuwe accounts met een uitnodigingscode van een huishouden.';
+
+  @override
+  String get tasksFilterMine => 'Van mij';
+
+  @override
+  String get tasksFilterEveryone => 'Iedereen';
+
+  @override
+  String get tasksFilterOverdue => 'Te laat';
+
+  @override
+  String get tasksFilterDone => 'Klaar';
+
+  @override
+  String get tasksEmptyMine => 'Niets aan jou toegewezen.';
+
+  @override
+  String get tasksEmptyEveryone => 'Geen open taken. Voeg er een toe met +.';
+
+  @override
+  String get tasksEmptyOverdue => 'Niets te laat.';
+
+  @override
+  String get tasksEmptyDone => 'Afgevinkte taken blijven hier 30 dagen staan.';
+
+  @override
+  String get taskNew => 'Nieuwe taak';
+
+  @override
+  String get taskEdit => 'Taak bewerken';
+
+  @override
+  String get taskTitleLabel => 'Wat moet er gebeuren?';
+
+  @override
+  String get taskNotesLabel => 'Notities';
+
+  @override
+  String get taskAssigneeLabel => 'Wie';
+
+  @override
+  String get taskAssigneeAnyone => 'Iemand';
+
+  @override
+  String get taskDueLabel => 'Wanneer';
+
+  @override
+  String get taskDueNone => 'Geen datum';
+
+  @override
+  String get taskDueToday => 'Vandaag';
+
+  @override
+  String get taskDueTomorrow => 'Morgen';
+
+  @override
+  String get taskDueYesterday => 'Gisteren';
+
+  @override
+  String get taskDuePick => 'Kies een datum';
+
+  @override
+  String get taskTimeAdd => 'Tijdstip toevoegen';
+
+  @override
+  String get taskTimeRemove => 'Tijdstip wissen';
+
+  @override
+  String get taskRepeatLabel => 'Herhalen';
+
+  @override
+  String get taskRepeatNone => 'Nooit';
+
+  @override
+  String get taskRepeatDaily => 'Dagelijks';
+
+  @override
+  String get taskRepeatWeekly => 'Wekelijks';
+
+  @override
+  String get taskRepeatMonthly => 'Maandelijks';
+
+  @override
+  String get taskRepeatHint =>
+      'Als je ze afvinkt, komt de volgende er meteen bij.';
+
+  @override
+  String get taskDelete => 'Taak verwijderen';
+
+  @override
+  String get taskOverdue => 'Te laat';
+
+  @override
+  String get undoButton => 'Ongedaan maken';
+
+  @override
+  String taskDoneMessage(String title) {
+    return 'Klaar: $title';
+  }
+
+  @override
+  String taskDoneBy(String name) {
+    return 'Gedaan door $name';
+  }
+
+  @override
+  String taskAssignedTo(String name) {
+    return 'Toegewezen aan $name';
+  }
+
+  @override
+  String taskCheckOff(String title) {
+    return '$title afvinken';
+  }
+
+  @override
+  String taskReopen(String title) {
+    return '$title heropenen';
+  }
+
+  @override
+  String taskRepeats(String recurrence) {
+    return 'Herhaalt: $recurrence';
+  }
 }

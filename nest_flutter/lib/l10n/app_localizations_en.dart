@@ -660,4 +660,127 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorInviteRequired =>
       'This server only accepts new accounts with an invite code from a household.';
+
+  @override
+  String get tasksFilterMine => 'Mine';
+
+  @override
+  String get tasksFilterEveryone => 'Everyone';
+
+  @override
+  String get tasksFilterOverdue => 'Overdue';
+
+  @override
+  String get tasksFilterDone => 'Done';
+
+  @override
+  String get tasksEmptyMine => 'Nothing assigned to you.';
+
+  @override
+  String get tasksEmptyEveryone => 'No open tasks. Add one with +.';
+
+  @override
+  String get tasksEmptyOverdue => 'Nothing overdue.';
+
+  @override
+  String get tasksEmptyDone => 'Tasks you check off stay here for 30 days.';
+
+  @override
+  String get taskNew => 'New task';
+
+  @override
+  String get taskEdit => 'Edit task';
+
+  @override
+  String get taskTitleLabel => 'What needs doing?';
+
+  @override
+  String get taskNotesLabel => 'Notes';
+
+  @override
+  String get taskAssigneeLabel => 'Who';
+
+  @override
+  String get taskAssigneeAnyone => 'Anyone';
+
+  @override
+  String get taskDueLabel => 'When';
+
+  @override
+  String get taskDueNone => 'No date';
+
+  @override
+  String get taskDueToday => 'Today';
+
+  @override
+  String get taskDueTomorrow => 'Tomorrow';
+
+  @override
+  String get taskDueYesterday => 'Yesterday';
+
+  @override
+  String get taskDuePick => 'Pick a date';
+
+  @override
+  String get taskTimeAdd => 'Add a time';
+
+  @override
+  String get taskTimeRemove => 'Remove time';
+
+  @override
+  String get taskRepeatLabel => 'Repeat';
+
+  @override
+  String get taskRepeatNone => 'Never';
+
+  @override
+  String get taskRepeatDaily => 'Daily';
+
+  @override
+  String get taskRepeatWeekly => 'Weekly';
+
+  @override
+  String get taskRepeatMonthly => 'Monthly';
+
+  @override
+  String get taskRepeatHint => 'When you check it off, the next one is added.';
+
+  @override
+  String get taskDelete => 'Delete task';
+
+  @override
+  String get taskOverdue => 'Overdue';
+
+  @override
+  String get undoButton => 'Undo';
+
+  @override
+  String taskDoneMessage(String title) {
+    return 'Done: $title';
+  }
+
+  @override
+  String taskDoneBy(String name) {
+    return 'Done by $name';
+  }
+
+  @override
+  String taskAssignedTo(String name) {
+    return 'Assigned to $name';
+  }
+
+  @override
+  String taskCheckOff(String title) {
+    return 'Check off $title';
+  }
+
+  @override
+  String taskReopen(String title) {
+    return 'Reopen $title';
+  }
+
+  @override
+  String taskRepeats(String recurrence) {
+    return 'Repeats: $recurrence';
+  }
 }

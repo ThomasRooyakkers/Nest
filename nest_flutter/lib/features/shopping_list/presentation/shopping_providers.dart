@@ -3,75 +3,38 @@ import 'dart:async';
 import 'package:nest_client/nest_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../core/backend/live_sync.dart';
 import '../../../core/database/nest_database.dart';
 import '../data/shopping_repository.dart';
 
 part 'shopping_providers.g.dart';
 
 /// Connection state of a household's live shopping sync.
-enum ShoppingSyncState { connecting, live, offline }
+typedef ShoppingSyncState = LiveSyncState;
 
 /// Keeps a household's shopping cache in sync while the shopping screen is
 /// open: loads everything, then applies live changes. Reconnects after the
 /// connection drops, sending queued offline changes first.
 @riverpod
 class ShoppingSync extends _$ShoppingSync {
-  static const _maxRetryDelay = Duration(seconds: 30);
-
-  StreamSubscription<ShoppingEvent>? _subscription;
-  Timer? _retry;
-  var _retryDelay = const Duration(seconds: 2);
+  late LiveSyncLoop<ShoppingEvent> _loop;
 
   @override
   ShoppingSyncState build(int householdId) {
-    ref.onDispose(() {
-      _subscription?.cancel();
-      _retry?.cancel();
-    });
-    Future.microtask(_connect);
-    return ShoppingSyncState.connecting;
+    final repository = ref.read(shoppingRepositoryProvider);
+    _loop = LiveSyncLoop(
+      events: () => repository.serverEvents(householdId),
+      apply: repository.applyEvent,
+      refresh: () => repository.refresh(householdId),
+      onState: (next) => state = next,
+    );
+    ref.onDispose(_loop.dispose);
+    Future.microtask(_loop.start);
+    return LiveSyncState.connecting;
   }
 
   /// Reconnects at once, e.g. after the user pulled to refresh.
-  void retryNow() {
-    _retry?.cancel();
-    unawaited(_connect());
-  }
-
-  Future<void> _connect() async {
-    if (!ref.mounted) return;
-    await _subscription?.cancel();
-    final repository = ref.read(shoppingRepositoryProvider);
-    final closed = Completer<void>();
-    void close([_, _]) {
-      if (!closed.isCompleted) closed.complete();
-    }
-
-    // Listen before loading, so no change between the two is missed.
-    _subscription = repository
-        .serverEvents(householdId)
-        .listen(
-          (event) => unawaited(repository.applyEvent(event)),
-          onError: close,
-          onDone: close,
-          cancelOnError: true,
-        );
-    try {
-      await repository.refresh(householdId);
-      if (!ref.mounted) return;
-      state = ShoppingSyncState.live;
-      _retryDelay = const Duration(seconds: 2);
-    } on Exception {
-      close();
-    }
-
-    await closed.future;
-    if (!ref.mounted) return;
-    state = ShoppingSyncState.offline;
-    _retry = Timer(_retryDelay, _connect);
-    final doubled = _retryDelay * 2;
-    _retryDelay = doubled > _maxRetryDelay ? _maxRetryDelay : doubled;
-  }
+  void retryNow() => _loop.retryNow();
 }
 
 @riverpod
