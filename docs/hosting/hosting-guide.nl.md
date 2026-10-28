@@ -31,14 +31,17 @@ te kennen.
 
 ## 1. Haal de bestanden op
 
-Maak een map voor Nest en zet er twee bestanden uit de map `deploy` van de
-Nest-repository in: `docker-compose.yml` en `.env.example`.
+Maak een map voor Nest en download het Compose-bestand en de
+voorbeeldinstellingen uit de [Nest-repository](https://github.com/thomasrooyakkers/nest):
 
 ```bash
 mkdir -p ~/nest && cd ~/nest
-# kopieer docker-compose.yml en .env.example hierheen
-cp .env.example .env
+curl -fsSLO https://raw.githubusercontent.com/thomasrooyakkers/nest/main/deploy/docker-compose.yml
+curl -fsSL -o .env https://raw.githubusercontent.com/thomasrooyakkers/nest/main/deploy/.env.example
 ```
+
+Het serverimage zelf, `ghcr.io/thomasrooyakkers/nest-server`, downloadt
+Docker bij het starten (stap 4). Het draait op arm64 en amd64.
 
 ## 2. Vul `.env` in
 

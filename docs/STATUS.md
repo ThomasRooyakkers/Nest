@@ -204,7 +204,7 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 - **Deep links:** redirects to start/sign-in/onboarding keep the original
   location in `?from=` and go there once the user is in (not after signing
   out; only in-app paths).
-- **Self-hosting kit (draft, not published):** `deploy/build-image.sh` (web
+- **Self-hosting kit (published image pending the first push):** `deploy/build-image.sh` (web
   app + server image; `--push` builds arm64+amd64 with buildx), generic
   `deploy/docker-compose.yml` (published image via `NEST_IMAGE` /
   `NEST_VERSION`, ports bound to 127.0.0.1 for an own proxy, Cloudflare
@@ -233,12 +233,13 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 2. Resend: account + domain `g3cko.be` (DNS records can be added in Cloudflare),
    then `RESEND_API_KEY` in `~/nest/deploy/.env` and `docker compose up -d nest`.
 3. Phase 3, remaining:
-   5. **Thomas decides** where to publish the image (GitHub Container
-      Registry suggested, e.g. `ghcr.io/<owner>/nest-server`) and whether
-      the repository becomes public (the guide tells hosts to fetch
-      `docker-compose.yml` and `.env.example` from it). Then: set the
-      default `NEST_IMAGE`, add a GitHub Actions workflow that builds and
-      pushes the multi-arch image on a version tag, publish 0.2.0.
+   5. Publish (decided by Thomas 2026-10-28: image
+      `ghcr.io/thomasrooyakkers/nest-server`, public repository
+      `github.com/thomasrooyakkers/nest`). Done in the repo: Compose file,
+      `.env.example`, build script and guides point there, and
+      `.github/workflows/server-image.yml` builds and pushes arm64+amd64 on a
+      tag `v<nestServerVersion>`. Thomas: create the repository, push,
+      tag `v0.2.0`, then make the `nest-server` package public on GitHub.
    6. Move Thomas's Pi onto the published image (ask first; the Pi's
       `.env` needs `NEST_WEB_DOMAIN=nest.g3cko.be`,
       `NEST_API_DOMAIN=nest-api.g3cko.be`, `SUPER_ADMIN_EMAIL`,
@@ -266,9 +267,16 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 - **Typing a local http server** (`localhost:8080`) in Change server tries
   https; type `http://localhost:8080`. Fine for production; could try http
   for local addresses later.
-- **Image registry and repository visibility** for the self-hosting kit (phase 3):
-  GitHub Container Registry is the obvious choice; needs Thomas's decision.
-  The repository has no Git remote yet.
+- **Before the repository goes public** (history checked 2026-10-28): no
+  `passwords.yaml`, `.env`, production secret or key was ever committed. The
+  only literal secrets are the Serverpod template's generated development
+  values: the local database passwords in `nest_server/docker-compose.yaml`,
+  `.vscode/tasks.json` and `.github/workflows/tests.yml`, an unused Redis
+  password, and commented-out `serverSideSessionKeyHashPepper` examples in
+  `passwords.yaml.example`. The dev and test database ones are also in the
+  local `passwords.yaml`; they only protect the embedded databases on this
+  Mac. Commits are authored as `thomasrooyakkers@Thomass-MacBook-Air.local`,
+  and `deploy/deploy.sh` and this file name the Pi's LAN address.
 - **Test account in the dev database:** `claude-test@nest.test` (household
   "Claude test") was created while verifying phase 2; delete it or keep it for
   later checks.

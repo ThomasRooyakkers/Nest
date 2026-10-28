@@ -29,14 +29,17 @@ code.
 
 ## 1. Get the files
 
-Make a folder for Nest and put two files from the Nest repository's `deploy`
-folder in it: `docker-compose.yml` and `.env.example`.
+Make a folder for Nest and download the Compose file and the example
+settings from the [Nest repository](https://github.com/thomasrooyakkers/nest):
 
 ```bash
 mkdir -p ~/nest && cd ~/nest
-# copy docker-compose.yml and .env.example here
-cp .env.example .env
+curl -fsSLO https://raw.githubusercontent.com/thomasrooyakkers/nest/main/deploy/docker-compose.yml
+curl -fsSL -o .env https://raw.githubusercontent.com/thomasrooyakkers/nest/main/deploy/.env.example
 ```
+
+The server image itself, `ghcr.io/thomasrooyakkers/nest-server`, is
+downloaded by Docker when you start (step 4). It runs on arm64 and amd64.
 
 ## 2. Fill in `.env`
 

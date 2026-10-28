@@ -22,7 +22,7 @@ services:
       retries: 10
 
   nest:
-    image: ${NEST_IMAGE:-nest-server}:${NEST_VERSION:-latest}
+    image: ${NEST_IMAGE:-ghcr.io/thomasrooyakkers/nest-server}:${NEST_VERSION:-latest}
     restart: unless-stopped
     depends_on:
       postgres:

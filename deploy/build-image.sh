@@ -4,12 +4,13 @@
 #   deploy/build-image.sh                 # local image for this machine
 #   deploy/build-image.sh --push          # arm64 + amd64, pushed to $IMAGE
 #
-# IMAGE (default nest-server) and VERSION (default: the server version in
-# nest_server/lib/src/endpoints/health_endpoint.dart) name the image.
+# IMAGE (default ghcr.io/thomasrooyakkers/nest-server) and VERSION (default:
+# the server version in nest_server/lib/src/endpoints/health_endpoint.dart)
+# name the image. Releases are pushed by .github/workflows/server-image.yml.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-IMAGE="${IMAGE:-nest-server}"
+IMAGE="${IMAGE:-ghcr.io/thomasrooyakkers/nest-server}"
 VERSION="${VERSION:-$(sed -n "s/^const nestServerVersion = '\(.*\)';/\1/p" \
   "$ROOT/nest_server/lib/src/endpoints/health_endpoint.dart")}"
 
