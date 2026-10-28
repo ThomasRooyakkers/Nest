@@ -2,9 +2,8 @@
 
 ## Current phase
 
-**Phase 4 — Tasks: built (2026-10-28), not released yet.** Server 0.3.0 /
-API level 3 is committed but not tagged or deployed; the Pi still runs
-0.2.1. Waiting for Thomas: release 0.3.0 to the Pi, then phase 5 (Recipes).
+**Phase 4 — Tasks: done and released (2026-10-28).** Server 0.3.0 / API
+level 3 runs on the Pi. Waiting for Thomas before phase 5 (Recipes).
 
 Phase 3 (Bring your own backend) is done and its gate passed (2026-10-28).
 
@@ -352,6 +351,15 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   bar. **Not verified on a device:** the in-app browser cannot open the
   web database (known, see the web fix below) and driving the simulator
   sign-in was unreliable; the widget tests cover the screen flows.
+- **Released (2026-10-28, with Thomas's OK):** tag `v0.3.0`; CI (analyze,
+  format, tests) passed and the "Server image" workflow published
+  `ghcr.io/thomasrooyakkers/nest-server:0.3.0` and `:latest`. Pi:
+  `NEST_VERSION=0.3.0` in `~/nest/deploy/.env` (backup `.env.bak-*` next to
+  it), `deploy/deploy.sh` (dump `nest-pre-update-20261028-174424.sql.gz`).
+  Verified over https: health 0.3.0 / API 3, migration `20261028165035809`
+  applied, `task.tasks` answers `notSignedIn` without a login, web app and
+  served config OK. The Tasks screen itself was not opened on production
+  (no account used).
 
 ## Next
 
@@ -363,9 +371,7 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 3. **Thomas:** remove the second server when no longer needed
    (`cd ~/nest-test && docker compose down -v`, then delete the "Nest test"
    tunnel and its two hostnames in Cloudflare, and the folder).
-4. **Thomas:** OK to release 0.3.0 (tag `v0.3.0`, image via the workflow,
-   `NEST_VERSION=0.3.0` on the Pi, `deploy/deploy.sh`), then check Tasks on
-   https://nest.g3cko.be.
+4. **Thomas:** try Tasks at https://nest.g3cko.be and on the iPhone build.
 5. Phase 5 — Recipes (CLAUDE.md section 10).
 
 ## Open questions
