@@ -116,7 +116,9 @@ Future<Serverpod> createServerpod(
       ),
       WebAppConfigRoute.servedAt,
     );
-    pod.webServer.addRoute(FlutterRoute(webApp));
+    // A JS build: without cross-origin isolation, drift's web database uses
+    // a shared worker; with it, drift picks OPFS locks, which hangs.
+    pod.webServer.addRoute(FlutterRoute(webApp, enableWasmHeaders: false));
   }
 
   return pod;

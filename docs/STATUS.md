@@ -9,7 +9,8 @@ between the two. Waiting for Thomas before phase 4 (Tasks).
 
 Phase 2 (Shopping List) is deployed at https://nest.g3cko.be (API
 https://nest-api.g3cko.be); its gate ("Thomas's household can use it daily")
-is with Thomas. See "Web shopping list does not load" under open questions.
+is with Thomas. The web shopping list bug is fixed in the source (see
+"Web shopping list fix" below) but not yet released to the Pi.
 
 **Plan change (2026-10-28, Thomas):** notifications are dropped from v1 and Nest
 becomes *bring your own backend*. Phase 3 is now "Bring your own backend"; Tasks
@@ -259,6 +260,33 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   server, Change server to `nest-api.g3cko.be` (the live API-level-1 Pi)
   validated and switched.
 
+### Web shopping list fix (2026-10-28)
+
+- **Symptom:** in built web apps served by the Nest server, the shopping
+  screen stayed on a spinner (also on https://nest.g3cko.be).
+- **Cause:** Serverpod's `FlutterRoute` adds cross-origin isolation headers
+  (COOP/COEP) for WASM builds by default. With them, drift picks its
+  `opfsLocks` storage, which hangs in the app (a plain drift test page
+  works, so it is something in how the app uses it). Without them, drift uses
+  `sharedIndexedDb` through a shared worker and everything works. We ship a
+  JS build, so the headers are not needed: `server.dart` now uses
+  `FlutterRoute(webApp, enableWasmHeaders: false)`.
+- **Not the cause:** the drift worker files. The ones that ship with drift
+  2.34.4 work in a real browser; the README procedure stays. Earlier
+  "Offline" results came from the in-app test browser, which blocks fetches
+  from shared workers and is not usable for checking this.
+- **Verified** in headless Brave, driven over the DevTools protocol: release
+  web build served by the local Nest server (web server on 8082), signed in
+  as seed user Jan, Shopping loads (Weekly shop, stores, 9 to buy), a tap
+  moves Bananen to Recently used and survives a reload. The same build with
+  the headers reproduces the spinner. 130 server tests pass.
+- **To release:** new image version (0.2.1) through the "Server image"
+  workflow, then `NEST_VERSION=0.2.1` in the Pi's `.env` and
+  `deploy/deploy.sh`. Not done yet (needs Thomas's OK).
+- Browsers that already opened https://nest.g3cko.be may have a stuck OPFS
+  database; the app opens a different storage after the fix, so no clean-up
+  is expected, but check once after the release.
+
 ## Next
 
 1. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
@@ -269,7 +297,8 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 3. **Thomas:** remove the second server when no longer needed
    (`cd ~/nest-test && docker compose down -v`, then delete the "Nest test"
    tunnel and its two hostnames in Cloudflare, and the folder).
-4. Phase 4 — Tasks (CLAUDE.md section 10).
+4. Release the web shopping list fix (0.2.1) to the Pi, with Thomas's OK.
+5. Phase 4 — Tasks (CLAUDE.md section 10).
 
 ## Open questions
 
@@ -279,27 +308,6 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   delete it or keep it.
 - **Ubuntu 25.10 on the Pi is end of life** and a reboot is pending; upgrading to
   26.04 LTS is Thomas's call (the Nest containers restart on their own).
-- **Web shopping list does not load in built web apps** (found 2026-10-28,
-  also in the phase 2 build, so it likely affects https://nest.g3cko.be):
-  the shopping screen stays on a spinner (served by the Nest server, with its
-  cross-origin isolation headers drift picks `opfsLocks` and never opens) or
-  shows "Offline" (served without those headers, drift picks
-  `sharedIndexedDb` and an "Uncaught Error" follows). Other screens work;
-  native apps are not affected. Needs its own investigation (drift web
-  setup / worker files vs. release builds).
-- **Web shopping list investigation (2026-10-28, in progress):**
-  (1) the `drift_worker.js` shipped with drift 2.34.4 was compiled against
-  sqlite3 3.5.2, while the app uses sqlite3 3.8.0 / sqlite3_web 0.9.4, and
-  `sqlite3.wasm` came from drift's DevTools build. Uncommitted fix in the
-  working tree: `nest_flutter/tool/drift_worker.dart` compiled into
-  `web/drift_worker.js` (`dart compile js -O4`) plus `web/sqlite3.wasm` from
-  the sqlite3-3.8.0 GitHub release. (2) With the Nest server's
-  cross-origin isolation headers, `SharedWorker` fails and drift falls back to
-  `opfsLocks`, which hangs; we build JS (not WASM), so turning those headers
-  off in `FlutterRoute` is likely the fix. (3) The in-app test browser blocks
-  fetches from shared workers, so it cannot verify this; next step is
-  `tool/drift_web_probe.dart` (temporary) in headless Brave, with and without
-  the headers, then Safari.
 - **Typing a local http server** (`localhost:8080`) in Change server tries
   https; type `http://localhost:8080`. Fine for production; could try http
   for local addresses later.
