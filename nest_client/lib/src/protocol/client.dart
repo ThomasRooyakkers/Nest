@@ -51,6 +51,16 @@ class EndpointEmailIdp extends _iaic.EndpointEmailIdpBase {
   @override
   String get name => 'emailIdp';
 
+  /// On an invite-only server, registration needs a redeemed invite code
+  /// (see [SignUpPolicy]).
+  @override
+  _ida.Future<_isc.UuidValue> startRegistration({required String email}) =>
+      caller.callServerEndpoint<_isc.UuidValue>(
+        'emailIdp',
+        'startRegistration',
+        {'email': email},
+      );
+
   /// Logs in the user and returns a new session.
   ///
   /// Throws an [EmailAccountLoginException] in case of errors, with reason:
@@ -72,24 +82,6 @@ class EndpointEmailIdp extends _iaic.EndpointEmailIdpBase {
       'password': password,
     },
   );
-
-  /// Starts the registration for a new user account with an email-based login
-  /// associated to it.
-  ///
-  /// Upon successful completion of this method, an email will have been
-  /// sent to [email] with a verification link, which the user must open to
-  /// complete the registration.
-  ///
-  /// Always returns a account request ID, which can be used to complete the
-  /// registration. If the email is already registered, the returned ID will not
-  /// be valid.
-  @override
-  _ida.Future<_isc.UuidValue> startRegistration({required String email}) =>
-      caller.callServerEndpoint<_isc.UuidValue>(
-        'emailIdp',
-        'startRegistration',
-        {'email': email},
-      );
 
   /// Verifies an account request code and returns a token
   /// that can be used to complete the account creation.
@@ -304,8 +296,9 @@ class EndpointHealth extends _isc.EndpointRef {
   @override
   String get name => 'health';
 
-  /// Returns the server time, version and API levels, so the app can show it
-  /// is connected and check that it is a compatible Nest server.
+  /// Returns the server time, version, API levels and sign-up mode, so the
+  /// app can show it is connected, check that it is a compatible Nest server
+  /// and ask for an invite code when signing up needs one.
   _ida.Future<_i4l166nw.ServerPing> ping() =>
       caller.callServerEndpoint<_i4l166nw.ServerPing>(
         'health',
@@ -618,6 +611,30 @@ class EndpointShopping extends _isc.EndpointRef {
       );
 }
 
+/// Sign-up with a household invite code, before the account exists. Not
+/// household-scoped: access is granted by the invite code itself.
+/// {@category Endpoint}
+class EndpointSignUp extends _isc.EndpointRef {
+  EndpointSignUp(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'signUp';
+
+  /// Lets [email] create an account and join the household of
+  /// [inviteCode] once it exists. Returns the household's name.
+  _ida.Future<String> redeemInvite(
+    String email,
+    String inviteCode,
+  ) => caller.callServerEndpoint<String>(
+    'signUp',
+    'redeemInvite',
+    {
+      'email': email,
+      'inviteCode': inviteCode,
+    },
+  );
+}
+
 class Modules {
   Modules(Client client) {
     serverpod_auth_idp = _iaic.Caller(client);
@@ -663,6 +680,7 @@ class Client extends _isc.ServerpodClientShared {
     household = EndpointHousehold(this);
     profile = EndpointProfile(this);
     shopping = EndpointShopping(this);
+    signUp = EndpointSignUp(this);
     modules = Modules(this);
   }
 
@@ -680,6 +698,8 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointShopping shopping;
 
+  late final EndpointSignUp signUp;
+
   late final Modules modules;
 
   @override
@@ -691,6 +711,7 @@ class Client extends _isc.ServerpodClientShared {
     'household': household,
     'profile': profile,
     'shopping': shopping,
+    'signUp': signUp,
   };
 
   @override

@@ -1,12 +1,15 @@
-# Production on the Raspberry Pi (deploy/docker-compose.yml). Cloudflare
-# Tunnel terminates https: nest.g3cko.be serves the web app (web server),
-# nest-api.g3cko.be the API. Secrets come from environment variables
-# (deploy/.env on the Pi), never from this file.
+# Production, as run by deploy/docker-compose.yml. Nothing here is specific
+# to one host: the public addresses, allowed web origins and secrets come
+# from environment variables set by the Compose file from deploy/.env:
+#   SERVERPOD_API_SERVER_PUBLIC_HOST   the API domain (NEST_API_DOMAIN)
+#   SERVERPOD_WEB_SERVER_PUBLIC_HOST   the web app domain (NEST_WEB_DOMAIN)
+#   SERVERPOD_ALLOWED_ORIGINS          https://<web app domain>
+# A proxy in front (Cloudflare Tunnel or the host's own) terminates https.
 
 # Configuration for the main API server.
 apiServer:
   port: 8080
-  publicHost: nest-api.g3cko.be
+  publicHost: localhost # SERVERPOD_API_SERVER_PUBLIC_HOST
   publicPort: 443
   publicScheme: https
 
@@ -20,7 +23,7 @@ insightsServer:
 # Serves the Flutter web app from web/app.
 webServer:
   port: 8082
-  publicHost: nest.g3cko.be
+  publicHost: localhost # SERVERPOD_WEB_SERVER_PUBLIC_HOST
   publicPort: 443
   publicScheme: https
 
@@ -33,10 +36,8 @@ database:
 
 maxRequestSize: 524288 # The maximum size of requests allowed in bytes
 
-# Browsers may only call the API from the web app; the mobile apps send no
-# Origin header and are not affected.
-allowedOrigins:
-  - https://nest.g3cko.be
+# Browsers may only call the API from the web app (SERVERPOD_ALLOWED_ORIGINS);
+# the mobile apps send no Origin header and are not affected.
 
 sessionLogs:
   # Console logs are what `docker compose logs nest` shows. Until mail is set

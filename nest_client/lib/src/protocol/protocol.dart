@@ -51,6 +51,7 @@ import 'shopping/shopping_item_status.dart' as _ivkuu3ll;
 import 'shopping/shopping_list.dart' as _i8tkdv3k;
 import 'shopping/store.dart' as _icm155bx;
 import 'shopping/store_color.dart' as _ip61som0;
+import 'sign_up_mode.dart' as _i4y3a5ag;
 export 'admin_audit_log.dart';
 export 'admin_household_summary.dart';
 export 'household.dart';
@@ -74,6 +75,7 @@ export 'shopping/shopping_item_status.dart';
 export 'shopping/shopping_list.dart';
 export 'shopping/store.dart';
 export 'shopping/store_color.dart';
+export 'sign_up_mode.dart';
 export 'client.dart';
 
 class Protocol extends _isc.SerializationManager {
@@ -179,6 +181,9 @@ class Protocol extends _isc.SerializationManager {
     if (t == _ip61som0.StoreColor) {
       return _ip61som0.StoreColor.fromJson(data) as T;
     }
+    if (t == _i4y3a5ag.SignUpMode) {
+      return _i4y3a5ag.SignUpMode.fromJson(data) as T;
+    }
     if (t == _isc.getType<_ihc3ja42.AdminAuditLog?>()) {
       return (data != null ? _ihc3ja42.AdminAuditLog.fromJson(data) : null)
           as T;
@@ -262,6 +267,9 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == _isc.getType<_ip61som0.StoreColor?>()) {
       return (data != null ? _ip61som0.StoreColor.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i4y3a5ag.SignUpMode?>()) {
+      return (data != null ? _i4y3a5ag.SignUpMode.fromJson(data) : null) as T;
     }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
@@ -424,6 +432,7 @@ class Protocol extends _isc.SerializationManager {
       _i8tkdv3k.ShoppingList => 'ShoppingList',
       _icm155bx.Store => 'Store',
       _ip61som0.StoreColor => 'StoreColor',
+      _i4y3a5ag.SignUpMode => 'SignUpMode',
       _ => null,
     };
   }
@@ -484,6 +493,8 @@ class Protocol extends _isc.SerializationManager {
         return 'Store';
       case _ip61som0.StoreColor():
         return 'StoreColor';
+      case _i4y3a5ag.SignUpMode():
+        return 'SignUpMode';
     }
     className = _iaic.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -574,6 +585,9 @@ class Protocol extends _isc.SerializationManager {
     }
     if (dataClassName == 'StoreColor') {
       return deserialize<_ip61som0.StoreColor>(data['data']);
+    }
+    if (dataClassName == 'SignUpMode') {
+      return deserialize<_i4y3a5ag.SignUpMode>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);

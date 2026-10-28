@@ -156,22 +156,7 @@ class HouseholdEndpoint extends Endpoint {
   /// Joins the household that owns [code] as a member.
   Future<MyHousehold> join(Session session, String code) async {
     final user = await NestUsers.require(session);
-    final normalized = InviteCodes.normalize(code);
-    if (normalized.length != InviteCodes.length) {
-      throw NestException(code: NestErrorCode.invalidInviteCode);
-    }
-
-    final household = await Household.db.findFirstRow(
-      session,
-      where: (t) => t.inviteCode.equals(normalized),
-    );
-    if (household == null || household.status != HouseholdStatus.active) {
-      throw NestException(code: NestErrorCode.invalidInviteCode);
-    }
-    final expiresAt = household.inviteExpiresAt;
-    if (expiresAt == null || expiresAt.isBefore(DateTime.now())) {
-      throw NestException(code: NestErrorCode.inviteExpired);
-    }
+    final household = await InviteCodes.findHousehold(session, code);
 
     final existing = await Membership.db.findFirstRow(
       session,

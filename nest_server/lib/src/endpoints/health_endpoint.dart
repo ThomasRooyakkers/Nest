@@ -1,6 +1,7 @@
 import 'package:serverpod/serverpod.dart';
 
 import '../generated/protocol.dart';
+import '../services/host_settings.dart';
 
 /// Nest server version reported by the health check.
 const nestServerVersion = '0.2.0';
@@ -17,14 +18,16 @@ const nestMinClientApiVersion = 1;
 
 /// Public health check. Not household-scoped and returns no household data.
 class HealthEndpoint extends Endpoint {
-  /// Returns the server time, version and API levels, so the app can show it
-  /// is connected and check that it is a compatible Nest server.
+  /// Returns the server time, version, API levels and sign-up mode, so the
+  /// app can show it is connected, check that it is a compatible Nest server
+  /// and ask for an invite code when signing up needs one.
   Future<ServerPing> ping(Session session) async {
     return ServerPing(
       serverTime: DateTime.now().toUtc(),
       version: nestServerVersion,
       apiVersion: nestApiVersion,
       minClientApiVersion: nestMinClientApiVersion,
+      signUpMode: HostSettings.signUpMode,
     );
   }
 }

@@ -31,6 +31,7 @@ import '../endpoints/health_endpoint.dart' as _ica9y4w0;
 import '../endpoints/household_endpoint.dart' as _izqmqbob;
 import '../endpoints/profile_endpoint.dart' as _i2cx2pww;
 import '../endpoints/shopping_endpoint.dart' as _i0uz9s3h;
+import '../endpoints/sign_up_endpoint.dart' as _im0g34lo;
 
 class Endpoints extends _is.EndpointDispatch {
   @override
@@ -78,11 +79,36 @@ class Endpoints extends _is.EndpointDispatch {
           'shopping',
           null,
         ),
+      'signUp': _im0g34lo.SignUpEndpoint()
+        ..initialize(
+          server,
+          'signUp',
+          null,
+        ),
     };
     connectors['emailIdp'] = _is.EndpointConnector(
       name: 'emailIdp',
       endpoint: endpoints['emailIdp']!,
       methodConnectors: {
+        'startRegistration': _is.MethodConnector(
+          name: 'startRegistration',
+          params: {
+            'email': _is.ParameterDescription(
+              name: 'email',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['emailIdp'] as _iuc1hd5t.EmailIdpEndpoint)
+                  .startRegistration(
+                    session,
+                    email: params['email'],
+                  ),
+        ),
         'login': _is.MethodConnector(
           name: 'login',
           params: {
@@ -106,25 +132,6 @@ class Endpoints extends _is.EndpointDispatch {
                     session,
                     email: params['email'],
                     password: params['password'],
-                  ),
-        ),
-        'startRegistration': _is.MethodConnector(
-          name: 'startRegistration',
-          params: {
-            'email': _is.ParameterDescription(
-              name: 'email',
-              type: _is.getType<String>(),
-              nullable: false,
-            ),
-          },
-          call:
-              (
-                _is.Session session,
-                Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _iuc1hd5t.EmailIdpEndpoint)
-                  .startRegistration(
-                    session,
-                    email: params['email'],
                   ),
         ),
         'verifyRegistrationCode': _is.MethodConnector(
@@ -912,6 +919,37 @@ class Endpoints extends _is.EndpointDispatch {
                 session,
                 params['householdId'],
               ),
+        ),
+      },
+    );
+    connectors['signUp'] = _is.EndpointConnector(
+      name: 'signUp',
+      endpoint: endpoints['signUp']!,
+      methodConnectors: {
+        'redeemInvite': _is.MethodConnector(
+          name: 'redeemInvite',
+          params: {
+            'email': _is.ParameterDescription(
+              name: 'email',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'inviteCode': _is.ParameterDescription(
+              name: 'inviteCode',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['signUp'] as _im0g34lo.SignUpEndpoint)
+                  .redeemInvite(
+                    session,
+                    params['email'],
+                    params['inviteCode'],
+                  ),
         ),
       },
     );

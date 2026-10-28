@@ -12,3 +12,6 @@ fields:
   apiVersion: int?
   ### Oldest app API level this server still works with. Null means 1.
   minClientApiVersion: int?
+  ### How new accounts can be created. Null on servers from before sign-up
+  ### modes existed (anyone could sign up).
+  signUpMode: SignUpMode?

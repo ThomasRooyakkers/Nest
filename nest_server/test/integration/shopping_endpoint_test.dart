@@ -189,25 +189,28 @@ void main() {
       );
     });
 
-    test('the last list cannot be deleted; a deleted list takes its items along', () async {
-      await expectLater(
-        endpoints.shopping.deleteList(anna, householdId, list.id!),
-        throwsNest(NestErrorCode.invalidInput),
-      );
-      final diy = await endpoints.shopping.saveList(
-        anna,
-        householdId,
-        ShoppingList(householdId: 0, name: 'DIY', memberIds: []),
-      );
-      await endpoints.shopping.addItem(
-        anna,
-        householdId,
-        diy.id!,
-        NewShoppingItem(name: 'Screws', storeIds: []),
-      );
-      await endpoints.shopping.deleteList(anna, householdId, diy.id!);
-      expect(await endpoints.shopping.items(anna, householdId), isEmpty);
-    });
+    test(
+      'the last list cannot be deleted; a deleted list takes its items along',
+      () async {
+        await expectLater(
+          endpoints.shopping.deleteList(anna, householdId, list.id!),
+          throwsNest(NestErrorCode.invalidInput),
+        );
+        final diy = await endpoints.shopping.saveList(
+          anna,
+          householdId,
+          ShoppingList(householdId: 0, name: 'DIY', memberIds: []),
+        );
+        await endpoints.shopping.addItem(
+          anna,
+          householdId,
+          diy.id!,
+          NewShoppingItem(name: 'Screws', storeIds: []),
+        );
+        await endpoints.shopping.deleteList(anna, householdId, diy.id!);
+        expect(await endpoints.shopping.items(anna, householdId), isEmpty);
+      },
+    );
 
     test('list members must belong to the household', () async {
       final members = await endpoints.household.members(anna, householdId);

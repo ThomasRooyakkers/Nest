@@ -29,6 +29,12 @@ services:
       postgres:
         condition: service_healthy
     environment:
+      # Host settings: this server's addresses and who may sign up.
+      SERVERPOD_API_SERVER_PUBLIC_HOST: ${NEST_API_DOMAIN:?set in .env}
+      SERVERPOD_WEB_SERVER_PUBLIC_HOST: ${NEST_WEB_DOMAIN:?set in .env}
+      SERVERPOD_ALLOWED_ORIGINS: https://${NEST_WEB_DOMAIN}
+      SERVERPOD_PASSWORD_superAdminEmail: ${SUPER_ADMIN_EMAIL:-}
+      SERVERPOD_PASSWORD_signUpMode: ${SIGN_UP_MODE:-invite-only}
       SERVERPOD_DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       SERVERPOD_SERVICE_SECRET: ${SERVICE_SECRET:?set in .env}
       SERVERPOD_PASSWORD_emailSecretHashPepper: ${EMAIL_SECRET_HASH_PEPPER:?set in .env}
@@ -36,7 +42,7 @@ services:
       SERVERPOD_PASSWORD_jwtRefreshTokenHashPepper: ${JWT_REFRESH_TOKEN_HASH_PEPPER:?set in .env}
       # Optional: without it, sign-up and reset codes are written to the log.
       SERVERPOD_PASSWORD_resendApiKey: ${RESEND_API_KEY:-}
-      SERVERPOD_PASSWORD_mailFrom: ${MAIL_FROM:-Nest <nest@g3cko.be>}
+      SERVERPOD_PASSWORD_mailFrom: ${MAIL_FROM:-}
     # No published ports: only the tunnel reaches the server.
 
   cloudflared:

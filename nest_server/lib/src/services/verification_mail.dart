@@ -3,19 +3,18 @@ import 'dart:io';
 
 import 'package:serverpod/serverpod.dart';
 
+import 'host_settings.dart';
+
 /// Sends sign-up and password-reset codes.
 ///
-/// With a `resendApiKey` password (production) the codes are emailed through
-/// Resend; without one (development, or before mail is set up) they are
+/// With the `resendApiKey` and `mailFrom` passwords (see [HostSettings]) the
+/// codes are emailed through Resend; without them (development, or before mail is set up) they are
 /// written to the server log, from where they can be passed on by hand.
 ///
 /// Sending is best effort: a failure is logged, never thrown, so it neither
 /// breaks sign-up nor reveals whether an account exists on password reset.
 abstract final class VerificationMail {
   static const _resendUrl = 'https://api.resend.com/emails';
-
-  /// Sender address; the domain must be verified in Resend.
-  static const _defaultFrom = 'Nest <nest@g3cko.be>';
 
   static Future<void> sendRegistrationCode(
     Session session, {
@@ -55,8 +54,15 @@ abstract final class VerificationMail {
     required String subject,
     required String text,
   }) async {
-    final apiKey = Serverpod.instance.getPassword('resendApiKey');
-    if (apiKey == null || apiKey.isEmpty) {
+    final apiKey = HostSettings.resendApiKey;
+    final from = HostSettings.mailFrom;
+    if (apiKey == null || from == null) {
+      if (apiKey != null) {
+        session.log(
+          'resendApiKey is set but mailFrom is not; logging the code.',
+          level: LogLevel.error,
+        );
+      }
       // `<...>` is picked up and copied by the serverpod CLI.
       session.log('$label code for $email: <$code>', level: LogLevel.warning);
       return;
@@ -71,7 +77,7 @@ abstract final class VerificationMail {
         ..contentType = ContentType.json;
       request.write(
         jsonEncode({
-          'from': Serverpod.instance.getPassword('mailFrom') ?? _defaultFrom,
+          'from': from,
           'to': [email],
           'subject': subject,
           'text': text,

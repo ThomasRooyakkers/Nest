@@ -4,7 +4,13 @@ import '../generated/protocol.dart';
 
 /// An entry of the built-in shopping catalog.
 class BuiltInItem {
-  const BuiltInItem(this.key, this.nameEn, this.nameNl, this.iconKey, this.category);
+  const BuiltInItem(
+    this.key,
+    this.nameEn,
+    this.nameNl,
+    this.iconKey,
+    this.category,
+  );
 
   final String key;
   final String nameEn;
@@ -53,7 +59,13 @@ const builtInItems = [
   BuiltInItem('potatoes', 'Potatoes', 'Aardappelen', 'bean', _fruitVeg),
   BuiltInItem('onions', 'Onions', 'Uien', 'sprout', _fruitVeg),
   BuiltInItem('garlic', 'Garlic', 'Look', 'sprout', _fruitVeg),
-  BuiltInItem('bell_peppers', 'Bell peppers', 'Paprika', 'leafyGreen', _fruitVeg),
+  BuiltInItem(
+    'bell_peppers',
+    'Bell peppers',
+    'Paprika',
+    'leafyGreen',
+    _fruitVeg,
+  ),
   BuiltInItem('courgette', 'Courgette', 'Courgette', 'leafyGreen', _fruitVeg),
   BuiltInItem('broccoli', 'Broccoli', 'Broccoli', 'treeDeciduous', _fruitVeg),
   BuiltInItem('mushrooms', 'Mushrooms', 'Champignons', 'leaf', _fruitVeg),
@@ -92,16 +104,34 @@ const builtInItems = [
 
   // Cheese and deli.
   BuiltInItem('cheese', 'Cheese', 'Kaas', 'sandwich', _deli),
-  BuiltInItem('grated_cheese', 'Grated cheese', 'Geraspte kaas', 'sandwich', _deli),
+  BuiltInItem(
+    'grated_cheese',
+    'Grated cheese',
+    'Geraspte kaas',
+    'sandwich',
+    _deli,
+  ),
   BuiltInItem('mozzarella', 'Mozzarella', 'Mozzarella', 'sandwich', _deli),
   BuiltInItem('ham', 'Ham', 'Hesp', 'ham', _deli),
   BuiltInItem('salami', 'Salami', 'Salami', 'ham', _deli),
   BuiltInItem('hummus', 'Hummus', 'Hummus', 'bean', _deli),
 
   // Frozen.
-  BuiltInItem('frozen_vegetables', 'Frozen vegetables', 'Diepvriesgroenten', 'snowflake', _frozen),
+  BuiltInItem(
+    'frozen_vegetables',
+    'Frozen vegetables',
+    'Diepvriesgroenten',
+    'snowflake',
+    _frozen,
+  ),
   BuiltInItem('fries', 'Fries', 'Frieten', 'snowflake', _frozen),
-  BuiltInItem('frozen_pizza', 'Frozen pizza', 'Diepvriespizza', 'pizza', _frozen),
+  BuiltInItem(
+    'frozen_pizza',
+    'Frozen pizza',
+    'Diepvriespizza',
+    'pizza',
+    _frozen,
+  ),
   BuiltInItem('ice_cream', 'Ice cream', 'IJs', 'iceCreamCone', _frozen),
   BuiltInItem('ice_cubes', 'Ice cubes', 'IJsblokjes', 'snowflake', _frozen),
 
@@ -114,8 +144,20 @@ const builtInItems = [
   BuiltInItem('pepper', 'Pepper', 'Peper', 'cookingPot', _pantry),
   BuiltInItem('olive_oil', 'Olive oil', 'Olijfolie', 'droplet', _pantry),
   BuiltInItem('vinegar', 'Vinegar', 'Azijn', 'droplet', _pantry),
-  BuiltInItem('canned_tomatoes', 'Canned tomatoes', 'Tomatenblokjes', 'cookingPot', _pantry),
-  BuiltInItem('tomato_sauce', 'Pasta sauce', 'Pastasaus', 'cookingPot', _pantry),
+  BuiltInItem(
+    'canned_tomatoes',
+    'Canned tomatoes',
+    'Tomatenblokjes',
+    'cookingPot',
+    _pantry,
+  ),
+  BuiltInItem(
+    'tomato_sauce',
+    'Pasta sauce',
+    'Pastasaus',
+    'cookingPot',
+    _pantry,
+  ),
   BuiltInItem('stock_cubes', 'Stock cubes', 'Bouillonblokjes', 'soup', _pantry),
   BuiltInItem('soup', 'Soup', 'Soep', 'soup', _pantry),
   BuiltInItem('beans', 'Beans', 'Bonen', 'bean', _pantry),
@@ -133,7 +175,13 @@ const builtInItems = [
   BuiltInItem('muesli', 'Muesli', 'Muesli', 'wheat', _breakfast),
   BuiltInItem('jam', 'Jam', 'Confituur', 'cherry', _breakfast),
   BuiltInItem('peanut_butter', 'Peanut butter', 'Pindakaas', 'nut', _breakfast),
-  BuiltInItem('chocolate_spread', 'Chocolate spread', 'Choco', 'cookie', _breakfast),
+  BuiltInItem(
+    'chocolate_spread',
+    'Chocolate spread',
+    'Choco',
+    'cookie',
+    _breakfast,
+  ),
   BuiltInItem('honey', 'Honey', 'Honing', 'droplet', _breakfast),
 
   // Snacks.
@@ -145,24 +193,84 @@ const builtInItems = [
 
   // Drinks.
   BuiltInItem('water', 'Water', 'Water', 'glassWater', _drinks),
-  BuiltInItem('sparkling_water', 'Sparkling water', 'Bruiswater', 'glassWater', _drinks),
-  BuiltInItem('orange_juice', 'Orange juice', 'Sinaasappelsap', 'citrus', _drinks),
+  BuiltInItem(
+    'sparkling_water',
+    'Sparkling water',
+    'Bruiswater',
+    'glassWater',
+    _drinks,
+  ),
+  BuiltInItem(
+    'orange_juice',
+    'Orange juice',
+    'Sinaasappelsap',
+    'citrus',
+    _drinks,
+  ),
   BuiltInItem('soft_drinks', 'Soft drinks', 'Frisdrank', 'cupSoda', _drinks),
   BuiltInItem('beer', 'Beer', 'Bier', 'beer', _drinks),
   BuiltInItem('wine', 'Wine', 'Wijn', 'wine', _drinks),
   BuiltInItem('sparkling_wine', 'Sparkling wine', 'Cava', 'wine', _drinks),
 
   // Household.
-  BuiltInItem('toilet_paper', 'Toilet paper', 'Toiletpapier', 'toilet', _household),
-  BuiltInItem('kitchen_roll', 'Kitchen roll', 'Keukenrol', 'toilet', _household),
-  BuiltInItem('dish_soap', 'Washing-up liquid', 'Afwasmiddel', 'soapDispenserDroplet', _household),
-  BuiltInItem('dishwasher_tabs', 'Dishwasher tablets', 'Vaatwastabletten', 'droplets', _household),
-  BuiltInItem('laundry_detergent', 'Laundry detergent', 'Wasmiddel', 'shirt', _household),
-  BuiltInItem('cleaning_spray', 'Cleaning spray', 'Allesreiniger', 'sprayCan', _household),
+  BuiltInItem(
+    'toilet_paper',
+    'Toilet paper',
+    'Toiletpapier',
+    'toilet',
+    _household,
+  ),
+  BuiltInItem(
+    'kitchen_roll',
+    'Kitchen roll',
+    'Keukenrol',
+    'toilet',
+    _household,
+  ),
+  BuiltInItem(
+    'dish_soap',
+    'Washing-up liquid',
+    'Afwasmiddel',
+    'soapDispenserDroplet',
+    _household,
+  ),
+  BuiltInItem(
+    'dishwasher_tabs',
+    'Dishwasher tablets',
+    'Vaatwastabletten',
+    'droplets',
+    _household,
+  ),
+  BuiltInItem(
+    'laundry_detergent',
+    'Laundry detergent',
+    'Wasmiddel',
+    'shirt',
+    _household,
+  ),
+  BuiltInItem(
+    'cleaning_spray',
+    'Cleaning spray',
+    'Allesreiniger',
+    'sprayCan',
+    _household,
+  ),
   BuiltInItem('sponges', 'Sponges', 'Sponsjes', 'brushCleaning', _household),
   BuiltInItem('bin_bags', 'Bin bags', 'Vuilniszakken', 'trash2', _household),
-  BuiltInItem('aluminium_foil', 'Aluminium foil', 'Aluminiumfolie', 'package', _household),
-  BuiltInItem('batteries', 'Batteries', 'Batterijen', 'batteryFull', _household),
+  BuiltInItem(
+    'aluminium_foil',
+    'Aluminium foil',
+    'Aluminiumfolie',
+    'package',
+    _household,
+  ),
+  BuiltInItem(
+    'batteries',
+    'Batteries',
+    'Batterijen',
+    'batteryFull',
+    _household,
+  ),
   BuiltInItem('light_bulbs', 'Light bulbs', 'Lampen', 'lightbulb', _household),
   BuiltInItem('candles', 'Candles', 'Kaarsen', 'flame', _household),
   BuiltInItem('flowers', 'Flowers', 'Bloemen', 'flower', _household),
@@ -186,8 +294,20 @@ const builtInItems = [
   // Pets.
   BuiltInItem('dog_food', 'Dog food', 'Hondenvoer', 'dog', _pets),
   BuiltInItem('cat_food', 'Cat food', 'Kattenvoer', 'cat', _pets),
-  BuiltInItem('cat_litter', 'Cat litter', 'Kattenbakvulling', 'pawPrint', _pets),
-  BuiltInItem('pet_treats', 'Pet treats', 'Snoepjes voor dieren', 'bone', _pets),
+  BuiltInItem(
+    'cat_litter',
+    'Cat litter',
+    'Kattenbakvulling',
+    'pawPrint',
+    _pets,
+  ),
+  BuiltInItem(
+    'pet_treats',
+    'Pet treats',
+    'Snoepjes voor dieren',
+    'bone',
+    _pets,
+  ),
 ];
 
 /// Keeps the built-in catalog in the database in line with [builtInItems].

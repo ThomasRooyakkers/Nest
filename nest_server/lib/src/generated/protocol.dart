@@ -52,6 +52,8 @@ import 'shopping/shopping_item_status.dart' as _ivkuu3ll;
 import 'shopping/shopping_list.dart' as _i8tkdv3k;
 import 'shopping/store.dart' as _icm155bx;
 import 'shopping/store_color.dart' as _ip61som0;
+import 'sign_up_invite.dart' as _izkprrmi;
+import 'sign_up_mode.dart' as _i4y3a5ag;
 export 'admin_audit_log.dart';
 export 'admin_household_summary.dart';
 export 'household.dart';
@@ -75,6 +77,8 @@ export 'shopping/shopping_item_status.dart';
 export 'shopping/shopping_list.dart';
 export 'shopping/store.dart';
 export 'shopping/store_color.dart';
+export 'sign_up_invite.dart';
+export 'sign_up_mode.dart';
 
 class Protocol extends _is.DatabaseSerializationManager {
   Protocol._();
@@ -781,6 +785,81 @@ class Protocol extends _is.DatabaseSerializationManager {
       managed: true,
     ),
     _isp.TableDefinition(
+      name: 'sign_up_invite',
+      dartName: 'SignUpInvite',
+      schema: 'public',
+      module: 'nest',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'email',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'householdId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'expiresAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+        _isp.ColumnDefinition(
+          name: 'updatedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'sign_up_invite_fk_0',
+          columns: ['householdId'],
+          referenceTable: 'household',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'sign_up_invite_email_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'email',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isp.TableDefinition(
       name: 'store',
       dartName: 'Store',
       schema: 'public',
@@ -969,6 +1048,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _ip61som0.StoreColor) {
       return _ip61som0.StoreColor.fromJson(data) as T;
     }
+    if (t == _izkprrmi.SignUpInvite) {
+      return _izkprrmi.SignUpInvite.fromJson(data) as T;
+    }
+    if (t == _i4y3a5ag.SignUpMode) {
+      return _i4y3a5ag.SignUpMode.fromJson(data) as T;
+    }
     if (t == _is.getType<_ihc3ja42.AdminAuditLog?>()) {
       return (data != null ? _ihc3ja42.AdminAuditLog.fromJson(data) : null)
           as T;
@@ -1052,6 +1137,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (t == _is.getType<_ip61som0.StoreColor?>()) {
       return (data != null ? _ip61som0.StoreColor.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_izkprrmi.SignUpInvite?>()) {
+      return (data != null ? _izkprrmi.SignUpInvite.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_i4y3a5ag.SignUpMode?>()) {
+      return (data != null ? _i4y3a5ag.SignUpMode.fromJson(data) : null) as T;
     }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
@@ -1217,6 +1308,8 @@ class Protocol extends _is.DatabaseSerializationManager {
       _i8tkdv3k.ShoppingList => 'ShoppingList',
       _icm155bx.Store => 'Store',
       _ip61som0.StoreColor => 'StoreColor',
+      _izkprrmi.SignUpInvite => 'SignUpInvite',
+      _i4y3a5ag.SignUpMode => 'SignUpMode',
       _ => null,
     };
   }
@@ -1277,6 +1370,10 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'Store';
       case _ip61som0.StoreColor():
         return 'StoreColor';
+      case _izkprrmi.SignUpInvite():
+        return 'SignUpInvite';
+      case _i4y3a5ag.SignUpMode():
+        return 'SignUpMode';
     }
     className = _iais.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -1372,6 +1469,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (dataClassName == 'StoreColor') {
       return deserialize<_ip61som0.StoreColor>(data['data']);
     }
+    if (dataClassName == 'SignUpInvite') {
+      return deserialize<_izkprrmi.SignUpInvite>(data['data']);
+    }
+    if (dataClassName == 'SignUpMode') {
+      return deserialize<_i4y3a5ag.SignUpMode>(data['data']);
+    }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);
       return _iais.Protocol().deserializeByClassName(data);
@@ -1429,6 +1532,8 @@ class Protocol extends _is.DatabaseSerializationManager {
         return _i8tkdv3k.ShoppingList.t;
       case _icm155bx.Store:
         return _icm155bx.Store.t;
+      case _izkprrmi.SignUpInvite:
+        return _izkprrmi.SignUpInvite.t;
     }
     return null;
   }

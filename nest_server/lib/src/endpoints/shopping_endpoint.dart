@@ -187,8 +187,7 @@ class ShoppingEndpoint extends Endpoint {
     return CatalogItem.db.find(
       session,
       where: (t) =>
-          t.householdId.equals(null) |
-          t.householdId.equals(access.householdId),
+          t.householdId.equals(null) | t.householdId.equals(access.householdId),
       orderBy: (t) => t.id,
     );
   }

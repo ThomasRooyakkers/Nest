@@ -1,0 +1,8 @@
+### How new accounts can be created on a Nest server.
+enum: SignUpMode
+serialized: byName
+values:
+  ### Only with a valid household invite code (and the super-admin email).
+  - inviteOnly
+  ### Anyone who can reach the server.
+  - open

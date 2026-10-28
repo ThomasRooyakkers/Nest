@@ -25,7 +25,8 @@ enum NestErrorCode implements _is.SerializableModel {
   alreadyMember,
   lastOwner,
   notFound,
-  featureDisabled;
+  featureDisabled,
+  inviteRequired;
 
   static NestErrorCode fromJson(String name) {
     switch (name) {
@@ -55,6 +56,8 @@ enum NestErrorCode implements _is.SerializableModel {
         return NestErrorCode.notFound;
       case 'featureDisabled':
         return NestErrorCode.featureDisabled;
+      case 'inviteRequired':
+        return NestErrorCode.inviteRequired;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "NestErrorCode"',

@@ -6,6 +6,7 @@ import 'package:serverpod_cloud_storage/serverpod_cloud_storage.dart';
 
 import 'src/generated/serverpod.dart';
 import 'src/services/built_in_catalog.dart';
+import 'src/services/sign_up_policy.dart';
 import 'src/services/verification_mail.dart';
 import 'src/web/web_app_config_route.dart';
 
@@ -17,6 +18,7 @@ void run(List<String> args) async {
   final session = await pod.createSession();
   try {
     await BuiltInCatalog.sync(session);
+    await SignUpPolicy.syncSuperAdmin(session);
   } finally {
     await session.close();
   }
@@ -67,6 +69,21 @@ Future<Serverpod> createServerpod(
               session,
               email: email,
               code: verificationCode,
+            ),
+        // Creates the Nest profile; joins the household of a redeemed
+        // invite code and applies the super-admin email.
+        onAfterAccountCreated:
+            (
+              session, {
+              required email,
+              required authUserId,
+              required emailAccountId,
+              required transaction,
+            }) => SignUpPolicy.afterAccountCreated(
+              session,
+              email: email,
+              authUserId: authUserId,
+              transaction: transaction,
             ),
       ),
     ],

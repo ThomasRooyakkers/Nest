@@ -1,6 +1,6 @@
 emailIdp:
-  - login:
   - startRegistration:
+  - login:
   - verifyRegistrationCode:
   - finishRegistration:
   - startPasswordReset:
@@ -42,3 +42,5 @@ shopping:
   - setItemStatus:
   - removeItem:
   - watch:
+signUp:
+  - redeemInvite:

@@ -1,0 +1,17 @@
+### Lets an email address create an account on an invite-only server.
+### Created when someone enters a valid household invite code before
+### signing up; used when the account is created, which joins the household.
+class: SignUpInvite
+table: sign_up_invite
+serverOnly: true
+fields:
+  ### Lower-case email address.
+  email: String
+  household: Household?, relation(onDelete=Cascade)
+  expiresAt: DateTime
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now
+indexes:
+  sign_up_invite_email_idx:
+    fields: email
+    unique: true

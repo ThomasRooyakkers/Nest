@@ -52,6 +52,7 @@ const unscopedMethods = {
   'household.create',
   // Access is granted by the invite code itself.
   'household.join',
+  'signUp.redeemInvite',
   // The caller's own profile.
   'profile.me',
   'profile.updateMe',

@@ -11,6 +11,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _isc;
+import 'sign_up_mode.dart' as _i4y3a5ag;
 
 /// Answer of the public health check. The apps use it to show connection
 /// state and to check that a server is a compatible Nest server.
@@ -21,6 +22,7 @@ abstract class ServerPing
     required this.version,
     this.apiVersion,
     this.minClientApiVersion,
+    this.signUpMode,
   });
 
   factory ServerPing({
@@ -28,6 +30,7 @@ abstract class ServerPing
     required String version,
     int? apiVersion,
     int? minClientApiVersion,
+    _i4y3a5ag.SignUpMode? signUpMode,
   }) = _ServerPingImpl;
 
   factory ServerPing.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -38,6 +41,11 @@ abstract class ServerPing
       version: jsonSerialization['version'] as String,
       apiVersion: jsonSerialization['apiVersion'] as int?,
       minClientApiVersion: jsonSerialization['minClientApiVersion'] as int?,
+      signUpMode: jsonSerialization['signUpMode'] == null
+          ? null
+          : _i4y3a5ag.SignUpMode.fromJson(
+              (jsonSerialization['signUpMode'] as String),
+            ),
     );
   }
 
@@ -54,6 +62,10 @@ abstract class ServerPing
   /// Oldest app API level this server still works with. Null means 1.
   int? minClientApiVersion;
 
+  /// How new accounts can be created. Null on servers from before sign-up
+  /// modes existed (anyone could sign up).
+  _i4y3a5ag.SignUpMode? signUpMode;
+
   /// Returns a shallow copy of this [ServerPing]
   /// with some or all fields replaced by the given arguments.
   @_isc.useResult
@@ -62,6 +74,7 @@ abstract class ServerPing
     String? version,
     int? apiVersion,
     int? minClientApiVersion,
+    _i4y3a5ag.SignUpMode? signUpMode,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -72,6 +85,7 @@ abstract class ServerPing
       if (apiVersion != null) 'apiVersion': apiVersion,
       if (minClientApiVersion != null)
         'minClientApiVersion': minClientApiVersion,
+      if (signUpMode != null) 'signUpMode': signUpMode?.toJson(),
     };
   }
 
@@ -84,6 +98,7 @@ abstract class ServerPing
       if (apiVersion != null) 'apiVersion': apiVersion,
       if (minClientApiVersion != null)
         'minClientApiVersion': minClientApiVersion,
+      if (signUpMode != null) 'signUpMode': signUpMode?.toJson(),
     };
   }
 
@@ -101,11 +116,13 @@ class _ServerPingImpl extends ServerPing {
     required String version,
     int? apiVersion,
     int? minClientApiVersion,
+    _i4y3a5ag.SignUpMode? signUpMode,
   }) : super._(
          serverTime: serverTime,
          version: version,
          apiVersion: apiVersion,
          minClientApiVersion: minClientApiVersion,
+         signUpMode: signUpMode,
        );
 
   /// Returns a shallow copy of this [ServerPing]
@@ -117,6 +134,7 @@ class _ServerPingImpl extends ServerPing {
     String? version,
     Object? apiVersion = _Undefined,
     Object? minClientApiVersion = _Undefined,
+    Object? signUpMode = _Undefined,
   }) {
     return ServerPing(
       serverTime: serverTime ?? this.serverTime,
@@ -125,6 +143,9 @@ class _ServerPingImpl extends ServerPing {
       minClientApiVersion: minClientApiVersion is int?
           ? minClientApiVersion
           : this.minClientApiVersion,
+      signUpMode: signUpMode is _i4y3a5ag.SignUpMode?
+          ? signUpMode
+          : this.signUpMode,
     );
   }
 }
