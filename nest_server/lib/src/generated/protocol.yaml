@@ -28,6 +28,14 @@ household:
 profile:
   - me:
   - updateMe:
+recipe:
+  - recipes:
+  - save:
+  - setFavorite:
+  - setPhoto:
+  - photo:
+  - remove:
+  - watch:
 shopping:
   - lists:
   - saveList:
@@ -38,6 +46,7 @@ shopping:
   - catalog:
   - items:
   - addItem:
+  - addItems:
   - updateItem:
   - setItemStatus:
   - removeItem:

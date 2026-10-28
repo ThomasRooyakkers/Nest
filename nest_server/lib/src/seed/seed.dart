@@ -62,6 +62,7 @@ Future<void> seed(Session session, {required String password}) async {
     if (household == null) continue;
     await _seedShopping(session, household);
     await _seedTasks(session, household);
+    await _seedRecipes(session, household);
   }
 }
 
@@ -345,4 +346,117 @@ Future<void> _seedTasks(Session session, Household household) async {
     ),
   ]);
   session.log('Seeded tasks for ${household.name}.');
+}
+
+/// A few recipes (user content, so in one language), without photos.
+Future<void> _seedRecipes(Session session, Household household) async {
+  final householdId = household.id!;
+  if (await Recipe.db.count(
+        session,
+        where: (t) => t.householdId.equals(householdId),
+      ) >
+      0) {
+    session.log('Recipes of ${household.name} already present.');
+    return;
+  }
+
+  RecipeIngredient ingredient(
+    String name, [
+    double? quantity,
+    String unit = '',
+    String note = '',
+  ]) => RecipeIngredient(
+    recipeId: 0,
+    position: 0,
+    quantity: quantity,
+    unit: unit,
+    name: name,
+    note: note,
+  );
+
+  final recipes = [
+    (
+      Recipe(
+        householdId: householdId,
+        title: 'Pancakes',
+        description: 'Thin Dutch pancakes for a lazy Sunday.',
+        servings: 4,
+        prepMinutes: 10,
+        cookMinutes: 30,
+        tags: ['Breakfast', 'Sweet'],
+        isFavorite: true,
+      ),
+      [
+        ingredient('Flour', 250, 'g'),
+        ingredient('Milk', 0.5, 'l'),
+        ingredient('Eggs', 2),
+        ingredient('Salt', null, '', 'a pinch'),
+        ingredient('Butter', null, '', 'for the pan'),
+      ],
+      [
+        'Whisk the flour, salt and eggs with half of the milk until smooth.',
+        'Whisk in the rest of the milk and let the batter rest for 15 minutes.',
+        'Melt a little butter in a hot pan, pour in a thin layer of batter '
+            'and bake each pancake golden on both sides.',
+      ],
+    ),
+    (
+      Recipe(
+        householdId: householdId,
+        title: 'Spaghetti bolognese',
+        servings: 4,
+        prepMinutes: 15,
+        cookMinutes: 45,
+        tags: ['Pasta', 'Weeknight'],
+      ),
+      [
+        ingredient('Spaghetti', 400, 'g'),
+        ingredient('Minced beef', 500, 'g'),
+        ingredient('Onion', 1, '', 'finely chopped'),
+        ingredient('Garlic', 2, 'cloves'),
+        ingredient('Tomatoes', 800, 'g', 'tinned'),
+        ingredient('Olive oil', 2, 'tbsp'),
+      ],
+      [
+        'Fry the onion and garlic in the olive oil until soft.',
+        'Add the beef and brown it, then add the tomatoes and simmer for '
+            '30 minutes.',
+        'Cook the spaghetti and serve with the sauce.',
+      ],
+    ),
+    (
+      Recipe(
+        householdId: householdId,
+        title: 'Pumpkin soup',
+        description: 'Velvety and warming.',
+        servings: 6,
+        prepMinutes: 20,
+        cookMinutes: 25,
+        tags: ['Soup', 'Vegetarian'],
+      ),
+      [
+        ingredient('Pumpkin', 1, 'kg'),
+        ingredient('Onion', 1),
+        ingredient('Vegetable stock', 1, 'l'),
+        ingredient('Cream', 100, 'ml'),
+      ],
+      [
+        'Peel and dice the pumpkin and onion.',
+        'Simmer in the stock for 20 minutes, then blend until smooth.',
+        'Stir in the cream and season to taste.',
+      ],
+    ),
+  ];
+
+  for (final (recipe, ingredients, steps) in recipes) {
+    final saved = await Recipe.db.insertRow(session, recipe);
+    await RecipeIngredient.db.insert(session, [
+      for (final (index, i) in ingredients.indexed)
+        i.copyWith(recipeId: saved.id, position: index),
+    ]);
+    await RecipeStep.db.insert(session, [
+      for (final (index, text) in steps.indexed)
+        RecipeStep(recipeId: saved.id!, position: index, text: text),
+    ]);
+  }
 }

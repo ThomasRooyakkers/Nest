@@ -16,8 +16,11 @@ import 'package:nest_client/src/protocol/admin_household_summary.dart'
 import 'package:nest_client/src/protocol/household_feature.dart' as _iejl7hre;
 import 'package:nest_client/src/protocol/household_member.dart' as _ihqqoxyh;
 import 'package:nest_client/src/protocol/my_household.dart' as _itexq6j2;
+import 'package:nest_client/src/protocol/recipes/recipe.dart' as _iexyob0t;
 import 'package:nest_client/src/protocol/shopping/catalog_item.dart'
     as _it9evoh8;
+import 'package:nest_client/src/protocol/shopping/new_shopping_item.dart'
+    as _iw62wp9a;
 import 'package:nest_client/src/protocol/shopping/shopping_item.dart'
     as _ihcj2s21;
 import 'package:nest_client/src/protocol/shopping/shopping_list.dart'
@@ -42,7 +45,12 @@ import 'my_household.dart' as _i46wom1w;
 import 'nest_error_code.dart' as _i11cf01m;
 import 'nest_exception.dart' as _id4drunt;
 import 'nest_user.dart' as _iasjmgi7;
+import 'recipes/recipe.dart' as _ihz7f6c5;
+import 'recipes/recipe_event.dart' as _ih8tv5ny;
+import 'recipes/recipe_ingredient.dart' as _i2xp5czv;
+import 'recipes/recipe_step.dart' as _i24txk3r;
 import 'server_ping.dart' as _i7aj6ss6;
+import 'shopping/added_shopping_items.dart' as _i3qdje8t;
 import 'shopping/catalog_item.dart' as _ivm0zj1y;
 import 'shopping/new_shopping_item.dart' as _ii7fl845;
 import 'shopping/shopping_category.dart' as _iplosgx6;
@@ -69,7 +77,12 @@ export 'my_household.dart';
 export 'nest_error_code.dart';
 export 'nest_exception.dart';
 export 'nest_user.dart';
+export 'recipes/recipe.dart';
+export 'recipes/recipe_event.dart';
+export 'recipes/recipe_ingredient.dart';
+export 'recipes/recipe_step.dart';
 export 'server_ping.dart';
+export 'shopping/added_shopping_items.dart';
 export 'shopping/catalog_item.dart';
 export 'shopping/new_shopping_item.dart';
 export 'shopping/shopping_category.dart';
@@ -158,8 +171,23 @@ class Protocol extends _isc.SerializationManager {
     if (t == _iasjmgi7.NestUser) {
       return _iasjmgi7.NestUser.fromJson(data) as T;
     }
+    if (t == _ihz7f6c5.Recipe) {
+      return _ihz7f6c5.Recipe.fromJson(data) as T;
+    }
+    if (t == _ih8tv5ny.RecipeEvent) {
+      return _ih8tv5ny.RecipeEvent.fromJson(data) as T;
+    }
+    if (t == _i2xp5czv.RecipeIngredient) {
+      return _i2xp5czv.RecipeIngredient.fromJson(data) as T;
+    }
+    if (t == _i24txk3r.RecipeStep) {
+      return _i24txk3r.RecipeStep.fromJson(data) as T;
+    }
     if (t == _i7aj6ss6.ServerPing) {
       return _i7aj6ss6.ServerPing.fromJson(data) as T;
+    }
+    if (t == _i3qdje8t.AddedShoppingItems) {
+      return _i3qdje8t.AddedShoppingItems.fromJson(data) as T;
     }
     if (t == _ivm0zj1y.CatalogItem) {
       return _ivm0zj1y.CatalogItem.fromJson(data) as T;
@@ -250,8 +278,25 @@ class Protocol extends _isc.SerializationManager {
     if (t == _isc.getType<_iasjmgi7.NestUser?>()) {
       return (data != null ? _iasjmgi7.NestUser.fromJson(data) : null) as T;
     }
+    if (t == _isc.getType<_ihz7f6c5.Recipe?>()) {
+      return (data != null ? _ihz7f6c5.Recipe.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ih8tv5ny.RecipeEvent?>()) {
+      return (data != null ? _ih8tv5ny.RecipeEvent.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i2xp5czv.RecipeIngredient?>()) {
+      return (data != null ? _i2xp5czv.RecipeIngredient.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i24txk3r.RecipeStep?>()) {
+      return (data != null ? _i24txk3r.RecipeStep.fromJson(data) : null) as T;
+    }
     if (t == _isc.getType<_i7aj6ss6.ServerPing?>()) {
       return (data != null ? _i7aj6ss6.ServerPing.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i3qdje8t.AddedShoppingItems?>()) {
+      return (data != null ? _i3qdje8t.AddedShoppingItems.fromJson(data) : null)
+          as T;
     }
     if (t == _isc.getType<_ivm0zj1y.CatalogItem?>()) {
       return (data != null ? _ivm0zj1y.CatalogItem.fromJson(data) : null) as T;
@@ -306,8 +351,62 @@ class Protocol extends _isc.SerializationManager {
               .toList()
           as T;
     }
+    if (t == List<_i2xp5czv.RecipeIngredient>) {
+      return (data as List)
+              .map((e) => deserialize<_i2xp5czv.RecipeIngredient>(e))
+              .toList()
+          as T;
+    }
+    if (t == _isc.getType<List<_i2xp5czv.RecipeIngredient>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i2xp5czv.RecipeIngredient>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<_i24txk3r.RecipeStep>) {
+      return (data as List)
+              .map((e) => deserialize<_i24txk3r.RecipeStep>(e))
+              .toList()
+          as T;
+    }
+    if (t == _isc.getType<List<_i24txk3r.RecipeStep>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i24txk3r.RecipeStep>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<_ihz7f6c5.Recipe>) {
+      return (data as List)
+              .map((e) => deserialize<_ihz7f6c5.Recipe>(e))
+              .toList()
+          as T;
+    }
+    if (t == _isc.getType<List<_ihz7f6c5.Recipe>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_ihz7f6c5.Recipe>(e))
+                    .toList()
+              : null)
+          as T;
+    }
     if (t == List<int>) {
       return (data as List).map((e) => deserialize<int>(e)).toList() as T;
+    }
+    if (t == _isc.getType<List<int>?>()) {
+      return (data != null
+              ? (data as List).map((e) => deserialize<int>(e)).toList()
+              : null)
+          as T;
+    }
+    if (t == List<_iiy01kib.ShoppingItem>) {
+      return (data as List)
+              .map((e) => deserialize<_iiy01kib.ShoppingItem>(e))
+              .toList()
+          as T;
     }
     if (t == List<_i8tkdv3k.ShoppingList>) {
       return (data as List)
@@ -320,12 +419,6 @@ class Protocol extends _isc.SerializationManager {
               ? (data as List)
                     .map((e) => deserialize<_i8tkdv3k.ShoppingList>(e))
                     .toList()
-              : null)
-          as T;
-    }
-    if (t == _isc.getType<List<int>?>()) {
-      return (data != null
-              ? (data as List).map((e) => deserialize<int>(e)).toList()
               : null)
           as T;
     }
@@ -353,12 +446,6 @@ class Protocol extends _isc.SerializationManager {
                     .map((e) => deserialize<_ivm0zj1y.CatalogItem>(e))
                     .toList()
               : null)
-          as T;
-    }
-    if (t == List<_iiy01kib.ShoppingItem>) {
-      return (data as List)
-              .map((e) => deserialize<_iiy01kib.ShoppingItem>(e))
-              .toList()
           as T;
     }
     if (t == _isc.getType<List<_iiy01kib.ShoppingItem>?>()) {
@@ -411,6 +498,12 @@ class Protocol extends _isc.SerializationManager {
               .toList()
           as T;
     }
+    if (t == List<_iexyob0t.Recipe>) {
+      return (data as List)
+              .map((e) => deserialize<_iexyob0t.Recipe>(e))
+              .toList()
+          as T;
+    }
     if (t == List<_i9yltxrs.ShoppingList>) {
       return (data as List)
               .map((e) => deserialize<_i9yltxrs.ShoppingList>(e))
@@ -430,6 +523,12 @@ class Protocol extends _isc.SerializationManager {
     if (t == List<_ihcj2s21.ShoppingItem>) {
       return (data as List)
               .map((e) => deserialize<_ihcj2s21.ShoppingItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_iw62wp9a.NewShoppingItem>) {
+      return (data as List)
+              .map((e) => deserialize<_iw62wp9a.NewShoppingItem>(e))
               .toList()
           as T;
     }
@@ -464,7 +563,12 @@ class Protocol extends _isc.SerializationManager {
       _i11cf01m.NestErrorCode => 'NestErrorCode',
       _id4drunt.NestException => 'NestException',
       _iasjmgi7.NestUser => 'NestUser',
+      _ihz7f6c5.Recipe => 'Recipe',
+      _ih8tv5ny.RecipeEvent => 'RecipeEvent',
+      _i2xp5czv.RecipeIngredient => 'RecipeIngredient',
+      _i24txk3r.RecipeStep => 'RecipeStep',
       _i7aj6ss6.ServerPing => 'ServerPing',
+      _i3qdje8t.AddedShoppingItems => 'AddedShoppingItems',
       _ivm0zj1y.CatalogItem => 'CatalogItem',
       _ii7fl845.NewShoppingItem => 'NewShoppingItem',
       _iplosgx6.ShoppingCategory => 'ShoppingCategory',
@@ -518,8 +622,18 @@ class Protocol extends _isc.SerializationManager {
         return 'NestException';
       case _iasjmgi7.NestUser():
         return 'NestUser';
+      case _ihz7f6c5.Recipe():
+        return 'Recipe';
+      case _ih8tv5ny.RecipeEvent():
+        return 'RecipeEvent';
+      case _i2xp5czv.RecipeIngredient():
+        return 'RecipeIngredient';
+      case _i24txk3r.RecipeStep():
+        return 'RecipeStep';
       case _i7aj6ss6.ServerPing():
         return 'ServerPing';
+      case _i3qdje8t.AddedShoppingItems():
+        return 'AddedShoppingItems';
       case _ivm0zj1y.CatalogItem():
         return 'CatalogItem';
       case _ii7fl845.NewShoppingItem():
@@ -607,8 +721,23 @@ class Protocol extends _isc.SerializationManager {
     if (dataClassName == 'NestUser') {
       return deserialize<_iasjmgi7.NestUser>(data['data']);
     }
+    if (dataClassName == 'Recipe') {
+      return deserialize<_ihz7f6c5.Recipe>(data['data']);
+    }
+    if (dataClassName == 'RecipeEvent') {
+      return deserialize<_ih8tv5ny.RecipeEvent>(data['data']);
+    }
+    if (dataClassName == 'RecipeIngredient') {
+      return deserialize<_i2xp5czv.RecipeIngredient>(data['data']);
+    }
+    if (dataClassName == 'RecipeStep') {
+      return deserialize<_i24txk3r.RecipeStep>(data['data']);
+    }
     if (dataClassName == 'ServerPing') {
       return deserialize<_i7aj6ss6.ServerPing>(data['data']);
+    }
+    if (dataClassName == 'AddedShoppingItems') {
+      return deserialize<_i3qdje8t.AddedShoppingItems>(data['data']);
     }
     if (dataClassName == 'CatalogItem') {
       return deserialize<_ivm0zj1y.CatalogItem>(data['data']);

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:nest_server/src/generated/protocol.dart';
 import 'package:test/test.dart';
 
@@ -17,6 +19,10 @@ void main() {
     late Store storeB;
     late ShoppingItem itemB;
     late Task taskB;
+    late Recipe recipeB;
+    final photo = ByteData.sublistView(
+      Uint8List.fromList([0xFF, 0xD8, 0xFF, 0xE0, 1, 2, 3]),
+    );
     final today = DateTime.utc(2026, 10, 28);
 
     final householdScopedCalls = <String, HouseholdCall>{
@@ -73,6 +79,23 @@ void main() {
           endpoints.task.setDone(s, id, taskB.id!, true, today),
       'task.remove': (s, id) => endpoints.task.remove(s, id, taskB.id!),
       'task.watch': (s, id) => endpoints.task.watch(s, id).first,
+      'shopping.addItems': (s, id) => endpoints.shopping.addItems(
+        s,
+        id,
+        listB.id!,
+        [NewShoppingItem(name: 'Intruder', storeIds: [])],
+        recipeB.id,
+      ),
+      'recipe.recipes': (s, id) => endpoints.recipe.recipes(s, id),
+      'recipe.save': (s, id) =>
+          endpoints.recipe.save(s, id, recipeB.copyWith(title: 'Taken over')),
+      'recipe.setFavorite': (s, id) =>
+          endpoints.recipe.setFavorite(s, id, recipeB.id!, true),
+      'recipe.setPhoto': (s, id) =>
+          endpoints.recipe.setPhoto(s, id, recipeB.id!, photo),
+      'recipe.photo': (s, id) => endpoints.recipe.photo(s, id, recipeB.id!),
+      'recipe.remove': (s, id) => endpoints.recipe.remove(s, id, recipeB.id!),
+      'recipe.watch': (s, id) => endpoints.recipe.watch(s, id).first,
     };
 
     /// Household A's own id combined with ids of household B's rows.
@@ -139,6 +162,31 @@ void main() {
       'task.setDone': (s, a) =>
           endpoints.task.setDone(s, a, taskB.id!, true, today),
       'task.remove': (s, a) => endpoints.task.remove(s, a, taskB.id!),
+      'shopping.addItems (list of B)': (s, a) => endpoints.shopping.addItems(
+        s,
+        a,
+        listB.id!,
+        [NewShoppingItem(name: 'Intruder', storeIds: [])],
+        null,
+      ),
+      'shopping.addItems (recipe of B)': (s, a) async {
+        final listA = (await endpoints.shopping.lists(s, a)).first;
+        return endpoints.shopping.addItems(
+          s,
+          a,
+          listA.id!,
+          [NewShoppingItem(name: 'Milk', storeIds: [])],
+          recipeB.id,
+        );
+      },
+      'recipe.save': (s, a) =>
+          endpoints.recipe.save(s, a, recipeB.copyWith(title: 'Taken over')),
+      'recipe.setFavorite': (s, a) =>
+          endpoints.recipe.setFavorite(s, a, recipeB.id!, true),
+      'recipe.setPhoto': (s, a) =>
+          endpoints.recipe.setPhoto(s, a, recipeB.id!, photo),
+      'recipe.photo': (s, a) => endpoints.recipe.photo(s, a, recipeB.id!),
+      'recipe.remove': (s, a) => endpoints.recipe.remove(s, a, recipeB.id!),
     };
 
     late TestSessionBuilder userA;
@@ -190,6 +238,25 @@ void main() {
           recurrence: TaskRecurrence.weekly,
         ),
       );
+      recipeB = await endpoints.recipe.save(
+        userB,
+        householdB,
+        Recipe(
+          householdId: 0,
+          title: 'Grandma\'s soup',
+          tags: ['secret'],
+          ingredients: [
+            RecipeIngredient(recipeId: 0, position: 0, name: 'Carrots'),
+          ],
+          steps: [RecipeStep(recipeId: 0, position: 0, text: 'Simmer.')],
+        ),
+      );
+      recipeB = await endpoints.recipe.setPhoto(
+        userB,
+        householdB,
+        recipeB.id!,
+        photo,
+      );
     });
 
     for (final MapEntry(key: name, value: call)
@@ -240,6 +307,14 @@ void main() {
         expect(items.single.toJson(), itemB.toJson());
         final tasks = await endpoints.task.tasks(userB, householdB);
         expect(tasks.single.toJson(), taskB.toJson());
+        final recipes = await endpoints.recipe.recipes(userB, householdB);
+        expect(recipes.single.toJson(), recipeB.toJson());
+        final stored = await endpoints.recipe.photo(
+          userB,
+          householdB,
+          recipeB.id!,
+        );
+        expect(stored?.lengthInBytes, photo.lengthInBytes);
       },
     );
 
@@ -249,6 +324,7 @@ void main() {
       expect(await endpoints.shopping.stores(userA, householdA), isEmpty);
       expect(await endpoints.shopping.items(userA, householdA), isEmpty);
       expect(await endpoints.task.tasks(userA, householdA), isEmpty);
+      expect(await endpoints.recipe.recipes(userA, householdA), isEmpty);
     });
 
     test('A list may not name members of another household', () async {

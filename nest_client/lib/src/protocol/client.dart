@@ -11,6 +11,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
+import 'dart:typed_data' as _idt;
 import 'package:http/http.dart' as _i85jenna;
 import 'package:nest_client/src/protocol/admin_household_summary.dart'
     as _ipf5tkzm;
@@ -20,7 +21,12 @@ import 'package:nest_client/src/protocol/household_member.dart' as _ihqqoxyh;
 import 'package:nest_client/src/protocol/household_status.dart' as _iluf117q;
 import 'package:nest_client/src/protocol/my_household.dart' as _itexq6j2;
 import 'package:nest_client/src/protocol/nest_user.dart' as _i7k4hj0f;
+import 'package:nest_client/src/protocol/recipes/recipe.dart' as _iexyob0t;
+import 'package:nest_client/src/protocol/recipes/recipe_event.dart'
+    as _im8ua6et;
 import 'package:nest_client/src/protocol/server_ping.dart' as _i4l166nw;
+import 'package:nest_client/src/protocol/shopping/added_shopping_items.dart'
+    as _i2y92sha;
 import 'package:nest_client/src/protocol/shopping/catalog_item.dart'
     as _it9evoh8;
 import 'package:nest_client/src/protocol/shopping/new_shopping_item.dart'
@@ -437,6 +443,115 @@ class EndpointProfile extends _isc.EndpointRef {
   );
 }
 
+/// The household's recipe library, with ingredients, steps and a photo.
+/// Every change is also sent to [watch], so all members see it live.
+///
+/// Photos are kept in the server's private file storage, which is stored
+/// in Postgres (so the database backup includes them), and only handed out
+/// through [photo], after the guard.
+/// {@category Endpoint}
+class EndpointRecipe extends _isc.EndpointRef {
+  EndpointRecipe(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'recipe';
+
+  /// All of the household's recipes with their ingredients and steps.
+  _ida.Future<List<_iexyob0t.Recipe>> recipes(int householdId) =>
+      caller.callServerEndpoint<List<_iexyob0t.Recipe>>(
+        'recipe',
+        'recipes',
+        {'householdId': householdId},
+      );
+
+  /// Creates a recipe (when [recipe] has no id) or saves its changes. The
+  /// ingredients and steps are replaced by those of [recipe], numbered in
+  /// the order given. The photo and favourite flag are not changed here
+  /// (see [setPhoto] and [setFavorite]).
+  _ida.Future<_iexyob0t.Recipe> save(
+    int householdId,
+    _iexyob0t.Recipe recipe,
+  ) => caller.callServerEndpoint<_iexyob0t.Recipe>(
+    'recipe',
+    'save',
+    {
+      'householdId': householdId,
+      'recipe': recipe,
+    },
+  );
+
+  /// Marks a recipe as a favourite of the household, or not.
+  _ida.Future<_iexyob0t.Recipe> setFavorite(
+    int householdId,
+    int recipeId,
+    bool favorite,
+  ) => caller.callServerEndpoint<_iexyob0t.Recipe>(
+    'recipe',
+    'setFavorite',
+    {
+      'householdId': householdId,
+      'recipeId': recipeId,
+      'favorite': favorite,
+    },
+  );
+
+  /// Replaces a recipe's photo with [photo] (a JPEG, PNG or WebP image of
+  /// at most [maxPhotoBytes]), or removes it when [photo] is null.
+  _ida.Future<_iexyob0t.Recipe> setPhoto(
+    int householdId,
+    int recipeId,
+    _idt.ByteData? photo,
+  ) => caller.callServerEndpoint<_iexyob0t.Recipe>(
+    'recipe',
+    'setPhoto',
+    {
+      'householdId': householdId,
+      'recipeId': recipeId,
+      'photo': photo,
+    },
+  );
+
+  /// The photo of a recipe, or null when it has none.
+  _ida.Future<_idt.ByteData?> photo(
+    int householdId,
+    int recipeId,
+  ) => caller.callServerEndpoint<_idt.ByteData?>(
+    'recipe',
+    'photo',
+    {
+      'householdId': householdId,
+      'recipeId': recipeId,
+    },
+  );
+
+  /// Deletes a recipe with its photo. Meal plans and shopping items that
+  /// came from it keep their own copy of what they need.
+  _ida.Future<void> remove(
+    int householdId,
+    int recipeId,
+  ) => caller.callServerEndpoint<void>(
+    'recipe',
+    'remove',
+    {
+      'householdId': householdId,
+      'recipeId': recipeId,
+    },
+  );
+
+  /// Changes to the household's recipes as they happen. The app loads the
+  /// recipes first and then applies these events.
+  _ida.Stream<_im8ua6et.RecipeEvent> watch(int householdId) =>
+      caller.callStreamingServerEndpoint<
+        _ida.Stream<_im8ua6et.RecipeEvent>,
+        _im8ua6et.RecipeEvent
+      >(
+        'recipe',
+        'watch',
+        {'householdId': householdId},
+        {},
+      );
+}
+
 /// Shopping lists, stores, the catalog and the items on the lists.
 ///
 /// Every change is also sent to [watch], so all members see it live.
@@ -551,6 +666,26 @@ class EndpointShopping extends _isc.EndpointRef {
       'householdId': householdId,
       'listId': listId,
       'newItem': newItem,
+    },
+  );
+
+  /// Puts several items on a list as "to buy", e.g. a recipe's
+  /// ingredients. Like [addItem], but items that are already to buy are
+  /// skipped (their spec is left alone). [sourceRecipeId] (one of the
+  /// household's recipes) is noted on the items that are added.
+  _ida.Future<_i2y92sha.AddedShoppingItems> addItems(
+    int householdId,
+    int listId,
+    List<_iw62wp9a.NewShoppingItem> newItems,
+    int? sourceRecipeId,
+  ) => caller.callServerEndpoint<_i2y92sha.AddedShoppingItems>(
+    'shopping',
+    'addItems',
+    {
+      'householdId': householdId,
+      'listId': listId,
+      'newItems': newItems,
+      'sourceRecipeId': sourceRecipeId,
     },
   );
 
@@ -761,6 +896,7 @@ class Client extends _isc.ServerpodClientShared {
     health = EndpointHealth(this);
     household = EndpointHousehold(this);
     profile = EndpointProfile(this);
+    recipe = EndpointRecipe(this);
     shopping = EndpointShopping(this);
     signUp = EndpointSignUp(this);
     task = EndpointTask(this);
@@ -779,6 +915,8 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointProfile profile;
 
+  late final EndpointRecipe recipe;
+
   late final EndpointShopping shopping;
 
   late final EndpointSignUp signUp;
@@ -795,6 +933,7 @@ class Client extends _isc.ServerpodClientShared {
     'health': health,
     'household': household,
     'profile': profile,
+    'recipe': recipe,
     'shopping': shopping,
     'signUp': signUp,
     'task': task,

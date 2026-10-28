@@ -13,6 +13,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
 import 'dart:io' as _idi;
+import 'dart:typed_data' as _idt;
 import 'package:nest_server/src/generated/admin_household_summary.dart'
     as _it78yatv;
 import 'package:nest_server/src/generated/household_feature.dart' as _iez4op0n;
@@ -21,7 +22,12 @@ import 'package:nest_server/src/generated/household_member.dart' as _i9scnr3x;
 import 'package:nest_server/src/generated/household_status.dart' as _i544oeia;
 import 'package:nest_server/src/generated/my_household.dart' as _i87acs67;
 import 'package:nest_server/src/generated/nest_user.dart' as _io4rmg6h;
+import 'package:nest_server/src/generated/recipes/recipe.dart' as _iei9bazg;
+import 'package:nest_server/src/generated/recipes/recipe_event.dart'
+    as _is6mk1ja;
 import 'package:nest_server/src/generated/server_ping.dart' as _ij8oiwn4;
+import 'package:nest_server/src/generated/shopping/added_shopping_items.dart'
+    as _ihwfcu0g;
 import 'package:nest_server/src/generated/shopping/catalog_item.dart'
     as _iped7yon;
 import 'package:nest_server/src/generated/shopping/new_shopping_item.dart'
@@ -186,6 +192,8 @@ class TestEndpoints {
 
   late final _ProfileEndpoint profile;
 
+  late final _RecipeEndpoint recipe;
+
   late final _ShoppingEndpoint shopping;
 
   late final _SignUpEndpoint signUp;
@@ -221,6 +229,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     profile = _ProfileEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    recipe = _RecipeEndpoint(
       endpoints,
       serializationManager,
     );
@@ -1078,6 +1090,260 @@ class _ProfileEndpoint {
   }
 }
 
+class _RecipeEndpoint {
+  _RecipeEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<List<_iei9bazg.Recipe>> recipes(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'recipe',
+            method: 'recipes',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'recipe',
+          methodName: 'recipes',
+          parameters: _ist.testObjectToJson({'householdId': householdId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_iei9bazg.Recipe>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_iei9bazg.Recipe> save(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    _iei9bazg.Recipe recipe,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'recipe',
+            method: 'save',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'recipe',
+          methodName: 'save',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'recipe': recipe,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_iei9bazg.Recipe>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_iei9bazg.Recipe> setFavorite(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int recipeId,
+    bool favorite,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'recipe',
+            method: 'setFavorite',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'recipe',
+          methodName: 'setFavorite',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'recipeId': recipeId,
+            'favorite': favorite,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_iei9bazg.Recipe>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_iei9bazg.Recipe> setPhoto(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int recipeId,
+    _idt.ByteData? photo,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'recipe',
+            method: 'setPhoto',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'recipe',
+          methodName: 'setPhoto',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'recipeId': recipeId,
+            'photo': photo,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_iei9bazg.Recipe>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_idt.ByteData?> photo(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int recipeId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'recipe',
+            method: 'photo',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'recipe',
+          methodName: 'photo',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'recipeId': recipeId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_idt.ByteData?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<void> remove(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int recipeId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'recipe',
+            method: 'remove',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'recipe',
+          methodName: 'remove',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'recipeId': recipeId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Stream<_is6mk1ja.RecipeEvent> watch(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+  ) {
+    var _localTestStreamManager =
+        _ist.TestStreamManager<_is6mk1ja.RecipeEvent>();
+    _ist.callStreamFunctionAndHandleExceptions(
+      () async {
+        var _localUniqueSession =
+            (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+              endpoint: 'recipe',
+              method: 'watch',
+            );
+        var _localCallContext = await _endpointDispatch
+            .getMethodStreamCallContext(
+              createSessionCallback: (_) => _localUniqueSession,
+              endpointPath: 'recipe',
+              methodName: 'watch',
+              arguments: {'householdId': householdId},
+              requestedInputStreams: [],
+              serializationManager: _serializationManager,
+            );
+        await _localTestStreamManager.callStreamMethod(
+          _localCallContext,
+          _localUniqueSession,
+          {},
+        );
+      },
+      _localTestStreamManager.outputStreamController,
+    );
+    return _localTestStreamManager.outputStreamController.stream;
+  }
+}
+
 class _ShoppingEndpoint {
   _ShoppingEndpoint(
     this._endpointDispatch,
@@ -1382,6 +1648,45 @@ class _ShoppingEndpoint {
                   _localCallContext.arguments,
                 )
                 as _ida.Future<_i8kxgwhu.ShoppingItem>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_ihwfcu0g.AddedShoppingItems> addItems(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int listId,
+    List<_i97lm970.NewShoppingItem> newItems,
+    int? sourceRecipeId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shopping',
+            method: 'addItems',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shopping',
+          methodName: 'addItems',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'listId': listId,
+            'newItems': newItems,
+            'sourceRecipeId': sourceRecipeId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_ihwfcu0g.AddedShoppingItems>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

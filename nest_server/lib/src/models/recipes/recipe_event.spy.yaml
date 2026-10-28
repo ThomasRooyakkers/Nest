@@ -1,0 +1,6 @@
+### A change in a household's recipes, sent to everyone watching.
+class: RecipeEvent
+fields:
+  householdId: int
+  recipes: List<Recipe>?
+  removedRecipeIds: List<int>?

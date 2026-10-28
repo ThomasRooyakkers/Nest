@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:serverpod_auth_idp_server/core.dart';
 import 'package:serverpod_auth_idp_server/providers/email.dart';
-import 'package:serverpod_cloud_storage/serverpod_cloud_storage.dart';
 
 import 'src/generated/serverpod.dart';
 import 'src/services/built_in_catalog.dart';
@@ -89,20 +88,10 @@ Future<Serverpod> createServerpod(
     ],
   );
 
-  // Configure cloud storage.
-  // This setup works with Serverpod Cloud without extra configuration.
-  // If you want to use a custom provider for cloud storage, replace these
-  // with your preferred provider.
-  pod.addCloudStorage(
-    await ServerpodCloudProvider.private(
-      fallback: () => DatabaseCloudStorage('private'),
-    ),
-  );
-  pod.addCloudStorage(
-    await ServerpodCloudProvider.public(
-      fallback: () => DatabaseCloudStorage('public'),
-    ),
-  );
+  // File storage (recipe photos) lives in Postgres, so the database backup
+  // includes it and hosts need no extra volume.
+  pod.addCloudStorage(DatabaseCloudStorage('private'));
+  pod.addCloudStorage(DatabaseCloudStorage('public'));
 
   // The Flutter web app, when built into web/app (production image).
   // Its config.json is generated, so the same build works on every host.

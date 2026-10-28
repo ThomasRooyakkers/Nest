@@ -1,0 +1,8 @@
+### The answer of adding several items at once (e.g. a recipe's
+### ingredients).
+class: AddedShoppingItems
+fields:
+  ### Items added to To buy (new, or moved back from Recently used).
+  items: List<ShoppingItem>
+  ### Names that were skipped because they were already to buy.
+  skippedNames: List<String>

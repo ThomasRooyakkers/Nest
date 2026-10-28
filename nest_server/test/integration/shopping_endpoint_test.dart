@@ -263,5 +263,74 @@ void main() {
       expect(events.first.items!.single.id, item.id);
       expect(events.last.removedItemIds, [item.id]);
     });
+
+    group('adding several items at once', () {
+      Future<AddedShoppingItems> addAll(
+        List<NewShoppingItem> items, {
+        int? sourceRecipeId,
+      }) => endpoints.shopping.addItems(
+        anna,
+        householdId,
+        list.id!,
+        items,
+        sourceRecipeId,
+      );
+
+      NewShoppingItem item(String name, [String spec = '']) =>
+          NewShoppingItem(name: name, spec: spec, storeIds: []);
+
+      test('adds new items and skips those already to buy', () async {
+        final recipe = await endpoints.recipe.save(
+          anna,
+          householdId,
+          Recipe(householdId: 0, title: 'Pancakes', tags: []),
+        );
+        await add('Milk', spec: '1 l');
+        final bought = await add('Eggs');
+        await endpoints.shopping.setItemStatus(
+          anna,
+          householdId,
+          bought.id!,
+          ShoppingItemStatus.recent,
+        );
+
+        final result = await addAll([
+          item('milk', '500 ml'),
+          item('Eggs', '3'),
+          item('Buckwheat flour', '250 g'),
+        ], sourceRecipeId: recipe.id);
+
+        expect(result.skippedNames, ['Milk']);
+        expect(result.items.map((i) => i.name), ['Eggs', 'Buckwheat flour']);
+        expect(
+          result.items.every((i) => i.sourceRecipeId == recipe.id),
+          isTrue,
+        );
+        expect(
+          result.items.every((i) => i.status == ShoppingItemStatus.toBuy),
+          isTrue,
+        );
+        final items = await endpoints.shopping.items(anna, householdId);
+        expect(items.firstWhere((i) => i.name == 'Milk').spec, '1 l');
+        expect(items.firstWhere((i) => i.name == 'Eggs').spec, '3');
+        expect(items, hasLength(3));
+      });
+
+      test('refuses an empty or invalid batch as a whole', () async {
+        await expectLater(addAll([]), throwsNest(NestErrorCode.invalidInput));
+        await expectLater(
+          addAll([item('Bread'), item('  ')]),
+          throwsNest(NestErrorCode.invalidInput),
+        );
+        expect(await endpoints.shopping.items(anna, householdId), isEmpty);
+      });
+
+      test('an unknown recipe is refused', () async {
+        await expectLater(
+          addAll([item('Bread')], sourceRecipeId: 999999),
+          throwsNest(NestErrorCode.notFound),
+        );
+      });
+    });
   });
 }

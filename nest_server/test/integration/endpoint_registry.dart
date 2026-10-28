@@ -22,6 +22,7 @@ const householdScopedMethods = {
   'shopping.catalog',
   'shopping.items',
   'shopping.addItem',
+  'shopping.addItems',
   'shopping.updateItem',
   'shopping.setItemStatus',
   'shopping.removeItem',
@@ -31,6 +32,13 @@ const householdScopedMethods = {
   'task.setDone',
   'task.remove',
   'task.watch',
+  'recipe.recipes',
+  'recipe.save',
+  'recipe.setFavorite',
+  'recipe.setPhoto',
+  'recipe.photo',
+  'recipe.remove',
+  'recipe.watch',
 };
 
 /// Admin methods (start with `AdminGuard`). Each one must be exercised in

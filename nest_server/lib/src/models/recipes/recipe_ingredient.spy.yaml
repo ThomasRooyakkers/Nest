@@ -1,0 +1,17 @@
+### An ingredient of a recipe. Only reachable through its recipe, after the
+### guard checked the recipe's household.
+class: RecipeIngredient
+table: recipe_ingredient
+fields:
+  recipe: Recipe?, relation(name=recipe_ingredients, onDelete=Cascade)
+  position: int
+  ### Amount for the recipe's servings; null for "to taste" and the like.
+  quantity: double?
+  ### Free text such as "g", "tbsp" or "cloves"; may be empty.
+  unit: String, default=''
+  name: String
+  ### Free text such as "finely chopped".
+  note: String, default=''
+indexes:
+  recipe_ingredient_recipe_idx:
+    fields: recipeId

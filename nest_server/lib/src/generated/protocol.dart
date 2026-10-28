@@ -16,8 +16,11 @@ import 'package:nest_server/src/generated/admin_household_summary.dart'
 import 'package:nest_server/src/generated/household_feature.dart' as _iez4op0n;
 import 'package:nest_server/src/generated/household_member.dart' as _i9scnr3x;
 import 'package:nest_server/src/generated/my_household.dart' as _i87acs67;
+import 'package:nest_server/src/generated/recipes/recipe.dart' as _iei9bazg;
 import 'package:nest_server/src/generated/shopping/catalog_item.dart'
     as _iped7yon;
+import 'package:nest_server/src/generated/shopping/new_shopping_item.dart'
+    as _i97lm970;
 import 'package:nest_server/src/generated/shopping/shopping_item.dart'
     as _i8kxgwhu;
 import 'package:nest_server/src/generated/shopping/shopping_list.dart'
@@ -43,7 +46,12 @@ import 'my_household.dart' as _i46wom1w;
 import 'nest_error_code.dart' as _i11cf01m;
 import 'nest_exception.dart' as _id4drunt;
 import 'nest_user.dart' as _iasjmgi7;
+import 'recipes/recipe.dart' as _ihz7f6c5;
+import 'recipes/recipe_event.dart' as _ih8tv5ny;
+import 'recipes/recipe_ingredient.dart' as _i2xp5czv;
+import 'recipes/recipe_step.dart' as _i24txk3r;
 import 'server_ping.dart' as _i7aj6ss6;
+import 'shopping/added_shopping_items.dart' as _i3qdje8t;
 import 'shopping/catalog_item.dart' as _ivm0zj1y;
 import 'shopping/new_shopping_item.dart' as _ii7fl845;
 import 'shopping/shopping_category.dart' as _iplosgx6;
@@ -71,7 +79,12 @@ export 'my_household.dart';
 export 'nest_error_code.dart';
 export 'nest_exception.dart';
 export 'nest_user.dart';
+export 'recipes/recipe.dart';
+export 'recipes/recipe_event.dart';
+export 'recipes/recipe_ingredient.dart';
+export 'recipes/recipe_step.dart';
 export 'server_ping.dart';
+export 'shopping/added_shopping_items.dart';
 export 'shopping/catalog_item.dart';
 export 'shopping/new_shopping_item.dart';
 export 'shopping/shopping_category.dart';
@@ -533,6 +546,278 @@ class Protocol extends _is.DatabaseSerializationManager {
           ],
           type: 'btree',
           isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'recipe',
+      dartName: 'Recipe',
+      schema: 'public',
+      module: 'nest',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'householdId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'title',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'description',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+          columnDefault: '\'\'',
+        ),
+        _isp.ColumnDefinition(
+          name: 'photoPath',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'servings',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+          columnDefault: '4',
+        ),
+        _isp.ColumnDefinition(
+          name: 'prepMinutes',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'cookMinutes',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'tags',
+          columnType: _isp.ColumnType.json,
+          isNullable: false,
+          dartType: 'List<String>',
+        ),
+        _isp.ColumnDefinition(
+          name: 'isFavorite',
+          columnType: _isp.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+          columnDefault: 'false',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdById',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+        _isp.ColumnDefinition(
+          name: 'updatedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'recipe_fk_0',
+          columns: ['householdId'],
+          referenceTable: 'household',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'recipe_fk_1',
+          columns: ['createdById'],
+          referenceTable: 'nest_user',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.setNull,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'recipe_household_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'householdId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'recipe_ingredient',
+      dartName: 'RecipeIngredient',
+      schema: 'public',
+      module: 'nest',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'recipeId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'position',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'quantity',
+          columnType: _isp.ColumnType.doublePrecision,
+          isNullable: true,
+          dartType: 'double?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'unit',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+          columnDefault: '\'\'',
+        ),
+        _isp.ColumnDefinition(
+          name: 'name',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'note',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+          columnDefault: '\'\'',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'recipe_ingredient_fk_0',
+          columns: ['recipeId'],
+          referenceTable: 'recipe',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'recipe_ingredient_recipe_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'recipeId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'recipe_step',
+      dartName: 'RecipeStep',
+      schema: 'public',
+      module: 'nest',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'recipeId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'position',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'text',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'recipe_step_fk_0',
+          columns: ['recipeId'],
+          referenceTable: 'recipe',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'recipe_step_recipe_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'recipeId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
           isPrimary: false,
         ),
       ],
@@ -1164,8 +1449,23 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _iasjmgi7.NestUser) {
       return _iasjmgi7.NestUser.fromJson(data) as T;
     }
+    if (t == _ihz7f6c5.Recipe) {
+      return _ihz7f6c5.Recipe.fromJson(data) as T;
+    }
+    if (t == _ih8tv5ny.RecipeEvent) {
+      return _ih8tv5ny.RecipeEvent.fromJson(data) as T;
+    }
+    if (t == _i2xp5czv.RecipeIngredient) {
+      return _i2xp5czv.RecipeIngredient.fromJson(data) as T;
+    }
+    if (t == _i24txk3r.RecipeStep) {
+      return _i24txk3r.RecipeStep.fromJson(data) as T;
+    }
     if (t == _i7aj6ss6.ServerPing) {
       return _i7aj6ss6.ServerPing.fromJson(data) as T;
+    }
+    if (t == _i3qdje8t.AddedShoppingItems) {
+      return _i3qdje8t.AddedShoppingItems.fromJson(data) as T;
     }
     if (t == _ivm0zj1y.CatalogItem) {
       return _ivm0zj1y.CatalogItem.fromJson(data) as T;
@@ -1259,8 +1559,25 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _is.getType<_iasjmgi7.NestUser?>()) {
       return (data != null ? _iasjmgi7.NestUser.fromJson(data) : null) as T;
     }
+    if (t == _is.getType<_ihz7f6c5.Recipe?>()) {
+      return (data != null ? _ihz7f6c5.Recipe.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ih8tv5ny.RecipeEvent?>()) {
+      return (data != null ? _ih8tv5ny.RecipeEvent.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_i2xp5czv.RecipeIngredient?>()) {
+      return (data != null ? _i2xp5czv.RecipeIngredient.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_i24txk3r.RecipeStep?>()) {
+      return (data != null ? _i24txk3r.RecipeStep.fromJson(data) : null) as T;
+    }
     if (t == _is.getType<_i7aj6ss6.ServerPing?>()) {
       return (data != null ? _i7aj6ss6.ServerPing.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_i3qdje8t.AddedShoppingItems?>()) {
+      return (data != null ? _i3qdje8t.AddedShoppingItems.fromJson(data) : null)
+          as T;
     }
     if (t == _is.getType<_ivm0zj1y.CatalogItem?>()) {
       return (data != null ? _ivm0zj1y.CatalogItem.fromJson(data) : null) as T;
@@ -1318,8 +1635,62 @@ class Protocol extends _is.DatabaseSerializationManager {
               .toList()
           as T;
     }
+    if (t == List<_i2xp5czv.RecipeIngredient>) {
+      return (data as List)
+              .map((e) => deserialize<_i2xp5czv.RecipeIngredient>(e))
+              .toList()
+          as T;
+    }
+    if (t == _is.getType<List<_i2xp5czv.RecipeIngredient>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i2xp5czv.RecipeIngredient>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<_i24txk3r.RecipeStep>) {
+      return (data as List)
+              .map((e) => deserialize<_i24txk3r.RecipeStep>(e))
+              .toList()
+          as T;
+    }
+    if (t == _is.getType<List<_i24txk3r.RecipeStep>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i24txk3r.RecipeStep>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<_ihz7f6c5.Recipe>) {
+      return (data as List)
+              .map((e) => deserialize<_ihz7f6c5.Recipe>(e))
+              .toList()
+          as T;
+    }
+    if (t == _is.getType<List<_ihz7f6c5.Recipe>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_ihz7f6c5.Recipe>(e))
+                    .toList()
+              : null)
+          as T;
+    }
     if (t == List<int>) {
       return (data as List).map((e) => deserialize<int>(e)).toList() as T;
+    }
+    if (t == _is.getType<List<int>?>()) {
+      return (data != null
+              ? (data as List).map((e) => deserialize<int>(e)).toList()
+              : null)
+          as T;
+    }
+    if (t == List<_iiy01kib.ShoppingItem>) {
+      return (data as List)
+              .map((e) => deserialize<_iiy01kib.ShoppingItem>(e))
+              .toList()
+          as T;
     }
     if (t == List<_i8tkdv3k.ShoppingList>) {
       return (data as List)
@@ -1332,12 +1703,6 @@ class Protocol extends _is.DatabaseSerializationManager {
               ? (data as List)
                     .map((e) => deserialize<_i8tkdv3k.ShoppingList>(e))
                     .toList()
-              : null)
-          as T;
-    }
-    if (t == _is.getType<List<int>?>()) {
-      return (data != null
-              ? (data as List).map((e) => deserialize<int>(e)).toList()
               : null)
           as T;
     }
@@ -1365,12 +1730,6 @@ class Protocol extends _is.DatabaseSerializationManager {
                     .map((e) => deserialize<_ivm0zj1y.CatalogItem>(e))
                     .toList()
               : null)
-          as T;
-    }
-    if (t == List<_iiy01kib.ShoppingItem>) {
-      return (data as List)
-              .map((e) => deserialize<_iiy01kib.ShoppingItem>(e))
-              .toList()
           as T;
     }
     if (t == _is.getType<List<_iiy01kib.ShoppingItem>?>()) {
@@ -1423,6 +1782,12 @@ class Protocol extends _is.DatabaseSerializationManager {
               .toList()
           as T;
     }
+    if (t == List<_iei9bazg.Recipe>) {
+      return (data as List)
+              .map((e) => deserialize<_iei9bazg.Recipe>(e))
+              .toList()
+          as T;
+    }
     if (t == List<_iustknb5.ShoppingList>) {
       return (data as List)
               .map((e) => deserialize<_iustknb5.ShoppingList>(e))
@@ -1442,6 +1807,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == List<_i8kxgwhu.ShoppingItem>) {
       return (data as List)
               .map((e) => deserialize<_i8kxgwhu.ShoppingItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_i97lm970.NewShoppingItem>) {
+      return (data as List)
+              .map((e) => deserialize<_i97lm970.NewShoppingItem>(e))
               .toList()
           as T;
     }
@@ -1479,7 +1850,12 @@ class Protocol extends _is.DatabaseSerializationManager {
       _i11cf01m.NestErrorCode => 'NestErrorCode',
       _id4drunt.NestException => 'NestException',
       _iasjmgi7.NestUser => 'NestUser',
+      _ihz7f6c5.Recipe => 'Recipe',
+      _ih8tv5ny.RecipeEvent => 'RecipeEvent',
+      _i2xp5czv.RecipeIngredient => 'RecipeIngredient',
+      _i24txk3r.RecipeStep => 'RecipeStep',
       _i7aj6ss6.ServerPing => 'ServerPing',
+      _i3qdje8t.AddedShoppingItems => 'AddedShoppingItems',
       _ivm0zj1y.CatalogItem => 'CatalogItem',
       _ii7fl845.NewShoppingItem => 'NewShoppingItem',
       _iplosgx6.ShoppingCategory => 'ShoppingCategory',
@@ -1534,8 +1910,18 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'NestException';
       case _iasjmgi7.NestUser():
         return 'NestUser';
+      case _ihz7f6c5.Recipe():
+        return 'Recipe';
+      case _ih8tv5ny.RecipeEvent():
+        return 'RecipeEvent';
+      case _i2xp5czv.RecipeIngredient():
+        return 'RecipeIngredient';
+      case _i24txk3r.RecipeStep():
+        return 'RecipeStep';
       case _i7aj6ss6.ServerPing():
         return 'ServerPing';
+      case _i3qdje8t.AddedShoppingItems():
+        return 'AddedShoppingItems';
       case _ivm0zj1y.CatalogItem():
         return 'CatalogItem';
       case _ii7fl845.NewShoppingItem():
@@ -1629,8 +2015,23 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (dataClassName == 'NestUser') {
       return deserialize<_iasjmgi7.NestUser>(data['data']);
     }
+    if (dataClassName == 'Recipe') {
+      return deserialize<_ihz7f6c5.Recipe>(data['data']);
+    }
+    if (dataClassName == 'RecipeEvent') {
+      return deserialize<_ih8tv5ny.RecipeEvent>(data['data']);
+    }
+    if (dataClassName == 'RecipeIngredient') {
+      return deserialize<_i2xp5czv.RecipeIngredient>(data['data']);
+    }
+    if (dataClassName == 'RecipeStep') {
+      return deserialize<_i24txk3r.RecipeStep>(data['data']);
+    }
     if (dataClassName == 'ServerPing') {
       return deserialize<_i7aj6ss6.ServerPing>(data['data']);
+    }
+    if (dataClassName == 'AddedShoppingItems') {
+      return deserialize<_i3qdje8t.AddedShoppingItems>(data['data']);
     }
     if (dataClassName == 'CatalogItem') {
       return deserialize<_ivm0zj1y.CatalogItem>(data['data']);
@@ -1723,6 +2124,12 @@ class Protocol extends _is.DatabaseSerializationManager {
         return _iu35fd1a.Membership.t;
       case _iasjmgi7.NestUser:
         return _iasjmgi7.NestUser.t;
+      case _ihz7f6c5.Recipe:
+        return _ihz7f6c5.Recipe.t;
+      case _i2xp5czv.RecipeIngredient:
+        return _i2xp5czv.RecipeIngredient.t;
+      case _i24txk3r.RecipeStep:
+        return _i24txk3r.RecipeStep.t;
       case _ivm0zj1y.CatalogItem:
         return _ivm0zj1y.CatalogItem.t;
       case _iiy01kib.ShoppingItem:

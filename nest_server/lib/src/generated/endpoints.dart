@@ -10,8 +10,10 @@
 // ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:typed_data' as _idt;
 import 'package:nest_server/src/generated/household_feature.dart' as _iez4op0n;
 import 'package:nest_server/src/generated/household_status.dart' as _i544oeia;
+import 'package:nest_server/src/generated/recipes/recipe.dart' as _iei9bazg;
 import 'package:nest_server/src/generated/shopping/new_shopping_item.dart'
     as _i97lm970;
 import 'package:nest_server/src/generated/shopping/shopping_item_status.dart'
@@ -31,6 +33,7 @@ import '../endpoints/admin/admin_households_endpoint.dart' as _iy84ve0g;
 import '../endpoints/health_endpoint.dart' as _ica9y4w0;
 import '../endpoints/household_endpoint.dart' as _izqmqbob;
 import '../endpoints/profile_endpoint.dart' as _i2cx2pww;
+import '../endpoints/recipe_endpoint.dart' as _iotgfwtb;
 import '../endpoints/shopping_endpoint.dart' as _i0uz9s3h;
 import '../endpoints/sign_up_endpoint.dart' as _im0g34lo;
 import '../endpoints/task_endpoint.dart' as _idmllfay;
@@ -73,6 +76,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'profile',
+          null,
+        ),
+      'recipe': _iotgfwtb.RecipeEndpoint()
+        ..initialize(
+          server,
+          'recipe',
           null,
         ),
       'shopping': _i0uz9s3h.ShoppingEndpoint()
@@ -603,6 +612,188 @@ class Endpoints extends _is.EndpointDispatch {
         ),
       },
     );
+    connectors['recipe'] = _is.EndpointConnector(
+      name: 'recipe',
+      endpoint: endpoints['recipe']!,
+      methodConnectors: {
+        'recipes': _is.MethodConnector(
+          name: 'recipes',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['recipe'] as _iotgfwtb.RecipeEndpoint).recipes(
+                    session,
+                    params['householdId'],
+                  ),
+        ),
+        'save': _is.MethodConnector(
+          name: 'save',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'recipe': _is.ParameterDescription(
+              name: 'recipe',
+              type: _is.getType<_iei9bazg.Recipe>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['recipe'] as _iotgfwtb.RecipeEndpoint).save(
+                session,
+                params['householdId'],
+                params['recipe'],
+              ),
+        ),
+        'setFavorite': _is.MethodConnector(
+          name: 'setFavorite',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'recipeId': _is.ParameterDescription(
+              name: 'recipeId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'favorite': _is.ParameterDescription(
+              name: 'favorite',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['recipe'] as _iotgfwtb.RecipeEndpoint).setFavorite(
+                    session,
+                    params['householdId'],
+                    params['recipeId'],
+                    params['favorite'],
+                  ),
+        ),
+        'setPhoto': _is.MethodConnector(
+          name: 'setPhoto',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'recipeId': _is.ParameterDescription(
+              name: 'recipeId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'photo': _is.ParameterDescription(
+              name: 'photo',
+              type: _is.getType<_idt.ByteData?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['recipe'] as _iotgfwtb.RecipeEndpoint).setPhoto(
+                    session,
+                    params['householdId'],
+                    params['recipeId'],
+                    params['photo'],
+                  ),
+        ),
+        'photo': _is.MethodConnector(
+          name: 'photo',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'recipeId': _is.ParameterDescription(
+              name: 'recipeId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['recipe'] as _iotgfwtb.RecipeEndpoint).photo(
+                    session,
+                    params['householdId'],
+                    params['recipeId'],
+                  ),
+        ),
+        'remove': _is.MethodConnector(
+          name: 'remove',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'recipeId': _is.ParameterDescription(
+              name: 'recipeId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['recipe'] as _iotgfwtb.RecipeEndpoint).remove(
+                    session,
+                    params['householdId'],
+                    params['recipeId'],
+                  ),
+        ),
+        'watch': _is.MethodStreamConnector(
+          name: 'watch',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          streamParams: {},
+          returnType: _is.MethodStreamReturnType.streamType,
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+                Map<String, Stream> streamParams,
+              ) => (endpoints['recipe'] as _iotgfwtb.RecipeEndpoint).watch(
+                session,
+                params['householdId'],
+              ),
+        ),
+      },
+    );
     connectors['shopping'] = _is.EndpointConnector(
       name: 'shopping',
       endpoint: endpoints['shopping']!,
@@ -812,6 +1003,43 @@ class Endpoints extends _is.EndpointDispatch {
                     params['householdId'],
                     params['listId'],
                     params['newItem'],
+                  ),
+        ),
+        'addItems': _is.MethodConnector(
+          name: 'addItems',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'listId': _is.ParameterDescription(
+              name: 'listId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'newItems': _is.ParameterDescription(
+              name: 'newItems',
+              type: _is.getType<List<_i97lm970.NewShoppingItem>>(),
+              nullable: false,
+            ),
+            'sourceRecipeId': _is.ParameterDescription(
+              name: 'sourceRecipeId',
+              type: _is.getType<int?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shopping'] as _i0uz9s3h.ShoppingEndpoint)
+                  .addItems(
+                    session,
+                    params['householdId'],
+                    params['listId'],
+                    params['newItems'],
+                    params['sourceRecipeId'],
                   ),
         ),
         'updateItem': _is.MethodConnector(

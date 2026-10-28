@@ -34,7 +34,7 @@ database:
   user: postgres
   requireSsl: false
 
-maxRequestSize: 524288 # The maximum size of requests allowed in bytes
+maxRequestSize: 2097152 # The maximum size of requests allowed in bytes (recipe photos up to 1 MB)
 
 # Browsers may only call the API from the web app (SERVERPOD_ALLOWED_ORIGINS);
 # the mobile apps send no Origin header and are not affected.

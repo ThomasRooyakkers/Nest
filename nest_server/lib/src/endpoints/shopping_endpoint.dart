@@ -11,6 +11,9 @@ class ShoppingEndpoint extends Endpoint {
   static const _maxSpecLength = 60;
   static const _maxAddressLength = 200;
 
+  /// Most items [addItems] takes in one call.
+  static const _maxItemsAtOnce = 100;
+
   // Lists.
 
   /// The household's shopping lists, oldest first. Creates a first list
@@ -218,18 +221,109 @@ class ShoppingEndpoint extends Endpoint {
   ) async {
     final access = await _guard(session, householdId);
     final list = await _list(session, access, listId);
+    final (item, catalogItem, _) = await _add(session, access, list, newItem);
+    await _post(
+      session,
+      access,
+      catalogItems: catalogItem.householdId == null ? null : [catalogItem],
+      items: [item],
+    );
+    return item;
+  }
+
+  /// Puts several items on a list as "to buy", e.g. a recipe's
+  /// ingredients. Like [addItem], but items that are already to buy are
+  /// skipped (their spec is left alone). [sourceRecipeId] (one of the
+  /// household's recipes) is noted on the items that are added.
+  Future<AddedShoppingItems> addItems(
+    Session session,
+    int householdId,
+    int listId,
+    List<NewShoppingItem> newItems,
+    int? sourceRecipeId,
+  ) async {
+    final access = await _guard(session, householdId);
+    final list = await _list(session, access, listId);
+    if (newItems.isEmpty || newItems.length > _maxItemsAtOnce) {
+      throw NestException(code: NestErrorCode.invalidInput);
+    }
+    if (sourceRecipeId != null) {
+      final count = await Recipe.db.count(
+        session,
+        where: (t) =>
+            t.id.equals(sourceRecipeId) &
+            t.householdId.equals(access.householdId),
+      );
+      if (count == 0) throw NestException(code: NestErrorCode.notFound);
+    }
+
+    final added = <ShoppingItem>[];
+    final skipped = <String>[];
+    final ownCatalogItems = <CatalogItem>[];
+    await session.db.transaction((transaction) async {
+      for (final newItem in newItems) {
+        final (item, catalogItem, wasToBuy) = await _add(
+          session,
+          access,
+          list,
+          newItem,
+          sourceRecipeId: sourceRecipeId,
+          skipIfToBuy: true,
+          transaction: transaction,
+        );
+        if (catalogItem.householdId != null) ownCatalogItems.add(catalogItem);
+        if (wasToBuy) {
+          skipped.add(item.name);
+        } else {
+          added.add(item);
+        }
+      }
+    });
+    if (added.isNotEmpty) {
+      await _post(
+        session,
+        access,
+        catalogItems: ownCatalogItems.isEmpty ? null : ownCatalogItems,
+        items: added,
+      );
+    }
+    return AddedShoppingItems(items: added, skippedNames: skipped);
+  }
+
+  /// Adds [newItem] to [list], or moves it back to "to buy" when it is
+  /// already on the list. Returns the item, its catalog item and whether it
+  /// was already to buy (then, with [skipIfToBuy], it is left unchanged).
+  static Future<(ShoppingItem, CatalogItem, bool)> _add(
+    Session session,
+    HouseholdAccess access,
+    ShoppingList list,
+    NewShoppingItem newItem, {
+    int? sourceRecipeId,
+    bool skipIfToBuy = false,
+    Transaction? transaction,
+  }) async {
     final spec = _validSpec(newItem.spec);
     final storeIds = await _validStoreIds(session, access, newItem.storeIds);
 
     final catalogItem = newItem.catalogItemId != null
         ? await _catalogItem(session, access, newItem.catalogItemId!)
-        : await _catalogItemByName(session, access, newItem.name);
+        : await _catalogItemByName(
+            session,
+            access,
+            newItem.name,
+            transaction: transaction,
+          );
 
     final existing = await ShoppingItem.db.findFirstRow(
       session,
       where: (t) =>
           t.listId.equals(list.id!) & t.catalogItemId.equals(catalogItem.id!),
+      transaction: transaction,
     );
+    final wasToBuy = existing?.status == ShoppingItemStatus.toBuy;
+    if (existing != null && wasToBuy && skipIfToBuy) {
+      return (existing, catalogItem, true);
+    }
 
     final ShoppingItem saved;
     if (existing != null) {
@@ -237,13 +331,13 @@ class ShoppingEndpoint extends Endpoint {
         session,
         existing.copyWith(
           status: ShoppingItemStatus.toBuy,
-          statusChangedAt: existing.status == ShoppingItemStatus.toBuy
-              ? existing.statusChangedAt
-              : DateTime.now(),
+          statusChangedAt: wasToBuy ? existing.statusChangedAt : DateTime.now(),
           spec: spec.isEmpty ? existing.spec : spec,
           storeIds: storeIds.isEmpty ? existing.storeIds : storeIds,
+          sourceRecipeId: sourceRecipeId ?? existing.sourceRecipeId,
           updatedAt: DateTime.now(),
         ),
+        transaction: transaction,
       );
     } else {
       saved = await ShoppingItem.db.insertRow(
@@ -261,16 +355,12 @@ class ShoppingEndpoint extends Endpoint {
           storeIds: storeIds,
           status: ShoppingItemStatus.toBuy,
           addedById: access.user.id,
+          sourceRecipeId: sourceRecipeId,
         ),
+        transaction: transaction,
       );
     }
-    await _post(
-      session,
-      access,
-      catalogItems: catalogItem.householdId == null ? null : [catalogItem],
-      items: [saved],
-    );
-    return saved;
+    return (saved, catalogItem, wasToBuy);
   }
 
   /// Changes an item's spec and stores.
@@ -428,8 +518,9 @@ class ShoppingEndpoint extends Endpoint {
   static Future<CatalogItem> _catalogItemByName(
     Session session,
     HouseholdAccess access,
-    String rawName,
-  ) async {
+    String rawName, {
+    Transaction? transaction,
+  }) async {
     final name = _validName(rawName);
     final pattern = _escapeLike(name);
     final matches = await CatalogItem.db.find(
@@ -438,6 +529,7 @@ class ShoppingEndpoint extends Endpoint {
           (t.householdId.equals(null) |
               t.householdId.equals(access.householdId)) &
           (t.nameEn.ilike(pattern) | t.nameNl.ilike(pattern)),
+      transaction: transaction,
     );
     if (matches.isNotEmpty) {
       return matches.firstWhere(
@@ -455,6 +547,7 @@ class ShoppingEndpoint extends Endpoint {
         iconKey: '',
         category: ShoppingCategory.other,
       ),
+      transaction: transaction,
     );
   }
 

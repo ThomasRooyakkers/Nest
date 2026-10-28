@@ -1,0 +1,10 @@
+### A numbered step of a recipe. Only reachable through its recipe.
+class: RecipeStep
+table: recipe_step
+fields:
+  recipe: Recipe?, relation(name=recipe_steps, onDelete=Cascade)
+  position: int
+  text: String
+indexes:
+  recipe_step_recipe_idx:
+    fields: recipeId

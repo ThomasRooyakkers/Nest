@@ -1,0 +1,29 @@
+### A recipe in the household's library.
+class: Recipe
+table: recipe
+fields:
+  household: Household?, relation(onDelete=Cascade)
+  title: String
+  description: String, default=''
+  ### Path of the photo in the server's private file storage (Postgres);
+  ### null without a photo. A new photo gets a new path, so the app can
+  ### cache photos by path.
+  photoPath: String?
+  ### Number of servings the ingredient amounts are for.
+  servings: int, default=4
+  prepMinutes: int?
+  cookMinutes: int?
+  tags: List<String>
+  isFavorite: bool, default=false
+  createdBy: NestUser?, relation(optional, onDelete=SetNull)
+  ### In order of [RecipeIngredient.position]; always included by the
+  ### recipe endpoint.
+  ingredients: List<RecipeIngredient>?, relation(name=recipe_ingredients)
+  ### In order of [RecipeStep.position]; always included by the recipe
+  ### endpoint.
+  steps: List<RecipeStep>?, relation(name=recipe_steps)
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now
+indexes:
+  recipe_household_idx:
+    fields: householdId
