@@ -27,6 +27,8 @@ class ShoppingScreen extends ConsumerStatefulWidget {
 }
 
 class _ShoppingScreenState extends ConsumerState<ShoppingScreen> {
+  static const _maxWidth = 560.0;
+
   final _search = TextEditingController();
   final _searchFocus = FocusNode();
 
@@ -51,6 +53,11 @@ class _ShoppingScreenState extends ConsumerState<ShoppingScreen> {
     final syncState = ref.watch(shoppingSyncProvider(householdId));
     final list = ref.watch(activeShoppingListProvider(householdId));
     final query = _search.text.trim();
+    // Phone-like width on tablets and the web, so tiles stay tile-sized.
+    final width = MediaQuery.sizeOf(context).width;
+    final side = width > _maxWidth + 2 * NestSpacing.screen
+        ? (width - _maxWidth) / 2
+        : NestSpacing.screen;
 
     return Scaffold(
       body: SafeArea(
@@ -62,9 +69,9 @@ class _ShoppingScreenState extends ConsumerState<ShoppingScreen> {
               .catchError((_) {}),
           child: ListView(
             padding: EdgeInsets.fromLTRB(
+              side,
               NestSpacing.screen,
-              NestSpacing.screen,
-              NestSpacing.screen,
+              side,
               NestSpacing.screen + MediaQuery.paddingOf(context).bottom,
             ),
             children: [
@@ -336,7 +343,7 @@ class _SearchResults extends ConsumerWidget {
         type: MaterialType.transparency,
         child: Column(
           children: [
-            if (showOwn)
+            if (showOwn && results.isEmpty)
               row(
                 icon: LucideIcons.plus,
                 title: l10n.shoppingAddOwnItem(query),
@@ -364,6 +371,21 @@ class _SearchResults extends ConsumerWidget {
                     list: list,
                     catalogItem: item,
                     name: catalogName(item, language),
+                  );
+                  onAdded();
+                },
+              ),
+            if (showOwn && results.isNotEmpty)
+              row(
+                icon: LucideIcons.plus,
+                title: l10n.shoppingAddOwnItem(query),
+                onList: false,
+                onTap: () {
+                  _addItem(
+                    ref,
+                    householdId: householdId,
+                    list: list,
+                    name: query,
                   );
                   onAdded();
                 },

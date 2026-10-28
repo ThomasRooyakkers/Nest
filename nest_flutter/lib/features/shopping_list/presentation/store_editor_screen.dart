@@ -180,9 +180,19 @@ class _StoreEditorState extends ConsumerState<_StoreEditor> {
           children: [
             for (final color in StoreColor.values)
               ChoiceChip(
-                avatar: CircleAvatar(
-                  radius: 7,
-                  backgroundColor: storeColors(colors, color).$1,
+                showCheckmark: false,
+                side: BorderSide(
+                  color: _color == color ? colors.accent : colors.border,
+                  width: _color == color ? 2 : 1,
+                ),
+                avatar: Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: storeColors(colors, color).$1,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: colors.borderStrong),
+                  ),
                 ),
                 label: Text(storeColorLabel(l10n, color)),
                 selected: _color == color,

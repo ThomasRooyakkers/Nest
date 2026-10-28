@@ -59,10 +59,13 @@ class ShoppingTile extends StatelessWidget {
           onTap: onTap,
           onLongPress: onLongPress,
           child: Stack(
+            alignment: Alignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 14, 8, 12),
+                // Full width, so the content is centred in the tile.
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(

@@ -154,9 +154,14 @@ class _ItemSheetState extends ConsumerState<_ItemSheet> {
                   ),
                   for (final store in stores)
                     FilterChip(
-                      avatar: CircleAvatar(
-                        backgroundColor: storeColors(colors, store.color).$1,
-                        radius: 6,
+                      avatar: Container(
+                        width: 14,
+                        height: 14,
+                        decoration: BoxDecoration(
+                          color: storeColors(colors, store.color).$1,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: colors.borderStrong),
+                        ),
                       ),
                       label: Text(store.name),
                       selected: _storeIds.contains(store.id),

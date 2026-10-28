@@ -50,8 +50,11 @@ cd nest_server && dart bin/seed.dart --apply-migrations
 
 This creates the households "Home" and "Test family" and the users
 `thomas@nest.test` (super-admin), `sarah@`, `emma@`, `oma@` (in both
-households) and `jan@nest.test`, all with the `seedPassword`. It can run while
-`serverpod start` is running and does nothing if the data already exists.
+households) and `jan@nest.test`, all with the `seedPassword`, plus sample
+shopping lists, stores and items for both households. It can run while
+`serverpod start` is running and skips every part that already exists, so it
+can be run again after a new feature adds fixtures. The built-in shopping
+catalog is not seed data: the server syncs it at every start.
 
 New accounts: in development the registration and password-reset codes are
 printed in the server log instead of being emailed.
@@ -107,6 +110,12 @@ cd nest_admin && flutter test
 - Server models/endpoints changed: `cd nest_server && serverpod generate`
   (`serverpod start` does this automatically), and
   `serverpod create-migration` when a table changed.
-- Riverpod providers changed: `cd nest_flutter && dart run build_runner build`.
+- Riverpod providers or drift tables changed:
+  `cd nest_flutter && dart run build_runner build`.
+- After upgrading drift, refresh the web database files, which must match the
+  drift version:
+  `cp ~/.pub-cache/hosted/pub.dev/drift-<version>/drift_worker.js
+  ~/.pub-cache/hosted/pub.dev/drift-<version>/extension/devtools/build/sqlite3.wasm
+  nest_flutter/web/`.
 - Strings changed (ARB files): `flutter gen-l10n` in the package that owns
   them. Every string must exist in both `*_en.arb` and `*_nl.arb`.
