@@ -1,0 +1,74 @@
+# Nest in production on the Raspberry Pi. Run from ~/nest/deploy:
+#   docker compose up -d --build
+# Secrets live in deploy/.env (not in Git, see .env.example).
+name: nest
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: nest
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?set in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d nest"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  nest:
+    build:
+      context: ..
+      dockerfile: nest_server/Dockerfile
+    image: nest-server:latest
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SERVERPOD_DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      SERVERPOD_SERVICE_SECRET: ${SERVICE_SECRET:?set in .env}
+      SERVERPOD_PASSWORD_emailSecretHashPepper: ${EMAIL_SECRET_HASH_PEPPER:?set in .env}
+      SERVERPOD_PASSWORD_jwtHmacSha512PrivateKey: ${JWT_HMAC_SHA512_PRIVATE_KEY:?set in .env}
+      SERVERPOD_PASSWORD_jwtRefreshTokenHashPepper: ${JWT_REFRESH_TOKEN_HASH_PEPPER:?set in .env}
+      # Optional: without it, sign-up and reset codes are written to the log.
+      SERVERPOD_PASSWORD_resendApiKey: ${RESEND_API_KEY:-}
+      SERVERPOD_PASSWORD_mailFrom: ${MAIL_FROM:-Nest <nest@g3cko.be>}
+    # No published ports: only the tunnel reaches the server.
+
+  cloudflared:
+    image: cloudflare/cloudflared:2026.8.2
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN:-}
+    depends_on:
+      - nest
+
+  # Interim nightly database dump (the full restic backup is phase 7).
+  # Keeps the last 14 dumps in deploy/backups.
+  backup:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - ./backups:/backups
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        while true; do
+          file=/backups/nest-$$(date +%Y%m%d-%H%M%S).sql.gz
+          pg_dump -h postgres -U postgres nest | gzip > "$$file.tmp" && mv "$$file.tmp" "$$file" && echo "backup: wrote $$file"
+          ls -1t /backups/nest-*.sql.gz | tail -n +15 | xargs -r rm --
+          sleep 86400
+        done
+
+volumes:
+  pgdata:

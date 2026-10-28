@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:serverpod_auth_idp_server/core.dart';
 import 'package:serverpod_auth_idp_server/providers/email.dart';
 import 'package:serverpod_cloud_storage/serverpod_cloud_storage.dart';
 
 import 'src/generated/serverpod.dart';
 import 'src/services/built_in_catalog.dart';
+import 'src/services/verification_mail.dart';
 
 /// The starting point of the Serverpod server.
 void run(List<String> args) async {
@@ -37,10 +40,34 @@ Future<Serverpod> createServerpod(
       JwtConfigFromPasswords(),
     ],
     identityProviderBuilders: [
-      // Email/password sign-in. In development the verification codes are
-      // logged to the console. Production needs a real email sender (see
-      // docs/STATUS.md).
-      ServerpodCloudEmailIdpConfig(appDisplayName: 'Nest'),
+      // Email/password sign-in. Codes are emailed through Resend when a
+      // `resendApiKey` is configured, otherwise written to the log.
+      EmailIdpConfigFromPasswords(
+        sendRegistrationVerificationCode:
+            (
+              session, {
+              required email,
+              required accountRequestId,
+              required verificationCode,
+              required transaction,
+            }) => VerificationMail.sendRegistrationCode(
+              session,
+              email: email,
+              code: verificationCode,
+            ),
+        sendPasswordResetVerificationCode:
+            (
+              session, {
+              required email,
+              required passwordResetRequestId,
+              required verificationCode,
+              required transaction,
+            }) => VerificationMail.sendPasswordResetCode(
+              session,
+              email: email,
+              code: verificationCode,
+            ),
+      ),
     ],
   );
 
@@ -58,6 +85,12 @@ Future<Serverpod> createServerpod(
       fallback: () => DatabaseCloudStorage('public'),
     ),
   );
+
+  // The Flutter web app, when built into web/app (production image).
+  final webApp = Directory('web/app');
+  if (webApp.existsSync()) {
+    pod.webServer.addRoute(FlutterRoute(webApp));
+  }
 
   return pod;
 }

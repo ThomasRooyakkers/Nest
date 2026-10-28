@@ -1,8 +1,10 @@
 # Build from the project root with:
 # docker build -f nest_server/Dockerfile .
+# For production, deploy/deploy.sh first builds the web app into
+# nest_server/web/app, which the image serves.
 
 # Build stage
-FROM dart:3.12.2 AS build
+FROM dart:3.13.7 AS build
 
 # Create a minimal workspace that preserves locked server dependency versions.
 WORKDIR /app
@@ -54,5 +56,5 @@ EXPOSE 8080
 EXPOSE 8081
 EXPOSE 8082
 
-# Define the entrypoint command
-ENTRYPOINT ./bin/server --mode=$runmode --server-id=$serverid --logging=$logging --role=$role
+# Define the entrypoint command. Migrations are applied at start.
+ENTRYPOINT ./bin/server --mode=$runmode --server-id=$serverid --logging=$logging --role=$role --apply-migrations

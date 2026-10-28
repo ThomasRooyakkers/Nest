@@ -34,3 +34,7 @@ pubspec_overrides.yaml
 
 # Build output
 build/
+# Web app copied into the server image by deploy/deploy.sh
+nest_server/web/app/
+# Database dumps on the Pi
+deploy/backups/
