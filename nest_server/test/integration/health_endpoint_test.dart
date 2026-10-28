@@ -15,5 +15,13 @@ void main() {
         isTrue,
       );
     });
+
+    test('when pinging then it reports the API levels', () async {
+      final ping = await endpoints.health.ping(sessionBuilder);
+
+      expect(ping.apiVersion, nestApiVersion);
+      expect(ping.minClientApiVersion, nestMinClientApiVersion);
+      expect(nestMinClientApiVersion, lessThanOrEqualTo(nestApiVersion));
+    });
   });
 }

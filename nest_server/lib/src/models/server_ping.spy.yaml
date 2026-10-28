@@ -1,4 +1,5 @@
-### Answer of the public health check, used by the apps to show connection state.
+### Answer of the public health check. The apps use it to show connection
+### state and to check that a server is a compatible Nest server.
 class: ServerPing
 
 fields:
@@ -6,3 +7,8 @@ fields:
   serverTime: DateTime
   ### Nest server version.
   version: String
+  ### API level of this server, raised when endpoints are added or changed.
+  ### Null on servers from before API levels existed (level 1).
+  apiVersion: int?
+  ### Oldest app API level this server still works with. Null means 1.
+  minClientApiVersion: int?

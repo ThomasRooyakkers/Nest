@@ -12,17 +12,22 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _is;
 
-/// Answer of the public health check, used by the apps to show connection state.
+/// Answer of the public health check. The apps use it to show connection
+/// state and to check that a server is a compatible Nest server.
 abstract class ServerPing
     implements _is.SerializableModel, _is.ProtocolSerialization {
   ServerPing._({
     required this.serverTime,
     required this.version,
+    this.apiVersion,
+    this.minClientApiVersion,
   });
 
   factory ServerPing({
     required DateTime serverTime,
     required String version,
+    int? apiVersion,
+    int? minClientApiVersion,
   }) = _ServerPingImpl;
 
   factory ServerPing.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -31,6 +36,8 @@ abstract class ServerPing
         jsonSerialization['serverTime'],
       ),
       version: jsonSerialization['version'] as String,
+      apiVersion: jsonSerialization['apiVersion'] as int?,
+      minClientApiVersion: jsonSerialization['minClientApiVersion'] as int?,
     );
   }
 
@@ -40,12 +47,21 @@ abstract class ServerPing
   /// Nest server version.
   String version;
 
+  /// API level of this server, raised when endpoints are added or changed.
+  /// Null on servers from before API levels existed (level 1).
+  int? apiVersion;
+
+  /// Oldest app API level this server still works with. Null means 1.
+  int? minClientApiVersion;
+
   /// Returns a shallow copy of this [ServerPing]
   /// with some or all fields replaced by the given arguments.
   @_is.useResult
   ServerPing copyWith({
     DateTime? serverTime,
     String? version,
+    int? apiVersion,
+    int? minClientApiVersion,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -53,6 +69,9 @@ abstract class ServerPing
       '__className__': 'ServerPing',
       'serverTime': serverTime.toJson(),
       'version': version,
+      if (apiVersion != null) 'apiVersion': apiVersion,
+      if (minClientApiVersion != null)
+        'minClientApiVersion': minClientApiVersion,
     };
   }
 
@@ -62,6 +81,9 @@ abstract class ServerPing
       '__className__': 'ServerPing',
       'serverTime': serverTime.toJson(),
       'version': version,
+      if (apiVersion != null) 'apiVersion': apiVersion,
+      if (minClientApiVersion != null)
+        'minClientApiVersion': minClientApiVersion,
     };
   }
 
@@ -71,13 +93,19 @@ abstract class ServerPing
   }
 }
 
+class _Undefined {}
+
 class _ServerPingImpl extends ServerPing {
   _ServerPingImpl({
     required DateTime serverTime,
     required String version,
+    int? apiVersion,
+    int? minClientApiVersion,
   }) : super._(
          serverTime: serverTime,
          version: version,
+         apiVersion: apiVersion,
+         minClientApiVersion: minClientApiVersion,
        );
 
   /// Returns a shallow copy of this [ServerPing]
@@ -87,10 +115,16 @@ class _ServerPingImpl extends ServerPing {
   ServerPing copyWith({
     DateTime? serverTime,
     String? version,
+    Object? apiVersion = _Undefined,
+    Object? minClientApiVersion = _Undefined,
   }) {
     return ServerPing(
       serverTime: serverTime ?? this.serverTime,
       version: version ?? this.version,
+      apiVersion: apiVersion is int? ? apiVersion : this.apiVersion,
+      minClientApiVersion: minClientApiVersion is int?
+          ? minClientApiVersion
+          : this.minClientApiVersion,
     );
   }
 }

@@ -304,7 +304,8 @@ class EndpointHealth extends _isc.EndpointRef {
   @override
   String get name => 'health';
 
-  /// Returns the server time and version so the app can show it is connected.
+  /// Returns the server time, version and API levels, so the app can show it
+  /// is connected and check that it is a compatible Nest server.
   _ida.Future<_i4l166nw.ServerPing> ping() =>
       caller.callServerEndpoint<_i4l166nw.ServerPing>(
         'health',
