@@ -2,9 +2,14 @@
 
 ## Current phase
 
-**Phase 2 — Shopping List: built and deployed to the Pi (2026-10-28), at the gate.**
-Live at https://nest.g3cko.be (API https://nest-api.g3cko.be). Gate: "Thomas's
-household can use it daily" — Thomas's household starts using it now.
+**Phase 3 — Bring your own backend: in progress (2026-10-28).** Steps 1–4 are
+done; step 5 (self-hosting kit) is built and tested locally but waits for
+Thomas's choice of image registry; step 6 (Pi on the published image, second
+server, gate) has not started.
+
+Phase 2 (Shopping List) is deployed at https://nest.g3cko.be (API
+https://nest-api.g3cko.be); its gate ("Thomas's household can use it daily")
+is with Thomas. See "Web shopping list does not load" under open questions.
 
 **Plan change (2026-10-28, Thomas):** notifications are dropped from v1 and Nest
 becomes *bring your own backend*. Phase 3 is now "Bring your own backend"; Tasks
@@ -151,6 +156,75 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   files, migrations applied, first backup written. No production account was
   created yet.
 
+### Phase 3 — Bring your own backend (2026-10-28, in progress)
+
+- **Health and compatibility:** `health.ping` also reports `apiVersion` (now
+  2), `minClientApiVersion` (1) and `signUpMode`; all three are nullable so
+  older servers (API level 1) still parse. Server version 0.2.0. The app has
+  `appApiVersion` 2 and `minServerApiVersion` 1
+  (`core/server/server_compatibility.dart`) and refuses servers outside that
+  range with a clear message ("server too old" / "update the app").
+- **Server choice in the app:** sign-in shows "Server: …" with "Change
+  server" (not on the web); Settings has a server card (address, connection,
+  version, API level, Change server) and an About screen (app version,
+  server, licences). The address may be the API (`nest-api.example.com`) or
+  the web app (`nest.example.com`): the app then reads the API address from
+  the web app's `config.json`. Without a scheme, https is used. The choice is
+  kept in drift (`device.server`; `device.` keys survive sign-out). Switching
+  signs out (locally even when the old server is unreachable), clears the
+  cache and restarts the app on the new server (`NestRoot`, a fresh
+  `ProviderScope`), keeping the language on screen. Defaults: release builds
+  use `nest.g3cko.be`, debug builds the local server, `SERVER_URL` still
+  overrides. The web app always uses the server it was loaded from.
+- **Served web config:** the server generates the web app's
+  `assets/assets/config.json` (`WebAppConfigRoute`) with its public API
+  address and `cookieAuth`, so one web build works on every host
+  (`SERVER_URL` is no longer baked into the web build).
+- **Host settings from the environment** (`services/host_settings.dart`,
+  read from `SERVERPOD_PASSWORD_*`): `signUpMode` (`invite-only` default, or
+  `open`), `superAdminEmail`, `mailFrom`, `resendApiKey`. `production.yaml`
+  no longer names g3cko.be: public hosts and allowed origins come from
+  `SERVERPOD_API_SERVER_PUBLIC_HOST`, `SERVERPOD_WEB_SERVER_PUBLIC_HOST` and
+  `SERVERPOD_ALLOWED_ORIGINS`, set by the Compose file from `.env`
+  (`NEST_WEB_DOMAIN`, `NEST_API_DOMAIN`). No default mail sender any more.
+- **Invite-only sign-up:** new endpoint `signUp.redeemInvite(email, code)`
+  (unscoped, in the endpoint registry) checks a household invite code and
+  stores a `sign_up_invite` ticket (1 day). `EmailIdpEndpoint` overrides
+  `startRegistration` to refuse emails without a ticket (`inviteRequired`)
+  unless the server is open or the email is the super-admin's. When the
+  account is created, the Nest profile is created, the super-admin email
+  gets `isSuperAdmin`, and a ticket joins its household as member. At every
+  start, an existing account with `superAdminEmail` is made super-admin.
+  App: "Create account" has an invite code field (required wording and hint
+  on invite-only servers, "(optional)" on open ones) and says "You will join
+  {household}". New migration `20261028113542280`.
+- **Web login cookies:** `authCookie` (secure) in `production.yaml`; the web
+  client sets `cookieAuth` when the served config says so. The refresh token
+  lives only in an HttpOnly cookie; a page reload stays signed in.
+- **Deep links:** redirects to start/sign-in/onboarding keep the original
+  location in `?from=` and go there once the user is in (not after signing
+  out; only in-app paths).
+- **Self-hosting kit (draft, not published):** `deploy/build-image.sh` (web
+  app + server image; `--push` builds arm64+amd64 with buildx), generic
+  `deploy/docker-compose.yml` (published image via `NEST_IMAGE` /
+  `NEST_VERSION`, ports bound to 127.0.0.1 for an own proxy, Cloudflare
+  Tunnel as Compose profile `tunnel`, nightly dump), `deploy/.env.example`,
+  `deploy/docker-compose.build.yml` (build from source), and the hosting
+  guide in `docs/hosting/hosting-guide.md` and `hosting-guide.nl.md`.
+  `deploy/deploy.sh` now builds through the build override.
+- **Tests:** 130 server tests (health levels, 10 sign-up tests, registry),
+  64 app tests (address parsing, compatibility, discovery, server screen
+  flows in EN/NL, About, sign-up with invite code, deep-link redirects,
+  cache clear keeps the server).
+- **Verified:** a local server started from the generic Compose file (in a
+  scratch folder, plain-http override): served config, health, invite-only
+  refusal in the web app, super-admin sign-up without code (became
+  super-admin), deep link `/shopping` kept through sign-up and onboarding,
+  login kept after a full reload via the refresh cookie, nightly dump, and
+  the guide's backup + restore commands. iOS simulator: sign-in shows the
+  server, Change server to `nest-api.g3cko.be` (the live API-level-1 Pi)
+  validated and switched.
+
 ## Next
 
 1. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
@@ -158,19 +232,20 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
    For the iPhone, build with `--dart-define=SERVER_URL=https://nest-api.g3cko.be/`.
 2. Resend: account + domain `g3cko.be` (DNS records can be added in Cloudflare),
    then `RESEND_API_KEY` in `~/nest/deploy/.env` and `docker compose up -d nest`.
-3. Phase 3 — Bring your own backend (CLAUDE.md section 10), in this order:
-   1. `health` reports server and API version; app-side compatibility check.
-   2. Server choice in the app: sign-in screen, settings, About; remembered on
-      the device; switching server signs out and clears the cache.
-   3. Host-specific settings from the environment: domain, allowed origins,
-      mail sender, super-admin email, sign-up mode (invite-only by default).
-   4. Login cookies for the web app; fix the lost deep link at app start.
-   5. Multi-arch server image with the web app built in, published to a
-      registry; generic Compose file and `.env.example`; hosting guide EN/NL.
-   6. Move Thomas's Pi onto the published image; set up a second server from
-      the guide alone on a clean machine (gate).
-   Open choices for Thomas before step 5: where to publish the image (e.g.
-   GitHub Container Registry) and whether the repository becomes public.
+3. Phase 3, remaining:
+   5. **Thomas decides** where to publish the image (GitHub Container
+      Registry suggested, e.g. `ghcr.io/<owner>/nest-server`) and whether
+      the repository becomes public (the guide tells hosts to fetch
+      `docker-compose.yml` and `.env.example` from it). Then: set the
+      default `NEST_IMAGE`, add a GitHub Actions workflow that builds and
+      pushes the multi-arch image on a version tag, publish 0.2.0.
+   6. Move Thomas's Pi onto the published image (ask first; the Pi's
+      `.env` needs `NEST_WEB_DOMAIN=nest.g3cko.be`,
+      `NEST_API_DOMAIN=nest-api.g3cko.be`, `SUPER_ADMIN_EMAIL`,
+      `SIGN_UP_MODE`, `COMPOSE_PROFILES=tunnel`, `NEST_IMAGE`, and
+      `MAIL_FROM` if Resend is used — `deploy.sh` fails until these are
+      set). Then set up a second server from the guide alone on a clean
+      machine (gate), and switch the app between the two.
 
 ## Open questions
 
@@ -180,11 +255,20 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   delete it or keep it.
 - **Ubuntu 25.10 on the Pi is end of life** and a reboot is pending; upgrading to
   26.04 LTS is Thomas's call (the Nest containers restart on their own).
-- **Deep links lost at app start:** opening the app on a URL such as `/#/shopping`
-  lands on Home, because the start/sign-in redirect does not keep the original
-  location. To fix in phase 3.
+- **Web shopping list does not load in built web apps** (found 2026-10-28,
+  also in the phase 2 build, so it likely affects https://nest.g3cko.be):
+  the shopping screen stays on a spinner (served by the Nest server, with its
+  cross-origin isolation headers drift picks `opfsLocks` and never opens) or
+  shows "Offline" (served without those headers, drift picks
+  `sharedIndexedDb` and an "Uncaught Error" follows). Other screens work;
+  native apps are not affected. Needs its own investigation (drift web
+  setup / worker files vs. release builds).
+- **Typing a local http server** (`localhost:8080`) in Change server tries
+  https; type `http://localhost:8080`. Fine for production; could try http
+  for local addresses later.
 - **Image registry and repository visibility** for the self-hosting kit (phase 3):
   GitHub Container Registry is the obvious choice; needs Thomas's decision.
+  The repository has no Git remote yet.
 - **Test account in the dev database:** `claude-test@nest.test` (household
   "Claude test") was created while verifying phase 2; delete it or keep it for
   later checks.
@@ -227,5 +311,12 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   Cloudflare's free certificate (`api.nest.g3cko.be` would not be).
 - **Sign-up codes go through Resend** (Thomas's choice), sent with a plain HTTPS call
   (no new package); `ServerpodCloudEmailIdpConfig` was replaced.
+- **Invite-only sign-up uses a ticket** (`sign_up_invite`): the auth
+  module's registration calls cannot carry an invite code, so the app first
+  redeems the code for the email address, and registration checks the ticket.
+- **Web app config is generated by the server** instead of baked in with
+  `SERVER_URL`, so one web build (and one image) serves every host.
+- **Sign-up mode is invite-only in development too** unless `signUpMode:
+  'open'` is set in `passwords.yaml` (see the example file).
 - The template's `AGENTS.md` (Serverpod MCP workflow) was not copied; CLAUDE.md stays the
   single instruction file.
