@@ -9,6 +9,9 @@ import 'package:nest_flutter/core/backend/nest_client.dart';
 import 'package:nest_flutter/core/backend/server_health_repository.dart';
 import 'package:nest_flutter/core/database/nest_database.dart';
 import 'package:nest_flutter/core/household/household_repository.dart';
+import 'package:nest_flutter/core/server/server_address.dart';
+import 'package:nest_flutter/core/server/server_check.dart';
+import 'package:nest_flutter/core/server/server_session.dart';
 import 'package:nest_flutter/features/auth/data/auth_repository.dart';
 import 'package:nest_flutter/features/settings/data/profile_repository.dart';
 
@@ -69,10 +72,34 @@ class FakeHouseholdRepository implements HouseholdRepository {
 }
 
 class FakeHealthRepository implements ServerHealthRepository {
+  FakeHealthRepository({this.apiVersion = 2, this.minClientApiVersion = 1});
+
+  final int? apiVersion;
+  final int? minClientApiVersion;
+
   @override
-  Future<ServerPing> ping() async =>
-      ServerPing(serverTime: DateTime.utc(2026), version: '0.1.0');
+  Future<ServerPing> ping() async => ServerPing(
+    serverTime: DateTime.utc(2026),
+    version: '0.2.0',
+    apiVersion: apiVersion,
+    minClientApiVersion: minClientApiVersion,
+  );
 }
+
+/// Records server switches instead of restarting the app.
+class FakeServerSwitcher implements ServerSwitcher {
+  final switches = <ServerAddress>[];
+
+  @override
+  Future<void> switchTo(ServerAddress server, {Locale? locale}) async =>
+      switches.add(server);
+}
+
+/// The server the tests are "connected" to.
+const testServer = ServerAddress(
+  label: 'nest.test',
+  apiUrl: 'https://nest-api.test/',
+);
 
 NestUser testUser({String name = 'Thomas', String locale = 'en'}) => NestUser(
   id: 1,
@@ -111,6 +138,9 @@ Future<ProviderContainer> pumpNestApp(
   double textScale = 1,
   FakeShoppingServer? shoppingServer,
   NestDatabase? database,
+  FakeHealthRepository? health,
+  FakeServerSwitcher? serverSwitcher,
+  ServerChecker? serverChecker,
 }) async {
   tester.view.physicalSize = const Size(375, 812);
   tester.view.devicePixelRatio = 1;
@@ -143,7 +173,15 @@ Future<ProviderContainer> pumpNestApp(
           memberList: members,
         ),
       ),
-      serverHealthRepositoryProvider.overrideWithValue(FakeHealthRepository()),
+      serverHealthRepositoryProvider.overrideWithValue(
+        health ?? FakeHealthRepository(),
+      ),
+      currentServerProvider.overrideWithValue(testServer),
+      serverSwitcherProvider.overrideWithValue(
+        serverSwitcher ?? FakeServerSwitcher(),
+      ),
+      if (serverChecker != null)
+        serverCheckerProvider.overrideWithValue(serverChecker),
     ],
   );
   addTearDown(container.dispose);

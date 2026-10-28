@@ -567,4 +567,81 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get categoryOther => 'Other';
+
+  @override
+  String serverInUse(String server) {
+    return 'Server: $server';
+  }
+
+  @override
+  String get changeServer => 'Change server';
+
+  @override
+  String get chooseServerTitle => 'Choose a server';
+
+  @override
+  String get chooseServerSubtitle =>
+      'Nest works with any Nest server. Enter the address your family uses.';
+
+  @override
+  String currentServerLabel(String server) {
+    return 'Connected to $server';
+  }
+
+  @override
+  String get serverAddressLabel => 'Server address';
+
+  @override
+  String get connectButton => 'Connect';
+
+  @override
+  String useDefaultServer(String server) {
+    return 'Use $server';
+  }
+
+  @override
+  String get serverInvalidAddress => 'That is not a valid address.';
+
+  @override
+  String get serverNotFound => 'No Nest server answered at this address.';
+
+  @override
+  String get serverTooOld =>
+      'This server runs an older version of Nest than this app supports. Ask its administrator to update it.';
+
+  @override
+  String get appTooOld =>
+      'This server needs a newer version of the app. Please update Nest.';
+
+  @override
+  String switchServerTitle(String server) {
+    return 'Switch to $server?';
+  }
+
+  @override
+  String get switchServerMessage =>
+      'You will be signed out, and the data stored on this device is cleared.';
+
+  @override
+  String get switchButton => 'Switch';
+
+  @override
+  String get aboutTitle => 'About Nest';
+
+  @override
+  String get aboutText =>
+      'Nest is a private family app. Your household\'s data lives on the Nest server you choose.';
+
+  @override
+  String appVersionLabel(String version) {
+    return 'App version $version';
+  }
+
+  @override
+  String serverApiLevel(String level) {
+    return 'API level $level';
+  }
+
+  @override
+  String get licensesButton => 'Open-source licences';
 }

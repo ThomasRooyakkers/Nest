@@ -1093,6 +1093,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other'**
   String get categoryOther;
+
+  /// Server the app is connected to, on the sign-in screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Server: {server}'**
+  String serverInUse(String server);
+
+  /// Button that opens the screen to choose another server.
+  ///
+  /// In en, this message translates to:
+  /// **'Change server'**
+  String get changeServer;
+
+  /// Title of the screen to choose a server.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a server'**
+  String get chooseServerTitle;
+
+  /// Explanation on the choose server screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Nest works with any Nest server. Enter the address your family uses.'**
+  String get chooseServerSubtitle;
+
+  /// Current server on the choose server screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected to {server}'**
+  String currentServerLabel(String server);
+
+  /// Label of the server address field.
+  ///
+  /// In en, this message translates to:
+  /// **'Server address'**
+  String get serverAddressLabel;
+
+  /// Button that checks and switches to the typed server.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get connectButton;
+
+  /// Button to go back to the default server.
+  ///
+  /// In en, this message translates to:
+  /// **'Use {server}'**
+  String useDefaultServer(String server);
+
+  /// Error when the typed server address is invalid.
+  ///
+  /// In en, this message translates to:
+  /// **'That is not a valid address.'**
+  String get serverInvalidAddress;
+
+  /// Error when no Nest server is found at the address.
+  ///
+  /// In en, this message translates to:
+  /// **'No Nest server answered at this address.'**
+  String get serverNotFound;
+
+  /// Error when the server is too old for the app.
+  ///
+  /// In en, this message translates to:
+  /// **'This server runs an older version of Nest than this app supports. Ask its administrator to update it.'**
+  String get serverTooOld;
+
+  /// Error when the app is too old for the server.
+  ///
+  /// In en, this message translates to:
+  /// **'This server needs a newer version of the app. Please update Nest.'**
+  String get appTooOld;
+
+  /// Title of the dialog confirming a server switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to {server}?'**
+  String switchServerTitle(String server);
+
+  /// Message of the dialog confirming a server switch.
+  ///
+  /// In en, this message translates to:
+  /// **'You will be signed out, and the data stored on this device is cleared.'**
+  String get switchServerMessage;
+
+  /// Confirms switching servers.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch'**
+  String get switchButton;
+
+  /// Title of the About screen and the button that opens it.
+  ///
+  /// In en, this message translates to:
+  /// **'About Nest'**
+  String get aboutTitle;
+
+  /// Short description on the About screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Nest is a private family app. Your household\'s data lives on the Nest server you choose.'**
+  String get aboutText;
+
+  /// App version on the About screen.
+  ///
+  /// In en, this message translates to:
+  /// **'App version {version}'**
+  String appVersionLabel(String version);
+
+  /// Server API level on the About screen.
+  ///
+  /// In en, this message translates to:
+  /// **'API level {level}'**
+  String serverApiLevel(String level);
+
+  /// Opens the list of open-source licences.
+  ///
+  /// In en, this message translates to:
+  /// **'Open-source licences'**
+  String get licensesButton;
 }
 
 class _AppLocalizationsDelegate

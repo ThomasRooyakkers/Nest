@@ -187,12 +187,16 @@ class NestDatabase extends _$NestDatabase {
           KeyValuesCompanion.insert(key: key, value: value),
         );
 
-  /// Removes all cached data and queued changes, e.g. on sign-out, so the
-  /// next user of the device sees nothing of the previous one.
+  /// Removes all cached data, queued changes and settings, e.g. on sign-out,
+  /// so the next user of the device sees nothing of the previous one.
+  /// Settings of the device itself (keys starting with `device.`, such as
+  /// the chosen server) are kept.
   Future<void> clearAll() => transaction(() async {
     await delete(cachedRows).go();
     await delete(pendingOps).go();
-    await delete(keyValues).go();
+    await (delete(
+      keyValues,
+    )..where((v) => v.key.like('device.%').not())).go();
   });
 }
 

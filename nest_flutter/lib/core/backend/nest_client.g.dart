@@ -8,21 +8,21 @@ part of 'nest_client.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// The Serverpod client. Overridden in `main.dart` with the created client.
+/// The Serverpod client. Overridden by `NestRoot` with the created client.
 ///
 /// Only repositories may use it; the UI goes through a repository.
 
 @ProviderFor(nestClient)
 final nestClientProvider = NestClientProvider._();
 
-/// The Serverpod client. Overridden in `main.dart` with the created client.
+/// The Serverpod client. Overridden by `NestRoot` with the created client.
 ///
 /// Only repositories may use it; the UI goes through a repository.
 
 final class NestClientProvider
     extends $FunctionalProvider<Client, Client, Client>
     with $Provider<Client> {
-  /// The Serverpod client. Overridden in `main.dart` with the created client.
+  /// The Serverpod client. Overridden by `NestRoot` with the created client.
   ///
   /// Only repositories may use it; the UI goes through a repository.
   NestClientProvider._()

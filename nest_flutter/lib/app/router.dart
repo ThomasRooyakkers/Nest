@@ -6,7 +6,9 @@ import '../core/widgets/coming_soon_screen.dart';
 import '../features/auth/presentation/onboarding_screen.dart';
 import '../features/auth/presentation/sign_in_screen.dart';
 import '../features/dashboard/presentation/home_screen.dart';
+import '../features/settings/presentation/about_screen.dart';
 import '../features/settings/presentation/add_household_screen.dart';
+import '../features/settings/presentation/server_screen.dart';
 import '../features/settings/presentation/settings_screen.dart';
 import '../features/shopping_list/presentation/shopping_screen.dart';
 import '../features/shopping_list/presentation/store_editor_screen.dart';
@@ -30,6 +32,8 @@ abstract final class Routes {
   static const watch = '/watch';
   static const settings = '/settings';
   static const addHousehold = '/settings/add-household';
+  static const server = '/server';
+  static const about = '/about';
 }
 
 /// Where the gate sends the user, or `null` if any route is allowed.
@@ -42,6 +46,10 @@ String? gateTarget(AppGate gate) => switch (gate) {
 };
 
 const _gateRoutes = {Routes.start, Routes.signIn, Routes.onboarding};
+
+/// Routes open in every gate state (server choice and About also work
+/// before signing in).
+const _openRoutes = {Routes.server, Routes.about};
 
 @Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {
@@ -56,6 +64,7 @@ GoRouter router(Ref ref) {
     refreshListenable: refresh,
     redirect: (context, state) {
       final location = state.matchedLocation;
+      if (_openRoutes.contains(location)) return null;
       final target = gateTarget(ref.read(appGateProvider));
       if (target != null) return location == target ? null : target;
       return _gateRoutes.contains(location) ? Routes.home : null;
@@ -68,6 +77,14 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: Routes.signIn,
         builder: (context, state) => const SignInScreen(),
+      ),
+      GoRoute(
+        path: Routes.server,
+        builder: (context, state) => const ServerScreen(),
+      ),
+      GoRoute(
+        path: Routes.about,
+        builder: (context, state) => const AboutScreen(),
       ),
       GoRoute(
         path: Routes.onboarding,

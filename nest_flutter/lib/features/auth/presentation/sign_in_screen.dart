@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nest_shared/nest_shared.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../../../app/app_locale.dart';
+import '../../../app/router.dart';
+import '../../../core/backend/server_health_repository.dart';
+import '../../../core/server/server_compatibility.dart';
+import '../../../core/server/server_session.dart';
 import '../../../core/backend/error_messages.dart';
 import '../../../core/widgets/centered_form.dart';
 import '../../../core/widgets/language_picker.dart';
@@ -74,6 +79,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 ),
               ),
               const SizedBox(height: NestSpacing.gap),
+              const _ServerRow(),
+              const SizedBox(height: 4),
               Center(
                 child: LanguagePicker(
                   onChanged: ref.read(localeChoiceProvider.notifier).set,
@@ -266,5 +273,47 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           backToSignIn(),
         ];
     }
+  }
+}
+
+/// The server in use, "Change server" (not on the web, which always uses
+/// the server it was loaded from) and a notice when it is incompatible.
+class _ServerRow extends ConsumerWidget {
+  const _ServerRow();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final textTheme = Theme.of(context).textTheme;
+    final server = ref.watch(currentServerProvider);
+    final ping = ref.watch(serverPingProvider).value;
+    final compatibility = ping == null ? null : compatibilityOf(ping);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (compatibility case final c?
+            when c != ServerCompatibility.compatible) ...[
+          NestNotice(
+            c == ServerCompatibility.appTooOld
+                ? l10n.appTooOld
+                : l10n.serverTooOld,
+          ),
+          const SizedBox(height: 8),
+        ],
+        Wrap(
+          alignment: WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Text(l10n.serverInUse(server.label), style: textTheme.bodyMedium),
+            if (canChooseServer)
+              TextButton(
+                onPressed: () => context.push(Routes.server),
+                child: Text(l10n.changeServer),
+              ),
+          ],
+        ),
+      ],
+    );
   }
 }

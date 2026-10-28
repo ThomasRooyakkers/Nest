@@ -5,20 +5,17 @@ import 'package:serverpod_flutter/serverpod_flutter.dart';
 
 part 'nest_client.g.dart';
 
-/// Creates the Serverpod client.
-///
-/// The server URL comes from `--dart-define=SERVER_URL=...`, then from
-/// `assets/config.json`, then defaults to `http://localhost:8080/`. On a
-/// physical device, point it at your Mac's IP address.
-Future<Client> createNestClient() async {
-  final client = Client(await getServerUrl())
+/// Creates the Serverpod client for the server at [apiUrl] (see
+/// `core/server/server_store.dart` for how the server is chosen).
+Future<Client> createNestClient(String apiUrl) async {
+  final client = Client(apiUrl)
     ..connectivityMonitor = FlutterConnectivityMonitor()
     ..authSessionManager = FlutterAuthSessionManager();
   await client.auth.initialize();
   return client;
 }
 
-/// The Serverpod client. Overridden in `main.dart` with the created client.
+/// The Serverpod client. Overridden by `NestRoot` with the created client.
 ///
 /// Only repositories may use it; the UI goes through a repository.
 @Riverpod(keepAlive: true)

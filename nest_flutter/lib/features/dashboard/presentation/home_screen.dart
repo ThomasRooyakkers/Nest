@@ -5,10 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:nest_shared/nest_shared.dart';
 
 import '../../../app/router.dart';
-import '../../../core/backend/server_health_repository.dart';
 import '../../../core/household/household_switcher.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../settings/data/profile_repository.dart';
+import '../../settings/presentation/server_card.dart';
 
 /// Placeholder home screen until the dashboard is built in phase 8.
 class HomeScreen extends ConsumerWidget {
@@ -49,52 +49,9 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(height: NestSpacing.gap),
             const _ComingSoonCard(),
             const SizedBox(height: NestSpacing.gap),
-            const _ServerCard(),
+            const ServerCard(),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _ServerCard extends ConsumerWidget {
-  const _ServerCard();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
-    final shared = NestSharedLocalizations.of(context);
-    final textTheme = Theme.of(context).textTheme;
-    final ping = ref.watch(serverPingProvider);
-
-    final state = switch (ping) {
-      AsyncData() => NestConnectionState.online,
-      AsyncError() => NestConnectionState.offline,
-      _ => NestConnectionState.checking,
-    };
-
-    return NestCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(l10n.serverCardTitle, style: textTheme.titleLarge),
-          const SizedBox(height: 12),
-          ConnectionBadge(state: state),
-          if (ping case AsyncData(:final value)) ...[
-            const SizedBox(height: 12),
-            Text(
-              l10n.serverVersion(value.version),
-              style: textTheme.bodyMedium,
-            ),
-          ],
-          if (state == NestConnectionState.offline) ...[
-            const SizedBox(height: 12),
-            FilledButton(
-              onPressed: () => ref.invalidate(serverPingProvider),
-              child: Text(shared.retry),
-            ),
-          ],
-        ],
       ),
     );
   }

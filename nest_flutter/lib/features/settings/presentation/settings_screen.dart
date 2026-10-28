@@ -13,6 +13,7 @@ import '../../../core/widgets/language_picker.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/data/auth_repository.dart';
 import '../data/profile_repository.dart';
+import 'server_card.dart';
 
 /// Profile, language, household members and invites, all households.
 class SettingsScreen extends ConsumerWidget {
@@ -42,6 +43,13 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(height: NestSpacing.gap),
             const _HouseholdsCard(),
             const SizedBox(height: NestSpacing.gap),
+            const ServerCard(showDetails: true),
+            const SizedBox(height: NestSpacing.gap),
+            OutlinedButton(
+              onPressed: () => context.push(Routes.about),
+              child: Text(l10n.aboutTitle),
+            ),
+            const SizedBox(height: 12),
             OutlinedButton(
               onPressed: () => ref.read(authRepositoryProvider).signOut(),
               child: Text(l10n.signOut),

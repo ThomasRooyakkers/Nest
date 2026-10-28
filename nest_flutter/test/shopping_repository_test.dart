@@ -183,8 +183,11 @@ void main() {
 
   test('signing out clears the cache', () async {
     await db.writeValue('household.selected', '1');
+    await db.writeValue('device.server', '{}');
     await db.clearAll();
     expect(await repository.watchLists(householdId).first, isEmpty);
     expect(await db.readValue('household.selected'), isNull);
+    // The device's own settings, such as the chosen server, stay.
+    expect(await db.readValue('device.server'), '{}');
   });
 }

@@ -569,4 +569,81 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get categoryOther => 'Overig';
+
+  @override
+  String serverInUse(String server) {
+    return 'Server: $server';
+  }
+
+  @override
+  String get changeServer => 'Server wijzigen';
+
+  @override
+  String get chooseServerTitle => 'Kies een server';
+
+  @override
+  String get chooseServerSubtitle =>
+      'Nest werkt met elke Nest-server. Vul het adres in dat je gezin gebruikt.';
+
+  @override
+  String currentServerLabel(String server) {
+    return 'Verbonden met $server';
+  }
+
+  @override
+  String get serverAddressLabel => 'Serveradres';
+
+  @override
+  String get connectButton => 'Verbinden';
+
+  @override
+  String useDefaultServer(String server) {
+    return '$server gebruiken';
+  }
+
+  @override
+  String get serverInvalidAddress => 'Dat is geen geldig adres.';
+
+  @override
+  String get serverNotFound => 'Op dit adres antwoordt geen Nest-server.';
+
+  @override
+  String get serverTooOld =>
+      'Deze server draait een oudere versie van Nest dan deze app ondersteunt. Vraag de beheerder om hem bij te werken.';
+
+  @override
+  String get appTooOld =>
+      'Deze server heeft een nieuwere versie van de app nodig. Werk Nest bij.';
+
+  @override
+  String switchServerTitle(String server) {
+    return 'Overschakelen naar $server?';
+  }
+
+  @override
+  String get switchServerMessage =>
+      'Je wordt afgemeld en de gegevens op dit toestel worden gewist.';
+
+  @override
+  String get switchButton => 'Overschakelen';
+
+  @override
+  String get aboutTitle => 'Over Nest';
+
+  @override
+  String get aboutText =>
+      'Nest is een privé-gezinsapp. De gegevens van je huishouden staan op de Nest-server die je kiest.';
+
+  @override
+  String appVersionLabel(String version) {
+    return 'App-versie $version';
+  }
+
+  @override
+  String serverApiLevel(String level) {
+    return 'API-niveau $level';
+  }
+
+  @override
+  String get licensesButton => 'Opensourcelicenties';
 }

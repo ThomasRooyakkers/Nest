@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'app/nest_app.dart';
+import 'app/nest_root.dart';
 import 'core/backend/nest_client.dart';
+import 'core/database/nest_database.dart';
+import 'core/server/server_store.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final client = await createNestClient();
-  runApp(
-    ProviderScope(
-      overrides: [nestClientProvider.overrideWithValue(client)],
-      child: const NestApp(),
-    ),
-  );
+  final database = NestDatabase.defaults();
+  final server = await startServer(database);
+  final client = await createNestClient(server.apiUrl);
+  runApp(NestRoot(database: database, server: server, client: client));
 }

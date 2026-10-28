@@ -744,5 +744,115 @@
   "categoryOther": "Other",
   "@categoryOther": {
     "description": "Shopping category."
+  },
+  "serverInUse": "Server: {server}",
+  "@serverInUse": {
+    "description": "Server the app is connected to, on the sign-in screen.",
+    "placeholders": {
+      "server": {
+        "type": "String"
+      }
+    }
+  },
+  "changeServer": "Change server",
+  "@changeServer": {
+    "description": "Button that opens the screen to choose another server."
+  },
+  "chooseServerTitle": "Choose a server",
+  "@chooseServerTitle": {
+    "description": "Title of the screen to choose a server."
+  },
+  "chooseServerSubtitle": "Nest works with any Nest server. Enter the address your family uses.",
+  "@chooseServerSubtitle": {
+    "description": "Explanation on the choose server screen."
+  },
+  "currentServerLabel": "Connected to {server}",
+  "@currentServerLabel": {
+    "description": "Current server on the choose server screen.",
+    "placeholders": {
+      "server": {
+        "type": "String"
+      }
+    }
+  },
+  "serverAddressLabel": "Server address",
+  "@serverAddressLabel": {
+    "description": "Label of the server address field."
+  },
+  "connectButton": "Connect",
+  "@connectButton": {
+    "description": "Button that checks and switches to the typed server."
+  },
+  "useDefaultServer": "Use {server}",
+  "@useDefaultServer": {
+    "description": "Button to go back to the default server.",
+    "placeholders": {
+      "server": {
+        "type": "String"
+      }
+    }
+  },
+  "serverInvalidAddress": "That is not a valid address.",
+  "@serverInvalidAddress": {
+    "description": "Error when the typed server address is invalid."
+  },
+  "serverNotFound": "No Nest server answered at this address.",
+  "@serverNotFound": {
+    "description": "Error when no Nest server is found at the address."
+  },
+  "serverTooOld": "This server runs an older version of Nest than this app supports. Ask its administrator to update it.",
+  "@serverTooOld": {
+    "description": "Error when the server is too old for the app."
+  },
+  "appTooOld": "This server needs a newer version of the app. Please update Nest.",
+  "@appTooOld": {
+    "description": "Error when the app is too old for the server."
+  },
+  "switchServerTitle": "Switch to {server}?",
+  "@switchServerTitle": {
+    "description": "Title of the dialog confirming a server switch.",
+    "placeholders": {
+      "server": {
+        "type": "String"
+      }
+    }
+  },
+  "switchServerMessage": "You will be signed out, and the data stored on this device is cleared.",
+  "@switchServerMessage": {
+    "description": "Message of the dialog confirming a server switch."
+  },
+  "switchButton": "Switch",
+  "@switchButton": {
+    "description": "Confirms switching servers."
+  },
+  "aboutTitle": "About Nest",
+  "@aboutTitle": {
+    "description": "Title of the About screen and the button that opens it."
+  },
+  "aboutText": "Nest is a private family app. Your household's data lives on the Nest server you choose.",
+  "@aboutText": {
+    "description": "Short description on the About screen."
+  },
+  "appVersionLabel": "App version {version}",
+  "@appVersionLabel": {
+    "description": "App version on the About screen.",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "serverApiLevel": "API level {level}",
+  "@serverApiLevel": {
+    "description": "Server API level on the About screen.",
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "licensesButton": "Open-source licences",
+  "@licensesButton": {
+    "description": "Opens the list of open-source licences."
   }
 }

@@ -48,7 +48,7 @@ final class AuthRepositoryProvider
   }
 }
 
-String _$authRepositoryHash() => r'67149bfa6d19ee6f326a85eb2370bb5ed593a84a';
+String _$authRepositoryHash() => r'97ee9d2f8302dbf6b9f2b4a995e087c253f68365';
 
 /// Whether a user is signed in. Follows sign-in and sign-out.
 

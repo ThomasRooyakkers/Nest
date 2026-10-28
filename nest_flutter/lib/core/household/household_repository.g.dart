@@ -103,21 +103,15 @@ final class MyHouseholdsProvider
 
 String _$myHouseholdsHash() => r'f4942dc1f6b82b2f80a9b35f9053e0f6883b1979';
 
-/// Household id picked in the switcher; reset on sign-in and sign-out.
-///
-/// Not persisted yet, so the app starts with the first household.
+/// Household id picked in the switcher, remembered on the device.
 
 @ProviderFor(SelectedHouseholdId)
 final selectedHouseholdIdProvider = SelectedHouseholdIdProvider._();
 
-/// Household id picked in the switcher; reset on sign-in and sign-out.
-///
-/// Not persisted yet, so the app starts with the first household.
+/// Household id picked in the switcher, remembered on the device.
 final class SelectedHouseholdIdProvider
     extends $NotifierProvider<SelectedHouseholdId, int?> {
-  /// Household id picked in the switcher; reset on sign-in and sign-out.
-  ///
-  /// Not persisted yet, so the app starts with the first household.
+  /// Household id picked in the switcher, remembered on the device.
   SelectedHouseholdIdProvider._()
     : super(
         from: null,
@@ -146,11 +140,9 @@ final class SelectedHouseholdIdProvider
 }
 
 String _$selectedHouseholdIdHash() =>
-    r'3114e9b1b1cdbc4e699b3e86651c5b303dd803e4';
+    r'2bf630d238f1f724d6370bafa5e1f4d4ebfe4bc7';
 
-/// Household id picked in the switcher; reset on sign-in and sign-out.
-///
-/// Not persisted yet, so the app starts with the first household.
+/// Household id picked in the switcher, remembered on the device.
 
 abstract class _$SelectedHouseholdId extends $Notifier<int?> {
   int? build();

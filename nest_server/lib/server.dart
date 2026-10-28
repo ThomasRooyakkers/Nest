@@ -7,6 +7,7 @@ import 'package:serverpod_cloud_storage/serverpod_cloud_storage.dart';
 import 'src/generated/serverpod.dart';
 import 'src/services/built_in_catalog.dart';
 import 'src/services/verification_mail.dart';
+import 'src/web/web_app_config_route.dart';
 
 /// The starting point of the Serverpod server.
 void run(List<String> args) async {
@@ -87,8 +88,13 @@ Future<Serverpod> createServerpod(
   );
 
   // The Flutter web app, when built into web/app (production image).
+  // Its config.json is generated, so the same build works on every host.
   final webApp = Directory('web/app');
   if (webApp.existsSync()) {
+    pod.webServer.addRoute(
+      WebAppConfigRoute(pod.config.apiServer),
+      WebAppConfigRoute.servedAt,
+    );
     pod.webServer.addRoute(FlutterRoute(webApp));
   }
 
