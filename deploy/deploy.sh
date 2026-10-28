@@ -18,7 +18,8 @@ echo "Checking the Pi's .env"
 "${SSH[@]}" 'cd ~/nest/deploy && missing=""; for k in NEST_WEB_DOMAIN NEST_API_DOMAIN SUPER_ADMIN_EMAIL NEST_IMAGE COMPOSE_PROFILES; do grep -Eq "^$k=.+" .env || missing="$missing $k"; done; [ -z "$missing" ] || { echo "Missing in .env:$missing"; exit 1; }'
 
 echo "Dumping the database"
-"${SSH[@]}" 'cd ~/nest/deploy && mkdir -p backups && docker compose exec -T postgres pg_dump -U postgres nest | gzip > backups/nest-pre-update-$(date +%Y%m%d-%H%M%S).sql.gz && ls -1t backups | head -1'
+# Through the backup container, which owns ./backups.
+"${SSH[@]}" 'cd ~/nest/deploy && docker compose exec -T backup sh -c "f=/backups/nest-pre-update-\$(date +%Y%m%d-%H%M%S).sql.gz; pg_dump -h postgres -U postgres nest | gzip > \$f.tmp && mv \$f.tmp \$f && ls -l \$f"'
 
 echo "Copying the Compose file"
 scp -i "$SSH_KEY" "$ROOT/deploy/docker-compose.yml" "$HOST:nest/deploy/docker-compose.yml"

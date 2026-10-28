@@ -213,6 +213,18 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   stay in the history (local-only values; Thomas chose not to scrub them).
   `deploy/deploy.sh` now updates the Pi from the published image instead of
   building on it.
+- **Pi on the published image (2026-10-28, with Thomas's OK):** host
+  settings added to `~/nest/deploy/.env` (backup `.env.bak-20261028-134453`
+  next to it; super-admin `rooyakkers.thomas@gmail.com`, invite-only, tunnel
+  profile, image 0.2.0); `deploy/deploy.sh` dumped the database
+  (`backups/nest-pre-update-20261028-124529.sql.gz`) and switched to
+  `ghcr.io/thomasrooyakkers/nest-server:0.2.0`. Verified over https: health
+  0.2.0 / API 2 / invite-only, generated web config with `cookieAuth`, web
+  app and deep link, migration `20261028113542280` applied. There were no
+  accounts yet; Thomas's first sign-up with the super-admin email needs no
+  invite code and becomes super-admin. To update later: raise
+  `NEST_VERSION` in the Pi's `.env` (or keep `latest`) and run
+  `deploy/deploy.sh`.
 - **Self-hosting kit:** `deploy/build-image.sh` (web
   app + server image; `--push` builds arm64+amd64 with buildx), generic
   `deploy/docker-compose.yml` (published image via `NEST_IMAGE` /
@@ -242,16 +254,9 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 2. Resend: account + domain `g3cko.be` (DNS records can be added in Cloudflare),
    then `RESEND_API_KEY` in `~/nest/deploy/.env` and `docker compose up -d nest`.
 3. Phase 3, remaining:
-   6. Move Thomas's Pi onto the published image (waiting for Thomas's OK).
-      The Pi's `~/nest/deploy/.env` first needs `NEST_WEB_DOMAIN=nest.g3cko.be`,
-      `NEST_API_DOMAIN=nest-api.g3cko.be`, `SUPER_ADMIN_EMAIL`,
-      `SIGN_UP_MODE=invite-only`, `COMPOSE_PROFILES=tunnel`,
-      `NEST_IMAGE=ghcr.io/thomasrooyakkers/nest-server`, `NEST_VERSION`, and
-      `MAIL_FROM` when Resend is used. Then `deploy/deploy.sh` (checks the
-      `.env`, dumps the database, copies the Compose file, pulls, restarts;
-      same project name and volume, so the data stays). Then the gate: a
-      second server set up from the guide alone on a clean machine, and the
-      same app build switching between the two.
+   6. Gate: a second server set up from the guide alone on a clean machine,
+      and the same app build switching between it and nest.g3cko.be.
+      Machine still to choose (Thomas).
 
 ## Open questions
 
