@@ -287,6 +287,19 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   `sharedIndexedDb` and an "Uncaught Error" follows). Other screens work;
   native apps are not affected. Needs its own investigation (drift web
   setup / worker files vs. release builds).
+- **Web shopping list investigation (2026-10-28, in progress):**
+  (1) the `drift_worker.js` shipped with drift 2.34.4 was compiled against
+  sqlite3 3.5.2, while the app uses sqlite3 3.8.0 / sqlite3_web 0.9.4, and
+  `sqlite3.wasm` came from drift's DevTools build. Uncommitted fix in the
+  working tree: `nest_flutter/tool/drift_worker.dart` compiled into
+  `web/drift_worker.js` (`dart compile js -O4`) plus `web/sqlite3.wasm` from
+  the sqlite3-3.8.0 GitHub release. (2) With the Nest server's
+  cross-origin isolation headers, `SharedWorker` fails and drift falls back to
+  `opfsLocks`, which hangs; we build JS (not WASM), so turning those headers
+  off in `FlutterRoute` is likely the fix. (3) The in-app test browser blocks
+  fetches from shared workers, so it cannot verify this; next step is
+  `tool/drift_web_probe.dart` (temporary) in headless Brave, with and without
+  the headers, then Safari.
 - **Typing a local http server** (`localhost:8080`) in Change server tries
   https; type `http://localhost:8080`. Fine for production; could try http
   for local addresses later.

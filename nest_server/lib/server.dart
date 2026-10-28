@@ -106,8 +106,9 @@ Future<Serverpod> createServerpod(
 
   // The Flutter web app, when built into web/app (production image).
   // Its config.json is generated, so the same build works on every host.
+  // Skipped without a web server, e.g. in development after a local build.
   final webApp = Directory('web/app');
-  if (webApp.existsSync()) {
+  if (webApp.existsSync() && pod.config.webServer != null) {
     pod.webServer.addRoute(
       WebAppConfigRoute(
         pod.config.apiServer,
