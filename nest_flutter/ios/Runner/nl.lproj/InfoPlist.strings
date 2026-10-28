@@ -1,0 +1,3 @@
+/* Toestemmingsteksten (Nest). */
+NSCameraUsageDescription = "Nest gebruikt de camera om een foto van een recept te maken.";
+NSPhotoLibraryUsageDescription = "Nest gebruikt je foto's om een afbeelding aan een recept toe te voegen.";

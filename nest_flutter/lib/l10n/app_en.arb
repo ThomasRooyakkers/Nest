@@ -1059,5 +1059,343 @@
         "example": "Weekly"
       }
     }
+  },
+  "recipesSearchHint": "Search recipes",
+  "@recipesSearchHint": {
+    "description": "Search field on the recipe library."
+  },
+  "recipesFavorites": "Favourites",
+  "@recipesFavorites": {
+    "description": "Filter chip: favourite recipes only."
+  },
+  "recipesEmpty": "No recipes yet. Add your first one with +.",
+  "@recipesEmpty": {
+    "description": "Recipe library without recipes."
+  },
+  "recipesNoMatch": "No recipes match.",
+  "@recipesNoMatch": {
+    "description": "Recipe library: search or filter found nothing."
+  },
+  "recipesOffline": "Offline. You can read recipes; changes need a connection.",
+  "@recipesOffline": {
+    "description": "Notice on recipe screens while offline."
+  },
+  "recipeNew": "New recipe",
+  "@recipeNew": {
+    "description": "Title of the new-recipe screen and label of the + button."
+  },
+  "recipeEdit": "Edit recipe",
+  "@recipeEdit": {
+    "description": "Title of the edit screen and its menu item."
+  },
+  "recipeDelete": "Delete recipe",
+  "@recipeDelete": {
+    "description": "Menu item."
+  },
+  "recipeDeleteConfirm": "Delete “{title}”?",
+  "@recipeDeleteConfirm": {
+    "description": "Confirmation before deleting a recipe.",
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Pancakes"
+      }
+    }
+  },
+  "recipeMoreActions": "More actions",
+  "@recipeMoreActions": {
+    "description": "Tooltip of the recipe screen's menu button."
+  },
+  "recipeNotFound": "This recipe is no longer there.",
+  "@recipeNotFound": {
+    "description": "Recipe screen for a deleted recipe."
+  },
+  "recipeFavoriteAdd": "Add to favourites",
+  "@recipeFavoriteAdd": {
+    "description": "Heart button, not a favourite yet."
+  },
+  "recipeFavoriteRemove": "Remove from favourites",
+  "@recipeFavoriteRemove": {
+    "description": "Heart button, a favourite."
+  },
+  "recipeDurationMinutes": "{minutes} min",
+  "@recipeDurationMinutes": {
+    "description": "A duration under an hour.",
+    "placeholders": {
+      "minutes": {
+        "type": "int",
+        "example": "25"
+      }
+    }
+  },
+  "recipeDurationHours": "{hours} h",
+  "@recipeDurationHours": {
+    "description": "A duration in whole hours.",
+    "placeholders": {
+      "hours": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "recipeDurationHoursMinutes": "{hours} h {minutes} min",
+  "@recipeDurationHoursMinutes": {
+    "description": "A duration over an hour.",
+    "placeholders": {
+      "hours": {
+        "type": "int",
+        "example": "1"
+      },
+      "minutes": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "recipePrepTime": "Prep",
+  "@recipePrepTime": {
+    "description": "Label of the preparation time."
+  },
+  "recipeCookTime": "Cook",
+  "@recipeCookTime": {
+    "description": "Label of the cooking time."
+  },
+  "recipeServings": "{count, plural, =1{1 serving} other{{count} servings}}",
+  "@recipeServings": {
+    "description": "Number of servings.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "recipeServingsFewer": "Fewer servings",
+  "@recipeServingsFewer": {
+    "description": "Servings stepper: minus button."
+  },
+  "recipeServingsMore": "More servings",
+  "@recipeServingsMore": {
+    "description": "Servings stepper: plus button."
+  },
+  "recipeIngredients": "Ingredients",
+  "@recipeIngredients": {
+    "description": "Section title."
+  },
+  "recipeSteps": "Method",
+  "@recipeSteps": {
+    "description": "Section title of the steps."
+  },
+  "recipeStepNumber": "Step {number}",
+  "@recipeStepNumber": {
+    "description": "Label of a step.",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "recipeNoIngredients": "No ingredients yet.",
+  "@recipeNoIngredients": {
+    "description": "Recipe without ingredients."
+  },
+  "recipeNoSteps": "No steps yet.",
+  "@recipeNoSteps": {
+    "description": "Recipe without steps."
+  },
+  "recipeAddToList": "Add to list",
+  "@recipeAddToList": {
+    "description": "Button that puts the ingredients on a shopping list."
+  },
+  "recipeStartCooking": "Start cooking",
+  "@recipeStartCooking": {
+    "description": "Button that opens cooking mode."
+  },
+  "recipeTitleLabel": "Title",
+  "@recipeTitleLabel": {
+    "description": "Recipe form field."
+  },
+  "recipeDescriptionLabel": "Description",
+  "@recipeDescriptionLabel": {
+    "description": "Recipe form field."
+  },
+  "recipePrepMinutesLabel": "Prep (min)",
+  "@recipePrepMinutesLabel": {
+    "description": "Recipe form field, minutes."
+  },
+  "recipeCookMinutesLabel": "Cook (min)",
+  "@recipeCookMinutesLabel": {
+    "description": "Recipe form field, minutes."
+  },
+  "recipeServingsLabel": "Servings",
+  "@recipeServingsLabel": {
+    "description": "Recipe form section."
+  },
+  "recipeTagsLabel": "Tags",
+  "@recipeTagsLabel": {
+    "description": "Recipe form section."
+  },
+  "recipeTagHint": "Add a tag, e.g. Vegetarian",
+  "@recipeTagHint": {
+    "description": "Recipe form: new tag field."
+  },
+  "recipeAddTag": "Add tag",
+  "@recipeAddTag": {
+    "description": "Tooltip of the add-tag button."
+  },
+  "recipeRemoveTag": "Remove {tag}",
+  "@recipeRemoveTag": {
+    "description": "Tooltip of a tag's remove button.",
+    "placeholders": {
+      "tag": {
+        "type": "String",
+        "example": "Vegetarian"
+      }
+    }
+  },
+  "recipeQuantityLabel": "Amount",
+  "@recipeQuantityLabel": {
+    "description": "Ingredient field."
+  },
+  "recipeUnitLabel": "Unit",
+  "@recipeUnitLabel": {
+    "description": "Ingredient field."
+  },
+  "recipeIngredientLabel": "Ingredient",
+  "@recipeIngredientLabel": {
+    "description": "Ingredient field."
+  },
+  "recipeNoteLabel": "Note, e.g. finely chopped",
+  "@recipeNoteLabel": {
+    "description": "Ingredient field."
+  },
+  "recipeQuantityInvalid": "Not a number",
+  "@recipeQuantityInvalid": {
+    "description": "Error under the amount field."
+  },
+  "recipeAddIngredient": "Add ingredient",
+  "@recipeAddIngredient": {
+    "description": "Recipe form button."
+  },
+  "recipeRemoveIngredient": "Remove ingredient",
+  "@recipeRemoveIngredient": {
+    "description": "Tooltip."
+  },
+  "recipeAddStep": "Add step",
+  "@recipeAddStep": {
+    "description": "Recipe form button."
+  },
+  "recipeRemoveStep": "Remove step",
+  "@recipeRemoveStep": {
+    "description": "Tooltip."
+  },
+  "recipeMoveStepUp": "Move step up",
+  "@recipeMoveStepUp": {
+    "description": "Tooltip."
+  },
+  "recipePhotoAdd": "Add photo",
+  "@recipePhotoAdd": {
+    "description": "Recipe form button."
+  },
+  "recipePhotoChange": "Change photo",
+  "@recipePhotoChange": {
+    "description": "Recipe form button."
+  },
+  "recipePhotoRemove": "Remove photo",
+  "@recipePhotoRemove": {
+    "description": "Recipe form button."
+  },
+  "recipePhotoCamera": "Take a photo",
+  "@recipePhotoCamera": {
+    "description": "Photo source choice."
+  },
+  "recipePhotoGallery": "Choose a photo",
+  "@recipePhotoGallery": {
+    "description": "Photo source choice."
+  },
+  "recipePhotoFailed": "The recipe was saved, but the photo could not be.",
+  "@recipePhotoFailed": {
+    "description": "Snack bar after a failed photo upload."
+  },
+  "recipePhotoLabel": "Photo of {title}",
+  "@recipePhotoLabel": {
+    "description": "Screen-reader label of a recipe photo.",
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Pancakes"
+      }
+    }
+  },
+  "recipeDiscardChanges": "Discard your changes?",
+  "@recipeDiscardChanges": {
+    "description": "Leaving the recipe form with changes."
+  },
+  "recipeDiscardButton": "Discard",
+  "@recipeDiscardButton": {
+    "description": "Button that leaves the form without saving."
+  },
+  "cookingStepOf": "Step {number} of {total}",
+  "@cookingStepOf": {
+    "description": "Cooking mode: progress.",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "2"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "cookingPrevious": "Previous",
+  "@cookingPrevious": {
+    "description": "Cooking mode button."
+  },
+  "cookingNext": "Next",
+  "@cookingNext": {
+    "description": "Cooking mode button."
+  },
+  "cookingDone": "Done",
+  "@cookingDone": {
+    "description": "Cooking mode: last step button."
+  },
+  "cookingClose": "Close cooking mode",
+  "@cookingClose": {
+    "description": "Tooltip of the close button."
+  },
+  "recipeAddToListTitle": "Add to the shopping list",
+  "@recipeAddToListTitle": {
+    "description": "Title of the add-to-list sheet."
+  },
+  "recipeAddItems": "{count, plural, =0{Nothing selected} =1{Add 1 item} other{Add {count} items}}",
+  "@recipeAddItems": {
+    "description": "Button of the add-to-list sheet.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "recipeAddedToList": "{count, plural, =0{Everything was already on {list}} =1{1 item added to {list}} other{{count} items added to {list}}}",
+  "@recipeAddedToList": {
+    "description": "Snack bar after adding ingredients.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      },
+      "list": {
+        "type": "String",
+        "example": "Weekly shop"
+      }
+    }
+  },
+  "homeRecipesSubtitle": "Your household's recipe library",
+  "@homeRecipesSubtitle": {
+    "description": "Home screen card under Recipes."
   }
 }

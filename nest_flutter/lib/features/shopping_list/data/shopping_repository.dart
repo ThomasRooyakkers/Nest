@@ -384,6 +384,28 @@ class ShoppingRepository {
 
   // List and store changes (need a connection).
 
+  /// Puts several items on a list at once, e.g. a recipe's ingredients.
+  /// Items already to buy are skipped by the server (named in the answer).
+  Future<AddedShoppingItems> addItems(
+    int householdId,
+    int listId,
+    List<NewShoppingItem> items, {
+    int? sourceRecipeId,
+  }) async {
+    final result = await _client.shopping.addItems(
+      householdId,
+      listId,
+      items,
+      sourceRecipeId,
+    );
+    // Own catalog items created on the way arrive with the next refresh;
+    // the items carry their name and icon.
+    await applyEvent(
+      ShoppingEvent(householdId: householdId, items: result.items),
+    );
+    return result;
+  }
+
   Future<ShoppingList> saveList(int householdId, ShoppingList list) async {
     final saved = await _client.shopping.saveList(householdId, list);
     await _db.upsertRows(ShoppingKinds.list, householdId, cacheRows([saved]));

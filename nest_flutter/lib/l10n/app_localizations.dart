@@ -1459,6 +1459,396 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Repeats: {recurrence}'**
   String taskRepeats(String recurrence);
+
+  /// Search field on the recipe library.
+  ///
+  /// In en, this message translates to:
+  /// **'Search recipes'**
+  String get recipesSearchHint;
+
+  /// Filter chip: favourite recipes only.
+  ///
+  /// In en, this message translates to:
+  /// **'Favourites'**
+  String get recipesFavorites;
+
+  /// Recipe library without recipes.
+  ///
+  /// In en, this message translates to:
+  /// **'No recipes yet. Add your first one with +.'**
+  String get recipesEmpty;
+
+  /// Recipe library: search or filter found nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'No recipes match.'**
+  String get recipesNoMatch;
+
+  /// Notice on recipe screens while offline.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline. You can read recipes; changes need a connection.'**
+  String get recipesOffline;
+
+  /// Title of the new-recipe screen and label of the + button.
+  ///
+  /// In en, this message translates to:
+  /// **'New recipe'**
+  String get recipeNew;
+
+  /// Title of the edit screen and its menu item.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit recipe'**
+  String get recipeEdit;
+
+  /// Menu item.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete recipe'**
+  String get recipeDelete;
+
+  /// Confirmation before deleting a recipe.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete “{title}”?'**
+  String recipeDeleteConfirm(String title);
+
+  /// Tooltip of the recipe screen's menu button.
+  ///
+  /// In en, this message translates to:
+  /// **'More actions'**
+  String get recipeMoreActions;
+
+  /// Recipe screen for a deleted recipe.
+  ///
+  /// In en, this message translates to:
+  /// **'This recipe is no longer there.'**
+  String get recipeNotFound;
+
+  /// Heart button, not a favourite yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to favourites'**
+  String get recipeFavoriteAdd;
+
+  /// Heart button, a favourite.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from favourites'**
+  String get recipeFavoriteRemove;
+
+  /// A duration under an hour.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String recipeDurationMinutes(int minutes);
+
+  /// A duration in whole hours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h'**
+  String recipeDurationHours(int hours);
+
+  /// A duration over an hour.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h {minutes} min'**
+  String recipeDurationHoursMinutes(int hours, int minutes);
+
+  /// Label of the preparation time.
+  ///
+  /// In en, this message translates to:
+  /// **'Prep'**
+  String get recipePrepTime;
+
+  /// Label of the cooking time.
+  ///
+  /// In en, this message translates to:
+  /// **'Cook'**
+  String get recipeCookTime;
+
+  /// Number of servings.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 serving} other{{count} servings}}'**
+  String recipeServings(int count);
+
+  /// Servings stepper: minus button.
+  ///
+  /// In en, this message translates to:
+  /// **'Fewer servings'**
+  String get recipeServingsFewer;
+
+  /// Servings stepper: plus button.
+  ///
+  /// In en, this message translates to:
+  /// **'More servings'**
+  String get recipeServingsMore;
+
+  /// Section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ingredients'**
+  String get recipeIngredients;
+
+  /// Section title of the steps.
+  ///
+  /// In en, this message translates to:
+  /// **'Method'**
+  String get recipeSteps;
+
+  /// Label of a step.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {number}'**
+  String recipeStepNumber(int number);
+
+  /// Recipe without ingredients.
+  ///
+  /// In en, this message translates to:
+  /// **'No ingredients yet.'**
+  String get recipeNoIngredients;
+
+  /// Recipe without steps.
+  ///
+  /// In en, this message translates to:
+  /// **'No steps yet.'**
+  String get recipeNoSteps;
+
+  /// Button that puts the ingredients on a shopping list.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to list'**
+  String get recipeAddToList;
+
+  /// Button that opens cooking mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Start cooking'**
+  String get recipeStartCooking;
+
+  /// Recipe form field.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get recipeTitleLabel;
+
+  /// Recipe form field.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get recipeDescriptionLabel;
+
+  /// Recipe form field, minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Prep (min)'**
+  String get recipePrepMinutesLabel;
+
+  /// Recipe form field, minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Cook (min)'**
+  String get recipeCookMinutesLabel;
+
+  /// Recipe form section.
+  ///
+  /// In en, this message translates to:
+  /// **'Servings'**
+  String get recipeServingsLabel;
+
+  /// Recipe form section.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get recipeTagsLabel;
+
+  /// Recipe form: new tag field.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a tag, e.g. Vegetarian'**
+  String get recipeTagHint;
+
+  /// Tooltip of the add-tag button.
+  ///
+  /// In en, this message translates to:
+  /// **'Add tag'**
+  String get recipeAddTag;
+
+  /// Tooltip of a tag's remove button.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {tag}'**
+  String recipeRemoveTag(String tag);
+
+  /// Ingredient field.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get recipeQuantityLabel;
+
+  /// Ingredient field.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get recipeUnitLabel;
+
+  /// Ingredient field.
+  ///
+  /// In en, this message translates to:
+  /// **'Ingredient'**
+  String get recipeIngredientLabel;
+
+  /// Ingredient field.
+  ///
+  /// In en, this message translates to:
+  /// **'Note, e.g. finely chopped'**
+  String get recipeNoteLabel;
+
+  /// Error under the amount field.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a number'**
+  String get recipeQuantityInvalid;
+
+  /// Recipe form button.
+  ///
+  /// In en, this message translates to:
+  /// **'Add ingredient'**
+  String get recipeAddIngredient;
+
+  /// Tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove ingredient'**
+  String get recipeRemoveIngredient;
+
+  /// Recipe form button.
+  ///
+  /// In en, this message translates to:
+  /// **'Add step'**
+  String get recipeAddStep;
+
+  /// Tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove step'**
+  String get recipeRemoveStep;
+
+  /// Tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Move step up'**
+  String get recipeMoveStepUp;
+
+  /// Recipe form button.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo'**
+  String get recipePhotoAdd;
+
+  /// Recipe form button.
+  ///
+  /// In en, this message translates to:
+  /// **'Change photo'**
+  String get recipePhotoChange;
+
+  /// Recipe form button.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get recipePhotoRemove;
+
+  /// Photo source choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo'**
+  String get recipePhotoCamera;
+
+  /// Photo source choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a photo'**
+  String get recipePhotoGallery;
+
+  /// Snack bar after a failed photo upload.
+  ///
+  /// In en, this message translates to:
+  /// **'The recipe was saved, but the photo could not be.'**
+  String get recipePhotoFailed;
+
+  /// Screen-reader label of a recipe photo.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo of {title}'**
+  String recipePhotoLabel(String title);
+
+  /// Leaving the recipe form with changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard your changes?'**
+  String get recipeDiscardChanges;
+
+  /// Button that leaves the form without saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get recipeDiscardButton;
+
+  /// Cooking mode: progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {number} of {total}'**
+  String cookingStepOf(int number, int total);
+
+  /// Cooking mode button.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get cookingPrevious;
+
+  /// Cooking mode button.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get cookingNext;
+
+  /// Cooking mode: last step button.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get cookingDone;
+
+  /// Tooltip of the close button.
+  ///
+  /// In en, this message translates to:
+  /// **'Close cooking mode'**
+  String get cookingClose;
+
+  /// Title of the add-to-list sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to the shopping list'**
+  String get recipeAddToListTitle;
+
+  /// Button of the add-to-list sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing selected} =1{Add 1 item} other{Add {count} items}}'**
+  String recipeAddItems(int count);
+
+  /// Snack bar after adding ingredients.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Everything was already on {list}} =1{1 item added to {list}} other{{count} items added to {list}}}'**
+  String recipeAddedToList(int count, String list);
+
+  /// Home screen card under Recipes.
+  ///
+  /// In en, this message translates to:
+  /// **'Your household\'s recipe library'**
+  String get homeRecipesSubtitle;
 }
 
 class _AppLocalizationsDelegate

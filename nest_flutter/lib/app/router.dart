@@ -6,6 +6,10 @@ import '../core/widgets/coming_soon_screen.dart';
 import '../features/auth/presentation/onboarding_screen.dart';
 import '../features/auth/presentation/sign_in_screen.dart';
 import '../features/dashboard/presentation/home_screen.dart';
+import '../features/recipes/presentation/cooking_screen.dart';
+import '../features/recipes/presentation/recipe_edit_screen.dart';
+import '../features/recipes/presentation/recipe_screen.dart';
+import '../features/recipes/presentation/recipes_screen.dart';
 import '../features/settings/presentation/about_screen.dart';
 import '../features/settings/presentation/add_household_screen.dart';
 import '../features/settings/presentation/server_screen.dart';
@@ -25,6 +29,11 @@ abstract final class Routes {
   static const signIn = '/sign-in';
   static const onboarding = '/welcome';
   static const home = '/';
+  static const recipes = '/recipes';
+  static const newRecipe = '/recipes/new';
+  static String recipe(int recipeId) => '/recipes/$recipeId';
+  static String editRecipe(int recipeId) => '/recipes/$recipeId/edit';
+  static String cookRecipe(int recipeId) => '/recipes/$recipeId/cook';
   static const shopping = '/shopping';
   static const newStore = '/shopping/stores/new';
   static String editStore(int storeId) => '/shopping/stores/$storeId';
@@ -100,6 +109,10 @@ StatefulShellBranch _comingSoonBranch(
   ],
 );
 
+/// The recipe id in a recipe route; -1 (no such recipe) when malformed.
+int _recipeId(GoRouterState state) =>
+    int.tryParse(state.pathParameters['recipeId']!) ?? -1;
+
 @Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {
   final refresh = ValueNotifier(0);
@@ -155,6 +168,43 @@ GoRouter router(Ref ref) {
               GoRoute(
                 path: Routes.home,
                 builder: (context, state) => const HomeScreen(),
+                routes: [
+                  // Recipes open from the home screen (and later the meal
+                  // plan); editing and cooking cover the tab bar.
+                  GoRoute(
+                    path: 'recipes',
+                    builder: (context, state) => const RecipesScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'new',
+                        parentNavigatorKey: rootNavigator,
+                        builder: (context, state) => const RecipeEditScreen(),
+                      ),
+                      GoRoute(
+                        path: ':recipeId',
+                        builder: (context, state) => RecipeScreen(
+                          recipeId: _recipeId(state),
+                        ),
+                        routes: [
+                          GoRoute(
+                            path: 'edit',
+                            parentNavigatorKey: rootNavigator,
+                            builder: (context, state) =>
+                                RecipeEditScreen(recipeId: _recipeId(state)),
+                          ),
+                          GoRoute(
+                            path: 'cook',
+                            parentNavigatorKey: rootNavigator,
+                            builder: (context, state) => CookingScreen(
+                              recipeId: _recipeId(state),
+                              servings: state.extra as int?,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),

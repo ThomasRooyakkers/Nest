@@ -783,4 +783,243 @@ class AppLocalizationsEn extends AppLocalizations {
   String taskRepeats(String recurrence) {
     return 'Repeats: $recurrence';
   }
+
+  @override
+  String get recipesSearchHint => 'Search recipes';
+
+  @override
+  String get recipesFavorites => 'Favourites';
+
+  @override
+  String get recipesEmpty => 'No recipes yet. Add your first one with +.';
+
+  @override
+  String get recipesNoMatch => 'No recipes match.';
+
+  @override
+  String get recipesOffline =>
+      'Offline. You can read recipes; changes need a connection.';
+
+  @override
+  String get recipeNew => 'New recipe';
+
+  @override
+  String get recipeEdit => 'Edit recipe';
+
+  @override
+  String get recipeDelete => 'Delete recipe';
+
+  @override
+  String recipeDeleteConfirm(String title) {
+    return 'Delete “$title”?';
+  }
+
+  @override
+  String get recipeMoreActions => 'More actions';
+
+  @override
+  String get recipeNotFound => 'This recipe is no longer there.';
+
+  @override
+  String get recipeFavoriteAdd => 'Add to favourites';
+
+  @override
+  String get recipeFavoriteRemove => 'Remove from favourites';
+
+  @override
+  String recipeDurationMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String recipeDurationHours(int hours) {
+    return '$hours h';
+  }
+
+  @override
+  String recipeDurationHoursMinutes(int hours, int minutes) {
+    return '$hours h $minutes min';
+  }
+
+  @override
+  String get recipePrepTime => 'Prep';
+
+  @override
+  String get recipeCookTime => 'Cook';
+
+  @override
+  String recipeServings(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count servings',
+      one: '1 serving',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get recipeServingsFewer => 'Fewer servings';
+
+  @override
+  String get recipeServingsMore => 'More servings';
+
+  @override
+  String get recipeIngredients => 'Ingredients';
+
+  @override
+  String get recipeSteps => 'Method';
+
+  @override
+  String recipeStepNumber(int number) {
+    return 'Step $number';
+  }
+
+  @override
+  String get recipeNoIngredients => 'No ingredients yet.';
+
+  @override
+  String get recipeNoSteps => 'No steps yet.';
+
+  @override
+  String get recipeAddToList => 'Add to list';
+
+  @override
+  String get recipeStartCooking => 'Start cooking';
+
+  @override
+  String get recipeTitleLabel => 'Title';
+
+  @override
+  String get recipeDescriptionLabel => 'Description';
+
+  @override
+  String get recipePrepMinutesLabel => 'Prep (min)';
+
+  @override
+  String get recipeCookMinutesLabel => 'Cook (min)';
+
+  @override
+  String get recipeServingsLabel => 'Servings';
+
+  @override
+  String get recipeTagsLabel => 'Tags';
+
+  @override
+  String get recipeTagHint => 'Add a tag, e.g. Vegetarian';
+
+  @override
+  String get recipeAddTag => 'Add tag';
+
+  @override
+  String recipeRemoveTag(String tag) {
+    return 'Remove $tag';
+  }
+
+  @override
+  String get recipeQuantityLabel => 'Amount';
+
+  @override
+  String get recipeUnitLabel => 'Unit';
+
+  @override
+  String get recipeIngredientLabel => 'Ingredient';
+
+  @override
+  String get recipeNoteLabel => 'Note, e.g. finely chopped';
+
+  @override
+  String get recipeQuantityInvalid => 'Not a number';
+
+  @override
+  String get recipeAddIngredient => 'Add ingredient';
+
+  @override
+  String get recipeRemoveIngredient => 'Remove ingredient';
+
+  @override
+  String get recipeAddStep => 'Add step';
+
+  @override
+  String get recipeRemoveStep => 'Remove step';
+
+  @override
+  String get recipeMoveStepUp => 'Move step up';
+
+  @override
+  String get recipePhotoAdd => 'Add photo';
+
+  @override
+  String get recipePhotoChange => 'Change photo';
+
+  @override
+  String get recipePhotoRemove => 'Remove photo';
+
+  @override
+  String get recipePhotoCamera => 'Take a photo';
+
+  @override
+  String get recipePhotoGallery => 'Choose a photo';
+
+  @override
+  String get recipePhotoFailed =>
+      'The recipe was saved, but the photo could not be.';
+
+  @override
+  String recipePhotoLabel(String title) {
+    return 'Photo of $title';
+  }
+
+  @override
+  String get recipeDiscardChanges => 'Discard your changes?';
+
+  @override
+  String get recipeDiscardButton => 'Discard';
+
+  @override
+  String cookingStepOf(int number, int total) {
+    return 'Step $number of $total';
+  }
+
+  @override
+  String get cookingPrevious => 'Previous';
+
+  @override
+  String get cookingNext => 'Next';
+
+  @override
+  String get cookingDone => 'Done';
+
+  @override
+  String get cookingClose => 'Close cooking mode';
+
+  @override
+  String get recipeAddToListTitle => 'Add to the shopping list';
+
+  @override
+  String recipeAddItems(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Add $count items',
+      one: 'Add 1 item',
+      zero: 'Nothing selected',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String recipeAddedToList(int count, String list) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items added to $list',
+      one: '1 item added to $list',
+      zero: 'Everything was already on $list',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeRecipesSubtitle => 'Your household\'s recipe library';
 }

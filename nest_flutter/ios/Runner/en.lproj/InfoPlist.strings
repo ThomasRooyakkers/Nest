@@ -1,0 +1,3 @@
+/* Permission texts (Nest). */
+NSCameraUsageDescription = "Nest uses the camera to take a photo of a recipe.";
+NSPhotoLibraryUsageDescription = "Nest uses your photos to add a picture to a recipe.";

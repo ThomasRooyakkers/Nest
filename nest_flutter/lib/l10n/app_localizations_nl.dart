@@ -786,4 +786,242 @@ class AppLocalizationsNl extends AppLocalizations {
   String taskRepeats(String recurrence) {
     return 'Herhaalt: $recurrence';
   }
+
+  @override
+  String get recipesSearchHint => 'Recepten zoeken';
+
+  @override
+  String get recipesFavorites => 'Favorieten';
+
+  @override
+  String get recipesEmpty => 'Nog geen recepten. Voeg je eerste toe met +.';
+
+  @override
+  String get recipesNoMatch => 'Geen recepten gevonden.';
+
+  @override
+  String get recipesOffline =>
+      'Offline. Je kunt recepten lezen; wijzigen kan als je weer verbonden bent.';
+
+  @override
+  String get recipeNew => 'Nieuw recept';
+
+  @override
+  String get recipeEdit => 'Recept bewerken';
+
+  @override
+  String get recipeDelete => 'Recept verwijderen';
+
+  @override
+  String recipeDeleteConfirm(String title) {
+    return '“$title” verwijderen?';
+  }
+
+  @override
+  String get recipeMoreActions => 'Meer acties';
+
+  @override
+  String get recipeNotFound => 'Dit recept bestaat niet meer.';
+
+  @override
+  String get recipeFavoriteAdd => 'Aan favorieten toevoegen';
+
+  @override
+  String get recipeFavoriteRemove => 'Uit favorieten halen';
+
+  @override
+  String recipeDurationMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String recipeDurationHours(int hours) {
+    return '$hours u';
+  }
+
+  @override
+  String recipeDurationHoursMinutes(int hours, int minutes) {
+    return '$hours u $minutes min';
+  }
+
+  @override
+  String get recipePrepTime => 'Voorbereiden';
+
+  @override
+  String get recipeCookTime => 'Koken';
+
+  @override
+  String recipeServings(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count personen',
+      one: '1 persoon',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get recipeServingsFewer => 'Minder personen';
+
+  @override
+  String get recipeServingsMore => 'Meer personen';
+
+  @override
+  String get recipeIngredients => 'Ingrediënten';
+
+  @override
+  String get recipeSteps => 'Bereiding';
+
+  @override
+  String recipeStepNumber(int number) {
+    return 'Stap $number';
+  }
+
+  @override
+  String get recipeNoIngredients => 'Nog geen ingrediënten.';
+
+  @override
+  String get recipeNoSteps => 'Nog geen stappen.';
+
+  @override
+  String get recipeAddToList => 'Op de lijst';
+
+  @override
+  String get recipeStartCooking => 'Begin met koken';
+
+  @override
+  String get recipeTitleLabel => 'Titel';
+
+  @override
+  String get recipeDescriptionLabel => 'Beschrijving';
+
+  @override
+  String get recipePrepMinutesLabel => 'Voorbereiden (min)';
+
+  @override
+  String get recipeCookMinutesLabel => 'Koken (min)';
+
+  @override
+  String get recipeServingsLabel => 'Personen';
+
+  @override
+  String get recipeTagsLabel => 'Labels';
+
+  @override
+  String get recipeTagHint => 'Label toevoegen, bv. Vegetarisch';
+
+  @override
+  String get recipeAddTag => 'Label toevoegen';
+
+  @override
+  String recipeRemoveTag(String tag) {
+    return '$tag verwijderen';
+  }
+
+  @override
+  String get recipeQuantityLabel => 'Hoeveelheid';
+
+  @override
+  String get recipeUnitLabel => 'Eenheid';
+
+  @override
+  String get recipeIngredientLabel => 'Ingrediënt';
+
+  @override
+  String get recipeNoteLabel => 'Opmerking, bv. fijngesneden';
+
+  @override
+  String get recipeQuantityInvalid => 'Geen getal';
+
+  @override
+  String get recipeAddIngredient => 'Ingrediënt toevoegen';
+
+  @override
+  String get recipeRemoveIngredient => 'Ingrediënt verwijderen';
+
+  @override
+  String get recipeAddStep => 'Stap toevoegen';
+
+  @override
+  String get recipeRemoveStep => 'Stap verwijderen';
+
+  @override
+  String get recipeMoveStepUp => 'Stap omhoog';
+
+  @override
+  String get recipePhotoAdd => 'Foto toevoegen';
+
+  @override
+  String get recipePhotoChange => 'Foto wijzigen';
+
+  @override
+  String get recipePhotoRemove => 'Foto verwijderen';
+
+  @override
+  String get recipePhotoCamera => 'Foto maken';
+
+  @override
+  String get recipePhotoGallery => 'Foto kiezen';
+
+  @override
+  String get recipePhotoFailed => 'Het recept is bewaard, maar de foto niet.';
+
+  @override
+  String recipePhotoLabel(String title) {
+    return 'Foto van $title';
+  }
+
+  @override
+  String get recipeDiscardChanges => 'Wijzigingen weggooien?';
+
+  @override
+  String get recipeDiscardButton => 'Weggooien';
+
+  @override
+  String cookingStepOf(int number, int total) {
+    return 'Stap $number van $total';
+  }
+
+  @override
+  String get cookingPrevious => 'Vorige';
+
+  @override
+  String get cookingNext => 'Volgende';
+
+  @override
+  String get cookingDone => 'Klaar';
+
+  @override
+  String get cookingClose => 'Kookmodus sluiten';
+
+  @override
+  String get recipeAddToListTitle => 'Op de boodschappenlijst zetten';
+
+  @override
+  String recipeAddItems(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items toevoegen',
+      one: '1 item toevoegen',
+      zero: 'Niets gekozen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String recipeAddedToList(int count, String list) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items op $list gezet',
+      one: '1 item op $list gezet',
+      zero: 'Alles stond al op $list',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeRecipesSubtitle => 'Het receptenboek van je huishouden';
 }

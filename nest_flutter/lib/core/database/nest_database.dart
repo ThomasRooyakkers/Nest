@@ -114,6 +114,37 @@ class NestDatabase extends _$NestDatabase {
     T Function(Map<String, dynamic> json) fromJson,
   ) async => _decode(await _rowsQuery(kind, householdId).get(), fromJson);
 
+  /// One cached row of [kind] by id, or null.
+  Future<T?> readRow<T>(
+    String kind,
+    int householdId,
+    int id,
+    T Function(Map<String, dynamic> json) fromJson,
+  ) async {
+    final row =
+        await (select(cachedRows)..where(
+              (r) =>
+                  r.kind.equals(kind) &
+                  r.householdId.equals(householdId) &
+                  r.id.equals(id),
+            ))
+            .getSingleOrNull();
+    return row == null
+        ? null
+        : fromJson(jsonDecode(row.json) as Map<String, dynamic>);
+  }
+
+  /// Ids of the cached rows of [kind] for a household.
+  Future<List<int>> readIds(String kind, int householdId) async {
+    final query = selectOnly(cachedRows)
+      ..addColumns([cachedRows.id])
+      ..where(
+        cachedRows.kind.equals(kind) &
+            cachedRows.householdId.equals(householdId),
+      );
+    return [for (final row in await query.get()) row.read(cachedRows.id)!];
+  }
+
   /// Inserts or replaces rows, keyed by id.
   Future<void> upsertRows(
     String kind,

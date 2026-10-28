@@ -17,6 +17,7 @@ import 'package:nest_flutter/features/auth/data/auth_repository.dart';
 import 'package:nest_flutter/features/settings/data/profile_repository.dart';
 import 'package:nest_flutter/features/tasks/presentation/task_providers.dart';
 
+import 'fake_recipe_server.dart';
 import 'fake_shopping_server.dart';
 import 'fake_task_server.dart';
 
@@ -147,6 +148,7 @@ Future<ProviderContainer> pumpNestApp(
   double textScale = 1,
   FakeShoppingServer? shoppingServer,
   FakeTaskServer? taskServer,
+  FakeRecipeServer? recipeServer,
   NestDatabase? database,
   FakeHealthRepository? health,
   FakeServerSwitcher? serverSwitcher,
@@ -173,7 +175,11 @@ Future<ProviderContainer> pumpNestApp(
       // faked. The sign-in screen only hands it to EmailAuthController.
       nestClientProvider.overrideWithValue(
         client ??
-            FakeNestClient(server: shoppingServer, taskServer: taskServer),
+            FakeNestClient(
+              server: shoppingServer,
+              taskServer: taskServer,
+              recipeServer: recipeServer,
+            ),
       ),
       nestDatabaseProvider.overrideWithValue(db),
       signedInProvider.overrideWithBuild((ref, notifier) => signedIn),
