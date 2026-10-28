@@ -4,8 +4,12 @@
 
 **Phase 2 — Shopping List: built and deployed to the Pi (2026-10-28), at the gate.**
 Live at https://nest.g3cko.be (API https://nest-api.g3cko.be). Gate: "Thomas's
-household can use it daily" — Thomas's household starts using it now; phase 3
-(Tasks + push) follows once Thomas confirms.
+household can use it daily" — Thomas's household starts using it now.
+
+**Plan change (2026-10-28, Thomas):** notifications are dropped from v1 and Nest
+becomes *bring your own backend*. Phase 3 is now "Bring your own backend"; Tasks
+(without reminders) moves to phase 4 and the later phases shift by one. CLAUDE.md
+sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 
 ## Done
 
@@ -154,8 +158,19 @@ household can use it daily" — Thomas's household starts using it now; phase 3
    For the iPhone, build with `--dart-define=SERVER_URL=https://nest-api.g3cko.be/`.
 2. Resend: account + domain `g3cko.be` (DNS records can be added in Cloudflare),
    then `RESEND_API_KEY` in `~/nest/deploy/.env` and `docker compose up -d nest`.
-3. Phase 3 — Tasks + push: tasks with recurrence, notification preferences,
-   future calls for reminders, `FakePushService`, deep links.
+3. Phase 3 — Bring your own backend (CLAUDE.md section 10), in this order:
+   1. `health` reports server and API version; app-side compatibility check.
+   2. Server choice in the app: sign-in screen, settings, About; remembered on
+      the device; switching server signs out and clears the cache.
+   3. Host-specific settings from the environment: domain, allowed origins,
+      mail sender, super-admin email, sign-up mode (invite-only by default).
+   4. Login cookies for the web app; fix the lost deep link at app start.
+   5. Multi-arch server image with the web app built in, published to a
+      registry; generic Compose file and `.env.example`; hosting guide EN/NL.
+   6. Move Thomas's Pi onto the published image; set up a second server from
+      the guide alone on a clean machine (gate).
+   Open choices for Thomas before step 5: where to publish the image (e.g.
+   GitHub Container Registry) and whether the repository becomes public.
 
 ## Open questions
 
@@ -167,7 +182,9 @@ household can use it daily" — Thomas's household starts using it now; phase 3
   26.04 LTS is Thomas's call (the Nest containers restart on their own).
 - **Deep links lost at app start:** opening the app on a URL such as `/#/shopping`
   lands on Home, because the start/sign-in redirect does not keep the original
-  location. To fix in phase 3 together with notification deep links.
+  location. To fix in phase 3.
+- **Image registry and repository visibility** for the self-hosting kit (phase 3):
+  GitHub Container Registry is the obvious choice; needs Thomas's decision.
 - **Test account in the dev database:** `claude-test@nest.test` (household
   "Claude test") was created while verifying phase 2; delete it or keep it for
   later checks.

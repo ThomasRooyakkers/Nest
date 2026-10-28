@@ -6,19 +6,19 @@ This file tells Claude Code everything it needs to build **Nest**, a family hous
 
 ## 1. What Nest is
 
-Nest is a private, bilingual (English + Dutch) family app for iOS, Android and web, built with Flutter. One self-hosted, multi-tenant backend serves several households (Thomas's family and relatives). Each household sees only its own data. A separate admin portal lets the super-admin (Thomas) manage households, users, backups and system health.
+Nest is a private, bilingual (English + Dutch) family app for iOS, Android and web, built with Flutter. It is **bring your own backend**: anyone can host a Nest server for their own family, and one app connects to whichever server the user chooses. Thomas hosts one for his family and relatives at `nest.g3cko.be`. Each server is multi-tenant: it serves several households, and each household sees only its own data. A separate admin portal lets each server's super-admin manage households, users, backups and system health.
 
-**v1 features:** Dashboard, Shopping List (Bring!-style tiles, multiple lists, manually added stores), Recipes, Meal Planning, Tasks, Watchlist (TMDB), opt-in push reminders and notifications, admin portal.
+**v1 features:** Dashboard, Shopping List (Bring!-style tiles, multiple lists, manually added stores), Recipes, Meal Planning, Tasks, Watchlist (TMDB), admin portal, and a self-hosting kit (published server image and hosting guide) so others can run their own server.
 
-**Out of scope for v1:** expenses, notes, calendar, general file storage, recipe import from websites, sending a whole week's meal plan to the shopping list, paid subscriptions.
+**Out of scope for v1:** notifications of any kind (push, reminders, daily summary; removed 2026-10-28, may return later), expenses, notes, calendar, general file storage, recipe import from websites, sending a whole week's meal plan to the shopping list, paid subscriptions.
 
-**Production target (later, not now):** a Raspberry Pi at home running Docker Compose, reachable through a Cloudflare Tunnel at `nest.g3cko.be` (app/API) and `nest-admin.g3cko.be` (admin portal, behind Cloudflare Access).
+**Production:** Thomas's server runs on a Raspberry Pi at home with Docker Compose, reachable through a Cloudflare Tunnel at `nest.g3cko.be` (web app), `nest-api.g3cko.be` (API) and, later, `nest-admin.g3cko.be` (admin portal, behind Cloudflare Access). Other hosts use the same image and Compose file with their own domain, either behind a Cloudflare Tunnel or their own HTTPS proxy.
 
 ---
 
 ## 2. How to work in this repo
 
-- **Local-first.** Everything must run on a Mac with no external accounts or API keys. External services (Google sign-in, Apple sign-in, FCM/APNs push, TMDB, OneDrive, Cloudflare) sit behind interfaces with a **fake implementation** used by default in development. Real implementations are added later and switched on by configuration.
+- **Local-first.** Everything must run on a Mac with no external accounts or API keys. External services (Google sign-in, Apple sign-in, Resend mail, TMDB, OneDrive, Cloudflare) sit behind interfaces with a **fake implementation** used by default in development. Real implementations are added later and switched on by configuration.
 - **Work phase by phase** (section 10). Finish a phase, meet its gate, update `docs/STATUS.md`, then stop and summarize for Thomas before starting the next phase. Never skip a gate.
 - **Small steps, always green.** After each meaningful change: run `serverpod generate` if models or endpoints changed, run the tests, fix failures, then commit with a short conventional message (`feat:`, `fix:`, `test:`, `chore:`, `docs:`).
 - **Ask before** adding a dependency that is not listed in section 4, changing a decision in this file, or deleting data or migrations. When something is ambiguous, ask one clear question rather than guessing.
@@ -33,8 +33,8 @@ Nest is a private, bilingual (English + Dutch) family app for iOS, Android and w
 2. **Admin endpoints** live under `endpoints/admin/` and start with `AdminGuard.require(session)`, which checks `isSuperAdmin` on the server. Admin endpoints return metadata and counts only, never household content (no list items, recipe text, task titles). Every admin action writes an `admin_audit_log` row.
 3. **Isolation tests come first.** Before any feature exists, there is a test that creates two households and asserts that a user of household A gets nothing back, and an error, from every endpoint for household B. Every new endpoint is added to this test. A second test asserts that a normal user gets an error from every admin endpoint.
 4. **No secrets in Git.** Passwords, API keys, service-account files, restic passwords and rclone tokens live in untracked env files (`.env`, `config/passwords.yaml`); commit only `*.example` versions. Make sure `.gitignore` covers them from the first commit.
-5. **Bilingual from the first screen.** No hard-coded user-facing strings. All text goes through gen-l10n ARB files (`app_en.arb`, `app_nl.arb`) with both languages filled in. Dates, weekdays and numbers are formatted per locale with `intl`. User content (recipes, items, tasks) is shown as entered, never translated. Push message texts are localized on the server using the user's stored `locale`.
-6. **Notifications are off by default.** The app asks for push permission only when a user switches on their first notification type.
+5. **Bilingual from the first screen.** No hard-coded user-facing strings. All text goes through gen-l10n ARB files (`app_en.arb`, `app_nl.arb`) with both languages filled in. Dates, weekdays and numbers are formatted per locale with `intl`. User content (recipes, items, tasks) is shown as entered, never translated. Emails sent by the server (sign-up and reset codes) are in both languages.
+6. **No server is hard-coded.** The app connects to the server the user chose (default `nest.g3cko.be`), checks it is a compatible Nest server first, and keeps working against older servers within the supported range: new features must be optional on servers that do not have them yet. Everything that differs per host (domain, allowed web origins, mail, super-admin, TMDB key, backup targets) is server configuration, never code. Nothing in the server or the deploy kit may depend on Thomas's accounts.
 7. **Accessibility:** touch targets at least 44×44, text contrast at least 4.5:1, semantic labels on icon-only buttons, support for system text scaling.
 
 ---
@@ -45,18 +45,19 @@ Nest is a private, bilingual (English + Dutch) family app for iOS, Android and w
 | --- | --- |
 | App | Flutter (stable), Dart |
 | State | Riverpod with code generation (`flutter_riverpod`, `riverpod_annotation`, `riverpod_generator`) |
-| Navigation | `go_router` (deep links, also from notifications; auth redirects) |
+| Navigation | `go_router` (deep links; auth redirects) |
 | Localization | `flutter_localizations`, gen-l10n (ARB), `intl` |
 | Local cache / offline | `drift` (SQLite) for shopping list, tasks and recipes |
 | Backend | Serverpod 4.x (Dart): endpoints, generated client, ORM, migrations |
 | Database | PostgreSQL 16+ (Serverpod's embedded Postgres locally and in tests, no Docker needed; Postgres in Docker on the Pi in production) |
 | Realtime | Serverpod streaming (WebSockets) for shopping list and tasks |
-| Scheduling | Serverpod future calls for reminders, overdue checks and the daily summary |
+| Scheduling | Serverpod future calls where needed (e.g. creating the next occurrence of recurring tasks) |
 | Auth | Serverpod's official auth module: email + password now; Google sign-in, and Sign in with Apple on iOS, later |
-| Push (later) | Firebase Cloud Messaging HTTP v1 (APNs via FCM). Fake service in development |
 | Film data (later) | TMDB API, called from the server only. Fake service with fixtures in development |
 | Backups (later) | `pg_dump` + restic to an NFS share and to OneDrive (via rclone) |
+| Mail | Resend (HTTPS API) when a key is configured; codes in the server log otherwise |
 | Admin portal | Flutter web app in the same repo |
+| Self-hosting | Multi-arch (arm64 + amd64) server image with the web app built in, Docker Compose file, hosting guide |
 | CI (later) | GitHub Actions: tests, arm64 server image |
 
 Use the models Serverpod generates in the data layer. Use `freezed` only for UI-only state classes if they become complex.
@@ -74,8 +75,8 @@ nest/
       models/          # .spy.yaml model definitions
       endpoints/       # one endpoint per feature, all household-scoped
         admin/         # super-admin endpoints (AdminGuard)
-      future_calls/    # reminders, overdue checks, daily summary
-      services/        # HouseholdGuard, AdminGuard, push, tmdb, notifications (fake + real)
+      future_calls/    # scheduled work (e.g. recurring tasks)
+      services/        # HouseholdGuard, AdminGuard, mail, tmdb (fake + real)
     migrations/
     config/            # development.yaml, test.yaml, production.yaml (+ passwords.yaml, untracked)
     test/              # integration tests incl. isolation tests
@@ -90,7 +91,7 @@ nest/
         backend/       # Serverpod client, session, connection state
         database/      # drift cache
         household/     # active household, feature toggles
-        notifications/ # permission flow, token registration, deep links
+        server/        # chosen server address, compatibility check
       features/
         auth/ dashboard/ shopping_list/ recipes/ meal_planning/ tasks/ watchlist/ settings/
           data/          # repository + remote/local data sources
@@ -121,10 +122,8 @@ All feature tables carry `householdId`. Timestamps (`createdAt`, `updatedAt`) on
 | recipe_ingredients | recipeId, position, quantity, unit, name, note | Structured so servings scale |
 | recipe_steps | recipeId, position, text | |
 | meal_plan_entries | householdId, date, slot (dinner; breakfast/lunch optional), recipeId or freeText, servings, prepAheadNote | |
-| tasks | householdId, title, notes, assigneeId, dueAt, remindAt, recurrence (none/daily/weekly/monthly), doneAt | Completing a recurring task creates the next one |
+| tasks | householdId, title, notes, assigneeId, dueAt, recurrence (none/daily/weekly/monthly), doneAt | Completing a recurring task creates the next one |
 | watchlist_items | householdId, tmdbId, type (movie/series), title, posterPath, year, rating, status (want/watching/watched), addedBy, householdRating | |
-| devices | userId, fcmToken, platform, lastSeenAt | Stale tokens removed when FCM rejects them |
-| notification_prefs | userId, householdId, per-type on/off (all off by default), quietHoursStart, quietHoursEnd | |
 | backup_runs | startedAt, finishedAt, status, sizeBytes, snapshotId, target, error | Written by the backup job |
 | backup_requests | requestedBy, requestedAt, pickedUpAt | "Back up now" from the admin portal |
 | admin_audit_log | adminId, action, targetType, targetId, details, at | Append-only |
@@ -135,21 +134,23 @@ Child tables without `householdId` (recipe_ingredients, recipe_steps) are only r
 
 ## 7. Feature specifications
 
-**Dashboard.** Greeting with today's date and a household switcher in the header. Tonight's dinner from the meal plan with "Open recipe". Two tiles: items to buy (opens Shopping) and tasks due today (opens Tasks). Today's tasks with check-off, reminder time and assignee avatar. Next item on the watchlist. Cards hide when a feature is disabled for the household.
+**Dashboard.** Greeting with today's date and a household switcher in the header. Tonight's dinner from the meal plan with "Open recipe". Two tiles: items to buy (opens Shopping) and tasks due today (opens Tasks). Today's tasks with check-off, due time and assignee avatar. Next item on the watchlist. Cards hide when a feature is disabled for the household.
 
-**Shopping List (Bring!-style, own design and icons).** List switcher in the header with member avatars. Search field "What do you need?" that adds from the catalog or creates an own item. Store chips (All stores + each store + "Add store"): picking a store shows only items for that store or "any store", ordered by that store's category order, with a hint how many items are hidden. "To buy" grid of tiles (3 columns, icon, name, spec) in the accent colour; tapping a tile moves it to "Recently used". "Recently used" grid of light tiles; tapping adds it back. Live sync for everyone on the list, works offline. Optional "Going shopping" / "Done shopping" notifications. Later: photo per item.
+**Shopping List (Bring!-style, own design and icons).** List switcher in the header with member avatars. Search field "What do you need?" that adds from the catalog or creates an own item. Store chips (All stores + each store + "Add store"): picking a store shows only items for that store or "any store", ordered by that store's category order, with a hint how many items are hidden. "To buy" grid of tiles (3 columns, icon, name, spec) in the accent colour; tapping a tile moves it to "Recently used". "Recently used" grid of light tiles; tapping adds it back. Live sync for everyone on the list, works offline. Later: photo per item.
 
 **Recipes.** Create/edit with title, photo, servings, prep and cook time, tags, structured ingredients and numbered steps. Servings stepper that rescales amounts. Favourite toggle. Search and filter by tag and favourites. Cooking mode (large text, screen stays awake). "Add to list" adds the recipe's ingredients to the shopping list, skipping items already on it.
 
 **Meal Planning.** Week strip of seven days with previous/next week buttons, one card per day showing dinner, "+ Plan dinner" on empty days. A day is filled from the recipe library or free text. Servings and a "prep ahead" note per meal. Breakfast and lunch slots can be switched on per household (off by default). There is deliberately no "add the week's ingredients to the list" feature.
 
-**Tasks.** Filter chips: Mine, Everyone, Overdue, Done. Each task: check-off, title, due label (overdue highlighted), recurrence and reminder indicators, assignee avatar. Floating "+" button for a new task. Recurring tasks create their next occurrence on completion.
+**Tasks.** Filter chips: Mine, Everyone, Overdue, Done. Each task: check-off, title, due label (overdue highlighted), recurrence indicator, assignee avatar. Floating "+" button for a new task. Recurring tasks create their next occurrence on completion.
 
 **Watchlist.** Search films and series via the server (TMDB). Status tabs: Want to watch, Watching, Watched. "Pick something for tonight" chooses a random title. Three-column poster grid (2:3 posters) with title, type, year, rating and who added it. Show the TMDB attribution line on the watchlist and the About screen: "This product uses the TMDB API but is not endorsed or certified by TMDB." IMDb is not used (no public API, scraping not allowed).
 
-**Notifications** (all off by default, per user, per household, with quiet hours): task reminder at `remindAt`, task overdue (morning after), task assigned to you, meal prep reminder (evening before, if a prep-ahead note exists), daily summary, shopping list changed (bundled per 10 minutes), new on the watchlist. Tapping a notification deep-links to the right screen.
+**Choosing a server.** The sign-in screen shows the server in use (default `nest.g3cko.be`) with "Change server". The user enters an address; the app checks that it is a reachable Nest server with a compatible version before switching, and remembers the choice. Signing out keeps the server; switching server signs out and clears the local cache. Settings and the About screen show the server and its version. The web app always uses the server it was loaded from.
 
-**Admin portal** (`nest_admin`, Flutter web). Side menu: Households, Users, Backups, System health, Notifications, Audit log; stacks on narrow screens. Households page: summary cards (last backup, server health, SSD free space), table with name, owner, members, enabled features, last activity, status, and a Suspend/Reactivate action. Backups: recent runs, "Back up now". Restores stay a documented command-line task; the portal only shows the command and the snapshot to use.
+**Self-hosting kit.** A published multi-arch server image (web app included), the Compose file (Postgres, server, backup; Cloudflare Tunnel optional) and a hosting guide in English and Dutch: requirements, `.env` settings (domain, secrets, mail, super-admin email, TMDB key, sign-up mode), first start, updating, backups and restore. Sign-up mode per server: invite-only (default: an account can only be created with a valid household invite code, except the configured super-admin) or open.
+
+**Admin portal** (`nest_admin`, Flutter web). Side menu: Households, Users, Backups, System health, Audit log; stacks on narrow screens. Households page: summary cards (last backup, server health, SSD free space), table with name, owner, members, enabled features, last activity, status, and a Suspend/Reactivate action. Backups: recent runs, "Back up now". Restores stay a documented command-line task; the portal only shows the command and the snapshot to use.
 
 ---
 
@@ -193,12 +194,12 @@ Implement these tokens once in `nest_shared` as a `ThemeData` plus a `NestColors
 | Service | Development default | Production (later) |
 | --- | --- | --- |
 | Auth | email + password | + Google sign-in, Sign in with Apple on iOS |
-| Push | `FakePushService`: logs "would send X to Y" and stores it for tests | `FcmPushService` |
+| Mail | codes written to the server log | Resend, with the host's own API key |
 | TMDB | `FakeTmdbService`: fixtures with placeholder posters | `TmdbService` with API key on the server |
 | Backups | restic to a local folder | restic to NFS + OneDrive via rclone |
-| Network | `localhost` | Cloudflare Tunnel |
+| Network | `localhost` | Cloudflare Tunnel or the host's own HTTPS proxy |
 
-Select implementations through server config (e.g. `push: fake|fcm`, `tmdb: fake|tmdb`). Provide a seed command that creates two households ("Home" and "Test family"), a super-admin and a few users, sample catalog items, stores, recipes, tasks and watchlist fixtures, so every screen has data.
+Select implementations through server config (e.g. `tmdb: fake|tmdb`). Provide a seed command that creates two households ("Home" and "Test family"), a super-admin and a few users, sample catalog items, stores, recipes, tasks and watchlist fixtures, so every screen has data.
 
 ---
 
@@ -208,13 +209,14 @@ Do the phases in order. At each gate, stop and report to Thomas.
 
 0. **Setup** — check prerequisites (`flutter doctor`, Docker running, Serverpod CLI installed). Create the project with `serverpod create nest` in this folder, add `nest_shared` and `nest_admin`, wire gen-l10n (EN/NL) and the design tokens, set up `.gitignore`, `docs/STATUS.md`, and a README with run instructions. App shows a themed, bilingual placeholder screen connected to the local server.
 1. **Foundation** — email/password sign-in, households, memberships, invite codes, household switcher, settings with language choice, `HouseholdGuard`, `AdminGuard`, seed command, isolation tests. **Gate: isolation tests pass.**
-2. **Shopping List** — lists, catalog, stores, tiles, recently used, realtime sync, drift offline cache. **Gate: Thomas's household can use it daily (deployment to the Pi happens around here; ask first).**
-3. **Tasks + push** — tasks, recurrence, notification preferences, future calls for reminders, fake push service, deep links.
-4. **Recipes** — library, photos (stored via Serverpod file uploads), scaling, cooking mode, add to list.
-5. **Meal Planning** — week strip, dinner per day, linked recipes, prep-ahead note.
-6. **Watchlist** — fake TMDB first, status tabs, poster grid, random pick, attribution.
-7. **Admin + backups** — admin portal pages, audit log, backup job and `backup_runs`/`backup_requests`.
-8. **Dashboard + release** — dashboard, daily summary, real providers (Google, Apple, FCM, TMDB), TestFlight and Play internal testing. **Gate: a backup restore has been tested before other households are invited.**
+2. **Shopping List** — lists, catalog, stores, tiles, recently used, realtime sync, drift offline cache, deployment to Thomas's Pi. **Gate: Thomas's household can use it daily.**
+3. **Bring your own backend** — server choice in the app (sign-in, settings, About) with a version/compatibility check (`health` returns server and API version); everything host-specific moved to server configuration (domain, allowed origins, mail sender, super-admin by email, sign-up mode invite-only/open); login cookies for the web app; published multi-arch server image with the web app built in; generic Compose file and `.env.example`; hosting guide (EN/NL); Thomas's Pi moved onto the published image. **Gate: a second server, set up from the guide alone on a clean machine, works with the same app build, and the app switches between the two.**
+4. **Tasks** — tasks, recurrence, filters, assignees (no reminders).
+5. **Recipes** — library, photos (stored via Serverpod file uploads), scaling, cooking mode, add to list.
+6. **Meal Planning** — week strip, dinner per day, linked recipes, prep-ahead note.
+7. **Watchlist** — fake TMDB first, status tabs, poster grid, random pick, attribution; each host uses their own TMDB key.
+8. **Admin + backups** — admin portal pages, audit log, backup job and `backup_runs`/`backup_requests`, backups and restore described in the hosting guide.
+9. **Dashboard + release** — dashboard, real providers (Google, Apple, TMDB), TestFlight and Play internal testing. **Gate: a backup restore has been tested before other households are invited.**
 
 ---
 
