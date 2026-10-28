@@ -87,6 +87,23 @@ cd nest_admin && flutter run -d chrome
 To run the app on a physical phone, point it at your Mac:
 `flutter run --dart-define=SERVER_URL=http://<your-mac-ip>:8080/`.
 
+## Production (Raspberry Pi)
+
+Nest runs on the Pi with Docker Compose behind a Cloudflare Tunnel: the app at
+https://nest.g3cko.be, the API at https://nest-api.g3cko.be. Secrets live in
+`~/nest/deploy/.env` on the Pi (see `deploy/.env.example`). To deploy the
+current checkout:
+
+```bash
+deploy/deploy.sh
+```
+
+Logs (including sign-up codes while Resend is not set up), on the Pi:
+
+```bash
+cd ~/nest/deploy && docker compose logs -f nest
+```
+
 ## Tests
 
 ```bash

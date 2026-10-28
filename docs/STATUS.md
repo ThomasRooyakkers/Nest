@@ -2,10 +2,10 @@
 
 ## Current phase
 
-**Phase 2 — Shopping List: built (2026-10-28), at the gate.**
-Gate: "Thomas's household can use it daily". Needs Thomas's go-ahead to deploy
-to the Pi (and a mail provider for sign-up codes, see open questions) before
-phase 3 (Tasks + push).
+**Phase 2 — Shopping List: built and deployed to the Pi (2026-10-28), at the gate.**
+Live at https://nest.g3cko.be (API https://nest-api.g3cko.be). Gate: "Thomas's
+household can use it daily" — Thomas's household starts using it now; phase 3
+(Tasks + push) follows once Thomas confirms.
 
 ## Done
 
@@ -121,20 +121,50 @@ phase 3 (Tasks + push).
   tabs) and in the iOS simulator (iPhone 18 Pro, signed in as Thomas: seeded
   Home lists, item sheet, pull to refresh, store filter with hidden hint).
 
+### Deployment (2026-10-28)
+
+- **Pi** (`10.1.1.215`, Ubuntu 25.10 arm64, Docker 28): the claudecraft containers
+  and network were removed (their volume `world-of-claudecraft_eastbrook_pgdata`
+  was kept); Scrypted untouched. SSH deploy key `~/.ssh/id_ed25519_nest_pi` on the Mac.
+- **Stack** in `~/nest/deploy` (`deploy/docker-compose.yml`, project `nest`):
+  `postgres` (16-alpine, volume `nest_pgdata`), `nest` (server image built on the
+  Pi; applies migrations at start, serves the web app from `web/app` on 8082 and
+  the API on 8080, no published ports), `cloudflared` (tunnel "Nest"), and
+  `backup` (interim nightly `pg_dump`, last 14 in `~/nest/deploy/backups`; restic is
+  phase 7). Secrets were generated on the Pi into `~/nest/deploy/.env`.
+- **Cloudflare Tunnel "Nest"**: `nest.g3cko.be` → `http://nest:8082` (web app),
+  `nest-api.g3cko.be` → `http://nest:8080` (API). The admin portal hostname
+  `nest-admin.g3cko.be` (behind Cloudflare Access) comes in phase 7.
+- **Deploying:** `deploy/deploy.sh` builds the web app for the production API,
+  copies the repository to `~/nest` with rsync (no secrets or build output) and
+  runs `docker compose up -d --build` on the Pi.
+- **Mail:** codes are sent through Resend when `RESEND_API_KEY` is set in `.env`
+  (sender `MAIL_FROM`, default `Nest <nest@g3cko.be>`); until then they are
+  written to the server log (`docker compose logs nest`). Cloudflare's own Email
+  Sending needs the paid Workers plan.
+- **Verified:** web app and API over https, health ping, browser CORS from the
+  web origin, the live-update WebSocket through the tunnel, the web database
+  files, migrations applied, first backup written. No production account was
+  created yet.
+
 ## Next
 
-1. **Thomas:** use the shopping list at home; decide on the Pi deployment and a
-   mail provider for sign-up/reset codes (see open questions).
-2. Phase 3 — Tasks + push: tasks with recurrence, notification preferences,
+1. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
+   `docker compose logs nest` until Resend is set up) and use the list daily.
+   For the iPhone, build with `--dart-define=SERVER_URL=https://nest-api.g3cko.be/`.
+2. Resend: account + domain `g3cko.be` (DNS records can be added in Cloudflare),
+   then `RESEND_API_KEY` in `~/nest/deploy/.env` and `docker compose up -d nest`.
+3. Phase 3 — Tasks + push: tasks with recurrence, notification preferences,
    future calls for reminders, `FakePushService`, deep links.
 
 ## Open questions
 
-- **Production email.** Verification and reset codes are only logged in development. The
-  Pi deployment needs a real sender (e.g. SMTP via `EmailIdpConfigFromPasswords` with a
-  custom send function). Needs a mail account/provider choice from Thomas before phase 2
-  deployment.
-- **Pi deployment** (phase 2 gate): not done yet; waiting for Thomas's go-ahead.
+- **Production email:** Resend chosen; the account, domain verification and API key
+  are still to do (codes are logged until then).
+- **Claudecraft volume** `world-of-claudecraft_eastbrook_pgdata` is still on the Pi:
+  delete it or keep it.
+- **Ubuntu 25.10 on the Pi is end of life** and a reboot is pending; upgrading to
+  26.04 LTS is Thomas's call (the Nest containers restart on their own).
 - **Deep links lost at app start:** opening the app on a URL such as `/#/shopping`
   lands on Home, because the start/sign-in redirect does not keep the original
   location. To fix in phase 3 together with notification deep links.
@@ -175,5 +205,10 @@ phase 3 (Tasks + push).
   needs `sqlparser` 0.45, which conflicts with Serverpod 4.0.4 in the shared
   workspace. The web files `nest_flutter/web/sqlite3.wasm` and `drift_worker.js` are
   copied from that drift package (see README).
+- **API on `nest-api.g3cko.be`** instead of sharing `nest.g3cko.be`: Serverpod serves
+  the API and the web app on separate ports, and a one-level subdomain is covered by
+  Cloudflare's free certificate (`api.nest.g3cko.be` would not be).
+- **Sign-up codes go through Resend** (Thomas's choice), sent with a plain HTTPS call
+  (no new package); `ServerpodCloudEmailIdpConfig` was replaced.
 - The template's `AGENTS.md` (Serverpod MCP workflow) was not copied; CLAUDE.md stays the
   single instruction file.
