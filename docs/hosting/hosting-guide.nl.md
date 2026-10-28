@@ -188,6 +188,8 @@ dat.
 De dienst `backup` schrijft elke nacht een databasedump naar
 `~/nest/backups` en bewaart de laatste 14. Kopieer die map regelmatig naar
 een andere plek (een andere schijf of een clouddrive), samen met je `.env`.
+Foto's van recepten staan in de database, dus de dump bevat ze; er is geen
+aparte map om te back-uppen.
 
 Nu meteen een dump maken:
 

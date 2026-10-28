@@ -2,8 +2,11 @@
 
 ## Current phase
 
-**Phase 4 — Tasks: done and released (2026-10-28).** Server 0.3.0 / API
-level 3 runs on the Pi. Waiting for Thomas before phase 5 (Recipes).
+**Phase 5 — Recipes: built and verified locally (2026-10-28), not released.**
+Server 0.4.0 / API level 4 is committed; the Pi still runs 0.3.0. Waiting for
+Thomas's OK to release, then phase 6 (Meal Planning).
+
+Phase 4 (Tasks) is done and released as 0.3.0.
 
 Phase 3 (Bring your own backend) is done and its gate passed (2026-10-28).
 
@@ -361,18 +364,102 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   served config OK. The Tasks screen itself was not opened on production
   (no account used).
 
+### Phase 5 — Recipes (2026-10-28)
+
+- **Decisions (Thomas, 2026-10-28):** photos are stored in Postgres
+  (Serverpod's database file storage), so the nightly dump backs them up
+  and hosts need no extra volume; new app dependencies `image_picker` 1.2.4
+  and `wakelock_plus` 1.8.2.
+- **Models + migration `20261028180741556`:** `recipe` (household, title,
+  description, `photoPath`, servings, prep/cook minutes, tags, favourite,
+  created by), `recipe_ingredient` (position, quantity, unit, name, note)
+  and `recipe_step` (position, text), both cascading with their recipe;
+  `RecipeEvent` (live updates) and `AddedShoppingItems`.
+- **Endpoint `recipe`** (all guarded with `HouseholdGuard.require(...,
+  feature: recipes)`): `recipes` (with ingredients and steps), `save`
+  (create or update; trims, drops empty rows, renumbers, replaces
+  ingredients and steps; leaves photo and favourite alone), `setFavorite`
+  (shared by the household), `setPhoto` (JPEG/PNG/WebP by magic bytes, at
+  most 1 MB, random path per photo, old file deleted; null removes it),
+  `photo` (bytes only through the guard, no public URLs), `remove` (also
+  deletes the photo) and the streaming `watch`.
+- **`shopping.addItems`** adds several items in one transaction, skips those
+  already to buy (matched through the catalog in both languages) and notes
+  `sourceRecipeId` (must be the household's recipe). `addItem` shares the
+  same code.
+- **Server config:** file storage is registered explicitly as
+  `DatabaseCloudStorage` (the template's Serverpod Cloud wrapper and the
+  `serverpod_cloud_storage` dependency are gone); `maxRequestSize` is 2 MB
+  in development, staging and production so a 1 MB photo fits.
+- **API level 4**, server version 0.4.0. The app (API level 4) shows
+  recipes only on servers with level 4 and the recipes feature switched on.
+- **Tests:** isolation test covers every recipe method and `addItems` for
+  household B, plus "household A's id with B's recipe" and "A's list with
+  B's recipe"; 10 recipe endpoint tests, 3 `addItems` tests. 216 server
+  tests.
+- **Seed:** three recipes per seed household (Pancakes, Spaghetti
+  bolognese, Pumpkin soup) with ingredients and steps, no photos.
+- **App:**
+  - **Home** gets a Recipes card (rose) that opens the library; Recipes
+    left the "Coming soon" card. Recipes have no tab (CLAUDE.md section 8).
+  - **Library** (`/recipes`): search (title, tags, ingredients,
+    description), Favourites chip and a chip per tag, cards with photo,
+    total time, servings, tags and a favourite heart, "+" for a new recipe.
+  - **Recipe** (`/recipes/:id`): photo, description, prep/cook time, tags,
+    servings stepper that rescales the amounts (kitchen fractions such as
+    ½ and ¾ for small amounts, locale number format), "Add to list",
+    numbered steps, "Start cooking", menu with Edit and Delete.
+  - **Editor** (full screen): photo (camera or library where available,
+    resized in the app to at most 1600 px, JPEG quality 80), title,
+    description, servings, minutes, tags, ingredients (name, amount, unit,
+    note; amounts accept "1,5", "1.5", "½" and "1 1/2"), steps (add, move
+    up, remove). Asks before discarding changes.
+  - **Cooking mode** (full screen): one step at a time in large text,
+    progress bar, Previous/Next, the scaled ingredients in a sheet, screen
+    kept awake (`wakelock_plus`; ignored where unsupported).
+  - **Add to list** sheet: pick the list, ingredients already to buy there
+    are unticked ("On the list"), amounts at the chosen servings become
+    the item spec (the note when there is no amount).
+- **Offline + realtime:** recipes and photos (by path) are cached in drift
+  and readable offline, including cooking mode; changes need a connection
+  (like list and store edits), with an offline notice on the screens.
+  Live updates through the shared `LiveSyncLoop`.
+- **iOS/macOS:** camera and photo library texts in English and Dutch
+  (`InfoPlist.strings`), and the user-selected-files entitlement on macOS.
+- **App tests (122):** scaling, fractions, parsing amounts, shopping spec,
+  catalog-aware "on the list", filtering; repository (cache, offline read,
+  failed change offline, live events, photo cache by path); screens
+  (library search and filters, favourite, stepper, Add to list, create,
+  discard, cooking mode, delete, hidden on API level 3, Dutch with text
+  scale 2).
+- **Verified** against the local server (migration applied, seed run,
+  release web build served on 8082): over HTTP as seed user Jan, a 280 KB
+  JPEG round-trips through Postgres, a 1.1 MB upload is refused by the size
+  check (so the larger request limit works), `addItems` skips what is
+  already to buy and Jan gets `notAMember` for household "Home". In
+  headless Brave at phone size, signed in as Jan (Dutch): Home card,
+  library with photo and favourite, recipe screen, stepper (6 servings:
+  375 g, ¾ l, 3), Add to list (skipping, snack bar), cooking mode with
+  scaled ingredients, editor, saving an edit. This found that the
+  add-to-list preview missed items named in the other language, now fixed.
+  **Not verified:** picking a photo through the file or camera picker (the
+  upload path itself was verified over HTTP), and the app on a phone.
+
 ## Next
 
-1. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
+1. **Thomas:** OK to release 0.4.0 (tag `v0.4.0`, image, Pi update as for
+   0.3.0). Existing households already have the recipes feature switched on.
+2. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
    `docker compose logs nest` until Resend is set up) and use the list daily.
    For the iPhone, build with `--dart-define=SERVER_URL=https://nest-api.g3cko.be/`.
-2. Resend: account + domain `g3cko.be` (DNS records can be added in Cloudflare),
+3. Resend: account + domain `g3cko.be` (DNS records can be added in Cloudflare),
    then `RESEND_API_KEY` in `~/nest/deploy/.env` and `docker compose up -d nest`.
-3. **Thomas:** remove the second server when no longer needed
+4. **Thomas:** remove the second server when no longer needed
    (`cd ~/nest-test && docker compose down -v`, then delete the "Nest test"
    tunnel and its two hostnames in Cloudflare, and the folder).
-4. **Thomas:** try Tasks at https://nest.g3cko.be and on the iPhone build.
-5. Phase 5 — Recipes (CLAUDE.md section 10).
+5. **Thomas:** try Tasks and Recipes on the web and on the iPhone build
+   (taking a photo needs the phone).
+6. Phase 6 — Meal Planning (CLAUDE.md section 10).
 
 ## Open questions
 
@@ -398,6 +485,13 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 - **Next occurrences are created when a task is checked off** (in the
   `setDone` call), not by a future call.
 - **Mine shows only tasks assigned to me**, not unassigned ones.
+- **Recipes store `photoPath` instead of `photoUrl`:** photos are private
+  files served through the guarded `recipe.photo` method, not public URLs.
+- **Recipe changes need a connection** (reading and cooking work offline);
+  queuing photo uploads offline was not worth the complexity.
+- **Favourites are per household** (as in section 6), not per member.
+- **Add to list lets the user untick ingredients** before adding; items
+  already to buy start unticked and the server skips them anyway.
 
 - **Serverpod 4.x instead of 3.x** (decided by Thomas, 2026-10-27). Embedded PostgreSQL in
   development and tests, no Docker. CLAUDE.md sections 2 and 4 updated.

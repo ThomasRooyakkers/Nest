@@ -184,7 +184,9 @@ app is too old for the server, it says so.
 
 The `backup` service writes a database dump to `~/nest/backups` every night
 and keeps the last 14. Copy that folder somewhere else regularly (another
-disk or a cloud drive), together with your `.env`.
+disk or a cloud drive), together with your `.env`. Recipe photos are stored
+in the database, so the dump includes them; there is no separate folder to
+back up.
 
 Make a dump right now:
 
