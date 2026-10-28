@@ -1,0 +1,7 @@
+### A change in a household's tasks, sent to everyone watching. Also the
+### answer of methods that change more than one task.
+class: TaskEvent
+fields:
+  householdId: int
+  tasks: List<Task>?
+  removedTaskIds: List<int>?

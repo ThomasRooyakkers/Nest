@@ -44,3 +44,9 @@ shopping:
   - watch:
 signUp:
   - redeemInvite:
+task:
+  - tasks:
+  - save:
+  - setDone:
+  - remove:
+  - watch:

@@ -19,6 +19,7 @@ import 'package:nest_server/src/generated/shopping/shopping_item_status.dart'
 import 'package:nest_server/src/generated/shopping/shopping_list.dart'
     as _iustknb5;
 import 'package:nest_server/src/generated/shopping/store.dart' as _iq3p81du;
+import 'package:nest_server/src/generated/tasks/task.dart' as _iw4rp4ni;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
@@ -32,6 +33,7 @@ import '../endpoints/household_endpoint.dart' as _izqmqbob;
 import '../endpoints/profile_endpoint.dart' as _i2cx2pww;
 import '../endpoints/shopping_endpoint.dart' as _i0uz9s3h;
 import '../endpoints/sign_up_endpoint.dart' as _im0g34lo;
+import '../endpoints/task_endpoint.dart' as _idmllfay;
 
 class Endpoints extends _is.EndpointDispatch {
   @override
@@ -83,6 +85,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'signUp',
+          null,
+        ),
+      'task': _idmllfay.TaskEndpoint()
+        ..initialize(
+          server,
+          'task',
           null,
         ),
     };
@@ -950,6 +958,135 @@ class Endpoints extends _is.EndpointDispatch {
                     params['email'],
                     params['inviteCode'],
                   ),
+        ),
+      },
+    );
+    connectors['task'] = _is.EndpointConnector(
+      name: 'task',
+      endpoint: endpoints['task']!,
+      methodConnectors: {
+        'tasks': _is.MethodConnector(
+          name: 'tasks',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _idmllfay.TaskEndpoint).tasks(
+                session,
+                params['householdId'],
+              ),
+        ),
+        'save': _is.MethodConnector(
+          name: 'save',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'task': _is.ParameterDescription(
+              name: 'task',
+              type: _is.getType<_iw4rp4ni.Task>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _idmllfay.TaskEndpoint).save(
+                session,
+                params['householdId'],
+                params['task'],
+              ),
+        ),
+        'setDone': _is.MethodConnector(
+          name: 'setDone',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'done': _is.ParameterDescription(
+              name: 'done',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+            'today': _is.ParameterDescription(
+              name: 'today',
+              type: _is.getType<DateTime>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _idmllfay.TaskEndpoint).setDone(
+                session,
+                params['householdId'],
+                params['taskId'],
+                params['done'],
+                params['today'],
+              ),
+        ),
+        'remove': _is.MethodConnector(
+          name: 'remove',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _idmllfay.TaskEndpoint).remove(
+                session,
+                params['householdId'],
+                params['taskId'],
+              ),
+        ),
+        'watch': _is.MethodStreamConnector(
+          name: 'watch',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          streamParams: {},
+          returnType: _is.MethodStreamReturnType.streamType,
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+                Map<String, Stream> streamParams,
+              ) => (endpoints['task'] as _idmllfay.TaskEndpoint).watch(
+                session,
+                params['householdId'],
+              ),
         ),
       },
     );

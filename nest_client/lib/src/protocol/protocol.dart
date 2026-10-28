@@ -23,6 +23,7 @@ import 'package:nest_client/src/protocol/shopping/shopping_item.dart'
 import 'package:nest_client/src/protocol/shopping/shopping_list.dart'
     as _i9yltxrs;
 import 'package:nest_client/src/protocol/shopping/store.dart' as _i4n9gtf6;
+import 'package:nest_client/src/protocol/tasks/task.dart' as _ipqeu8zh;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _iacc;
 import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
@@ -52,6 +53,9 @@ import 'shopping/shopping_list.dart' as _i8tkdv3k;
 import 'shopping/store.dart' as _icm155bx;
 import 'shopping/store_color.dart' as _ip61som0;
 import 'sign_up_mode.dart' as _i4y3a5ag;
+import 'tasks/task.dart' as _i253is06;
+import 'tasks/task_event.dart' as _iuwcsatz;
+import 'tasks/task_recurrence.dart' as _ieirl7mq;
 export 'admin_audit_log.dart';
 export 'admin_household_summary.dart';
 export 'household.dart';
@@ -76,6 +80,9 @@ export 'shopping/shopping_list.dart';
 export 'shopping/store.dart';
 export 'shopping/store_color.dart';
 export 'sign_up_mode.dart';
+export 'tasks/task.dart';
+export 'tasks/task_event.dart';
+export 'tasks/task_recurrence.dart';
 export 'client.dart';
 
 class Protocol extends _isc.SerializationManager {
@@ -184,6 +191,15 @@ class Protocol extends _isc.SerializationManager {
     if (t == _i4y3a5ag.SignUpMode) {
       return _i4y3a5ag.SignUpMode.fromJson(data) as T;
     }
+    if (t == _i253is06.Task) {
+      return _i253is06.Task.fromJson(data) as T;
+    }
+    if (t == _iuwcsatz.TaskEvent) {
+      return _iuwcsatz.TaskEvent.fromJson(data) as T;
+    }
+    if (t == _ieirl7mq.TaskRecurrence) {
+      return _ieirl7mq.TaskRecurrence.fromJson(data) as T;
+    }
     if (t == _isc.getType<_ihc3ja42.AdminAuditLog?>()) {
       return (data != null ? _ihc3ja42.AdminAuditLog.fromJson(data) : null)
           as T;
@@ -271,6 +287,16 @@ class Protocol extends _isc.SerializationManager {
     if (t == _isc.getType<_i4y3a5ag.SignUpMode?>()) {
       return (data != null ? _i4y3a5ag.SignUpMode.fromJson(data) : null) as T;
     }
+    if (t == _isc.getType<_i253is06.Task?>()) {
+      return (data != null ? _i253is06.Task.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_iuwcsatz.TaskEvent?>()) {
+      return (data != null ? _iuwcsatz.TaskEvent.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ieirl7mq.TaskRecurrence?>()) {
+      return (data != null ? _ieirl7mq.TaskRecurrence.fromJson(data) : null)
+          as T;
+    }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
@@ -349,6 +375,18 @@ class Protocol extends _isc.SerializationManager {
               .toList()
           as T;
     }
+    if (t == List<_i253is06.Task>) {
+      return (data as List).map((e) => deserialize<_i253is06.Task>(e)).toList()
+          as T;
+    }
+    if (t == _isc.getType<List<_i253is06.Task>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i253is06.Task>(e))
+                    .toList()
+              : null)
+          as T;
+    }
     if (t == List<_ipf5tkzm.AdminHouseholdSummary>) {
       return (data as List)
               .map((e) => deserialize<_ipf5tkzm.AdminHouseholdSummary>(e))
@@ -398,6 +436,10 @@ class Protocol extends _isc.SerializationManager {
     if (t == List<int>) {
       return (data as List).map((e) => deserialize<int>(e)).toList() as T;
     }
+    if (t == List<_ipqeu8zh.Task>) {
+      return (data as List).map((e) => deserialize<_ipqeu8zh.Task>(e)).toList()
+          as T;
+    }
     try {
       return _iaic.Protocol().deserialize<T>(data, t);
     } on _isc.DeserializationTypeNotFoundException catch (_) {}
@@ -433,6 +475,9 @@ class Protocol extends _isc.SerializationManager {
       _icm155bx.Store => 'Store',
       _ip61som0.StoreColor => 'StoreColor',
       _i4y3a5ag.SignUpMode => 'SignUpMode',
+      _i253is06.Task => 'Task',
+      _iuwcsatz.TaskEvent => 'TaskEvent',
+      _ieirl7mq.TaskRecurrence => 'TaskRecurrence',
       _ => null,
     };
   }
@@ -495,6 +540,12 @@ class Protocol extends _isc.SerializationManager {
         return 'StoreColor';
       case _i4y3a5ag.SignUpMode():
         return 'SignUpMode';
+      case _i253is06.Task():
+        return 'Task';
+      case _iuwcsatz.TaskEvent():
+        return 'TaskEvent';
+      case _ieirl7mq.TaskRecurrence():
+        return 'TaskRecurrence';
     }
     className = _iaic.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -588,6 +639,15 @@ class Protocol extends _isc.SerializationManager {
     }
     if (dataClassName == 'SignUpMode') {
       return deserialize<_i4y3a5ag.SignUpMode>(data['data']);
+    }
+    if (dataClassName == 'Task') {
+      return deserialize<_i253is06.Task>(data['data']);
+    }
+    if (dataClassName == 'TaskEvent') {
+      return deserialize<_iuwcsatz.TaskEvent>(data['data']);
+    }
+    if (dataClassName == 'TaskRecurrence') {
+      return deserialize<_ieirl7mq.TaskRecurrence>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);

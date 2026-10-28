@@ -34,6 +34,8 @@ import 'package:nest_client/src/protocol/shopping/shopping_item_status.dart'
 import 'package:nest_client/src/protocol/shopping/shopping_list.dart'
     as _i9yltxrs;
 import 'package:nest_client/src/protocol/shopping/store.dart' as _i4n9gtf6;
+import 'package:nest_client/src/protocol/tasks/task.dart' as _ipqeu8zh;
+import 'package:nest_client/src/protocol/tasks/task_event.dart' as _i8pjkixi;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _iacc;
 import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
@@ -635,6 +637,86 @@ class EndpointSignUp extends _isc.EndpointRef {
   );
 }
 
+/// The household's tasks. Every change is also sent to [watch], so all
+/// members see it live.
+/// {@category Endpoint}
+class EndpointTask extends _isc.EndpointRef {
+  EndpointTask(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'task';
+
+  /// Open tasks, and tasks done in the last [doneTasksKept].
+  _ida.Future<List<_ipqeu8zh.Task>> tasks(int householdId) =>
+      caller.callServerEndpoint<List<_ipqeu8zh.Task>>(
+        'task',
+        'tasks',
+        {'householdId': householdId},
+      );
+
+  /// Creates a task (when [task] has no id) or changes its title, notes,
+  /// assignee, due date and time, and recurrence.
+  _ida.Future<_ipqeu8zh.Task> save(
+    int householdId,
+    _ipqeu8zh.Task task,
+  ) => caller.callServerEndpoint<_ipqeu8zh.Task>(
+    'task',
+    'save',
+    {
+      'householdId': householdId,
+      'task': task,
+    },
+  );
+
+  /// Checks a task off or reopens it.
+  ///
+  /// Completing a recurring task creates its next occurrence, due on the
+  /// first step after both its due date and [today] (the caller's calendar
+  /// day). Reopening it removes that occurrence again unless it was done
+  /// as well. Returns every task that changed.
+  _ida.Future<_i8pjkixi.TaskEvent> setDone(
+    int householdId,
+    int taskId,
+    bool done,
+    DateTime today,
+  ) => caller.callServerEndpoint<_i8pjkixi.TaskEvent>(
+    'task',
+    'setDone',
+    {
+      'householdId': householdId,
+      'taskId': taskId,
+      'done': done,
+      'today': today,
+    },
+  );
+
+  /// Deletes a task.
+  _ida.Future<void> remove(
+    int householdId,
+    int taskId,
+  ) => caller.callServerEndpoint<void>(
+    'task',
+    'remove',
+    {
+      'householdId': householdId,
+      'taskId': taskId,
+    },
+  );
+
+  /// Changes to the household's tasks as they happen. The app loads the
+  /// tasks first and then applies these events.
+  _ida.Stream<_i8pjkixi.TaskEvent> watch(int householdId) =>
+      caller.callStreamingServerEndpoint<
+        _ida.Stream<_i8pjkixi.TaskEvent>,
+        _i8pjkixi.TaskEvent
+      >(
+        'task',
+        'watch',
+        {'householdId': householdId},
+        {},
+      );
+}
+
 class Modules {
   Modules(Client client) {
     serverpod_auth_idp = _iaic.Caller(client);
@@ -681,6 +763,7 @@ class Client extends _isc.ServerpodClientShared {
     profile = EndpointProfile(this);
     shopping = EndpointShopping(this);
     signUp = EndpointSignUp(this);
+    task = EndpointTask(this);
     modules = Modules(this);
   }
 
@@ -700,6 +783,8 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointSignUp signUp;
 
+  late final EndpointTask task;
+
   late final Modules modules;
 
   @override
@@ -712,6 +797,7 @@ class Client extends _isc.ServerpodClientShared {
     'profile': profile,
     'shopping': shopping,
     'signUp': signUp,
+    'task': task,
   };
 
   @override

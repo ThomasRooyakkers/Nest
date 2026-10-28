@@ -16,6 +16,8 @@ void main() {
     late ShoppingList listB;
     late Store storeB;
     late ShoppingItem itemB;
+    late Task taskB;
+    final today = DateTime.utc(2026, 10, 28);
 
     final householdScopedCalls = <String, HouseholdCall>{
       'household.get': (s, id) => endpoints.household.get(s, id),
@@ -64,6 +66,13 @@ void main() {
       'shopping.removeItem': (s, id) =>
           endpoints.shopping.removeItem(s, id, itemB.id!),
       'shopping.watch': (s, id) => endpoints.shopping.watch(s, id).first,
+      'task.tasks': (s, id) => endpoints.task.tasks(s, id),
+      'task.save': (s, id) =>
+          endpoints.task.save(s, id, taskB.copyWith(title: 'Taken over')),
+      'task.setDone': (s, id) =>
+          endpoints.task.setDone(s, id, taskB.id!, true, today),
+      'task.remove': (s, id) => endpoints.task.remove(s, id, taskB.id!),
+      'task.watch': (s, id) => endpoints.task.watch(s, id).first,
     };
 
     /// Household A's own id combined with ids of household B's rows.
@@ -120,6 +129,16 @@ void main() {
       ),
       'shopping.removeItem': (s, a) =>
           endpoints.shopping.removeItem(s, a, itemB.id!),
+      'task.save': (s, a) =>
+          endpoints.task.save(s, a, taskB.copyWith(title: 'Taken over')),
+      'task.save (assigned to a member of B)': (s, a) => endpoints.task.save(
+        s,
+        a,
+        Task(householdId: a, title: 'Intruder', assigneeId: taskB.assigneeId),
+      ),
+      'task.setDone': (s, a) =>
+          endpoints.task.setDone(s, a, taskB.id!, true, today),
+      'task.remove': (s, a) => endpoints.task.remove(s, a, taskB.id!),
     };
 
     late TestSessionBuilder userA;
@@ -155,6 +174,21 @@ void main() {
         householdB,
         listB.id!,
         NewShoppingItem(name: 'Secret sauce', storeIds: [storeB.id!]),
+      );
+      final bram = (await endpoints.household.members(
+        userB,
+        householdB,
+      )).single;
+      taskB = await endpoints.task.save(
+        userB,
+        householdB,
+        Task(
+          householdId: 0,
+          title: 'Water the plants',
+          assigneeId: bram.userId,
+          dueDate: today,
+          recurrence: TaskRecurrence.weekly,
+        ),
       );
     });
 
@@ -204,6 +238,8 @@ void main() {
         expect(stores.map((s) => s.name), ['Corner shop']);
         final items = await endpoints.shopping.items(userB, householdB);
         expect(items.single.toJson(), itemB.toJson());
+        final tasks = await endpoints.task.tasks(userB, householdB);
+        expect(tasks.single.toJson(), taskB.toJson());
       },
     );
 
@@ -212,6 +248,7 @@ void main() {
       expect(catalog.map((c) => c.nameEn), isNot(contains('Secret sauce')));
       expect(await endpoints.shopping.stores(userA, householdA), isEmpty);
       expect(await endpoints.shopping.items(userA, householdA), isEmpty);
+      expect(await endpoints.task.tasks(userA, householdA), isEmpty);
     });
 
     test('A list may not name members of another household', () async {

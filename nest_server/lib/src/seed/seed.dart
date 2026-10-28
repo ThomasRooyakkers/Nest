@@ -45,7 +45,7 @@ const seedHouseholds = [
 /// it is already present, so the command can be run again after new
 /// features add fixtures.
 ///
-/// Feature fixtures (recipes, tasks, watchlist) are added here as the
+/// Feature fixtures (recipes, watchlist) are added here as the
 /// features are built.
 Future<void> seed(Session session, {required String password}) async {
   if (session.serverpod.runMode == 'production') {
@@ -59,7 +59,9 @@ Future<void> seed(Session session, {required String password}) async {
       session,
       where: (t) => t.name.equals(seedHousehold.name),
     );
-    if (household != null) await _seedShopping(session, household);
+    if (household == null) continue;
+    await _seedShopping(session, household);
+    await _seedTasks(session, household);
   }
 }
 
@@ -262,4 +264,85 @@ Future<void> _seedShopping(Session session, Household household) async {
   });
 
   session.log('Seeded shopping data for ${household.name}.');
+}
+
+/// Sample tasks around today: overdue, today, upcoming, recurring and done.
+Future<void> _seedTasks(Session session, Household household) async {
+  final householdId = household.id!;
+  if (await Task.db.count(
+        session,
+        where: (t) => t.householdId.equals(householdId),
+      ) >
+      0) {
+    session.log('Tasks of ${household.name} already present.');
+    return;
+  }
+
+  final memberIds = [
+    for (final m in await Membership.db.find(
+      session,
+      where: (t) => t.householdId.equals(householdId),
+      orderBy: (t) => t.id,
+    ))
+      m.userId,
+  ];
+  int? member(int index) => index < memberIds.length ? memberIds[index] : null;
+  final now = DateTime.now();
+  DateTime day(int offset) =>
+      DateTime.utc(now.year, now.month, now.day + offset);
+
+  await Task.db.insert(session, [
+    Task(
+      householdId: householdId,
+      title: 'Take out the bins',
+      notes: 'Green and blue bin',
+      assigneeId: member(0),
+      dueDate: day(0),
+      dueMinutes: 20 * 60,
+      recurrence: TaskRecurrence.weekly,
+    ),
+    Task(
+      householdId: householdId,
+      title: 'Water the plants',
+      assigneeId: member(1),
+      dueDate: day(-2),
+      recurrence: TaskRecurrence.weekly,
+    ),
+    Task(
+      householdId: householdId,
+      title: 'Book the dentist',
+      assigneeId: member(0),
+      dueDate: day(-1),
+    ),
+    Task(
+      householdId: householdId,
+      title: 'Empty the dishwasher',
+      assigneeId: member(2),
+      dueDate: day(0),
+      recurrence: TaskRecurrence.daily,
+    ),
+    Task(
+      householdId: householdId,
+      title: 'Pay the electricity bill',
+      dueDate: day(3),
+      recurrence: TaskRecurrence.monthly,
+    ),
+    Task(
+      householdId: householdId,
+      title: 'Vacuum upstairs',
+      assigneeId: member(1),
+      dueDate: day(1),
+      dueMinutes: 10 * 60,
+    ),
+    Task(householdId: householdId, title: 'Fix the bike light'),
+    Task(
+      householdId: householdId,
+      title: 'Buy a birthday present',
+      assigneeId: member(0),
+      dueDate: day(-1),
+      doneAt: now.subtract(const Duration(hours: 20)),
+      doneById: member(0),
+    ),
+  ]);
+  session.log('Seeded tasks for ${household.name}.');
 }

@@ -1,0 +1,9 @@
+### How often a task comes back. Completing a recurring task creates its
+### next occurrence.
+enum: TaskRecurrence
+serialized: byName
+values:
+  - none
+  - daily
+  - weekly
+  - monthly

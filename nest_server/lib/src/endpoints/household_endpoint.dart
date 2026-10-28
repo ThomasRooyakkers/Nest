@@ -192,7 +192,31 @@ class HouseholdEndpoint extends Endpoint {
         throw NestException(code: NestErrorCode.lastOwner);
       }
     }
-    await Membership.db.deleteRow(session, access.membership);
+    await session.db.transaction((transaction) async {
+      await Membership.db.deleteRow(
+        session,
+        access.membership,
+        transaction: transaction,
+      );
+      // Tasks assigned to the leaving member go back to anyone.
+      final assigned = await Task.db.find(
+        session,
+        where: (t) =>
+            t.householdId.equals(access.householdId) &
+            t.assigneeId.equals(access.user.id!),
+        transaction: transaction,
+      );
+      if (assigned.isNotEmpty) {
+        await Task.db.update(
+          session,
+          [
+            for (final task in assigned)
+              task.copyWith(assigneeId: null, updatedAt: DateTime.now()),
+          ],
+          transaction: transaction,
+        );
+      }
+    });
   }
 
   static String _validName(String name) {

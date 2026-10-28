@@ -23,6 +23,7 @@ import 'package:nest_server/src/generated/shopping/shopping_item.dart'
 import 'package:nest_server/src/generated/shopping/shopping_list.dart'
     as _iustknb5;
 import 'package:nest_server/src/generated/shopping/store.dart' as _iq3p81du;
+import 'package:nest_server/src/generated/tasks/task.dart' as _iw4rp4ni;
 import 'package:serverpod/protocol.dart' as _isp;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
@@ -54,6 +55,9 @@ import 'shopping/store.dart' as _icm155bx;
 import 'shopping/store_color.dart' as _ip61som0;
 import 'sign_up_invite.dart' as _izkprrmi;
 import 'sign_up_mode.dart' as _i4y3a5ag;
+import 'tasks/task.dart' as _i253is06;
+import 'tasks/task_event.dart' as _iuwcsatz;
+import 'tasks/task_recurrence.dart' as _ieirl7mq;
 export 'admin_audit_log.dart';
 export 'admin_household_summary.dart';
 export 'household.dart';
@@ -79,6 +83,9 @@ export 'shopping/store.dart';
 export 'shopping/store_color.dart';
 export 'sign_up_invite.dart';
 export 'sign_up_mode.dart';
+export 'tasks/task.dart';
+export 'tasks/task_event.dart';
+export 'tasks/task_recurrence.dart';
 
 class Protocol extends _is.DatabaseSerializationManager {
   Protocol._();
@@ -947,6 +954,145 @@ class Protocol extends _is.DatabaseSerializationManager {
       ],
       managed: true,
     ),
+    _isp.TableDefinition(
+      name: 'task',
+      dartName: 'Task',
+      schema: 'public',
+      module: 'nest',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'householdId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'title',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'notes',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+          columnDefault: '\'\'',
+        ),
+        _isp.ColumnDefinition(
+          name: 'assigneeId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'dueDate',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'dueMinutes',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'recurrence',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:TaskRecurrence',
+          columnDefault: '\'none\'',
+        ),
+        _isp.ColumnDefinition(
+          name: 'doneAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'doneById',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'nextTaskId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+        _isp.ColumnDefinition(
+          name: 'updatedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'task_fk_0',
+          columns: ['householdId'],
+          referenceTable: 'household',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'task_fk_1',
+          columns: ['assigneeId'],
+          referenceTable: 'nest_user',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.setNull,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'task_fk_2',
+          columns: ['doneById'],
+          referenceTable: 'nest_user',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.setNull,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'task_household_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'householdId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
     ..._iais.Protocol.targetTableDefinitions,
     ..._iacs.Protocol.targetTableDefinitions,
     ..._isp.Protocol.targetTableDefinitions,
@@ -1054,6 +1200,15 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _i4y3a5ag.SignUpMode) {
       return _i4y3a5ag.SignUpMode.fromJson(data) as T;
     }
+    if (t == _i253is06.Task) {
+      return _i253is06.Task.fromJson(data) as T;
+    }
+    if (t == _iuwcsatz.TaskEvent) {
+      return _iuwcsatz.TaskEvent.fromJson(data) as T;
+    }
+    if (t == _ieirl7mq.TaskRecurrence) {
+      return _ieirl7mq.TaskRecurrence.fromJson(data) as T;
+    }
     if (t == _is.getType<_ihc3ja42.AdminAuditLog?>()) {
       return (data != null ? _ihc3ja42.AdminAuditLog.fromJson(data) : null)
           as T;
@@ -1144,6 +1299,16 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _is.getType<_i4y3a5ag.SignUpMode?>()) {
       return (data != null ? _i4y3a5ag.SignUpMode.fromJson(data) : null) as T;
     }
+    if (t == _is.getType<_i253is06.Task?>()) {
+      return (data != null ? _i253is06.Task.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_iuwcsatz.TaskEvent?>()) {
+      return (data != null ? _iuwcsatz.TaskEvent.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ieirl7mq.TaskRecurrence?>()) {
+      return (data != null ? _ieirl7mq.TaskRecurrence.fromJson(data) : null)
+          as T;
+    }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
@@ -1222,6 +1387,18 @@ class Protocol extends _is.DatabaseSerializationManager {
               .toList()
           as T;
     }
+    if (t == List<_i253is06.Task>) {
+      return (data as List).map((e) => deserialize<_i253is06.Task>(e)).toList()
+          as T;
+    }
+    if (t == _is.getType<List<_i253is06.Task>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i253is06.Task>(e))
+                    .toList()
+              : null)
+          as T;
+    }
     if (t == List<_it78yatv.AdminHouseholdSummary>) {
       return (data as List)
               .map((e) => deserialize<_it78yatv.AdminHouseholdSummary>(e))
@@ -1271,6 +1448,10 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == List<int>) {
       return (data as List).map((e) => deserialize<int>(e)).toList() as T;
     }
+    if (t == List<_iw4rp4ni.Task>) {
+      return (data as List).map((e) => deserialize<_iw4rp4ni.Task>(e)).toList()
+          as T;
+    }
     try {
       return _iais.Protocol().deserialize<T>(data, t);
     } on _is.DeserializationTypeNotFoundException catch (_) {}
@@ -1310,6 +1491,9 @@ class Protocol extends _is.DatabaseSerializationManager {
       _ip61som0.StoreColor => 'StoreColor',
       _izkprrmi.SignUpInvite => 'SignUpInvite',
       _i4y3a5ag.SignUpMode => 'SignUpMode',
+      _i253is06.Task => 'Task',
+      _iuwcsatz.TaskEvent => 'TaskEvent',
+      _ieirl7mq.TaskRecurrence => 'TaskRecurrence',
       _ => null,
     };
   }
@@ -1374,6 +1558,12 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'SignUpInvite';
       case _i4y3a5ag.SignUpMode():
         return 'SignUpMode';
+      case _i253is06.Task():
+        return 'Task';
+      case _iuwcsatz.TaskEvent():
+        return 'TaskEvent';
+      case _ieirl7mq.TaskRecurrence():
+        return 'TaskRecurrence';
     }
     className = _iais.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -1475,6 +1665,15 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (dataClassName == 'SignUpMode') {
       return deserialize<_i4y3a5ag.SignUpMode>(data['data']);
     }
+    if (dataClassName == 'Task') {
+      return deserialize<_i253is06.Task>(data['data']);
+    }
+    if (dataClassName == 'TaskEvent') {
+      return deserialize<_iuwcsatz.TaskEvent>(data['data']);
+    }
+    if (dataClassName == 'TaskRecurrence') {
+      return deserialize<_ieirl7mq.TaskRecurrence>(data['data']);
+    }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);
       return _iais.Protocol().deserializeByClassName(data);
@@ -1534,6 +1733,8 @@ class Protocol extends _is.DatabaseSerializationManager {
         return _icm155bx.Store.t;
       case _izkprrmi.SignUpInvite:
         return _izkprrmi.SignUpInvite.t;
+      case _i253is06.Task:
+        return _i253is06.Task.t;
     }
     return null;
   }

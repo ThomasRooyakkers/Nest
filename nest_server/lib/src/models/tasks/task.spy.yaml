@@ -1,0 +1,26 @@
+### A household task (chore or to-do).
+class: Task
+table: task
+fields:
+  household: Household?, relation(onDelete=Cascade)
+  title: String
+  notes: String, default=''
+  ### Member the task is assigned to; null for anyone.
+  assignee: NestUser?, relation(optional, onDelete=SetNull)
+  ### Calendar day the task is due, as 00:00 UTC of that day (no time
+  ### zone): the day is the same for everyone in the household.
+  dueDate: DateTime?
+  ### Time of day it is due, in minutes after midnight on the household's
+  ### clock; null when it is due some time that day. Only with [dueDate].
+  dueMinutes: int?
+  recurrence: TaskRecurrence, default=none
+  doneAt: DateTime?
+  doneBy: NestUser?, relation(optional, onDelete=SetNull)
+  ### The occurrence created when this recurring task was completed, so
+  ### reopening the task can remove it again.
+  nextTaskId: int?
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now
+indexes:
+  task_household_idx:
+    fields: householdId
