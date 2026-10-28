@@ -1,6 +1,8 @@
-# Nest in production on the Raspberry Pi. Run from ~/nest/deploy:
-#   docker compose up -d --build
-# Secrets live in deploy/.env (not in Git, see .env.example).
+# A Nest server: PostgreSQL, the Nest server (API and web app), a nightly
+# database dump and, optionally, a Cloudflare Tunnel. Put this file and your
+# .env (from .env.example) in one folder and run:
+#   docker compose up -d
+# See docs/hosting/hosting-guide.md (English) or hosting-guide.nl.md (Dutch).
 name: nest
 
 services:
@@ -20,10 +22,7 @@ services:
       retries: 10
 
   nest:
-    build:
-      context: ..
-      dockerfile: nest_server/Dockerfile
-    image: nest-server:latest
+    image: ${NEST_IMAGE:-nest-server}:${NEST_VERSION:-latest}
     restart: unless-stopped
     depends_on:
       postgres:
@@ -35,18 +34,25 @@ services:
       SERVERPOD_ALLOWED_ORIGINS: https://${NEST_WEB_DOMAIN}
       SERVERPOD_PASSWORD_superAdminEmail: ${SUPER_ADMIN_EMAIL:-}
       SERVERPOD_PASSWORD_signUpMode: ${SIGN_UP_MODE:-invite-only}
+      # Secrets.
       SERVERPOD_DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       SERVERPOD_SERVICE_SECRET: ${SERVICE_SECRET:?set in .env}
       SERVERPOD_PASSWORD_emailSecretHashPepper: ${EMAIL_SECRET_HASH_PEPPER:?set in .env}
       SERVERPOD_PASSWORD_jwtHmacSha512PrivateKey: ${JWT_HMAC_SHA512_PRIVATE_KEY:?set in .env}
       SERVERPOD_PASSWORD_jwtRefreshTokenHashPepper: ${JWT_REFRESH_TOKEN_HASH_PEPPER:?set in .env}
-      # Optional: without it, sign-up and reset codes are written to the log.
+      # Mail. Without both, sign-up and reset codes are written to the log.
       SERVERPOD_PASSWORD_resendApiKey: ${RESEND_API_KEY:-}
       SERVERPOD_PASSWORD_mailFrom: ${MAIL_FROM:-}
-    # No published ports: only the tunnel reaches the server.
+    # For your own https proxy: the API on 8080 and the web app on 8082, on
+    # this machine only. The tunnel reaches the server inside Docker.
+    ports:
+      - "${NEST_BIND_ADDRESS:-127.0.0.1}:${NEST_API_PORT:-8080}:8080"
+      - "${NEST_BIND_ADDRESS:-127.0.0.1}:${NEST_WEB_PORT:-8082}:8082"
 
+  # Optional: Cloudflare Tunnel. Enable with COMPOSE_PROFILES=tunnel in .env.
   cloudflared:
     image: cloudflare/cloudflared:2026.8.2
+    profiles: [tunnel]
     restart: unless-stopped
     command: tunnel --no-autoupdate run
     environment:
@@ -54,8 +60,7 @@ services:
     depends_on:
       - nest
 
-  # Interim nightly database dump (the full restic backup is phase 7).
-  # Keeps the last 14 dumps in deploy/backups.
+  # Nightly database dump into ./backups, keeping the last 14.
   backup:
     image: postgres:16-alpine
     restart: unless-stopped
