@@ -228,6 +228,12 @@ uit. Laat daarna de tunnel of proxy naar de nieuwe machine wijzen.
 - **De app meldt "Op dit adres antwoordt geen Nest-server":** controleer dat
   beide adressen in een browser openen, en dat de tunnel of proxy het
   webdomein naar poort 8082 en het API-domein naar 8080 stuurt.
+- **Een nieuw adres wordt "niet gevonden" hoewel de tunnel of proxy klaar
+  is:** een toestel of router die de naam opzocht voor hij bestond, kan dat
+  tot 30 minuten onthouden. Wacht, of wis de DNS-cache (op een Mac:
+  `sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder`; op de
+  router: herstart de DNS-dienst). `dig +short nest.example.com @1.1.1.1`
+  toont of de naam op het internet bestaat.
 - **Aanmelden op het web blijft niet bewaard:** zie de opmerking over cookies
   bij mogelijkheid B.
 - **"Deze server aanvaardt alleen nieuwe accounts met een

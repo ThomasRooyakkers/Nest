@@ -2,10 +2,10 @@
 
 ## Current phase
 
-**Phase 3 — Bring your own backend: in progress (2026-10-28).** Steps 1–4 are
-done; step 5 (self-hosting kit) is built and tested locally but waits for
-Thomas's choice of image registry; step 6 (Pi on the published image, second
-server, gate) has not started.
+**Phase 3 — Bring your own backend: done, gate passed (2026-10-28).**
+Thomas's Pi runs the published image; a second server set up from the
+hosting guide alone works with the same app build, and the app switches
+between the two. Waiting for Thomas before phase 4 (Tasks).
 
 Phase 2 (Shopping List) is deployed at https://nest.g3cko.be (API
 https://nest-api.g3cko.be); its gate ("Thomas's household can use it daily")
@@ -156,7 +156,7 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   files, migrations applied, first backup written. No production account was
   created yet.
 
-### Phase 3 — Bring your own backend (2026-10-28, in progress)
+### Phase 3 — Bring your own backend (2026-10-28)
 
 - **Health and compatibility:** `health.ping` also reports `apiVersion` (now
   2), `minClientApiVersion` (1) and `signUpMode`; all three are nullable so
@@ -225,6 +225,19 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   invite code and becomes super-admin. To update later: raise
   `NEST_VERSION` in the Pi's `.env` (or keep `latest`) and run
   `deploy/deploy.sh`.
+- **Gate (2026-10-28):** second server on Thomas's Mac in `~/nest-test`,
+  set up only from `docs/hosting/hosting-guide.md`: files fetched with
+  `curl` from GitHub, `.env` filled in (random secrets, ports 18080/18082),
+  its own Cloudflare Tunnel "Nest test" (`nest-test.g3cko.be`,
+  `nest-test-api.g3cko.be`), image pulled from GHCR. Over https: super-admin
+  account created without invite code via the log code, name and household
+  "Test family", web Home showing the server. Same app build (iOS
+  simulator): remembered server across restarts; switched from the Pi to
+  `nest-test.g3cko.be` by its web address (API found through the served
+  config), signed in, Shopping list loaded natively; switched back to
+  `nest.g3cko.be` with the sign-out confirmation. One gap found and added
+  to the guide's troubleshooting: a router caches "name not found" for a
+  new hostname for up to 30 minutes.
 - **Self-hosting kit:** `deploy/build-image.sh` (web
   app + server image; `--push` builds arm64+amd64 with buildx), generic
   `deploy/docker-compose.yml` (published image via `NEST_IMAGE` /
@@ -253,10 +266,10 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
    For the iPhone, build with `--dart-define=SERVER_URL=https://nest-api.g3cko.be/`.
 2. Resend: account + domain `g3cko.be` (DNS records can be added in Cloudflare),
    then `RESEND_API_KEY` in `~/nest/deploy/.env` and `docker compose up -d nest`.
-3. Phase 3, remaining:
-   6. Gate: a second server set up from the guide alone on a clean machine,
-      and the same app build switching between it and nest.g3cko.be.
-      Machine still to choose (Thomas).
+3. **Thomas:** remove the second server when no longer needed
+   (`cd ~/nest-test && docker compose down -v`, then delete the "Nest test"
+   tunnel and its two hostnames in Cloudflare, and the folder).
+4. Phase 4 — Tasks (CLAUDE.md section 10).
 
 ## Open questions
 

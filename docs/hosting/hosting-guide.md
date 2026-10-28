@@ -223,6 +223,12 @@ tunnel or proxy at the new machine.
 - **The app says "No Nest server answered at this address":** check that
   both addresses open in a browser, and that the tunnel or proxy sends the
   web domain to port 8082 and the API domain to 8080.
+- **A new address is "not found" although the tunnel or proxy is set up:**
+  a device or router that looked the name up before it existed may remember
+  that for up to 30 minutes. Wait, or clear the DNS cache (on a Mac:
+  `sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder`; on the
+  router, restart its DNS service). `dig +short nest.example.com @1.1.1.1`
+  shows whether the name exists on the internet.
 - **Signing in on the web does not stick:** see the cookie note under
   option B.
 - **"This server only accepts new accounts with an invite code":** the
