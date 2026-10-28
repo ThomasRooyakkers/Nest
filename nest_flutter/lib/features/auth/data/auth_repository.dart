@@ -35,6 +35,11 @@ class AuthRepository {
     ],
   );
 
+  /// Checks an invite code before signing up, so [email] may create an
+  /// account and joins the household. Returns the household's name.
+  Future<String> redeemInvite(String email, String inviteCode) =>
+      _client.signUp.redeemInvite(email.trim(), inviteCode);
+
   /// Signs out and removes the cached data, so the next user of the device
   /// sees nothing of this one.
   Future<void> signOut() async {

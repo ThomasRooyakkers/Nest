@@ -11,6 +11,12 @@ class FakeNestClient extends Client {
 
   final FakeShoppingServer server;
 
+  /// Sign-up calls (`endpoint.method`) in order.
+  final signUpCalls = <String>[];
+
+  /// The one invite code the fake accepts, for household "Home".
+  static const validInviteCode = 'GOODCODE';
+
   @override
   Future<T> callServerEndpoint<T>(
     String endpoint,
@@ -18,6 +24,17 @@ class FakeNestClient extends Client {
     Map<String, dynamic> args, {
     bool authenticated = true,
   }) async {
+    if (endpoint == 'signUp' && method == 'redeemInvite') {
+      signUpCalls.add('$endpoint.$method');
+      if (args['inviteCode'] != validInviteCode) {
+        throw NestException(code: NestErrorCode.invalidInviteCode);
+      }
+      return 'Home' as T;
+    }
+    if (endpoint == 'emailIdp' && method == 'startRegistration') {
+      signUpCalls.add('$endpoint.$method');
+      return UuidValue.fromString('0190f0a0-0000-7000-8000-000000000002') as T;
+    }
     if (endpoint != 'shopping') {
       throw UnimplementedError('$endpoint.$method');
     }

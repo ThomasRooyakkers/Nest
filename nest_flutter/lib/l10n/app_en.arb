@@ -854,5 +854,26 @@
   "licensesButton": "Open-source licences",
   "@licensesButton": {
     "description": "Opens the list of open-source licences."
+  },
+  "inviteCodeOptionalLabel": "Invite code (optional)",
+  "@inviteCodeOptionalLabel": {
+    "description": "Invite code field when signing up on an open server."
+  },
+  "signUpInviteHint": "This server needs an invite code from a household. Ask someone in your family for it.",
+  "@signUpInviteHint": {
+    "description": "Hint under the invite code field on an invite-only server."
+  },
+  "signUpWillJoin": "You will join {household}.",
+  "@signUpWillJoin": {
+    "description": "Shown after a valid invite code was entered while signing up.",
+    "placeholders": {
+      "household": {
+        "type": "String"
+      }
+    }
+  },
+  "errorInviteRequired": "This server only accepts new accounts with an invite code from a household.",
+  "@errorInviteRequired": {
+    "description": "Error when signing up without invite code on an invite-only server."
   }
 }

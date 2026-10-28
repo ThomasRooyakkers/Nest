@@ -644,4 +644,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get licensesButton => 'Open-source licences';
+
+  @override
+  String get inviteCodeOptionalLabel => 'Invite code (optional)';
+
+  @override
+  String get signUpInviteHint =>
+      'This server needs an invite code from a household. Ask someone in your family for it.';
+
+  @override
+  String signUpWillJoin(String household) {
+    return 'You will join $household.';
+  }
+
+  @override
+  String get errorInviteRequired =>
+      'This server only accepts new accounts with an invite code from a household.';
 }

@@ -646,4 +646,20 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get licensesButton => 'Opensourcelicenties';
+
+  @override
+  String get inviteCodeOptionalLabel => 'Uitnodigingscode (optioneel)';
+
+  @override
+  String get signUpInviteHint =>
+      'Deze server vraagt een uitnodigingscode van een huishouden. Vraag ze aan iemand van je gezin.';
+
+  @override
+  String signUpWillJoin(String household) {
+    return 'Je wordt lid van $household.';
+  }
+
+  @override
+  String get errorInviteRequired =>
+      'Deze server aanvaardt alleen nieuwe accounts met een uitnodigingscode van een huishouden.';
 }

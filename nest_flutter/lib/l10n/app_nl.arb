@@ -185,5 +185,9 @@
   "aboutText": "Nest is een privé-gezinsapp. De gegevens van je huishouden staan op de Nest-server die je kiest.",
   "appVersionLabel": "App-versie {version}",
   "serverApiLevel": "API-niveau {level}",
-  "licensesButton": "Opensourcelicenties"
+  "licensesButton": "Opensourcelicenties",
+  "inviteCodeOptionalLabel": "Uitnodigingscode (optioneel)",
+  "signUpInviteHint": "Deze server vraagt een uitnodigingscode van een huishouden. Vraag ze aan iemand van je gezin.",
+  "signUpWillJoin": "Je wordt lid van {household}.",
+  "errorInviteRequired": "Deze server aanvaardt alleen nieuwe accounts met een uitnodigingscode van een huishouden."
 }

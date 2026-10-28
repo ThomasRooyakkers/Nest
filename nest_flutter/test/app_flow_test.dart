@@ -4,6 +4,7 @@ import 'package:nest_client/nest_client.dart';
 import 'package:nest_flutter/app/app_gate.dart';
 import 'package:nest_flutter/core/household/household_switcher.dart';
 
+import 'support/fake_shopping_server.dart';
 import 'support/fakes.dart';
 
 void main() {
@@ -104,6 +105,74 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Forgot password?'), findsOneWidget);
       await flushEmailDebounce(tester);
+    });
+
+    Future<void> openRegistration(WidgetTester tester) async {
+      await tester.tap(find.text('Create account'));
+      await tester.pumpAndSettle();
+      await flushEmailDebounce(tester);
+      await tester.enterText(
+        find.byType(TextField).at(0),
+        'new@example.com',
+      );
+      await flushEmailDebounce(tester);
+    }
+
+    testWidgets('invite-only: a wrong code stops, a good one continues', (
+      tester,
+    ) async {
+      final client = FakeNestClient();
+      await pumpNestApp(tester, signedIn: false, client: client);
+      await openRegistration(tester);
+      expect(
+        find.textContaining('This server needs an invite code'),
+        findsOneWidget,
+      );
+
+      await tester.enterText(
+        find.byType(TextField).at(1),
+        'WRONG123',
+      );
+      await tester.tap(find.text('Continue'));
+      await tester.pumpAndSettle();
+      expect(find.text("This invite code doesn't exist."), findsOneWidget);
+      expect(client.signUpCalls, ['signUp.redeemInvite']);
+
+      await tester.enterText(
+        find.byType(TextField).at(1),
+        FakeNestClient.validInviteCode,
+      );
+      await tester.tap(find.text('Continue'));
+      await tester.pumpAndSettle();
+      expect(client.signUpCalls, [
+        'signUp.redeemInvite',
+        'signUp.redeemInvite',
+        'emailIdp.startRegistration',
+      ]);
+      expect(find.text('You will join Home.'), findsOneWidget);
+    });
+
+    testWidgets('open: the invite code is optional', (tester) async {
+      final client = FakeNestClient();
+      await pumpNestApp(
+        tester,
+        signedIn: false,
+        client: client,
+        health: FakeHealthRepository(signUpMode: SignUpMode.open),
+        deviceLocale: const Locale('nl'),
+      );
+      await tester.tap(find.text('Account aanmaken'));
+      await tester.pumpAndSettle();
+      await flushEmailDebounce(tester);
+      expect(find.text('Uitnodigingscode (optioneel)'), findsOneWidget);
+      await tester.enterText(
+        find.byType(TextField).at(0),
+        'new@example.com',
+      );
+      await flushEmailDebounce(tester);
+      await tester.tap(find.text('Doorgaan'));
+      await tester.pumpAndSettle();
+      expect(client.signUpCalls, ['emailIdp.startRegistration']);
     });
   });
 

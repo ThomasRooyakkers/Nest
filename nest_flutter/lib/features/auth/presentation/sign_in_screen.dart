@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nest_client/nest_client.dart';
 import 'package:nest_shared/nest_shared.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
@@ -29,6 +30,12 @@ class SignInScreen extends ConsumerStatefulWidget {
 class _SignInScreenState extends ConsumerState<SignInScreen> {
   EmailAuthController? _controller;
   bool _obscurePassword = true;
+  final _inviteCode = TextEditingController();
+  bool _redeeming = false;
+  Object? _inviteError;
+
+  /// Household the new account joins, after a valid invite code.
+  String? _joining;
 
   @override
   void didChangeDependencies() {
@@ -43,6 +50,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   @override
   void dispose() {
     _controller?.dispose();
+    _inviteCode.dispose();
     super.dispose();
   }
 
@@ -188,14 +196,40 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         ];
 
       case EmailFlowScreen.startRegistration:
+        // Servers from before sign-up modes let anyone sign up.
+        final inviteOnly =
+            ref.watch(serverPingProvider).value?.signUpMode ==
+            SignUpMode.inviteOnly;
+        final start = busy || _redeeming ? null : () => _startRegistration(c);
         return [
           title(l10n.createAccount, l10n.createAccountSubtitle),
-          emailField(onSubmitted: c.startRegistration),
+          emailField(onSubmitted: () {}),
+          gap(),
+          TextField(
+            controller: _inviteCode,
+            textCapitalization: TextCapitalization.characters,
+            autocorrect: false,
+            textInputAction: TextInputAction.done,
+            decoration: InputDecoration(
+              labelText: inviteOnly
+                  ? l10n.inviteCodeLabel
+                  : l10n.inviteCodeOptionalLabel,
+            ),
+            onSubmitted: (_) => start?.call(),
+          ),
+          if (inviteOnly) ...[
+            const SizedBox(height: 6),
+            Text(l10n.signUpInviteHint, style: textTheme.bodySmall),
+          ],
+          if (_inviteError case final error?) ...[
+            gap(),
+            NestNotice(errorMessage(l10n, error)),
+          ],
           gap(),
           BusyButton(
             label: l10n.continueButton,
-            busy: busy,
-            onPressed: c.startRegistration,
+            busy: busy || _redeeming,
+            onPressed: start,
           ),
           backToSignIn(),
         ];
@@ -215,7 +249,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
       case EmailFlowScreen.verifyRegistration ||
           EmailFlowScreen.verifyPasswordReset:
-        final verify = c.currentScreen == EmailFlowScreen.verifyRegistration
+        final registering =
+            c.currentScreen == EmailFlowScreen.verifyRegistration;
+        final verify = registering
             ? c.verifyRegistrationCode
             : c.verifyPasswordResetCode;
         return [
@@ -223,6 +259,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             l10n.verifyTitle,
             l10n.verifyMessage(c.emailController.text.trim()),
           ),
+          if (registering && _joining != null) ...[
+            Text(l10n.signUpWillJoin(_joining!), style: textTheme.bodyMedium),
+            gap(),
+          ],
           TextField(
             controller: c.verificationCodeController,
             autofocus: true,
@@ -273,6 +313,32 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           backToSignIn(),
         ];
     }
+  }
+
+  /// Redeems the invite code (if one was typed) before asking the server to
+  /// send the email code; the new account then joins that household.
+  Future<void> _startRegistration(EmailAuthController c) async {
+    final code = _inviteCode.text.trim();
+    setState(() {
+      _inviteError = null;
+      _joining = null;
+    });
+    if (code.isNotEmpty) {
+      setState(() => _redeeming = true);
+      try {
+        final household = await ref
+            .read(authRepositoryProvider)
+            .redeemInvite(c.emailController.text, code);
+        if (!mounted) return;
+        setState(() => _joining = household);
+      } catch (e) {
+        if (mounted) setState(() => _inviteError = e);
+        return;
+      } finally {
+        if (mounted) setState(() => _redeeming = false);
+      }
+    }
+    await c.startRegistration();
   }
 }
 

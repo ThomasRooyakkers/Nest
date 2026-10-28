@@ -72,10 +72,15 @@ class FakeHouseholdRepository implements HouseholdRepository {
 }
 
 class FakeHealthRepository implements ServerHealthRepository {
-  FakeHealthRepository({this.apiVersion = 2, this.minClientApiVersion = 1});
+  FakeHealthRepository({
+    this.apiVersion = 2,
+    this.minClientApiVersion = 1,
+    this.signUpMode = SignUpMode.inviteOnly,
+  });
 
   final int? apiVersion;
   final int? minClientApiVersion;
+  final SignUpMode? signUpMode;
 
   @override
   Future<ServerPing> ping() async => ServerPing(
@@ -83,6 +88,7 @@ class FakeHealthRepository implements ServerHealthRepository {
     version: '0.2.0',
     apiVersion: apiVersion,
     minClientApiVersion: minClientApiVersion,
+    signUpMode: signUpMode,
   );
 }
 
@@ -141,6 +147,7 @@ Future<ProviderContainer> pumpNestApp(
   FakeHealthRepository? health,
   FakeServerSwitcher? serverSwitcher,
   ServerChecker? serverChecker,
+  FakeNestClient? client,
 }) async {
   tester.view.physicalSize = const Size(375, 812);
   tester.view.devicePixelRatio = 1;
@@ -160,7 +167,7 @@ Future<ProviderContainer> pumpNestApp(
       // Serves the shopping endpoint from memory; the other repositories are
       // faked. The sign-in screen only hands it to EmailAuthController.
       nestClientProvider.overrideWithValue(
-        FakeNestClient(server: shoppingServer),
+        client ?? FakeNestClient(server: shoppingServer),
       ),
       nestDatabaseProvider.overrideWithValue(db),
       signedInProvider.overrideWithBuild((ref, notifier) => signedIn),

@@ -21,6 +21,7 @@ String errorMessage(AppLocalizations l10n, Object error) {
       NestErrorCode.lastOwner => l10n.errorLastOwner,
       NestErrorCode.notFound => l10n.errorNotFound,
       NestErrorCode.featureDisabled => l10n.errorFeatureDisabled,
+      NestErrorCode.inviteRequired => l10n.errorInviteRequired,
     },
     EmailAccountLoginException(:final reason) => switch (reason) {
       EmailAccountLoginExceptionReason.invalidCredentials =>

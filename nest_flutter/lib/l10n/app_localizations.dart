@@ -1213,6 +1213,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open-source licences'**
   String get licensesButton;
+
+  /// Invite code field when signing up on an open server.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code (optional)'**
+  String get inviteCodeOptionalLabel;
+
+  /// Hint under the invite code field on an invite-only server.
+  ///
+  /// In en, this message translates to:
+  /// **'This server needs an invite code from a household. Ask someone in your family for it.'**
+  String get signUpInviteHint;
+
+  /// Shown after a valid invite code was entered while signing up.
+  ///
+  /// In en, this message translates to:
+  /// **'You will join {household}.'**
+  String signUpWillJoin(String household);
+
+  /// Error when signing up without invite code on an invite-only server.
+  ///
+  /// In en, this message translates to:
+  /// **'This server only accepts new accounts with an invite code from a household.'**
+  String get errorInviteRequired;
 }
 
 class _AppLocalizationsDelegate
