@@ -39,6 +39,14 @@ maxRequestSize: 524288 # The maximum size of requests allowed in bytes
 # Browsers may only call the API from the web app (SERVERPOD_ALLOWED_ORIGINS);
 # the mobile apps send no Origin header and are not affected.
 
+# The web app keeps its login in HttpOnly cookies instead of storage that
+# scripts can read. Cookies are host-only on the API domain. With the web
+# app and API on the same site (nest.example.com and nest-api.example.com)
+# the default SameSite=lax works; on different sites set
+# SERVERPOD_AUTH_COOKIE_SAME_SITE=none.
+authCookie:
+  secure: true
+
 sessionLogs:
   # Console logs are what `docker compose logs nest` shows. Until mail is set
   # up (resendApiKey), sign-up and reset codes appear there.

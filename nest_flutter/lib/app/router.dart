@@ -51,6 +51,40 @@ const _gateRoutes = {Routes.start, Routes.signIn, Routes.onboarding};
 /// before signing in).
 const _openRoutes = {Routes.server, Routes.about};
 
+/// Where to redirect [uri] (matched as [location]) for [gate], or `null`.
+///
+/// A deep link opened before the app is ready (still loading, or signed
+/// out) is kept in a `from` parameter while the user passes the start,
+/// sign-in and onboarding screens, and opened once they are through. With
+/// [keepLocation] false, nothing is kept.
+@visibleForTesting
+String? gateRedirect(
+  AppGate gate,
+  Uri uri,
+  String location, {
+  bool keepLocation = true,
+}) {
+  final onGateRoute = _gateRoutes.contains(location);
+  final from = onGateRoute
+      ? _safeFrom(uri.queryParameters['from'])
+      : (keepLocation ? uri.toString() : null);
+
+  final target = gateTarget(gate);
+  if (target != null) {
+    if (location == target) return null;
+    return from == null || from == Routes.home
+        ? target
+        : Uri(path: target, queryParameters: {'from': from}).toString();
+  }
+  return onGateRoute ? from ?? Routes.home : null;
+}
+
+/// Only paths inside the app, so a link cannot send the user elsewhere.
+String? _safeFrom(String? from) =>
+    from != null && from.startsWith('/') && !from.startsWith('//')
+    ? from
+    : null;
+
 @Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {
   final refresh = ValueNotifier(0);
@@ -58,6 +92,9 @@ GoRouter router(Ref ref) {
   ref.onDispose(refresh.dispose);
 
   final rootNavigator = GlobalKey<NavigatorState>();
+  // Once the user got in, leaving again (signing out) starts fresh instead
+  // of returning to where they were.
+  var everReady = false;
 
   return GoRouter(
     navigatorKey: rootNavigator,
@@ -65,9 +102,14 @@ GoRouter router(Ref ref) {
     redirect: (context, state) {
       final location = state.matchedLocation;
       if (_openRoutes.contains(location)) return null;
-      final target = gateTarget(ref.read(appGateProvider));
-      if (target != null) return location == target ? null : target;
-      return _gateRoutes.contains(location) ? Routes.home : null;
+      final gate = ref.read(appGateProvider);
+      if (gate == AppGate.ready) everReady = true;
+      return gateRedirect(
+        gate,
+        state.uri,
+        location,
+        keepLocation: !everReady,
+      );
     },
     routes: [
       GoRoute(

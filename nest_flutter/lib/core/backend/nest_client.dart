@@ -7,8 +7,16 @@ part 'nest_client.g.dart';
 
 /// Creates the Serverpod client for the server at [apiUrl] (see
 /// `core/server/server_store.dart` for how the server is chosen).
-Future<Client> createNestClient(String apiUrl) async {
-  final client = Client(apiUrl)
+///
+/// With [cookieAuth] (web only, when the server supports it) the login is
+/// kept in HttpOnly cookies that scripts cannot read.
+Future<Client> createNestClient(
+  String apiUrl, {
+  bool cookieAuth = false,
+}) async {
+  final client = Client(apiUrl);
+  if (cookieAuth) client.cookieAuth = true;
+  client
     ..connectivityMonitor = FlutterConnectivityMonitor()
     ..authSessionManager = FlutterAuthSessionManager();
   await client.auth.initialize();

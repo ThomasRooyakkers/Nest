@@ -5,10 +5,15 @@ import 'package:serverpod/serverpod.dart';
 /// Serves the web app's `assets/config.json` with this server's public API
 /// address, so one web app build works on every Nest server. The mobile app
 /// reads it too, to find the API when a user types the web address.
+///
+/// `cookieAuth` tells the web app to keep its login in HttpOnly cookies,
+/// which the server only supports when `authCookie` is configured.
 class WebAppConfigRoute extends Route {
-  WebAppConfigRoute(this.apiServer) : super(methods: {Method.get, Method.head});
+  WebAppConfigRoute(this.apiServer, {required this.cookieAuth})
+    : super(methods: {Method.get, Method.head});
 
   final ServerConfig apiServer;
+  final bool cookieAuth;
 
   /// Where the web app is served from (Flutter puts assets under `assets/`).
   static const servedAt = '/assets/assets/config.json';
@@ -17,7 +22,10 @@ class WebAppConfigRoute extends Route {
   Future<Result> handleCall(Session session, Request request) async {
     return Response.ok(
       body: Body.fromString(
-        jsonEncode({'apiUrl': publicApiUrl(apiServer)}),
+        jsonEncode({
+          'apiUrl': publicApiUrl(apiServer),
+          'cookieAuth': cookieAuth,
+        }),
         mimeType: MimeType.json,
       ),
       headers: Headers.build(

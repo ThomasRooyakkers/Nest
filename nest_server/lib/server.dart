@@ -109,7 +109,10 @@ Future<Serverpod> createServerpod(
   final webApp = Directory('web/app');
   if (webApp.existsSync()) {
     pod.webServer.addRoute(
-      WebAppConfigRoute(pod.config.apiServer),
+      WebAppConfigRoute(
+        pod.config.apiServer,
+        cookieAuth: pod.config.authCookie != null,
+      ),
       WebAppConfigRoute.servedAt,
     );
     pod.webServer.addRoute(FlutterRoute(webApp));
