@@ -1,3 +1,5 @@
+import 'package:drift/drift.dart' show DatabaseConnection;
+import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -5,9 +7,12 @@ import 'package:nest_client/nest_client.dart';
 import 'package:nest_flutter/app/nest_app.dart';
 import 'package:nest_flutter/core/backend/nest_client.dart';
 import 'package:nest_flutter/core/backend/server_health_repository.dart';
+import 'package:nest_flutter/core/database/nest_database.dart';
 import 'package:nest_flutter/core/household/household_repository.dart';
 import 'package:nest_flutter/features/auth/data/auth_repository.dart';
 import 'package:nest_flutter/features/settings/data/profile_repository.dart';
+
+import 'fake_shopping_server.dart';
 
 class FakeProfileRepository implements ProfileRepository {
   FakeProfileRepository(this.user);
@@ -86,7 +91,16 @@ MyHousehold myHousehold(int id, String name, MembershipRole role) =>
       role: role,
     );
 
-/// Pumps the whole app on a phone-sized screen with fake repositories.
+/// An in-memory database for tests.
+NestDatabase testDatabase() => NestDatabase(
+  DatabaseConnection(
+    NativeDatabase.memory(),
+    closeStreamsSynchronously: true,
+  ),
+);
+
+/// Pumps the whole app on a phone-sized screen with fake repositories and
+/// an in-memory shopping server and database.
 Future<ProviderContainer> pumpNestApp(
   WidgetTester tester, {
   bool signedIn = true,
@@ -95,6 +109,8 @@ Future<ProviderContainer> pumpNestApp(
   List<HouseholdMember> members = const [],
   Locale? deviceLocale,
   double textScale = 1,
+  FakeShoppingServer? shoppingServer,
+  NestDatabase? database,
 }) async {
   tester.view.physicalSize = const Size(375, 812);
   tester.view.devicePixelRatio = 1;
@@ -105,12 +121,18 @@ Future<ProviderContainer> pumpNestApp(
   addTearDown(tester.view.reset);
   addTearDown(tester.platformDispatcher.clearAllTestValues);
 
+  final db = database ?? testDatabase();
+  addTearDown(db.close);
+
   final container = ProviderContainer(
     retry: (_, _) => null,
     overrides: [
-      // Never called: every repository is faked. The sign-in screen only
-      // hands it to Serverpod's EmailAuthController.
-      nestClientProvider.overrideWithValue(Client('http://localhost:1/')),
+      // Serves the shopping endpoint from memory; the other repositories are
+      // faked. The sign-in screen only hands it to EmailAuthController.
+      nestClientProvider.overrideWithValue(
+        FakeNestClient(server: shoppingServer),
+      ),
+      nestDatabaseProvider.overrideWithValue(db),
       signedInProvider.overrideWithBuild((ref, notifier) => signedIn),
       profileRepositoryProvider.overrideWithValue(
         FakeProfileRepository(user ?? testUser()),

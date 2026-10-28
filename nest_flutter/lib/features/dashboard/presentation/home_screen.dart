@@ -110,7 +110,6 @@ class _ComingSoonCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     final features = [
-      (l10n.featureShopping, colors.accentTint, colors.accentDark),
       (l10n.featureMeals, colors.honey, colors.honeyInk),
       (l10n.featureTasks, colors.apricot, colors.apricotInk),
       (l10n.featureRecipes, colors.rose, colors.roseInk),

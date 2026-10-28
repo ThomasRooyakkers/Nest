@@ -407,5 +407,342 @@
   "languageSection": "Language",
   "@languageSection": {
     "description": "Settings section title."
+  },
+  "tabHome": "Home",
+  "@tabHome": {
+    "description": "Bottom tab: dashboard."
+  },
+  "tabShopping": "Shopping",
+  "@tabShopping": {
+    "description": "Bottom tab: shopping list."
+  },
+  "tabMeals": "Meals",
+  "@tabMeals": {
+    "description": "Bottom tab: meal planning."
+  },
+  "tabTasks": "Tasks",
+  "@tabTasks": {
+    "description": "Bottom tab: tasks."
+  },
+  "tabWatch": "Watch",
+  "@tabWatch": {
+    "description": "Bottom tab: watchlist."
+  },
+  "comingSoonMessage": "This part of Nest is being built.",
+  "@comingSoonMessage": {
+    "description": "Placeholder screens for features that are not built yet."
+  },
+  "shoppingSearchHint": "What do you need?",
+  "@shoppingSearchHint": {
+    "description": "Search field on the shopping list."
+  },
+  "shoppingClearSearch": "Clear search",
+  "@shoppingClearSearch": {
+    "description": "Button that clears the search field."
+  },
+  "shoppingAddOwnItem": "Add “{name}”",
+  "@shoppingAddOwnItem": {
+    "description": "Search result that adds a new own item.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "shoppingAlreadyToBuy": "On the list",
+  "@shoppingAlreadyToBuy": {
+    "description": "Search result label for an item that is already to buy."
+  },
+  "shoppingAllStores": "All stores",
+  "@shoppingAllStores": {
+    "description": "Store chip showing items of every store."
+  },
+  "shoppingAddStore": "Add store",
+  "@shoppingAddStore": {
+    "description": "Chip that creates a new store."
+  },
+  "shoppingEditStore": "Edit store",
+  "@shoppingEditStore": {
+    "description": "Button that opens the store editor."
+  },
+  "shoppingToBuy": "To buy",
+  "@shoppingToBuy": {
+    "description": "Section with items still to buy."
+  },
+  "shoppingRecentlyUsed": "Recently used",
+  "@shoppingRecentlyUsed": {
+    "description": "Section with items bought before."
+  },
+  "shoppingHiddenItems": "{count, plural, =1{1 item is for another store} other{{count} items are for other stores}}",
+  "@shoppingHiddenItems": {
+    "description": "Hint when a store is picked.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "shoppingNothingToBuy": "Nothing to buy. Search above to add something.",
+  "@shoppingNothingToBuy": {
+    "description": "Empty To buy section."
+  },
+  "shoppingMarkBought": "Mark as bought",
+  "@shoppingMarkBought": {
+    "description": "Accessibility hint on a To buy tile."
+  },
+  "shoppingAddAgain": "Put on the list again",
+  "@shoppingAddAgain": {
+    "description": "Accessibility hint on a Recently used tile."
+  },
+  "shoppingEditItem": "Edit item",
+  "@shoppingEditItem": {
+    "description": "Long-press hint on a tile and title of the item sheet."
+  },
+  "shoppingOffline": "Offline. Your changes are saved and sent when you're back online.",
+  "@shoppingOffline": {
+    "description": "Banner when the shopping list cannot reach the server."
+  },
+  "shoppingPending": "{count, plural, =1{1 change waiting to be sent} other{{count} changes waiting to be sent}}",
+  "@shoppingPending": {
+    "description": "Number of offline changes not yet sent.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "shoppingSwitchList": "Switch list",
+  "@shoppingSwitchList": {
+    "description": "Opens the list switcher."
+  },
+  "shoppingListsTitle": "Lists",
+  "@shoppingListsTitle": {
+    "description": "Title of the list switcher."
+  },
+  "shoppingItemCount": "{count, plural, =0{Nothing to buy} =1{1 item to buy} other{{count} items to buy}}",
+  "@shoppingItemCount": {
+    "description": "Items to buy on a list.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "shoppingNewList": "New list",
+  "@shoppingNewList": {
+    "description": "Creates a shopping list."
+  },
+  "shoppingEditList": "Edit list",
+  "@shoppingEditList": {
+    "description": "Opens the list editor."
+  },
+  "shoppingListName": "List name",
+  "@shoppingListName": {
+    "description": "Field in the list editor."
+  },
+  "shoppingListNameHint": "e.g. Weekly shop",
+  "@shoppingListNameHint": {
+    "description": "Hint for the list name."
+  },
+  "shoppingListMembers": "Who uses this list?",
+  "@shoppingListMembers": {
+    "description": "Members section of the list editor."
+  },
+  "shoppingListMembersHint": "Everyone in the household can see and change every list.",
+  "@shoppingListMembersHint": {
+    "description": "Explains that list members do not restrict access."
+  },
+  "shoppingDeleteList": "Delete list",
+  "@shoppingDeleteList": {
+    "description": "Deletes a shopping list."
+  },
+  "shoppingDeleteListConfirm": "Delete “{name}” and everything on it?",
+  "@shoppingDeleteListConfirm": {
+    "description": "Confirmation before deleting a list.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "shoppingLastListHint": "A household always keeps one list.",
+  "@shoppingLastListHint": {
+    "description": "Why the last list cannot be deleted."
+  },
+  "deleteButton": "Delete",
+  "@deleteButton": {
+    "description": "Generic delete button."
+  },
+  "storeNewTitle": "New store",
+  "@storeNewTitle": {
+    "description": "Title of the store editor for a new store."
+  },
+  "storeEditTitle": "Edit store",
+  "@storeEditTitle": {
+    "description": "Title of the store editor."
+  },
+  "storeName": "Store name",
+  "@storeName": {
+    "description": "Field in the store editor."
+  },
+  "storeAddress": "Address (optional)",
+  "@storeAddress": {
+    "description": "Field in the store editor."
+  },
+  "storeColor": "Colour",
+  "@storeColor": {
+    "description": "Colour picker in the store editor."
+  },
+  "storeCategoryOrder": "Aisle order",
+  "@storeCategoryOrder": {
+    "description": "Category order section in the store editor."
+  },
+  "storeCategoryOrderHint": "Drag the categories into the order you walk through the store. Items to buy follow this order.",
+  "@storeCategoryOrderHint": {
+    "description": "Explains the category order."
+  },
+  "storeMoveUp": "Move {category} up",
+  "@storeMoveUp": {
+    "description": "Accessibility action on a category row.",
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "storeMoveDown": "Move {category} down",
+  "@storeMoveDown": {
+    "description": "Accessibility action on a category row.",
+    "placeholders": {
+      "category": {
+        "type": "String"
+      }
+    }
+  },
+  "storeDelete": "Delete store",
+  "@storeDelete": {
+    "description": "Deletes a store."
+  },
+  "storeDeleteConfirm": "Delete “{name}”? Items for this store stay on the list.",
+  "@storeDeleteConfirm": {
+    "description": "Confirmation before deleting a store.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "storeColorSage": "Sage",
+  "@storeColorSage": {
+    "description": "Store colour."
+  },
+  "storeColorHoney": "Honey",
+  "@storeColorHoney": {
+    "description": "Store colour."
+  },
+  "storeColorApricot": "Apricot",
+  "@storeColorApricot": {
+    "description": "Store colour."
+  },
+  "storeColorLavender": "Lavender",
+  "@storeColorLavender": {
+    "description": "Store colour."
+  },
+  "storeColorRose": "Rose",
+  "@storeColorRose": {
+    "description": "Store colour."
+  },
+  "storeColorNeutral": "Linen",
+  "@storeColorNeutral": {
+    "description": "Store colour."
+  },
+  "itemSpec": "Details",
+  "@itemSpec": {
+    "description": "Field for an item's spec."
+  },
+  "itemSpecHint": "e.g. 2 l, organic",
+  "@itemSpecHint": {
+    "description": "Hint for an item's spec."
+  },
+  "itemStores": "Buy at",
+  "@itemStores": {
+    "description": "Store choice for an item."
+  },
+  "itemAnyStore": "Any store",
+  "@itemAnyStore": {
+    "description": "An item that can be bought at any store."
+  },
+  "itemRemove": "Remove from list",
+  "@itemRemove": {
+    "description": "Removes an item, also from Recently used."
+  },
+  "itemAddedBy": "Added by {name}",
+  "@itemAddedBy": {
+    "description": "Who put an item on the list.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryFruitVegetables": "Fruit & vegetables",
+  "@categoryFruitVegetables": {
+    "description": "Shopping category."
+  },
+  "categoryBakery": "Bakery",
+  "@categoryBakery": {
+    "description": "Shopping category."
+  },
+  "categoryDairyEggs": "Dairy & eggs",
+  "@categoryDairyEggs": {
+    "description": "Shopping category."
+  },
+  "categoryMeatFish": "Meat & fish",
+  "@categoryMeatFish": {
+    "description": "Shopping category."
+  },
+  "categoryCheeseDeli": "Cheese & deli",
+  "@categoryCheeseDeli": {
+    "description": "Shopping category."
+  },
+  "categoryFrozen": "Frozen",
+  "@categoryFrozen": {
+    "description": "Shopping category."
+  },
+  "categoryPantry": "Pantry",
+  "@categoryPantry": {
+    "description": "Shopping category."
+  },
+  "categoryBreakfast": "Breakfast",
+  "@categoryBreakfast": {
+    "description": "Shopping category."
+  },
+  "categorySnacks": "Snacks",
+  "@categorySnacks": {
+    "description": "Shopping category."
+  },
+  "categoryDrinks": "Drinks",
+  "@categoryDrinks": {
+    "description": "Shopping category."
+  },
+  "categoryHousehold": "Household",
+  "@categoryHousehold": {
+    "description": "Shopping category."
+  },
+  "categoryPersonalCare": "Personal care",
+  "@categoryPersonalCare": {
+    "description": "Shopping category."
+  },
+  "categoryBaby": "Baby",
+  "@categoryBaby": {
+    "description": "Shopping category."
+  },
+  "categoryPets": "Pets",
+  "@categoryPets": {
+    "description": "Shopping category."
+  },
+  "categoryOther": "Other",
+  "@categoryOther": {
+    "description": "Shopping category."
   }
 }

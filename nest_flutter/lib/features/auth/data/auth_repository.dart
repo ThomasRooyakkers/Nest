@@ -4,14 +4,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../../../core/backend/nest_client.dart';
+import '../../../core/database/nest_database.dart';
 
 part 'auth_repository.g.dart';
 
 /// Sign-in state and email sign-in flows.
 class AuthRepository {
-  AuthRepository(this._client);
+  AuthRepository(this._client, this._db);
 
   final Client _client;
+  final NestDatabase _db;
 
   /// Emits whenever the user signs in or out.
   ValueListenable<AuthSuccess?> get authChanges =>
@@ -33,12 +35,19 @@ class AuthRepository {
     ],
   );
 
-  Future<void> signOut() => _client.auth.signOutDevice();
+  /// Signs out and removes the cached data, so the next user of the device
+  /// sees nothing of this one.
+  Future<void> signOut() async {
+    await _client.auth.signOutDevice();
+    await _db.clearAll();
+  }
 }
 
 @Riverpod(keepAlive: true)
-AuthRepository authRepository(Ref ref) =>
-    AuthRepository(ref.watch(nestClientProvider));
+AuthRepository authRepository(Ref ref) => AuthRepository(
+  ref.watch(nestClientProvider),
+  ref.watch(nestDatabaseProvider),
+);
 
 /// Whether a user is signed in. Follows sign-in and sign-out.
 @Riverpod(keepAlive: true)

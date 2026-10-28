@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nest_client/nest_client.dart';
 import 'package:nest_flutter/app/app_gate.dart';
+import 'package:nest_flutter/core/household/household_switcher.dart';
 
 import 'support/fakes.dart';
 
@@ -119,15 +120,20 @@ void main() {
 
     testWidgets('the switcher changes the active household', (tester) async {
       await pumpNestApp(tester, households: two);
-      expect(find.text('Home'), findsOneWidget);
+      // The household name in the switcher, not the "Home" tab.
+      Finder switcherText(String name) => find.descendant(
+        of: find.byType(HouseholdSwitcher),
+        matching: find.text(name),
+      );
+      expect(switcherText('Home'), findsOneWidget);
 
-      await tester.tap(find.text('Home'));
+      await tester.tap(switcherText('Home'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Test family').last);
       await tester.pumpAndSettle();
 
-      expect(find.text('Test family'), findsOneWidget);
-      expect(find.text('Home'), findsNothing);
+      expect(switcherText('Test family'), findsOneWidget);
+      expect(switcherText('Home'), findsNothing);
     });
 
     testWidgets('owners can create an invite code, members cannot', (

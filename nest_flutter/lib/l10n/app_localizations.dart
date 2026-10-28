@@ -655,6 +655,444 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language'**
   String get languageSection;
+
+  /// Bottom tab: dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get tabHome;
+
+  /// Bottom tab: shopping list.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get tabShopping;
+
+  /// Bottom tab: meal planning.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals'**
+  String get tabMeals;
+
+  /// Bottom tab: tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get tabTasks;
+
+  /// Bottom tab: watchlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch'**
+  String get tabWatch;
+
+  /// Placeholder screens for features that are not built yet.
+  ///
+  /// In en, this message translates to:
+  /// **'This part of Nest is being built.'**
+  String get comingSoonMessage;
+
+  /// Search field on the shopping list.
+  ///
+  /// In en, this message translates to:
+  /// **'What do you need?'**
+  String get shoppingSearchHint;
+
+  /// Button that clears the search field.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get shoppingClearSearch;
+
+  /// Search result that adds a new own item.
+  ///
+  /// In en, this message translates to:
+  /// **'Add “{name}”'**
+  String shoppingAddOwnItem(String name);
+
+  /// Search result label for an item that is already to buy.
+  ///
+  /// In en, this message translates to:
+  /// **'On the list'**
+  String get shoppingAlreadyToBuy;
+
+  /// Store chip showing items of every store.
+  ///
+  /// In en, this message translates to:
+  /// **'All stores'**
+  String get shoppingAllStores;
+
+  /// Chip that creates a new store.
+  ///
+  /// In en, this message translates to:
+  /// **'Add store'**
+  String get shoppingAddStore;
+
+  /// Button that opens the store editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit store'**
+  String get shoppingEditStore;
+
+  /// Section with items still to buy.
+  ///
+  /// In en, this message translates to:
+  /// **'To buy'**
+  String get shoppingToBuy;
+
+  /// Section with items bought before.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently used'**
+  String get shoppingRecentlyUsed;
+
+  /// Hint when a store is picked.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 item is for another store} other{{count} items are for other stores}}'**
+  String shoppingHiddenItems(int count);
+
+  /// Empty To buy section.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to buy. Search above to add something.'**
+  String get shoppingNothingToBuy;
+
+  /// Accessibility hint on a To buy tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as bought'**
+  String get shoppingMarkBought;
+
+  /// Accessibility hint on a Recently used tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Put on the list again'**
+  String get shoppingAddAgain;
+
+  /// Long-press hint on a tile and title of the item sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit item'**
+  String get shoppingEditItem;
+
+  /// Banner when the shopping list cannot reach the server.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline. Your changes are saved and sent when you\'re back online.'**
+  String get shoppingOffline;
+
+  /// Number of offline changes not yet sent.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 change waiting to be sent} other{{count} changes waiting to be sent}}'**
+  String shoppingPending(int count);
+
+  /// Opens the list switcher.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch list'**
+  String get shoppingSwitchList;
+
+  /// Title of the list switcher.
+  ///
+  /// In en, this message translates to:
+  /// **'Lists'**
+  String get shoppingListsTitle;
+
+  /// Items to buy on a list.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing to buy} =1{1 item to buy} other{{count} items to buy}}'**
+  String shoppingItemCount(int count);
+
+  /// Creates a shopping list.
+  ///
+  /// In en, this message translates to:
+  /// **'New list'**
+  String get shoppingNewList;
+
+  /// Opens the list editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit list'**
+  String get shoppingEditList;
+
+  /// Field in the list editor.
+  ///
+  /// In en, this message translates to:
+  /// **'List name'**
+  String get shoppingListName;
+
+  /// Hint for the list name.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Weekly shop'**
+  String get shoppingListNameHint;
+
+  /// Members section of the list editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Who uses this list?'**
+  String get shoppingListMembers;
+
+  /// Explains that list members do not restrict access.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone in the household can see and change every list.'**
+  String get shoppingListMembersHint;
+
+  /// Deletes a shopping list.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete list'**
+  String get shoppingDeleteList;
+
+  /// Confirmation before deleting a list.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete “{name}” and everything on it?'**
+  String shoppingDeleteListConfirm(String name);
+
+  /// Why the last list cannot be deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'A household always keeps one list.'**
+  String get shoppingLastListHint;
+
+  /// Generic delete button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteButton;
+
+  /// Title of the store editor for a new store.
+  ///
+  /// In en, this message translates to:
+  /// **'New store'**
+  String get storeNewTitle;
+
+  /// Title of the store editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit store'**
+  String get storeEditTitle;
+
+  /// Field in the store editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Store name'**
+  String get storeName;
+
+  /// Field in the store editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Address (optional)'**
+  String get storeAddress;
+
+  /// Colour picker in the store editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Colour'**
+  String get storeColor;
+
+  /// Category order section in the store editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Aisle order'**
+  String get storeCategoryOrder;
+
+  /// Explains the category order.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag the categories into the order you walk through the store. Items to buy follow this order.'**
+  String get storeCategoryOrderHint;
+
+  /// Accessibility action on a category row.
+  ///
+  /// In en, this message translates to:
+  /// **'Move {category} up'**
+  String storeMoveUp(String category);
+
+  /// Accessibility action on a category row.
+  ///
+  /// In en, this message translates to:
+  /// **'Move {category} down'**
+  String storeMoveDown(String category);
+
+  /// Deletes a store.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete store'**
+  String get storeDelete;
+
+  /// Confirmation before deleting a store.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete “{name}”? Items for this store stay on the list.'**
+  String storeDeleteConfirm(String name);
+
+  /// Store colour.
+  ///
+  /// In en, this message translates to:
+  /// **'Sage'**
+  String get storeColorSage;
+
+  /// Store colour.
+  ///
+  /// In en, this message translates to:
+  /// **'Honey'**
+  String get storeColorHoney;
+
+  /// Store colour.
+  ///
+  /// In en, this message translates to:
+  /// **'Apricot'**
+  String get storeColorApricot;
+
+  /// Store colour.
+  ///
+  /// In en, this message translates to:
+  /// **'Lavender'**
+  String get storeColorLavender;
+
+  /// Store colour.
+  ///
+  /// In en, this message translates to:
+  /// **'Rose'**
+  String get storeColorRose;
+
+  /// Store colour.
+  ///
+  /// In en, this message translates to:
+  /// **'Linen'**
+  String get storeColorNeutral;
+
+  /// Field for an item's spec.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get itemSpec;
+
+  /// Hint for an item's spec.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 2 l, organic'**
+  String get itemSpecHint;
+
+  /// Store choice for an item.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy at'**
+  String get itemStores;
+
+  /// An item that can be bought at any store.
+  ///
+  /// In en, this message translates to:
+  /// **'Any store'**
+  String get itemAnyStore;
+
+  /// Removes an item, also from Recently used.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from list'**
+  String get itemRemove;
+
+  /// Who put an item on the list.
+  ///
+  /// In en, this message translates to:
+  /// **'Added by {name}'**
+  String itemAddedBy(String name);
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Fruit & vegetables'**
+  String get categoryFruitVegetables;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Bakery'**
+  String get categoryBakery;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Dairy & eggs'**
+  String get categoryDairyEggs;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Meat & fish'**
+  String get categoryMeatFish;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheese & deli'**
+  String get categoryCheeseDeli;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Frozen'**
+  String get categoryFrozen;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Pantry'**
+  String get categoryPantry;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get categoryBreakfast;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Snacks'**
+  String get categorySnacks;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Drinks'**
+  String get categoryDrinks;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Household'**
+  String get categoryHousehold;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal care'**
+  String get categoryPersonalCare;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Baby'**
+  String get categoryBaby;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Pets'**
+  String get categoryPets;
+
+  /// Shopping category.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get categoryOther;
 }
 
 class _AppLocalizationsDelegate

@@ -307,4 +307,264 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageSection => 'Language';
+
+  @override
+  String get tabHome => 'Home';
+
+  @override
+  String get tabShopping => 'Shopping';
+
+  @override
+  String get tabMeals => 'Meals';
+
+  @override
+  String get tabTasks => 'Tasks';
+
+  @override
+  String get tabWatch => 'Watch';
+
+  @override
+  String get comingSoonMessage => 'This part of Nest is being built.';
+
+  @override
+  String get shoppingSearchHint => 'What do you need?';
+
+  @override
+  String get shoppingClearSearch => 'Clear search';
+
+  @override
+  String shoppingAddOwnItem(String name) {
+    return 'Add “$name”';
+  }
+
+  @override
+  String get shoppingAlreadyToBuy => 'On the list';
+
+  @override
+  String get shoppingAllStores => 'All stores';
+
+  @override
+  String get shoppingAddStore => 'Add store';
+
+  @override
+  String get shoppingEditStore => 'Edit store';
+
+  @override
+  String get shoppingToBuy => 'To buy';
+
+  @override
+  String get shoppingRecentlyUsed => 'Recently used';
+
+  @override
+  String shoppingHiddenItems(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items are for other stores',
+      one: '1 item is for another store',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shoppingNothingToBuy =>
+      'Nothing to buy. Search above to add something.';
+
+  @override
+  String get shoppingMarkBought => 'Mark as bought';
+
+  @override
+  String get shoppingAddAgain => 'Put on the list again';
+
+  @override
+  String get shoppingEditItem => 'Edit item';
+
+  @override
+  String get shoppingOffline =>
+      'Offline. Your changes are saved and sent when you\'re back online.';
+
+  @override
+  String shoppingPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count changes waiting to be sent',
+      one: '1 change waiting to be sent',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shoppingSwitchList => 'Switch list';
+
+  @override
+  String get shoppingListsTitle => 'Lists';
+
+  @override
+  String shoppingItemCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items to buy',
+      one: '1 item to buy',
+      zero: 'Nothing to buy',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shoppingNewList => 'New list';
+
+  @override
+  String get shoppingEditList => 'Edit list';
+
+  @override
+  String get shoppingListName => 'List name';
+
+  @override
+  String get shoppingListNameHint => 'e.g. Weekly shop';
+
+  @override
+  String get shoppingListMembers => 'Who uses this list?';
+
+  @override
+  String get shoppingListMembersHint =>
+      'Everyone in the household can see and change every list.';
+
+  @override
+  String get shoppingDeleteList => 'Delete list';
+
+  @override
+  String shoppingDeleteListConfirm(String name) {
+    return 'Delete “$name” and everything on it?';
+  }
+
+  @override
+  String get shoppingLastListHint => 'A household always keeps one list.';
+
+  @override
+  String get deleteButton => 'Delete';
+
+  @override
+  String get storeNewTitle => 'New store';
+
+  @override
+  String get storeEditTitle => 'Edit store';
+
+  @override
+  String get storeName => 'Store name';
+
+  @override
+  String get storeAddress => 'Address (optional)';
+
+  @override
+  String get storeColor => 'Colour';
+
+  @override
+  String get storeCategoryOrder => 'Aisle order';
+
+  @override
+  String get storeCategoryOrderHint =>
+      'Drag the categories into the order you walk through the store. Items to buy follow this order.';
+
+  @override
+  String storeMoveUp(String category) {
+    return 'Move $category up';
+  }
+
+  @override
+  String storeMoveDown(String category) {
+    return 'Move $category down';
+  }
+
+  @override
+  String get storeDelete => 'Delete store';
+
+  @override
+  String storeDeleteConfirm(String name) {
+    return 'Delete “$name”? Items for this store stay on the list.';
+  }
+
+  @override
+  String get storeColorSage => 'Sage';
+
+  @override
+  String get storeColorHoney => 'Honey';
+
+  @override
+  String get storeColorApricot => 'Apricot';
+
+  @override
+  String get storeColorLavender => 'Lavender';
+
+  @override
+  String get storeColorRose => 'Rose';
+
+  @override
+  String get storeColorNeutral => 'Linen';
+
+  @override
+  String get itemSpec => 'Details';
+
+  @override
+  String get itemSpecHint => 'e.g. 2 l, organic';
+
+  @override
+  String get itemStores => 'Buy at';
+
+  @override
+  String get itemAnyStore => 'Any store';
+
+  @override
+  String get itemRemove => 'Remove from list';
+
+  @override
+  String itemAddedBy(String name) {
+    return 'Added by $name';
+  }
+
+  @override
+  String get categoryFruitVegetables => 'Fruit & vegetables';
+
+  @override
+  String get categoryBakery => 'Bakery';
+
+  @override
+  String get categoryDairyEggs => 'Dairy & eggs';
+
+  @override
+  String get categoryMeatFish => 'Meat & fish';
+
+  @override
+  String get categoryCheeseDeli => 'Cheese & deli';
+
+  @override
+  String get categoryFrozen => 'Frozen';
+
+  @override
+  String get categoryPantry => 'Pantry';
+
+  @override
+  String get categoryBreakfast => 'Breakfast';
+
+  @override
+  String get categorySnacks => 'Snacks';
+
+  @override
+  String get categoryDrinks => 'Drinks';
+
+  @override
+  String get categoryHousehold => 'Household';
+
+  @override
+  String get categoryPersonalCare => 'Personal care';
+
+  @override
+  String get categoryBaby => 'Baby';
+
+  @override
+  String get categoryPets => 'Pets';
+
+  @override
+  String get categoryOther => 'Other';
 }

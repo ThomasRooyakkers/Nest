@@ -309,4 +309,264 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get languageSection => 'Taal';
+
+  @override
+  String get tabHome => 'Home';
+
+  @override
+  String get tabShopping => 'Boodschappen';
+
+  @override
+  String get tabMeals => 'Maaltijden';
+
+  @override
+  String get tabTasks => 'Taken';
+
+  @override
+  String get tabWatch => 'Kijken';
+
+  @override
+  String get comingSoonMessage => 'Aan dit deel van Nest wordt nog gewerkt.';
+
+  @override
+  String get shoppingSearchHint => 'Wat heb je nodig?';
+
+  @override
+  String get shoppingClearSearch => 'Zoekopdracht wissen';
+
+  @override
+  String shoppingAddOwnItem(String name) {
+    return '“$name” toevoegen';
+  }
+
+  @override
+  String get shoppingAlreadyToBuy => 'Staat op de lijst';
+
+  @override
+  String get shoppingAllStores => 'Alle winkels';
+
+  @override
+  String get shoppingAddStore => 'Winkel toevoegen';
+
+  @override
+  String get shoppingEditStore => 'Winkel bewerken';
+
+  @override
+  String get shoppingToBuy => 'Te kopen';
+
+  @override
+  String get shoppingRecentlyUsed => 'Recent gebruikt';
+
+  @override
+  String shoppingHiddenItems(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items zijn voor andere winkels',
+      one: '1 item is voor een andere winkel',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shoppingNothingToBuy =>
+      'Niets te kopen. Zoek hierboven om iets toe te voegen.';
+
+  @override
+  String get shoppingMarkBought => 'Markeren als gekocht';
+
+  @override
+  String get shoppingAddAgain => 'Opnieuw op de lijst zetten';
+
+  @override
+  String get shoppingEditItem => 'Item bewerken';
+
+  @override
+  String get shoppingOffline =>
+      'Offline. Je wijzigingen worden bewaard en verstuurd zodra je weer online bent.';
+
+  @override
+  String shoppingPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count wijzigingen wachten om verstuurd te worden',
+      one: '1 wijziging wacht om verstuurd te worden',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shoppingSwitchList => 'Andere lijst';
+
+  @override
+  String get shoppingListsTitle => 'Lijsten';
+
+  @override
+  String shoppingItemCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items te kopen',
+      one: '1 item te kopen',
+      zero: 'Niets te kopen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get shoppingNewList => 'Nieuwe lijst';
+
+  @override
+  String get shoppingEditList => 'Lijst bewerken';
+
+  @override
+  String get shoppingListName => 'Naam van de lijst';
+
+  @override
+  String get shoppingListNameHint => 'bv. Weekboodschappen';
+
+  @override
+  String get shoppingListMembers => 'Wie gebruikt deze lijst?';
+
+  @override
+  String get shoppingListMembersHint =>
+      'Iedereen in het huishouden kan elke lijst zien en aanpassen.';
+
+  @override
+  String get shoppingDeleteList => 'Lijst verwijderen';
+
+  @override
+  String shoppingDeleteListConfirm(String name) {
+    return '“$name” en alles erop verwijderen?';
+  }
+
+  @override
+  String get shoppingLastListHint => 'Een huishouden houdt altijd één lijst.';
+
+  @override
+  String get deleteButton => 'Verwijderen';
+
+  @override
+  String get storeNewTitle => 'Nieuwe winkel';
+
+  @override
+  String get storeEditTitle => 'Winkel bewerken';
+
+  @override
+  String get storeName => 'Naam van de winkel';
+
+  @override
+  String get storeAddress => 'Adres (optioneel)';
+
+  @override
+  String get storeColor => 'Kleur';
+
+  @override
+  String get storeCategoryOrder => 'Volgorde in de winkel';
+
+  @override
+  String get storeCategoryOrderHint =>
+      'Sleep de categorieën in de volgorde waarin je door de winkel loopt. De items te kopen volgen die volgorde.';
+
+  @override
+  String storeMoveUp(String category) {
+    return '$category omhoog';
+  }
+
+  @override
+  String storeMoveDown(String category) {
+    return '$category omlaag';
+  }
+
+  @override
+  String get storeDelete => 'Winkel verwijderen';
+
+  @override
+  String storeDeleteConfirm(String name) {
+    return '“$name” verwijderen? Items voor deze winkel blijven op de lijst.';
+  }
+
+  @override
+  String get storeColorSage => 'Salie';
+
+  @override
+  String get storeColorHoney => 'Honing';
+
+  @override
+  String get storeColorApricot => 'Abrikoos';
+
+  @override
+  String get storeColorLavender => 'Lavendel';
+
+  @override
+  String get storeColorRose => 'Roze';
+
+  @override
+  String get storeColorNeutral => 'Linnen';
+
+  @override
+  String get itemSpec => 'Details';
+
+  @override
+  String get itemSpecHint => 'bv. 2 l, bio';
+
+  @override
+  String get itemStores => 'Kopen bij';
+
+  @override
+  String get itemAnyStore => 'Elke winkel';
+
+  @override
+  String get itemRemove => 'Van de lijst halen';
+
+  @override
+  String itemAddedBy(String name) {
+    return 'Toegevoegd door $name';
+  }
+
+  @override
+  String get categoryFruitVegetables => 'Groenten & fruit';
+
+  @override
+  String get categoryBakery => 'Bakkerij';
+
+  @override
+  String get categoryDairyEggs => 'Zuivel & eieren';
+
+  @override
+  String get categoryMeatFish => 'Vlees & vis';
+
+  @override
+  String get categoryCheeseDeli => 'Kaas & beleg';
+
+  @override
+  String get categoryFrozen => 'Diepvries';
+
+  @override
+  String get categoryPantry => 'Voorraadkast';
+
+  @override
+  String get categoryBreakfast => 'Ontbijt';
+
+  @override
+  String get categorySnacks => 'Snacks';
+
+  @override
+  String get categoryDrinks => 'Dranken';
+
+  @override
+  String get categoryHousehold => 'Huishouden';
+
+  @override
+  String get categoryPersonalCare => 'Verzorging';
+
+  @override
+  String get categoryBaby => 'Baby';
+
+  @override
+  String get categoryPets => 'Huisdieren';
+
+  @override
+  String get categoryOther => 'Overig';
 }

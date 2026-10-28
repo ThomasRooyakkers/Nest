@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:nest_client/nest_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../features/auth/data/auth_repository.dart';
 import '../backend/nest_client.dart';
+import '../database/nest_database.dart';
 
 part 'household_repository.g.dart';
 
@@ -44,18 +47,29 @@ Future<List<MyHousehold>> myHouseholds(Ref ref) async {
   return ref.watch(householdRepositoryProvider).listMine();
 }
 
-/// Household id picked in the switcher; reset on sign-in and sign-out.
-///
-/// Not persisted yet, so the app starts with the first household.
+/// Household id picked in the switcher, remembered on the device.
 @Riverpod(keepAlive: true)
 class SelectedHouseholdId extends _$SelectedHouseholdId {
+  static const _key = 'household.selected';
+
   @override
   int? build() {
     ref.watch(signedInProvider);
+    unawaited(_load());
     return null;
   }
 
-  void select(int householdId) => state = householdId;
+  Future<void> _load() async {
+    final saved = await ref.read(nestDatabaseProvider).readValue(_key);
+    if (ref.mounted && state == null && saved != null) {
+      state = int.tryParse(saved);
+    }
+  }
+
+  void select(int householdId) {
+    state = householdId;
+    unawaited(ref.read(nestDatabaseProvider).writeValue(_key, '$householdId'));
+  }
 }
 
 /// The household the app currently shows, or `null` if the user has none.
