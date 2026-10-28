@@ -131,6 +131,32 @@ void main() {
     expect(isOnList(ingredient('Flour'), toBuy), isFalse);
   });
 
+  test('isOnList also matches the catalog names in both languages', () {
+    final toBuy = [
+      ShoppingItem(
+        householdId: 1,
+        listId: 1,
+        catalogItemId: 9,
+        name: 'Bloem',
+        category: ShoppingCategory.other,
+        iconKey: '',
+        storeIds: [],
+        status: ShoppingItemStatus.toBuy,
+      ),
+    ];
+    final catalog = {
+      9: CatalogItem(
+        id: 9,
+        nameEn: 'Flour',
+        nameNl: 'Bloem',
+        iconKey: '',
+        category: ShoppingCategory.other,
+      ),
+    };
+    expect(isOnList(ingredient('flour'), toBuy, catalog), isTrue);
+    expect(isOnList(ingredient('flour'), toBuy), isFalse);
+  });
+
   test('totalMinutes adds prep and cook time', () {
     final r = recipe('Soup');
     expect(totalMinutes(r), isNull);

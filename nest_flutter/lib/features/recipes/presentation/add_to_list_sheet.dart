@@ -112,8 +112,11 @@ class _AddToListSheetState extends ConsumerState<_AddToListSheet> {
         if (item.listId == list?.id && item.status == ShoppingItemStatus.toBuy)
           item,
     ];
+    final catalog = ref.watch(shoppingCatalogByIdProvider(widget.householdId));
+    bool onList(RecipeIngredient ingredient) =>
+        isOnList(ingredient, toBuy, catalog);
     bool isSelected(int index) =>
-        _choices[index] ?? !isOnList(_ingredients[index], toBuy);
+        _choices[index] ?? !onList(_ingredients[index]);
     final selected = [
       for (var i = 0; i < _ingredients.length; i++)
         if (isSelected(i)) i,
@@ -190,7 +193,7 @@ class _AddToListSheetState extends ConsumerState<_AddToListSheet> {
                                   widget.servings,
                                   locale,
                                 ),
-                                if (isOnList(ingredient, toBuy))
+                                if (onList(ingredient))
                                   l10n.shoppingAlreadyToBuy,
                               ].where((part) => part.isNotEmpty).join(' · '),
                             ),

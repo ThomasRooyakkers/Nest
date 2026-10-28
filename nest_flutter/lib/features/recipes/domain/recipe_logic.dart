@@ -71,11 +71,23 @@ String shoppingSpec(
 }
 
 /// Whether an ingredient is already to buy on a list, judged by name
-/// (ignoring case). The server matches more (the catalog in both languages)
-/// and skips those as well.
-bool isOnList(RecipeIngredient ingredient, Iterable<ShoppingItem> toBuy) {
+/// (ignoring case): the item's own name, or its catalog item's name in
+/// either language, like the server matches it. The server has the last
+/// word and skips those as well.
+bool isOnList(
+  RecipeIngredient ingredient,
+  Iterable<ShoppingItem> toBuy, [
+  Map<int, CatalogItem> catalog = const {},
+]) {
   final name = ingredient.name.trim().toLowerCase();
-  return toBuy.any((item) => item.name.trim().toLowerCase() == name);
+  return toBuy.any((item) {
+    final catalogItem = catalog[item.catalogItemId];
+    return [
+      item.name,
+      ?catalogItem?.nameEn,
+      ?catalogItem?.nameNl,
+    ].any((n) => n.trim().toLowerCase() == name);
+  });
 }
 
 /// Prep plus cook time in minutes; null when neither is known.
