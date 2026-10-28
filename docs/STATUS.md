@@ -213,7 +213,7 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   guide in `docs/hosting/hosting-guide.md` and `hosting-guide.nl.md`.
   `deploy/deploy.sh` now builds through the build override.
 - **Tests:** 130 server tests (health levels, 10 sign-up tests, registry),
-  64 app tests (address parsing, compatibility, discovery, server screen
+  62 app tests (address parsing, compatibility, discovery, server screen
   flows in EN/NL, About, sign-up with invite code, deep-link redirects,
   cache clear keeps the server).
 - **Verified:** a local server started from the generic Compose file (in a
