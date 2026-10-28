@@ -1,34 +1,27 @@
 #!/usr/bin/env bash
-# Builds the web app and deploys Nest to the Raspberry Pi.
+# Updates Thomas's Nest server on the Raspberry Pi to the published image.
 #
 #   deploy/deploy.sh [user@host]
 #
-# Copies the repository (without secrets and build output) to ~/nest on the
-# Pi and rebuilds and restarts the containers there, building the server
-# image from source (docker-compose.build.yml). The Pi's deploy/.env needs
-# the settings of deploy/.env.example, including COMPOSE_PROFILES=tunnel.
+# Copies deploy/docker-compose.yml to ~/nest/deploy on the Pi, dumps the
+# database first, then pulls the image named in the Pi's .env (NEST_IMAGE,
+# NEST_VERSION) and restarts. The Pi's .env holds the settings of
+# deploy/.env.example; it is never copied or printed.
 set -euo pipefail
 
 HOST="${1:-thomasrooyakkers@10.1.1.215}"
 SSH_KEY="${SSH_KEY:-$HOME/.ssh/id_ed25519_nest_pi}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SSH=(ssh -i "$SSH_KEY" "$HOST")
 
-echo "Building the web app"
-# No SERVER_URL: the server serves the web app's config with its own address.
-(cd "$ROOT/nest_flutter" && flutter build web --release)
-rm -rf "$ROOT/nest_server/web/app"
-mkdir -p "$ROOT/nest_server/web"
-cp -R "$ROOT/nest_flutter/build/web" "$ROOT/nest_server/web/app"
-rm -f "$ROOT/nest_server/web/app/assets/assets/config.json"
+echo "Checking the Pi's .env"
+"${SSH[@]}" 'cd ~/nest/deploy && missing=""; for k in NEST_WEB_DOMAIN NEST_API_DOMAIN SUPER_ADMIN_EMAIL NEST_IMAGE COMPOSE_PROFILES; do grep -Eq "^$k=.+" .env || missing="$missing $k"; done; [ -z "$missing" ] || { echo "Missing in .env:$missing"; exit 1; }'
 
-echo "Copying to $HOST:~/nest"
-rsync -az --delete -e "ssh -i $SSH_KEY" \
-  --exclude '.git/' --exclude '.dart_tool/' --exclude 'build/' \
-  --exclude '.serverpod/' --exclude '.claude/' --exclude 'ios/Pods/' \
-  --exclude 'config/passwords.yaml' --exclude 'deploy/.env' \
-  --exclude 'deploy/backups/' \
-  "$ROOT/" "$HOST:nest/"
+echo "Dumping the database"
+"${SSH[@]}" 'cd ~/nest/deploy && mkdir -p backups && docker compose exec -T postgres pg_dump -U postgres nest | gzip > backups/nest-pre-update-$(date +%Y%m%d-%H%M%S).sql.gz && ls -1t backups | head -1'
 
-echo "Building and starting the containers"
-ssh -i "$SSH_KEY" "$HOST" \
-  'cd ~/nest/deploy && docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build && docker compose ps'
+echo "Copying the Compose file"
+scp -i "$SSH_KEY" "$ROOT/deploy/docker-compose.yml" "$HOST:nest/deploy/docker-compose.yml"
+
+echo "Pulling and restarting"
+"${SSH[@]}" 'cd ~/nest/deploy && docker compose pull && docker compose up -d --remove-orphans && docker compose ps'

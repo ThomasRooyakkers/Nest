@@ -204,7 +204,16 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 - **Deep links:** redirects to start/sign-in/onboarding keep the original
   location in `?from=` and go there once the user is in (not after signing
   out; only in-app paths).
-- **Self-hosting kit (published image pending the first push):** `deploy/build-image.sh` (web
+- **Published (2026-10-28):** repository https://github.com/ThomasRooyakkers/Nest
+  (public, remote `origin`), tag `v0.2.0`, image
+  `ghcr.io/thomasrooyakkers/nest-server:0.2.0` and `:latest`, public, for
+  linux/arm64 and linux/amd64, built by the "Server image" workflow (run by
+  hand: the tag push did not trigger it). CI (analyze, format, tests, image)
+  runs on Flutter 3.47.8 and passes. The template's development passwords
+  stay in the history (local-only values; Thomas chose not to scrub them).
+  `deploy/deploy.sh` now updates the Pi from the published image instead of
+  building on it.
+- **Self-hosting kit:** `deploy/build-image.sh` (web
   app + server image; `--push` builds arm64+amd64 with buildx), generic
   `deploy/docker-compose.yml` (published image via `NEST_IMAGE` /
   `NEST_VERSION`, ports bound to 127.0.0.1 for an own proxy, Cloudflare
@@ -233,20 +242,16 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 2. Resend: account + domain `g3cko.be` (DNS records can be added in Cloudflare),
    then `RESEND_API_KEY` in `~/nest/deploy/.env` and `docker compose up -d nest`.
 3. Phase 3, remaining:
-   5. Publish (decided by Thomas 2026-10-28: image
-      `ghcr.io/thomasrooyakkers/nest-server`, public repository
-      `github.com/thomasrooyakkers/nest`). Done in the repo: Compose file,
-      `.env.example`, build script and guides point there, and
-      `.github/workflows/server-image.yml` builds and pushes arm64+amd64 on a
-      tag `v<nestServerVersion>`. Thomas: create the repository, push,
-      tag `v0.2.0`, then make the `nest-server` package public on GitHub.
-   6. Move Thomas's Pi onto the published image (ask first; the Pi's
-      `.env` needs `NEST_WEB_DOMAIN=nest.g3cko.be`,
+   6. Move Thomas's Pi onto the published image (waiting for Thomas's OK).
+      The Pi's `~/nest/deploy/.env` first needs `NEST_WEB_DOMAIN=nest.g3cko.be`,
       `NEST_API_DOMAIN=nest-api.g3cko.be`, `SUPER_ADMIN_EMAIL`,
-      `SIGN_UP_MODE`, `COMPOSE_PROFILES=tunnel`, `NEST_IMAGE`, and
-      `MAIL_FROM` if Resend is used — `deploy.sh` fails until these are
-      set). Then set up a second server from the guide alone on a clean
-      machine (gate), and switch the app between the two.
+      `SIGN_UP_MODE=invite-only`, `COMPOSE_PROFILES=tunnel`,
+      `NEST_IMAGE=ghcr.io/thomasrooyakkers/nest-server`, `NEST_VERSION`, and
+      `MAIL_FROM` when Resend is used. Then `deploy/deploy.sh` (checks the
+      `.env`, dumps the database, copies the Compose file, pulls, restarts;
+      same project name and volume, so the data stays). Then the gate: a
+      second server set up from the guide alone on a clean machine, and the
+      same app build switching between the two.
 
 ## Open questions
 
@@ -267,16 +272,6 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 - **Typing a local http server** (`localhost:8080`) in Change server tries
   https; type `http://localhost:8080`. Fine for production; could try http
   for local addresses later.
-- **Before the repository goes public** (history checked 2026-10-28): no
-  `passwords.yaml`, `.env`, production secret or key was ever committed. The
-  only literal secrets are the Serverpod template's generated development
-  values: the local database passwords in `nest_server/docker-compose.yaml`,
-  `.vscode/tasks.json` and `.github/workflows/tests.yml`, an unused Redis
-  password, and commented-out `serverSideSessionKeyHashPepper` examples in
-  `passwords.yaml.example`. The dev and test database ones are also in the
-  local `passwords.yaml`; they only protect the embedded databases on this
-  Mac. Commits are authored as `thomasrooyakkers@Thomass-MacBook-Air.local`,
-  and `deploy/deploy.sh` and this file name the Pi's LAN address.
 - **Test account in the dev database:** `claude-test@nest.test` (household
   "Claude test") was created while verifying phase 2; delete it or keep it for
   later checks.

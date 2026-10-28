@@ -30,12 +30,12 @@ code.
 ## 1. Get the files
 
 Make a folder for Nest and download the Compose file and the example
-settings from the [Nest repository](https://github.com/thomasrooyakkers/nest):
+settings from the [Nest repository](https://github.com/ThomasRooyakkers/Nest):
 
 ```bash
 mkdir -p ~/nest && cd ~/nest
-curl -fsSLO https://raw.githubusercontent.com/thomasrooyakkers/nest/main/deploy/docker-compose.yml
-curl -fsSL -o .env https://raw.githubusercontent.com/thomasrooyakkers/nest/main/deploy/.env.example
+curl -fsSLO https://raw.githubusercontent.com/ThomasRooyakkers/Nest/main/deploy/docker-compose.yml
+curl -fsSL -o .env https://raw.githubusercontent.com/ThomasRooyakkers/Nest/main/deploy/.env.example
 ```
 
 The server image itself, `ghcr.io/thomasrooyakkers/nest-server`, is

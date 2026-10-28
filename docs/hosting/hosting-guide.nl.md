@@ -32,12 +32,12 @@ te kennen.
 ## 1. Haal de bestanden op
 
 Maak een map voor Nest en download het Compose-bestand en de
-voorbeeldinstellingen uit de [Nest-repository](https://github.com/thomasrooyakkers/nest):
+voorbeeldinstellingen uit de [Nest-repository](https://github.com/ThomasRooyakkers/Nest):
 
 ```bash
 mkdir -p ~/nest && cd ~/nest
-curl -fsSLO https://raw.githubusercontent.com/thomasrooyakkers/nest/main/deploy/docker-compose.yml
-curl -fsSL -o .env https://raw.githubusercontent.com/thomasrooyakkers/nest/main/deploy/.env.example
+curl -fsSLO https://raw.githubusercontent.com/ThomasRooyakkers/Nest/main/deploy/docker-compose.yml
+curl -fsSL -o .env https://raw.githubusercontent.com/ThomasRooyakkers/Nest/main/deploy/.env.example
 ```
 
 Het serverimage zelf, `ghcr.io/thomasrooyakkers/nest-server`, downloadt
