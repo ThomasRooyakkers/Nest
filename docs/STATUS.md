@@ -2,10 +2,11 @@
 
 ## Current phase
 
-**Phase 3 — Bring your own backend: done, gate passed (2026-10-28).**
-Thomas's Pi runs the published image; a second server set up from the
-hosting guide alone works with the same app build, and the app switches
-between the two. Waiting for Thomas before phase 4 (Tasks).
+**Phase 4 — Tasks: built (2026-10-28), not released yet.** Server 0.3.0 /
+API level 3 is committed but not tagged or deployed; the Pi still runs
+0.2.1. Waiting for Thomas: release 0.3.0 to the Pi, then phase 5 (Recipes).
+
+Phase 3 (Bring your own backend) is done and its gate passed (2026-10-28).
 
 Phase 2 (Shopping List) is deployed at https://nest.g3cko.be (API
 https://nest-api.g3cko.be); its gate ("Thomas's household can use it daily")
@@ -292,6 +293,66 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   database; the app opens a different storage after the fix, so no clean-up
   is expected, but check once after the release.
 
+### Phase 4 — Tasks (2026-10-28)
+
+- **Model + migration `20261028165035809`:** `task` (household, title,
+  notes, assignee, `dueDate` + `dueMinutes`, recurrence none/daily/weekly/
+  monthly, `doneAt`, `doneBy`, `nextTaskId`), enum `TaskRecurrence`,
+  `TaskEvent` (live updates).
+- **Endpoint `task`** (all guarded with `HouseholdGuard.require(...,
+  feature: tasks)`, in `endpoint_registry.dart`): `tasks` (open tasks plus
+  those done in the last 30 days), `save` (create or update; trims and
+  validates, assignee must be a member, a time needs a date, a recurring
+  task needs a date), `setDone` (check off or reopen; returns a
+  `TaskEvent`), `remove`, and the streaming `watch`.
+- **Recurrence** (`services/task_recurrence.dart`): completing a recurring
+  task creates the next occurrence on the server, due on the first step
+  after both its due date and the day it was done (the app sends its own
+  calendar day), so a task done late never comes back overdue. Monthly
+  keeps the day of the month where it exists, else the month's last day.
+  Reopening removes the next occurrence again unless that was done too. No
+  future call is needed.
+- **Leaving a household** unassigns that member's tasks there.
+- **API level 3**, server version 0.3.0. The app (API level 3) hides the
+  Tasks tab on servers below level 3 (rule 6); while the server has not
+  answered, the tab stays visible so cached tasks work offline.
+- **Tests:** isolation test covers every task method for household B plus
+  "household A's id with B's task" and "assigned to a member of B";
+  16 task endpoint tests and 8 recurrence unit tests. 172 server tests.
+- **Seed:** eight tasks per seed household around today (overdue, today
+  with a time, tomorrow, recurring daily/weekly/monthly, undated, one done).
+- **App:** Tasks tab with title, filter chips Mine / Everyone / Overdue (with
+  a count) / Done (remembered on the device; Everyone by default), one card
+  with a row per task: round check-off box (own semantics node), title, due
+  label ("Today · 8:00 PM", "Overdue · Yesterday"; overdue as a warning
+  badge), repeat icon, assignee avatar; done tasks show "Done by …".
+  Checking off shows a snack bar with Undo. "+" opens a sheet with title,
+  notes, who (Anyone + members), when (No date / Today / Tomorrow / pick a
+  date, optional time) and repeat. Tap a task to edit or delete it. Strings
+  in EN and NL. "Tasks" left the home screen's "Coming soon" card.
+- **Offline + realtime:** `TaskRepository` like shopping: cache in drift,
+  changes applied locally and queued, temp ids for tasks created offline,
+  refused changes dropped and the cache restored. The reconnect loop is now
+  shared (`core/backend/live_sync.dart`, used by shopping and tasks).
+  The queue of pending changes has a `feature` column (drift schema 2,
+  migration keeps old queued changes as shopping changes), so the two
+  syncs never send or drop each other's changes.
+- **App tests (91):** task logic (overdue, due kinds, filters, order),
+  repository (offline queue, temp ids, edit of an offline task, recurring
+  next occurrence, refused change, live events, separate queues, drift
+  migration from schema 1), screen (labels, filters, check-off with next
+  occurrence and Undo, create, edit/delete, live add, offline notice, tab
+  hidden on API level 2, Dutch with text scale 2).
+- **Verified** against the local server (migration applied, seed run):
+  signed in as seed user Jan over the API, the seeded tasks load;
+  completing the weekly "Take out the bins" (due today) created the next one
+  on 4 November and reopening removed it; Jan gets `notAMember` for
+  household "Home". The Tasks screen layout was checked in the in-app
+  browser (release web build): chips, offline notice, "+" above the tab
+  bar. **Not verified on a device:** the in-app browser cannot open the
+  web database (known, see the web fix below) and driving the simulator
+  sign-in was unreliable; the widget tests cover the screen flows.
+
 ## Next
 
 1. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
@@ -302,7 +363,10 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 3. **Thomas:** remove the second server when no longer needed
    (`cd ~/nest-test && docker compose down -v`, then delete the "Nest test"
    tunnel and its two hostnames in Cloudflare, and the folder).
-4. Phase 4 — Tasks (CLAUDE.md section 10).
+4. **Thomas:** OK to release 0.3.0 (tag `v0.3.0`, image via the workflow,
+   `NEST_VERSION=0.3.0` on the Pi, `deploy/deploy.sh`), then check Tasks on
+   https://nest.g3cko.be.
+5. Phase 5 — Recipes (CLAUDE.md section 10).
 
 ## Open questions
 
@@ -320,6 +384,14 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   later checks.
 
 ## Deviations from CLAUDE.md
+
+- **Tasks store `dueDate` + `dueMinutes` instead of `dueAt`:** the due day is
+  a calendar day (00:00 UTC, the same for everyone in the household) and the
+  time is optional wall-clock minutes, so recurrence never shifts across
+  daylight saving changes and "due some time today" is possible.
+- **Next occurrences are created when a task is checked off** (in the
+  `setDone` call), not by a future call.
+- **Mine shows only tasks assigned to me**, not unassigned ones.
 
 - **Serverpod 4.x instead of 3.x** (decided by Thomas, 2026-10-27). Embedded PostgreSQL in
   development and tests, no Docker. CLAUDE.md sections 2 and 4 updated.

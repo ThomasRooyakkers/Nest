@@ -68,7 +68,6 @@ class _ComingSoonCard extends StatelessWidget {
 
     final features = [
       (l10n.featureMeals, colors.honey, colors.honeyInk),
-      (l10n.featureTasks, colors.apricot, colors.apricotInk),
       (l10n.featureRecipes, colors.rose, colors.roseInk),
       (l10n.featureWatchlist, colors.lavender, colors.lavenderInk),
     ];
