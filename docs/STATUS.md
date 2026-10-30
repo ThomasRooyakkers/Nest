@@ -10,7 +10,7 @@ Google/Apple sign-in and TestFlight / Play internal testing.
 `profile.deleteMe`; Settings, Delete account, hidden on older servers), a new
 app icon (two overlapping houses, chosen by Thomas), a bilingual privacy page
 (`web/privacy.html`, served at `https://nest.g3cko.be/privacy.html` after the
-next deploy; its contact email is still a `CONTACT_EMAIL` placeholder) and
+next deploy; contact email rooyakkers.thomas@gmail.com since 0.8.1) and
 `ITSAppUsesNonExemptEncryption = false`. App API level is now 8. An unsigned
 release build compiles.
 
