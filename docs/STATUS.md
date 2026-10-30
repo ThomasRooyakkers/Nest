@@ -692,7 +692,15 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
   (`backup_run` 1: succeeded, local, 148766 bytes, snapshot `5cbe45b0`,
   4 s) and `nest-backup snapshots local` lists it. **Not verified:** the
   portal on production (hostname not routed yet), Back up now on
-  production, a restore.
+  production.
+- **Restore test (2026-10-30, Thomas's OK):** snapshot `5cbe45b0` restored
+  with `nest-backup restore local 5cbe45b0` into a throwaway database
+  `nest_restore_test` on the Pi, compared table by table with the live
+  database, then dropped. 48 of 51 tables equal; the 3 differences are
+  expected (`backup_run` is written after the dump; two Serverpod health
+  tables grow every minute). **But production had no accounts or
+  household data yet** (only the 127 built-in catalog items), so the test
+  proves the mechanism, not real household data or recipe photos.
 
 ## Next
 
@@ -713,8 +721,8 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
    `nest-admin.g3cko.be` → `http://nest:8082` and protect it with a
    Cloudflare Access application (your email only). Then sign in and press
    Back up now.
-7. **Test a restore** into a throwaway database on the Pi (needed for the
-   phase 9 gate), and add a second backup target (NFS share and/or OneDrive
+7. **Repeat the restore test once the family's real data is on the Pi**
+   (with recipe photos) before the phase 9 gate, and add a second backup target (NFS share and/or OneDrive
    via `~/nest/deploy/rclone/rclone.conf`).
 8. Phase 9 — Dashboard + release (CLAUDE.md section 10).
 
