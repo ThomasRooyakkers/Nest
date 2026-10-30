@@ -12,9 +12,17 @@ app icon (two overlapping houses, chosen by Thomas), a bilingual privacy page
 (`web/privacy.html`, served at `https://nest.g3cko.be/privacy.html` after the
 next deploy; its contact email is still a `CONTACT_EMAIL` placeholder) and
 `ITSAppUsesNonExemptEncryption = false`. App API level is now 8. An unsigned
-release build compiles. Still with Thomas: signing team in Xcode, the App
-Store Connect record, deploying server API 8 to the Pi, a reviewer demo
-account, and the upload to TestFlight.
+release build compiles.
+
+**Released as 0.8.0 (2026-10-30, with Thomas's OK):** CI (format, analyze,
+tests) passed on `56f429f`; tag `v0.8.0`; the "Server image" workflow
+published `nest-server:0.8.0` and `nest-backup:0.8.0`. Pi: `NEST_VERSION=0.8.0`
+in `~/nest/deploy/.env` (backup `.env.bak-*` next to it), `deploy/deploy.sh`
+(dump `nest-pre-update-20261030-160132.sql.gz`). Verified over https: health
+0.8.0 / API 8, web app 200 (includes the dashboard), `privacy.html` 200, no
+errors in the server log. No migration in this release. Still with Thomas:
+the privacy contact email, signing team in Xcode, the App Store Connect
+record, a reviewer demo account, and the upload to TestFlight.
 
 **Phase 8 — Admin + backups: released as 0.7.0 (2026-10-30).** Server
 0.7.0 / API level 7 and the restic backup job run on the Pi; the first
