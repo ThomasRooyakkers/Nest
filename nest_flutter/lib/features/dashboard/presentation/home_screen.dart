@@ -53,8 +53,6 @@ class HomeScreen extends ConsumerWidget {
               const _RecipesCard(),
               const SizedBox(height: NestSpacing.gap),
             ],
-            const _ComingSoonCard(),
-            const SizedBox(height: NestSpacing.gap),
             const ServerCard(),
           ],
         ),
@@ -115,52 +113,6 @@ class _RecipesCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _ComingSoonCard extends StatelessWidget {
-  const _ComingSoonCard();
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final colors = NestColors.of(context);
-    final textTheme = Theme.of(context).textTheme;
-
-    final features = [
-      (l10n.featureWatchlist, colors.lavender, colors.lavenderInk),
-    ];
-
-    return NestCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(l10n.comingSoonTitle, style: textTheme.titleLarge),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final (label, background, foreground) in features)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: background,
-                    borderRadius: BorderRadius.circular(NestRadii.pill),
-                  ),
-                  child: Text(
-                    label,
-                    style: textTheme.labelLarge?.copyWith(color: foreground),
-                  ),
-                ),
-            ],
-          ),
-        ],
       ),
     );
   }

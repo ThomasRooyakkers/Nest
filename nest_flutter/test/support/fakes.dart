@@ -21,6 +21,7 @@ import 'fake_meal_plan_server.dart';
 import 'fake_recipe_server.dart';
 import 'fake_shopping_server.dart';
 import 'fake_task_server.dart';
+import 'fake_watchlist_server.dart';
 
 class FakeProfileRepository implements ProfileRepository {
   FakeProfileRepository(this.user);
@@ -164,6 +165,7 @@ Future<ProviderContainer> pumpNestApp(
   FakeTaskServer? taskServer,
   FakeRecipeServer? recipeServer,
   FakeMealPlanServer? mealPlanServer,
+  FakeWatchlistServer? watchlistServer,
   NestDatabase? database,
   FakeHealthRepository? health,
   FakeServerSwitcher? serverSwitcher,
@@ -195,6 +197,7 @@ Future<ProviderContainer> pumpNestApp(
               taskServer: taskServer,
               recipeServer: recipeServer,
               mealPlanServer: mealPlanServer,
+              watchlistServer: watchlistServer,
             ),
       ),
       nestDatabaseProvider.overrideWithValue(db),

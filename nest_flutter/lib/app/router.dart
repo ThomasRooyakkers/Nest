@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../core/widgets/coming_soon_screen.dart';
 import '../features/auth/presentation/onboarding_screen.dart';
 import '../features/auth/presentation/sign_in_screen.dart';
 import '../features/dashboard/presentation/home_screen.dart';
@@ -18,7 +17,8 @@ import '../features/settings/presentation/settings_screen.dart';
 import '../features/shopping_list/presentation/shopping_screen.dart';
 import '../features/shopping_list/presentation/store_editor_screen.dart';
 import '../features/tasks/presentation/tasks_screen.dart';
-import '../l10n/app_localizations.dart';
+import '../features/watchlist/presentation/watchlist_screen.dart';
+import '../features/watchlist/presentation/watchlist_search_screen.dart';
 import 'app_gate.dart';
 import 'nest_shell.dart';
 import 'start_screen.dart';
@@ -42,6 +42,7 @@ abstract final class Routes {
   static String mealRecipe(int recipeId) => '/meals/recipes/$recipeId';
   static const tasks = '/tasks';
   static const watch = '/watch';
+  static const watchSearch = '/watch/search';
   static const settings = '/settings';
   static const addHousehold = '/settings/add-household';
   static const server = '/server';
@@ -96,20 +97,6 @@ String? _safeFrom(String? from) =>
     from != null && from.startsWith('/') && !from.startsWith('//')
     ? from
     : null;
-
-/// A tab whose feature is built in a later phase.
-StatefulShellBranch _comingSoonBranch(
-  String path,
-  String Function(AppLocalizations l10n) title,
-) => StatefulShellBranch(
-  routes: [
-    GoRoute(
-      path: path,
-      builder: (context, state) =>
-          ComingSoonScreen(title: title(AppLocalizations.of(context))),
-    ),
-  ],
-);
 
 /// The recipe id in a recipe route; -1 (no such recipe) when malformed.
 int _recipeId(GoRouterState state) =>
@@ -258,7 +245,21 @@ GoRouter router(Ref ref) {
               ),
             ],
           ),
-          _comingSoonBranch(Routes.watch, (l10n) => l10n.featureWatchlist),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: Routes.watch,
+                builder: (context, state) => const WatchlistScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'search',
+                    parentNavigatorKey: rootNavigator,
+                    builder: (context, state) => const WatchlistSearchScreen(),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ],
       ),
       GoRoute(

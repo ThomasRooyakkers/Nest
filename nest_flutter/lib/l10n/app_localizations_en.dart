@@ -17,9 +17,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get comingSoonTitle => 'Coming soon';
-
-  @override
   String get featureShopping => 'Shopping';
 
   @override
@@ -322,9 +319,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tabWatch => 'Watch';
-
-  @override
-  String get comingSoonMessage => 'This part of Nest is being built.';
 
   @override
   String get shoppingSearchHint => 'What do you need?';
@@ -1108,4 +1102,115 @@ class AppLocalizationsEn extends AppLocalizations {
   String mealDayMeal(String day, String meal) {
     return '$day: $meal';
   }
+
+  @override
+  String get errorFilmDataUnavailable =>
+      'The film data can\'t be reached right now. Try again later.';
+
+  @override
+  String get watchOffline =>
+      'Offline. You can see the watchlist; changes need a connection.';
+
+  @override
+  String get watchStatusWant => 'Want to watch';
+
+  @override
+  String get watchStatusWatching => 'Watching';
+
+  @override
+  String get watchStatusWatched => 'Watched';
+
+  @override
+  String get watchSearchButton => 'Find a film or series';
+
+  @override
+  String get watchSearchHint => 'Title of a film or series';
+
+  @override
+  String get watchSearchPrompt => 'Type a title to search.';
+
+  @override
+  String watchSearchNoResults(String query) {
+    return 'Nothing found for “$query”.';
+  }
+
+  @override
+  String watchAdd(String title) {
+    return 'Add $title to the watchlist';
+  }
+
+  @override
+  String watchAdded(String title) {
+    return '$title is on the watchlist.';
+  }
+
+  @override
+  String get watchOnList => 'On the list';
+
+  @override
+  String get watchTypeMovie => 'Film';
+
+  @override
+  String get watchTypeSeries => 'Series';
+
+  @override
+  String watchRatingLabel(String rating) {
+    return 'Rated $rating out of 10';
+  }
+
+  @override
+  String watchAddedBy(String name) {
+    return 'Added by $name';
+  }
+
+  @override
+  String get watchPickButton => 'Pick something for tonight';
+
+  @override
+  String get watchPickTitle => 'Tonight';
+
+  @override
+  String get watchPickAnother => 'Pick another';
+
+  @override
+  String get watchStartWatching => 'Start watching';
+
+  @override
+  String get watchEmptyWant =>
+      'Nothing to watch yet. Find a film or series to add it.';
+
+  @override
+  String get watchEmptyWatching =>
+      'Nothing in progress. Move a title here when you start watching.';
+
+  @override
+  String get watchEmptyWatched => 'Nothing watched yet.';
+
+  @override
+  String get watchHouseholdRating => 'Our rating';
+
+  @override
+  String watchHouseholdRatingValue(int count) {
+    return 'Our rating: $count of 5';
+  }
+
+  @override
+  String watchRateStars(int count) {
+    return 'Rate $count of 5';
+  }
+
+  @override
+  String get watchClearRating => 'Clear rating';
+
+  @override
+  String get watchRemove => 'Remove from the watchlist';
+
+  @override
+  String watchRemoved(String title) {
+    return '$title was removed from the watchlist.';
+  }
+
+  @override
+  String get tmdbAttribution =>
+      'This product uses the TMDB API but is not endorsed or certified by TMDB.';
 }

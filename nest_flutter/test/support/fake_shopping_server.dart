@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:nest_client/nest_client.dart';
 
 import 'fake_meal_plan_server.dart';
+import 'fake_watchlist_server.dart';
 import 'fake_recipe_server.dart';
 import 'fake_task_server.dart';
 
@@ -15,16 +16,19 @@ class FakeNestClient extends Client {
     FakeTaskServer? taskServer,
     FakeRecipeServer? recipeServer,
     FakeMealPlanServer? mealPlanServer,
+    FakeWatchlistServer? watchlistServer,
   }) : server = server ?? FakeShoppingServer(),
        taskServer = taskServer ?? FakeTaskServer(),
        recipeServer = recipeServer ?? FakeRecipeServer(),
        mealPlanServer = mealPlanServer ?? FakeMealPlanServer(),
+       watchlistServer = watchlistServer ?? FakeWatchlistServer(),
        super('http://localhost:1/');
 
   final FakeShoppingServer server;
   final FakeTaskServer taskServer;
   final FakeRecipeServer recipeServer;
   final FakeMealPlanServer mealPlanServer;
+  final FakeWatchlistServer watchlistServer;
 
   /// Sign-up calls (`endpoint.method`) in order.
   final signUpCalls = <String>[];
@@ -57,6 +61,9 @@ class FakeNestClient extends Client {
     if (endpoint == 'mealPlan') {
       return await mealPlanServer.call(method, args) as T;
     }
+    if (endpoint == 'watchlist') {
+      return await watchlistServer.call(method, args) as T;
+    }
     if (endpoint != 'shopping') {
       throw UnimplementedError('$endpoint.$method');
     }
@@ -74,6 +81,7 @@ class FakeNestClient extends Client {
     'task' => taskServer.watch(),
     'recipe' => recipeServer.watch(),
     'mealPlan' => mealPlanServer.watch(),
+    'watchlist' => watchlistServer.watch(),
     _ => server.watch(),
   };
 }

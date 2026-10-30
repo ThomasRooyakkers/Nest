@@ -14,10 +14,6 @@
       }
     }
   },
-  "comingSoonTitle": "Coming soon",
-  "@comingSoonTitle": {
-    "description": "Title of the card listing upcoming features."
-  },
   "featureShopping": "Shopping",
   "@featureShopping": {
     "description": "Name of the shopping list feature."
@@ -427,10 +423,6 @@
   "tabWatch": "Watch",
   "@tabWatch": {
     "description": "Bottom tab: watchlist."
-  },
-  "comingSoonMessage": "This part of Nest is being built.",
-  "@comingSoonMessage": {
-    "description": "Placeholder screens for features that are not built yet."
   },
   "shoppingSearchHint": "What do you need?",
   "@shoppingSearchHint": {
@@ -1515,5 +1507,173 @@
         "example": "Pumpkin soup"
       }
     }
+  },
+  "errorFilmDataUnavailable": "The film data can't be reached right now. Try again later.",
+  "@errorFilmDataUnavailable": {
+    "description": "Error when the server cannot reach TMDB."
+  },
+  "watchOffline": "Offline. You can see the watchlist; changes need a connection.",
+  "@watchOffline": {
+    "description": "Notice on the watchlist without a connection."
+  },
+  "watchStatusWant": "Want to watch",
+  "@watchStatusWant": {
+    "description": "Watchlist status tab and option."
+  },
+  "watchStatusWatching": "Watching",
+  "@watchStatusWatching": {
+    "description": "Watchlist status tab and option."
+  },
+  "watchStatusWatched": "Watched",
+  "@watchStatusWatched": {
+    "description": "Watchlist status tab and option."
+  },
+  "watchSearchButton": "Find a film or series",
+  "@watchSearchButton": {
+    "description": "Search field button on the watchlist and title of the search screen."
+  },
+  "watchSearchHint": "Title of a film or series",
+  "@watchSearchHint": {
+    "description": "Hint in the watchlist search field."
+  },
+  "watchSearchPrompt": "Type a title to search.",
+  "@watchSearchPrompt": {
+    "description": "Shown on the search screen before searching."
+  },
+  "watchSearchNoResults": "Nothing found for “{query}”.",
+  "@watchSearchNoResults": {
+    "description": "Search screen without results.",
+    "placeholders": {
+      "query": {
+        "type": "String",
+        "example": "paddington"
+      }
+    }
+  },
+  "watchAdd": "Add {title} to the watchlist",
+  "@watchAdd": {
+    "description": "Button and screen reader label on a search result.",
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Paddington 2"
+      }
+    }
+  },
+  "watchAdded": "{title} is on the watchlist.",
+  "@watchAdded": {
+    "description": "Message after adding a title.",
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Paddington 2"
+      }
+    }
+  },
+  "watchOnList": "On the list",
+  "@watchOnList": {
+    "description": "Label on a search result that is already on the watchlist."
+  },
+  "watchTypeMovie": "Film",
+  "@watchTypeMovie": {
+    "description": "Kind of title."
+  },
+  "watchTypeSeries": "Series",
+  "@watchTypeSeries": {
+    "description": "Kind of title."
+  },
+  "watchRatingLabel": "Rated {rating} out of 10",
+  "@watchRatingLabel": {
+    "description": "Screen reader text for the TMDB rating.",
+    "placeholders": {
+      "rating": {
+        "type": "String",
+        "example": "7.6"
+      }
+    }
+  },
+  "watchAddedBy": "Added by {name}",
+  "@watchAddedBy": {
+    "description": "Who added a title to the watchlist.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Sarah"
+      }
+    }
+  },
+  "watchPickButton": "Pick something for tonight",
+  "@watchPickButton": {
+    "description": "Button on the watchlist that picks a random title."
+  },
+  "watchPickTitle": "Tonight",
+  "@watchPickTitle": {
+    "description": "Title of the random pick."
+  },
+  "watchPickAnother": "Pick another",
+  "@watchPickAnother": {
+    "description": "Button in the random pick."
+  },
+  "watchStartWatching": "Start watching",
+  "@watchStartWatching": {
+    "description": "Button that moves a title to Watching."
+  },
+  "watchEmptyWant": "Nothing to watch yet. Find a film or series to add it.",
+  "@watchEmptyWant": {
+    "description": "Empty Want to watch tab."
+  },
+  "watchEmptyWatching": "Nothing in progress. Move a title here when you start watching.",
+  "@watchEmptyWatching": {
+    "description": "Empty Watching tab."
+  },
+  "watchEmptyWatched": "Nothing watched yet.",
+  "@watchEmptyWatched": {
+    "description": "Empty Watched tab."
+  },
+  "watchHouseholdRating": "Our rating",
+  "@watchHouseholdRating": {
+    "description": "Section of the watchlist item sheet."
+  },
+  "watchHouseholdRatingValue": "Our rating: {count} of 5",
+  "@watchHouseholdRatingValue": {
+    "description": "Screen reader text for the household's rating.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "watchRateStars": "Rate {count} of 5",
+  "@watchRateStars": {
+    "description": "Screen reader label of a rating star.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "watchClearRating": "Clear rating",
+  "@watchClearRating": {
+    "description": "Button in the watchlist item sheet."
+  },
+  "watchRemove": "Remove from the watchlist",
+  "@watchRemove": {
+    "description": "Button in the watchlist item sheet."
+  },
+  "watchRemoved": "{title} was removed from the watchlist.",
+  "@watchRemoved": {
+    "description": "Message after removing a title.",
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Paddington 2"
+      }
+    }
+  },
+  "tmdbAttribution": "This product uses the TMDB API but is not endorsed or certified by TMDB.",
+  "@tmdbAttribution": {
+    "description": "TMDB attribution, required on the watchlist and About screen."
   }
 }

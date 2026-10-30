@@ -22,6 +22,7 @@ String errorMessage(AppLocalizations l10n, Object error) {
       NestErrorCode.notFound => l10n.errorNotFound,
       NestErrorCode.featureDisabled => l10n.errorFeatureDisabled,
       NestErrorCode.inviteRequired => l10n.errorInviteRequired,
+      NestErrorCode.filmDataUnavailable => l10n.errorFilmDataUnavailable,
     },
     EmailAccountLoginException(:final reason) => switch (reason) {
       EmailAccountLoginExceptionReason.invalidCredentials =>

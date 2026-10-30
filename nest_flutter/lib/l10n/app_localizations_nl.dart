@@ -17,9 +17,6 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get comingSoonTitle => 'Binnenkort';
-
-  @override
   String get featureShopping => 'Boodschappen';
 
   @override
@@ -324,9 +321,6 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get tabWatch => 'Kijken';
-
-  @override
-  String get comingSoonMessage => 'Aan dit deel van Nest wordt nog gewerkt.';
 
   @override
   String get shoppingSearchHint => 'Wat heb je nodig?';
@@ -1110,4 +1104,115 @@ class AppLocalizationsNl extends AppLocalizations {
   String mealDayMeal(String day, String meal) {
     return '$day: $meal';
   }
+
+  @override
+  String get errorFilmDataUnavailable =>
+      'De filmgegevens zijn nu niet bereikbaar. Probeer het later opnieuw.';
+
+  @override
+  String get watchOffline =>
+      'Offline. Je ziet de kijklijst; wijzigen kan pas met verbinding.';
+
+  @override
+  String get watchStatusWant => 'Wil ik zien';
+
+  @override
+  String get watchStatusWatching => 'Aan het kijken';
+
+  @override
+  String get watchStatusWatched => 'Gezien';
+
+  @override
+  String get watchSearchButton => 'Zoek een film of serie';
+
+  @override
+  String get watchSearchHint => 'Titel van een film of serie';
+
+  @override
+  String get watchSearchPrompt => 'Typ een titel om te zoeken.';
+
+  @override
+  String watchSearchNoResults(String query) {
+    return 'Niets gevonden voor “$query”.';
+  }
+
+  @override
+  String watchAdd(String title) {
+    return '$title op de kijklijst zetten';
+  }
+
+  @override
+  String watchAdded(String title) {
+    return '$title staat op de kijklijst.';
+  }
+
+  @override
+  String get watchOnList => 'Op de lijst';
+
+  @override
+  String get watchTypeMovie => 'Film';
+
+  @override
+  String get watchTypeSeries => 'Serie';
+
+  @override
+  String watchRatingLabel(String rating) {
+    return 'Beoordeeld met $rating op 10';
+  }
+
+  @override
+  String watchAddedBy(String name) {
+    return 'Toegevoegd door $name';
+  }
+
+  @override
+  String get watchPickButton => 'Kies iets voor vanavond';
+
+  @override
+  String get watchPickTitle => 'Vanavond';
+
+  @override
+  String get watchPickAnother => 'Kies iets anders';
+
+  @override
+  String get watchStartWatching => 'Beginnen met kijken';
+
+  @override
+  String get watchEmptyWant =>
+      'Nog niets om te kijken. Zoek een film of serie om toe te voegen.';
+
+  @override
+  String get watchEmptyWatching =>
+      'Niets bezig. Zet een titel hier als je begint met kijken.';
+
+  @override
+  String get watchEmptyWatched => 'Nog niets gezien.';
+
+  @override
+  String get watchHouseholdRating => 'Onze beoordeling';
+
+  @override
+  String watchHouseholdRatingValue(int count) {
+    return 'Onze beoordeling: $count van 5';
+  }
+
+  @override
+  String watchRateStars(int count) {
+    return '$count van 5 geven';
+  }
+
+  @override
+  String get watchClearRating => 'Beoordeling wissen';
+
+  @override
+  String get watchRemove => 'Van de kijklijst halen';
+
+  @override
+  String watchRemoved(String title) {
+    return '$title is van de kijklijst gehaald.';
+  }
+
+  @override
+  String get tmdbAttribution =>
+      'Dit product gebruikt de TMDB API, maar wordt niet onderschreven of gecertificeerd door TMDB.';
 }

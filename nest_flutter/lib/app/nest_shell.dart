@@ -59,6 +59,7 @@ final _tabs = [
     LucideIcons.clapperboard,
     (l10n) => l10n.tabWatch,
     HouseholdFeature.watchlist,
+    watchlistApiVersion,
   ),
 ];
 

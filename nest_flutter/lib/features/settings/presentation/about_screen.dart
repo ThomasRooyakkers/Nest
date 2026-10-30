@@ -4,6 +4,7 @@ import 'package:nest_shared/nest_shared.dart';
 
 import '../../../core/server/server_compatibility.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../watchlist/presentation/watchlist_style.dart';
 import 'server_card.dart';
 
 /// App version, the server in use and its version, licences.
@@ -39,6 +40,8 @@ class AboutScreen extends ConsumerWidget {
             ),
             const SizedBox(height: NestSpacing.gap),
             const ServerCard(showDetails: true),
+            const SizedBox(height: NestSpacing.gap),
+            const TmdbAttribution(),
             const SizedBox(height: NestSpacing.gap),
             OutlinedButton(
               onPressed: () => showLicensePage(

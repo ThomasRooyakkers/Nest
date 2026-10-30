@@ -110,12 +110,6 @@ abstract class AppLocalizations {
   /// **'Version {version}'**
   String serverVersion(String version);
 
-  /// Title of the card listing upcoming features.
-  ///
-  /// In en, this message translates to:
-  /// **'Coming soon'**
-  String get comingSoonTitle;
-
   /// Name of the shopping list feature.
   ///
   /// In en, this message translates to:
@@ -685,12 +679,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Watch'**
   String get tabWatch;
-
-  /// Placeholder screens for features that are not built yet.
-  ///
-  /// In en, this message translates to:
-  /// **'This part of Nest is being built.'**
-  String get comingSoonMessage;
 
   /// Search field on the shopping list.
   ///
@@ -2011,6 +1999,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{day}: {meal}'**
   String mealDayMeal(String day, String meal);
+
+  /// Error when the server cannot reach TMDB.
+  ///
+  /// In en, this message translates to:
+  /// **'The film data can\'t be reached right now. Try again later.'**
+  String get errorFilmDataUnavailable;
+
+  /// Notice on the watchlist without a connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline. You can see the watchlist; changes need a connection.'**
+  String get watchOffline;
+
+  /// Watchlist status tab and option.
+  ///
+  /// In en, this message translates to:
+  /// **'Want to watch'**
+  String get watchStatusWant;
+
+  /// Watchlist status tab and option.
+  ///
+  /// In en, this message translates to:
+  /// **'Watching'**
+  String get watchStatusWatching;
+
+  /// Watchlist status tab and option.
+  ///
+  /// In en, this message translates to:
+  /// **'Watched'**
+  String get watchStatusWatched;
+
+  /// Search field button on the watchlist and title of the search screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a film or series'**
+  String get watchSearchButton;
+
+  /// Hint in the watchlist search field.
+  ///
+  /// In en, this message translates to:
+  /// **'Title of a film or series'**
+  String get watchSearchHint;
+
+  /// Shown on the search screen before searching.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a title to search.'**
+  String get watchSearchPrompt;
+
+  /// Search screen without results.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found for “{query}”.'**
+  String watchSearchNoResults(String query);
+
+  /// Button and screen reader label on a search result.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {title} to the watchlist'**
+  String watchAdd(String title);
+
+  /// Message after adding a title.
+  ///
+  /// In en, this message translates to:
+  /// **'{title} is on the watchlist.'**
+  String watchAdded(String title);
+
+  /// Label on a search result that is already on the watchlist.
+  ///
+  /// In en, this message translates to:
+  /// **'On the list'**
+  String get watchOnList;
+
+  /// Kind of title.
+  ///
+  /// In en, this message translates to:
+  /// **'Film'**
+  String get watchTypeMovie;
+
+  /// Kind of title.
+  ///
+  /// In en, this message translates to:
+  /// **'Series'**
+  String get watchTypeSeries;
+
+  /// Screen reader text for the TMDB rating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rated {rating} out of 10'**
+  String watchRatingLabel(String rating);
+
+  /// Who added a title to the watchlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Added by {name}'**
+  String watchAddedBy(String name);
+
+  /// Button on the watchlist that picks a random title.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick something for tonight'**
+  String get watchPickButton;
+
+  /// Title of the random pick.
+  ///
+  /// In en, this message translates to:
+  /// **'Tonight'**
+  String get watchPickTitle;
+
+  /// Button in the random pick.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick another'**
+  String get watchPickAnother;
+
+  /// Button that moves a title to Watching.
+  ///
+  /// In en, this message translates to:
+  /// **'Start watching'**
+  String get watchStartWatching;
+
+  /// Empty Want to watch tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to watch yet. Find a film or series to add it.'**
+  String get watchEmptyWant;
+
+  /// Empty Watching tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing in progress. Move a title here when you start watching.'**
+  String get watchEmptyWatching;
+
+  /// Empty Watched tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing watched yet.'**
+  String get watchEmptyWatched;
+
+  /// Section of the watchlist item sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Our rating'**
+  String get watchHouseholdRating;
+
+  /// Screen reader text for the household's rating.
+  ///
+  /// In en, this message translates to:
+  /// **'Our rating: {count} of 5'**
+  String watchHouseholdRatingValue(int count);
+
+  /// Screen reader label of a rating star.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate {count} of 5'**
+  String watchRateStars(int count);
+
+  /// Button in the watchlist item sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear rating'**
+  String get watchClearRating;
+
+  /// Button in the watchlist item sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from the watchlist'**
+  String get watchRemove;
+
+  /// Message after removing a title.
+  ///
+  /// In en, this message translates to:
+  /// **'{title} was removed from the watchlist.'**
+  String watchRemoved(String title);
+
+  /// TMDB attribution, required on the watchlist and About screen.
+  ///
+  /// In en, this message translates to:
+  /// **'This product uses the TMDB API but is not endorsed or certified by TMDB.'**
+  String get tmdbAttribution;
 }
 
 class _AppLocalizationsDelegate
