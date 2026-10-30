@@ -65,3 +65,11 @@ task:
   - setDone:
   - remove:
   - watch:
+watchlist:
+  - items:
+  - search:
+  - add:
+  - setStatus:
+  - setRating:
+  - remove:
+  - watch:

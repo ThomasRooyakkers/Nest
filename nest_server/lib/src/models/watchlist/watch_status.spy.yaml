@@ -1,0 +1,7 @@
+### Where a title on the watchlist stands for the household.
+enum: WatchStatus
+serialized: byName
+values:
+  - want
+  - watching
+  - watched

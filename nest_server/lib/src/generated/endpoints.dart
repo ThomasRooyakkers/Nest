@@ -25,6 +25,10 @@ import 'package:nest_server/src/generated/shopping/shopping_list.dart'
     as _iustknb5;
 import 'package:nest_server/src/generated/shopping/store.dart' as _iq3p81du;
 import 'package:nest_server/src/generated/tasks/task.dart' as _iw4rp4ni;
+import 'package:nest_server/src/generated/watchlist/watch_status.dart'
+    as _im087wsz;
+import 'package:nest_server/src/generated/watchlist/watch_type.dart'
+    as _izyu0w1k;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
@@ -41,6 +45,7 @@ import '../endpoints/recipe_endpoint.dart' as _iotgfwtb;
 import '../endpoints/shopping_endpoint.dart' as _i0uz9s3h;
 import '../endpoints/sign_up_endpoint.dart' as _im0g34lo;
 import '../endpoints/task_endpoint.dart' as _idmllfay;
+import '../endpoints/watchlist_endpoint.dart' as _is4r6sri;
 
 class Endpoints extends _is.EndpointDispatch {
   @override
@@ -110,6 +115,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'task',
+          null,
+        ),
+      'watchlist': _is4r6sri.WatchlistEndpoint()
+        ..initialize(
+          server,
+          'watchlist',
           null,
         ),
     };
@@ -1458,6 +1469,196 @@ class Endpoints extends _is.EndpointDispatch {
                 session,
                 params['householdId'],
               ),
+        ),
+      },
+    );
+    connectors['watchlist'] = _is.EndpointConnector(
+      name: 'watchlist',
+      endpoint: endpoints['watchlist']!,
+      methodConnectors: {
+        'items': _is.MethodConnector(
+          name: 'items',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['watchlist'] as _is4r6sri.WatchlistEndpoint).items(
+                    session,
+                    params['householdId'],
+                  ),
+        ),
+        'search': _is.MethodConnector(
+          name: 'search',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'query': _is.ParameterDescription(
+              name: 'query',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['watchlist'] as _is4r6sri.WatchlistEndpoint)
+                  .search(
+                    session,
+                    params['householdId'],
+                    params['query'],
+                  ),
+        ),
+        'add': _is.MethodConnector(
+          name: 'add',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'type': _is.ParameterDescription(
+              name: 'type',
+              type: _is.getType<_izyu0w1k.WatchType>(),
+              nullable: false,
+            ),
+            'tmdbId': _is.ParameterDescription(
+              name: 'tmdbId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['watchlist'] as _is4r6sri.WatchlistEndpoint).add(
+                    session,
+                    params['householdId'],
+                    params['type'],
+                    params['tmdbId'],
+                  ),
+        ),
+        'setStatus': _is.MethodConnector(
+          name: 'setStatus',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'itemId': _is.ParameterDescription(
+              name: 'itemId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'status': _is.ParameterDescription(
+              name: 'status',
+              type: _is.getType<_im087wsz.WatchStatus>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['watchlist'] as _is4r6sri.WatchlistEndpoint)
+                  .setStatus(
+                    session,
+                    params['householdId'],
+                    params['itemId'],
+                    params['status'],
+                  ),
+        ),
+        'setRating': _is.MethodConnector(
+          name: 'setRating',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'itemId': _is.ParameterDescription(
+              name: 'itemId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'rating': _is.ParameterDescription(
+              name: 'rating',
+              type: _is.getType<int?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['watchlist'] as _is4r6sri.WatchlistEndpoint)
+                  .setRating(
+                    session,
+                    params['householdId'],
+                    params['itemId'],
+                    params['rating'],
+                  ),
+        ),
+        'remove': _is.MethodConnector(
+          name: 'remove',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'itemId': _is.ParameterDescription(
+              name: 'itemId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['watchlist'] as _is4r6sri.WatchlistEndpoint)
+                  .remove(
+                    session,
+                    params['householdId'],
+                    params['itemId'],
+                  ),
+        ),
+        'watch': _is.MethodStreamConnector(
+          name: 'watch',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          streamParams: {},
+          returnType: _is.MethodStreamReturnType.streamType,
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+                Map<String, Stream> streamParams,
+              ) =>
+                  (endpoints['watchlist'] as _is4r6sri.WatchlistEndpoint).watch(
+                    session,
+                    params['householdId'],
+                  ),
         ),
       },
     );

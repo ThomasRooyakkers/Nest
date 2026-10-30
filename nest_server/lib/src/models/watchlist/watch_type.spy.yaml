@@ -1,0 +1,6 @@
+### Kind of title on the watchlist.
+enum: WatchType
+serialized: byName
+values:
+  - movie
+  - series

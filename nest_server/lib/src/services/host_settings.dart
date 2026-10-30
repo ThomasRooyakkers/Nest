@@ -31,6 +31,10 @@ abstract final class HostSettings {
   /// `resendApiKey`: when set, codes are emailed through Resend.
   static String? get resendApiKey => _password('resendApiKey');
 
+  /// `tmdbApiKey`: the host's TMDB API key (v3 key or v4 read access
+  /// token) for the watchlist. Without it the server uses fake film data.
+  static String? get tmdbApiKey => _password('tmdbApiKey');
+
   /// For tests: replaces [signUpMode].
   static SignUpMode? signUpModeOverride;
 

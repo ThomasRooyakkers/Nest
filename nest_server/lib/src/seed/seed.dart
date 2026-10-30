@@ -4,6 +4,7 @@ import 'package:serverpod_auth_idp_server/providers/email.dart';
 
 import '../generated/protocol.dart';
 import '../services/built_in_catalog.dart';
+import '../services/tmdb_service.dart';
 
 /// A development user created by the seed command.
 class SeedUser {
@@ -45,8 +46,6 @@ const seedHouseholds = [
 /// it is already present, so the command can be run again after new
 /// features add fixtures.
 ///
-/// Feature fixtures (recipes, watchlist) are added here as the
-/// features are built.
 Future<void> seed(Session session, {required String password}) async {
   if (session.serverpod.runMode == 'production') {
     throw StateError('Refusing to seed a production database.');
@@ -64,6 +63,7 @@ Future<void> seed(Session session, {required String password}) async {
     await _seedTasks(session, household);
     await _seedRecipes(session, household);
     await _seedMealPlan(session, household);
+    await _seedWatchlist(session, household);
   }
 }
 
@@ -514,4 +514,53 @@ Future<void> _seedMealPlan(Session session, Household household) async {
     textMeal(8, 'Dinner at grandma\'s'),
   ]);
   session.log('Seeded the meal plan for ${household.name}.');
+}
+
+Future<void> _seedWatchlist(Session session, Household household) async {
+  final householdId = household.id!;
+  if (await WatchlistItem.db.count(
+        session,
+        where: (t) => t.householdId.equals(householdId),
+      ) >
+      0) {
+    session.log('Watchlist of ${household.name} already present.');
+    return;
+  }
+
+  final members = await Membership.db.find(
+    session,
+    where: (t) => t.householdId.equals(householdId),
+    orderBy: (t) => t.id,
+  );
+  // The fake film data's ids, with the status and rating to seed.
+  const titles = [
+    (WatchType.movie, 1, WatchStatus.want, null),
+    (WatchType.movie, 2, WatchStatus.want, null),
+    (WatchType.series, 14, WatchStatus.want, null),
+    (WatchType.movie, 9, WatchStatus.want, null),
+    (WatchType.series, 15, WatchStatus.watching, null),
+    (WatchType.series, 12, WatchStatus.watching, null),
+    (WatchType.movie, 4, WatchStatus.watched, 5),
+    (WatchType.movie, 7, WatchStatus.watched, 4),
+  ];
+  final fake = FakeTmdbService();
+  final items = <WatchlistItem>[];
+  for (final (i, (type, id, status, rating)) in titles.indexed) {
+    final title = (await fake.details(type, id, locale: 'en'))!;
+    items.add(
+      WatchlistItem(
+        householdId: householdId,
+        tmdbId: title.tmdbId,
+        type: title.type,
+        title: title.title,
+        year: title.year,
+        rating: title.rating,
+        status: status,
+        householdRating: rating,
+        addedById: members.isEmpty ? null : members[i % members.length].userId,
+      ),
+    );
+  }
+  await WatchlistItem.db.insert(session, items);
+  session.log('Seeded the watchlist for ${household.name}.');
 }

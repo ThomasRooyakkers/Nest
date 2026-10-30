@@ -47,6 +47,16 @@ import 'package:nest_client/src/protocol/shopping/shopping_list.dart'
 import 'package:nest_client/src/protocol/shopping/store.dart' as _i4n9gtf6;
 import 'package:nest_client/src/protocol/tasks/task.dart' as _ipqeu8zh;
 import 'package:nest_client/src/protocol/tasks/task_event.dart' as _i8pjkixi;
+import 'package:nest_client/src/protocol/watchlist/tmdb_title.dart'
+    as _ixjtjk6s;
+import 'package:nest_client/src/protocol/watchlist/watch_status.dart'
+    as _il5sz4vj;
+import 'package:nest_client/src/protocol/watchlist/watch_type.dart'
+    as _i6tleezo;
+import 'package:nest_client/src/protocol/watchlist/watchlist_event.dart'
+    as _ie3oji7z;
+import 'package:nest_client/src/protocol/watchlist/watchlist_item.dart'
+    as _it1jqm16;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _iacc;
 import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
@@ -942,6 +952,110 @@ class EndpointTask extends _isc.EndpointRef {
       );
 }
 
+/// The household's watchlist of films and series. Titles are found through
+/// the server's film data ([TmdbService]); the app never calls TMDB itself.
+/// Every change is also sent to [watch], so all members see it live.
+/// {@category Endpoint}
+class EndpointWatchlist extends _isc.EndpointRef {
+  EndpointWatchlist(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'watchlist';
+
+  /// Every title on the household's watchlist, oldest first.
+  _ida.Future<List<_it1jqm16.WatchlistItem>> items(int householdId) =>
+      caller.callServerEndpoint<List<_it1jqm16.WatchlistItem>>(
+        'watchlist',
+        'items',
+        {'householdId': householdId},
+      );
+
+  /// Films and series matching [query], in the caller's language.
+  _ida.Future<List<_ixjtjk6s.TmdbTitle>> search(
+    int householdId,
+    String query,
+  ) => caller.callServerEndpoint<List<_ixjtjk6s.TmdbTitle>>(
+    'watchlist',
+    'search',
+    {
+      'householdId': householdId,
+      'query': query,
+    },
+  );
+
+  /// Adds a title to the watchlist with the film data's details. A title
+  /// already on the list is returned as it is.
+  _ida.Future<_it1jqm16.WatchlistItem> add(
+    int householdId,
+    _i6tleezo.WatchType type,
+    int tmdbId,
+  ) => caller.callServerEndpoint<_it1jqm16.WatchlistItem>(
+    'watchlist',
+    'add',
+    {
+      'householdId': householdId,
+      'type': type,
+      'tmdbId': tmdbId,
+    },
+  );
+
+  /// Moves a title to Want to watch, Watching or Watched.
+  _ida.Future<_it1jqm16.WatchlistItem> setStatus(
+    int householdId,
+    int itemId,
+    _il5sz4vj.WatchStatus status,
+  ) => caller.callServerEndpoint<_it1jqm16.WatchlistItem>(
+    'watchlist',
+    'setStatus',
+    {
+      'householdId': householdId,
+      'itemId': itemId,
+      'status': status,
+    },
+  );
+
+  /// Sets the household's own rating (1–5 stars), or clears it with null.
+  _ida.Future<_it1jqm16.WatchlistItem> setRating(
+    int householdId,
+    int itemId,
+    int? rating,
+  ) => caller.callServerEndpoint<_it1jqm16.WatchlistItem>(
+    'watchlist',
+    'setRating',
+    {
+      'householdId': householdId,
+      'itemId': itemId,
+      'rating': rating,
+    },
+  );
+
+  /// Takes a title off the watchlist.
+  _ida.Future<void> remove(
+    int householdId,
+    int itemId,
+  ) => caller.callServerEndpoint<void>(
+    'watchlist',
+    'remove',
+    {
+      'householdId': householdId,
+      'itemId': itemId,
+    },
+  );
+
+  /// Changes to the household's watchlist as they happen. The app loads
+  /// [items] first and then applies these events.
+  _ida.Stream<_ie3oji7z.WatchlistEvent> watch(int householdId) =>
+      caller.callStreamingServerEndpoint<
+        _ida.Stream<_ie3oji7z.WatchlistEvent>,
+        _ie3oji7z.WatchlistEvent
+      >(
+        'watchlist',
+        'watch',
+        {'householdId': householdId},
+        {},
+      );
+}
+
 class Modules {
   Modules(Client client) {
     serverpod_auth_idp = _iaic.Caller(client);
@@ -991,6 +1105,7 @@ class Client extends _isc.ServerpodClientShared {
     shopping = EndpointShopping(this);
     signUp = EndpointSignUp(this);
     task = EndpointTask(this);
+    watchlist = EndpointWatchlist(this);
     modules = Modules(this);
   }
 
@@ -1016,6 +1131,8 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointTask task;
 
+  late final EndpointWatchlist watchlist;
+
   late final Modules modules;
 
   @override
@@ -1031,6 +1148,7 @@ class Client extends _isc.ServerpodClientShared {
     'shopping': shopping,
     'signUp': signUp,
     'task': task,
+    'watchlist': watchlist,
   };
 
   @override

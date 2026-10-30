@@ -1,0 +1,6 @@
+### A change in a household's watchlist, sent to everyone watching.
+class: WatchlistEvent
+fields:
+  householdId: int
+  items: List<WatchlistItem>?
+  removedItemIds: List<int>?

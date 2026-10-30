@@ -44,6 +44,13 @@ const householdScopedMethods = {
   'mealPlan.save',
   'mealPlan.remove',
   'mealPlan.watch',
+  'watchlist.items',
+  'watchlist.search',
+  'watchlist.add',
+  'watchlist.setStatus',
+  'watchlist.setRating',
+  'watchlist.remove',
+  'watchlist.watch',
 };
 
 /// Admin methods (start with `AdminGuard`). Each one must be exercised in

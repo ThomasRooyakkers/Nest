@@ -1,0 +1,13 @@
+### A film or series found through the server's film data (TMDB, or the
+### fake fixtures in development).
+class: TmdbTitle
+fields:
+  tmdbId: int
+  type: WatchType
+  title: String
+  ### TMDB poster path, e.g. `/abc.jpg`; null without a poster.
+  posterPath: String?
+  year: int?
+  ### TMDB's average vote, 0–10; null when nobody voted yet.
+  rating: double?
+  overview: String, default=''

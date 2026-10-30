@@ -21,6 +21,7 @@ void main() {
     late Task taskB;
     late Recipe recipeB;
     late MealPlanEntry mealB;
+    late WatchlistItem watchB;
     final photo = ByteData.sublistView(
       Uint8List.fromList([0xFF, 0xD8, 0xFF, 0xE0, 1, 2, 3]),
     );
@@ -112,6 +113,21 @@ void main() {
       ),
       'mealPlan.remove': (s, id) => endpoints.mealPlan.remove(s, id, mealB.id!),
       'mealPlan.watch': (s, id) => endpoints.mealPlan.watch(s, id).first,
+      'watchlist.items': (s, id) => endpoints.watchlist.items(s, id),
+      'watchlist.search': (s, id) => endpoints.watchlist.search(s, id, 'up'),
+      'watchlist.add': (s, id) =>
+          endpoints.watchlist.add(s, id, WatchType.series, 14),
+      'watchlist.setStatus': (s, id) => endpoints.watchlist.setStatus(
+        s,
+        id,
+        watchB.id!,
+        WatchStatus.watched,
+      ),
+      'watchlist.setRating': (s, id) =>
+          endpoints.watchlist.setRating(s, id, watchB.id!, 1),
+      'watchlist.remove': (s, id) =>
+          endpoints.watchlist.remove(s, id, watchB.id!),
+      'watchlist.watch': (s, id) => endpoints.watchlist.watch(s, id).first,
     };
 
     /// Household A's own id combined with ids of household B's rows.
@@ -214,6 +230,16 @@ void main() {
         MealPlanEntry(householdId: a, date: today, recipeId: recipeB.id),
       ),
       'mealPlan.remove': (s, a) => endpoints.mealPlan.remove(s, a, mealB.id!),
+      'watchlist.setStatus': (s, a) => endpoints.watchlist.setStatus(
+        s,
+        a,
+        watchB.id!,
+        WatchStatus.watched,
+      ),
+      'watchlist.setRating': (s, a) =>
+          endpoints.watchlist.setRating(s, a, watchB.id!, 1),
+      'watchlist.remove': (s, a) =>
+          endpoints.watchlist.remove(s, a, watchB.id!),
     };
 
     late TestSessionBuilder userA;
@@ -294,6 +320,12 @@ void main() {
           prepAheadNote: 'Soak the beans',
         ),
       )).entries!.single;
+      watchB = await endpoints.watchlist.add(
+        userB,
+        householdB,
+        WatchType.movie,
+        4,
+      );
     });
 
     for (final MapEntry(key: name, value: call)
@@ -360,6 +392,8 @@ void main() {
         );
         expect(meals.single.toJson(), mealB.toJson());
         expect(b.household.mealSlots, isNull);
+        final watchlist = await endpoints.watchlist.items(userB, householdB);
+        expect(watchlist.single.toJson(), watchB.toJson());
       },
     );
 
@@ -379,6 +413,7 @@ void main() {
         ),
         isEmpty,
       );
+      expect(await endpoints.watchlist.items(userA, householdA), isEmpty);
     });
 
     test('A list may not name members of another household', () async {

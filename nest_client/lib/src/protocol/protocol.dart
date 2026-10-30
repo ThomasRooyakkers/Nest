@@ -30,6 +30,10 @@ import 'package:nest_client/src/protocol/shopping/shopping_list.dart'
     as _i9yltxrs;
 import 'package:nest_client/src/protocol/shopping/store.dart' as _i4n9gtf6;
 import 'package:nest_client/src/protocol/tasks/task.dart' as _ipqeu8zh;
+import 'package:nest_client/src/protocol/watchlist/tmdb_title.dart'
+    as _ixjtjk6s;
+import 'package:nest_client/src/protocol/watchlist/watchlist_item.dart'
+    as _it1jqm16;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _iacc;
 import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
@@ -70,6 +74,11 @@ import 'sign_up_mode.dart' as _i4y3a5ag;
 import 'tasks/task.dart' as _i253is06;
 import 'tasks/task_event.dart' as _iuwcsatz;
 import 'tasks/task_recurrence.dart' as _ieirl7mq;
+import 'watchlist/tmdb_title.dart' as _inbfv6m4;
+import 'watchlist/watch_status.dart' as _itdekt2o;
+import 'watchlist/watch_type.dart' as _irhe6aqe;
+import 'watchlist/watchlist_event.dart' as _i1vaprkc;
+import 'watchlist/watchlist_item.dart' as _i28z76f1;
 export 'admin_audit_log.dart';
 export 'admin_household_summary.dart';
 export 'household.dart';
@@ -105,6 +114,11 @@ export 'sign_up_mode.dart';
 export 'tasks/task.dart';
 export 'tasks/task_event.dart';
 export 'tasks/task_recurrence.dart';
+export 'watchlist/tmdb_title.dart';
+export 'watchlist/watch_status.dart';
+export 'watchlist/watch_type.dart';
+export 'watchlist/watchlist_event.dart';
+export 'watchlist/watchlist_item.dart';
 export 'client.dart';
 
 class Protocol extends _isc.SerializationManager {
@@ -246,6 +260,21 @@ class Protocol extends _isc.SerializationManager {
     if (t == _ieirl7mq.TaskRecurrence) {
       return _ieirl7mq.TaskRecurrence.fromJson(data) as T;
     }
+    if (t == _inbfv6m4.TmdbTitle) {
+      return _inbfv6m4.TmdbTitle.fromJson(data) as T;
+    }
+    if (t == _itdekt2o.WatchStatus) {
+      return _itdekt2o.WatchStatus.fromJson(data) as T;
+    }
+    if (t == _irhe6aqe.WatchType) {
+      return _irhe6aqe.WatchType.fromJson(data) as T;
+    }
+    if (t == _i1vaprkc.WatchlistEvent) {
+      return _i1vaprkc.WatchlistEvent.fromJson(data) as T;
+    }
+    if (t == _i28z76f1.WatchlistItem) {
+      return _i28z76f1.WatchlistItem.fromJson(data) as T;
+    }
     if (t == _isc.getType<_ihc3ja42.AdminAuditLog?>()) {
       return (data != null ? _ihc3ja42.AdminAuditLog.fromJson(data) : null)
           as T;
@@ -369,6 +398,23 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == _isc.getType<_ieirl7mq.TaskRecurrence?>()) {
       return (data != null ? _ieirl7mq.TaskRecurrence.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_inbfv6m4.TmdbTitle?>()) {
+      return (data != null ? _inbfv6m4.TmdbTitle.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_itdekt2o.WatchStatus?>()) {
+      return (data != null ? _itdekt2o.WatchStatus.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_irhe6aqe.WatchType?>()) {
+      return (data != null ? _irhe6aqe.WatchType.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i1vaprkc.WatchlistEvent?>()) {
+      return (data != null ? _i1vaprkc.WatchlistEvent.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i28z76f1.WatchlistItem?>()) {
+      return (data != null ? _i28z76f1.WatchlistItem.fromJson(data) : null)
           as T;
     }
     if (t == List<String>) {
@@ -531,6 +577,20 @@ class Protocol extends _isc.SerializationManager {
               : null)
           as T;
     }
+    if (t == List<_i28z76f1.WatchlistItem>) {
+      return (data as List)
+              .map((e) => deserialize<_i28z76f1.WatchlistItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == _isc.getType<List<_i28z76f1.WatchlistItem>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i28z76f1.WatchlistItem>(e))
+                    .toList()
+              : null)
+          as T;
+    }
     if (t == List<_ipf5tkzm.AdminHouseholdSummary>) {
       return (data as List)
               .map((e) => deserialize<_ipf5tkzm.AdminHouseholdSummary>(e))
@@ -608,6 +668,18 @@ class Protocol extends _isc.SerializationManager {
       return (data as List).map((e) => deserialize<_ipqeu8zh.Task>(e)).toList()
           as T;
     }
+    if (t == List<_it1jqm16.WatchlistItem>) {
+      return (data as List)
+              .map((e) => deserialize<_it1jqm16.WatchlistItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_ixjtjk6s.TmdbTitle>) {
+      return (data as List)
+              .map((e) => deserialize<_ixjtjk6s.TmdbTitle>(e))
+              .toList()
+          as T;
+    }
     try {
       return _iaic.Protocol().deserialize<T>(data, t);
     } on _isc.DeserializationTypeNotFoundException catch (_) {}
@@ -654,6 +726,11 @@ class Protocol extends _isc.SerializationManager {
       _i253is06.Task => 'Task',
       _iuwcsatz.TaskEvent => 'TaskEvent',
       _ieirl7mq.TaskRecurrence => 'TaskRecurrence',
+      _inbfv6m4.TmdbTitle => 'TmdbTitle',
+      _itdekt2o.WatchStatus => 'WatchStatus',
+      _irhe6aqe.WatchType => 'WatchType',
+      _i1vaprkc.WatchlistEvent => 'WatchlistEvent',
+      _i28z76f1.WatchlistItem => 'WatchlistItem',
       _ => null,
     };
   }
@@ -738,6 +815,16 @@ class Protocol extends _isc.SerializationManager {
         return 'TaskEvent';
       case _ieirl7mq.TaskRecurrence():
         return 'TaskRecurrence';
+      case _inbfv6m4.TmdbTitle():
+        return 'TmdbTitle';
+      case _itdekt2o.WatchStatus():
+        return 'WatchStatus';
+      case _irhe6aqe.WatchType():
+        return 'WatchType';
+      case _i1vaprkc.WatchlistEvent():
+        return 'WatchlistEvent';
+      case _i28z76f1.WatchlistItem():
+        return 'WatchlistItem';
     }
     className = _iaic.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -864,6 +951,21 @@ class Protocol extends _isc.SerializationManager {
     }
     if (dataClassName == 'TaskRecurrence') {
       return deserialize<_ieirl7mq.TaskRecurrence>(data['data']);
+    }
+    if (dataClassName == 'TmdbTitle') {
+      return deserialize<_inbfv6m4.TmdbTitle>(data['data']);
+    }
+    if (dataClassName == 'WatchStatus') {
+      return deserialize<_itdekt2o.WatchStatus>(data['data']);
+    }
+    if (dataClassName == 'WatchType') {
+      return deserialize<_irhe6aqe.WatchType>(data['data']);
+    }
+    if (dataClassName == 'WatchlistEvent') {
+      return deserialize<_i1vaprkc.WatchlistEvent>(data['data']);
+    }
+    if (dataClassName == 'WatchlistItem') {
+      return deserialize<_i28z76f1.WatchlistItem>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);

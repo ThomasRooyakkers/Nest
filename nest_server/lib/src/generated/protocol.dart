@@ -30,6 +30,10 @@ import 'package:nest_server/src/generated/shopping/shopping_list.dart'
     as _iustknb5;
 import 'package:nest_server/src/generated/shopping/store.dart' as _iq3p81du;
 import 'package:nest_server/src/generated/tasks/task.dart' as _iw4rp4ni;
+import 'package:nest_server/src/generated/watchlist/tmdb_title.dart'
+    as _i74l1vkw;
+import 'package:nest_server/src/generated/watchlist/watchlist_item.dart'
+    as _ixouyji5;
 import 'package:serverpod/protocol.dart' as _isp;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
@@ -72,6 +76,11 @@ import 'sign_up_mode.dart' as _i4y3a5ag;
 import 'tasks/task.dart' as _i253is06;
 import 'tasks/task_event.dart' as _iuwcsatz;
 import 'tasks/task_recurrence.dart' as _ieirl7mq;
+import 'watchlist/tmdb_title.dart' as _inbfv6m4;
+import 'watchlist/watch_status.dart' as _itdekt2o;
+import 'watchlist/watch_type.dart' as _irhe6aqe;
+import 'watchlist/watchlist_event.dart' as _i1vaprkc;
+import 'watchlist/watchlist_item.dart' as _i28z76f1;
 export 'admin_audit_log.dart';
 export 'admin_household_summary.dart';
 export 'household.dart';
@@ -108,6 +117,11 @@ export 'sign_up_mode.dart';
 export 'tasks/task.dart';
 export 'tasks/task_event.dart';
 export 'tasks/task_recurrence.dart';
+export 'watchlist/tmdb_title.dart';
+export 'watchlist/watch_status.dart';
+export 'watchlist/watch_type.dart';
+export 'watchlist/watchlist_event.dart';
+export 'watchlist/watchlist_item.dart';
 
 class Protocol extends _is.DatabaseSerializationManager {
   Protocol._();
@@ -1529,6 +1543,142 @@ class Protocol extends _is.DatabaseSerializationManager {
       ],
       managed: true,
     ),
+    _isp.TableDefinition(
+      name: 'watchlist_item',
+      dartName: 'WatchlistItem',
+      schema: 'public',
+      module: 'nest',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'householdId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'tmdbId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'type',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:WatchType',
+        ),
+        _isp.ColumnDefinition(
+          name: 'title',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'posterPath',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'year',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'rating',
+          columnType: _isp.ColumnType.doublePrecision,
+          isNullable: true,
+          dartType: 'double?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'status',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:WatchStatus',
+          columnDefault: '\'want\'',
+        ),
+        _isp.ColumnDefinition(
+          name: 'addedById',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'householdRating',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+        _isp.ColumnDefinition(
+          name: 'updatedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'watchlist_item_fk_0',
+          columns: ['householdId'],
+          referenceTable: 'household',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'watchlist_item_fk_1',
+          columns: ['addedById'],
+          referenceTable: 'nest_user',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.setNull,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'watchlist_item_title_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'householdId',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'type',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'tmdbId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
     ..._iais.Protocol.targetTableDefinitions,
     ..._iacs.Protocol.targetTableDefinitions,
     ..._isp.Protocol.targetTableDefinitions,
@@ -1669,6 +1819,21 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _ieirl7mq.TaskRecurrence) {
       return _ieirl7mq.TaskRecurrence.fromJson(data) as T;
     }
+    if (t == _inbfv6m4.TmdbTitle) {
+      return _inbfv6m4.TmdbTitle.fromJson(data) as T;
+    }
+    if (t == _itdekt2o.WatchStatus) {
+      return _itdekt2o.WatchStatus.fromJson(data) as T;
+    }
+    if (t == _irhe6aqe.WatchType) {
+      return _irhe6aqe.WatchType.fromJson(data) as T;
+    }
+    if (t == _i1vaprkc.WatchlistEvent) {
+      return _i1vaprkc.WatchlistEvent.fromJson(data) as T;
+    }
+    if (t == _i28z76f1.WatchlistItem) {
+      return _i28z76f1.WatchlistItem.fromJson(data) as T;
+    }
     if (t == _is.getType<_ihc3ja42.AdminAuditLog?>()) {
       return (data != null ? _ihc3ja42.AdminAuditLog.fromJson(data) : null)
           as T;
@@ -1795,6 +1960,23 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (t == _is.getType<_ieirl7mq.TaskRecurrence?>()) {
       return (data != null ? _ieirl7mq.TaskRecurrence.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_inbfv6m4.TmdbTitle?>()) {
+      return (data != null ? _inbfv6m4.TmdbTitle.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_itdekt2o.WatchStatus?>()) {
+      return (data != null ? _itdekt2o.WatchStatus.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_irhe6aqe.WatchType?>()) {
+      return (data != null ? _irhe6aqe.WatchType.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_i1vaprkc.WatchlistEvent?>()) {
+      return (data != null ? _i1vaprkc.WatchlistEvent.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_i28z76f1.WatchlistItem?>()) {
+      return (data != null ? _i28z76f1.WatchlistItem.fromJson(data) : null)
           as T;
     }
     if (t == List<String>) {
@@ -1957,6 +2139,20 @@ class Protocol extends _is.DatabaseSerializationManager {
               : null)
           as T;
     }
+    if (t == List<_i28z76f1.WatchlistItem>) {
+      return (data as List)
+              .map((e) => deserialize<_i28z76f1.WatchlistItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == _is.getType<List<_i28z76f1.WatchlistItem>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_i28z76f1.WatchlistItem>(e))
+                    .toList()
+              : null)
+          as T;
+    }
     if (t == List<_it78yatv.AdminHouseholdSummary>) {
       return (data as List)
               .map((e) => deserialize<_it78yatv.AdminHouseholdSummary>(e))
@@ -2034,6 +2230,18 @@ class Protocol extends _is.DatabaseSerializationManager {
       return (data as List).map((e) => deserialize<_iw4rp4ni.Task>(e)).toList()
           as T;
     }
+    if (t == List<_ixouyji5.WatchlistItem>) {
+      return (data as List)
+              .map((e) => deserialize<_ixouyji5.WatchlistItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_i74l1vkw.TmdbTitle>) {
+      return (data as List)
+              .map((e) => deserialize<_i74l1vkw.TmdbTitle>(e))
+              .toList()
+          as T;
+    }
     try {
       return _iais.Protocol().deserialize<T>(data, t);
     } on _is.DeserializationTypeNotFoundException catch (_) {}
@@ -2084,6 +2292,11 @@ class Protocol extends _is.DatabaseSerializationManager {
       _i253is06.Task => 'Task',
       _iuwcsatz.TaskEvent => 'TaskEvent',
       _ieirl7mq.TaskRecurrence => 'TaskRecurrence',
+      _inbfv6m4.TmdbTitle => 'TmdbTitle',
+      _itdekt2o.WatchStatus => 'WatchStatus',
+      _irhe6aqe.WatchType => 'WatchType',
+      _i1vaprkc.WatchlistEvent => 'WatchlistEvent',
+      _i28z76f1.WatchlistItem => 'WatchlistItem',
       _ => null,
     };
   }
@@ -2170,6 +2383,16 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'TaskEvent';
       case _ieirl7mq.TaskRecurrence():
         return 'TaskRecurrence';
+      case _inbfv6m4.TmdbTitle():
+        return 'TmdbTitle';
+      case _itdekt2o.WatchStatus():
+        return 'WatchStatus';
+      case _irhe6aqe.WatchType():
+        return 'WatchType';
+      case _i1vaprkc.WatchlistEvent():
+        return 'WatchlistEvent';
+      case _i28z76f1.WatchlistItem():
+        return 'WatchlistItem';
     }
     className = _iais.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -2304,6 +2527,21 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (dataClassName == 'TaskRecurrence') {
       return deserialize<_ieirl7mq.TaskRecurrence>(data['data']);
     }
+    if (dataClassName == 'TmdbTitle') {
+      return deserialize<_inbfv6m4.TmdbTitle>(data['data']);
+    }
+    if (dataClassName == 'WatchStatus') {
+      return deserialize<_itdekt2o.WatchStatus>(data['data']);
+    }
+    if (dataClassName == 'WatchType') {
+      return deserialize<_irhe6aqe.WatchType>(data['data']);
+    }
+    if (dataClassName == 'WatchlistEvent') {
+      return deserialize<_i1vaprkc.WatchlistEvent>(data['data']);
+    }
+    if (dataClassName == 'WatchlistItem') {
+      return deserialize<_i28z76f1.WatchlistItem>(data['data']);
+    }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);
       return _iais.Protocol().deserializeByClassName(data);
@@ -2373,6 +2611,8 @@ class Protocol extends _is.DatabaseSerializationManager {
         return _izkprrmi.SignUpInvite.t;
       case _i253is06.Task:
         return _i253is06.Task.t;
+      case _i28z76f1.WatchlistItem:
+        return _i28z76f1.WatchlistItem.t;
     }
     return null;
   }

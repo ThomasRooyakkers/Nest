@@ -48,6 +48,16 @@ import 'package:nest_server/src/generated/shopping/shopping_list.dart'
 import 'package:nest_server/src/generated/shopping/store.dart' as _iq3p81du;
 import 'package:nest_server/src/generated/tasks/task.dart' as _iw4rp4ni;
 import 'package:nest_server/src/generated/tasks/task_event.dart' as _i86c1dxs;
+import 'package:nest_server/src/generated/watchlist/tmdb_title.dart'
+    as _i74l1vkw;
+import 'package:nest_server/src/generated/watchlist/watch_status.dart'
+    as _im087wsz;
+import 'package:nest_server/src/generated/watchlist/watch_type.dart'
+    as _izyu0w1k;
+import 'package:nest_server/src/generated/watchlist/watchlist_event.dart'
+    as _i1b7yz2c;
+import 'package:nest_server/src/generated/watchlist/watchlist_item.dart'
+    as _ixouyji5;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
@@ -206,6 +216,8 @@ class TestEndpoints {
   late final _SignUpEndpoint signUp;
 
   late final _TaskEndpoint task;
+
+  late final _WatchlistEndpoint watchlist;
 }
 
 class _InternalTestEndpoints extends TestEndpoints
@@ -256,6 +268,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     task = _TaskEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    watchlist = _WatchlistEndpoint(
       endpoints,
       serializationManager,
     );
@@ -2248,6 +2264,262 @@ class _TaskEndpoint {
             .getMethodStreamCallContext(
               createSessionCallback: (_) => _localUniqueSession,
               endpointPath: 'task',
+              methodName: 'watch',
+              arguments: {'householdId': householdId},
+              requestedInputStreams: [],
+              serializationManager: _serializationManager,
+            );
+        await _localTestStreamManager.callStreamMethod(
+          _localCallContext,
+          _localUniqueSession,
+          {},
+        );
+      },
+      _localTestStreamManager.outputStreamController,
+    );
+    return _localTestStreamManager.outputStreamController.stream;
+  }
+}
+
+class _WatchlistEndpoint {
+  _WatchlistEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<List<_ixouyji5.WatchlistItem>> items(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'watchlist',
+            method: 'items',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'watchlist',
+          methodName: 'items',
+          parameters: _ist.testObjectToJson({'householdId': householdId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_ixouyji5.WatchlistItem>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<List<_i74l1vkw.TmdbTitle>> search(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    String query,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'watchlist',
+            method: 'search',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'watchlist',
+          methodName: 'search',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'query': query,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_i74l1vkw.TmdbTitle>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_ixouyji5.WatchlistItem> add(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    _izyu0w1k.WatchType type,
+    int tmdbId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'watchlist',
+            method: 'add',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'watchlist',
+          methodName: 'add',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'type': type,
+            'tmdbId': tmdbId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_ixouyji5.WatchlistItem>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_ixouyji5.WatchlistItem> setStatus(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int itemId,
+    _im087wsz.WatchStatus status,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'watchlist',
+            method: 'setStatus',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'watchlist',
+          methodName: 'setStatus',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'itemId': itemId,
+            'status': status,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_ixouyji5.WatchlistItem>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_ixouyji5.WatchlistItem> setRating(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int itemId,
+    int? rating,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'watchlist',
+            method: 'setRating',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'watchlist',
+          methodName: 'setRating',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'itemId': itemId,
+            'rating': rating,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_ixouyji5.WatchlistItem>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<void> remove(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int itemId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'watchlist',
+            method: 'remove',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'watchlist',
+          methodName: 'remove',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'itemId': itemId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Stream<_i1b7yz2c.WatchlistEvent> watch(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+  ) {
+    var _localTestStreamManager =
+        _ist.TestStreamManager<_i1b7yz2c.WatchlistEvent>();
+    _ist.callStreamFunctionAndHandleExceptions(
+      () async {
+        var _localUniqueSession =
+            (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+              endpoint: 'watchlist',
+              method: 'watch',
+            );
+        var _localCallContext = await _endpointDispatch
+            .getMethodStreamCallContext(
+              createSessionCallback: (_) => _localUniqueSession,
+              endpointPath: 'watchlist',
               methodName: 'watch',
               arguments: {'householdId': householdId},
               requestedInputStreams: [],

@@ -1,0 +1,23 @@
+### A film or series on the household's watchlist. The details are copied
+### from the film data when it is added.
+class: WatchlistItem
+table: watchlist_item
+fields:
+  household: Household?, relation(onDelete=Cascade)
+  tmdbId: int
+  type: WatchType
+  title: String
+  posterPath: String?
+  year: int?
+  ### TMDB's average vote, 0–10.
+  rating: double?
+  status: WatchStatus, default=want
+  addedBy: NestUser?, relation(optional, onDelete=SetNull)
+  ### The household's own rating, 1–5 stars; null when not rated.
+  householdRating: int?
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now
+indexes:
+  watchlist_item_title_idx:
+    fields: householdId, type, tmdbId
+    unique: true
