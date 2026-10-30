@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:serverpod/serverpod.dart';
 
 import '../generated/protocol.dart';
@@ -38,6 +40,42 @@ abstract final class HostSettings {
   /// `tmdbApiKey`: the host's TMDB API key (v3 key or v4 read access
   /// token) for the watchlist. Without it the server uses fake film data.
   static String? get tmdbApiKey => _password('tmdbApiKey');
+
+  /// `googleClientSecret`: the JSON file of the host's Google OAuth client
+  /// of type "Web application". Google sign-in is on when it is set.
+  static String? get googleClientSecret => _password('googleClientSecret');
+
+  /// The client ID in [googleClientSecret]: the audience of the Google ID
+  /// tokens the server accepts. The app asks Google for tokens for it.
+  static String? get googleServerClientId {
+    final json = googleClientSecret;
+    if (json == null) return null;
+    try {
+      final web = (jsonDecode(json) as Map<String, dynamic>)['web'];
+      return (web as Map<String, dynamic>)['client_id'] as String?;
+    } on Object {
+      return null;
+    }
+  }
+
+  /// `appleServiceId`, `appleTeamId`, `appleKeyId` and `appleKey` (the
+  /// contents of the `.p8` key; `\n` may stand for line breaks): Sign in
+  /// with Apple is on when all four are set.
+  static String? get appleServiceId => _password('appleServiceId');
+  static String? get appleTeamId => _password('appleTeamId');
+  static String? get appleKeyId => _password('appleKeyId');
+  static String? get appleKey => _password('appleKey')?.replaceAll(r'\n', '\n');
+
+  /// `appleBundleId`: the iOS app whose Apple sign-ins the server accepts.
+  /// Nest's own app unless a host builds their own.
+  static String get appleBundleId =>
+      _password('appleBundleId') ?? 'be.g3cko.nest';
+
+  static bool get appleSignInEnabled =>
+      appleServiceId != null &&
+      appleTeamId != null &&
+      appleKeyId != null &&
+      appleKey != null;
 
   /// For tests: replaces [signUpMode].
   static SignUpMode? signUpModeOverride;

@@ -23,6 +23,8 @@ abstract class ServerPing
     this.apiVersion,
     this.minClientApiVersion,
     this.signUpMode,
+    this.googleServerClientId,
+    this.appleSignIn,
   });
 
   factory ServerPing({
@@ -31,6 +33,8 @@ abstract class ServerPing
     int? apiVersion,
     int? minClientApiVersion,
     _i4y3a5ag.SignUpMode? signUpMode,
+    String? googleServerClientId,
+    bool? appleSignIn,
   }) = _ServerPingImpl;
 
   factory ServerPing.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -46,6 +50,11 @@ abstract class ServerPing
           : _i4y3a5ag.SignUpMode.fromJson(
               (jsonSerialization['signUpMode'] as String),
             ),
+      googleServerClientId:
+          jsonSerialization['googleServerClientId'] as String?,
+      appleSignIn: jsonSerialization['appleSignIn'] == null
+          ? null
+          : _is.BoolJsonExtension.fromJson(jsonSerialization['appleSignIn']),
     );
   }
 
@@ -66,6 +75,13 @@ abstract class ServerPing
   /// modes existed (anyone could sign up).
   _i4y3a5ag.SignUpMode? signUpMode;
 
+  /// Google OAuth client ID the server accepts ID tokens for. Null when the
+  /// server has no Google sign-in (or is older than API level 9).
+  String? googleServerClientId;
+
+  /// Whether the server accepts Sign in with Apple. Null on older servers.
+  bool? appleSignIn;
+
   /// Returns a shallow copy of this [ServerPing]
   /// with some or all fields replaced by the given arguments.
   @_is.useResult
@@ -75,6 +91,8 @@ abstract class ServerPing
     int? apiVersion,
     int? minClientApiVersion,
     _i4y3a5ag.SignUpMode? signUpMode,
+    String? googleServerClientId,
+    bool? appleSignIn,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -86,6 +104,9 @@ abstract class ServerPing
       if (minClientApiVersion != null)
         'minClientApiVersion': minClientApiVersion,
       if (signUpMode != null) 'signUpMode': signUpMode?.toJson(),
+      if (googleServerClientId != null)
+        'googleServerClientId': googleServerClientId,
+      if (appleSignIn != null) 'appleSignIn': appleSignIn,
     };
   }
 
@@ -99,6 +120,9 @@ abstract class ServerPing
       if (minClientApiVersion != null)
         'minClientApiVersion': minClientApiVersion,
       if (signUpMode != null) 'signUpMode': signUpMode?.toJson(),
+      if (googleServerClientId != null)
+        'googleServerClientId': googleServerClientId,
+      if (appleSignIn != null) 'appleSignIn': appleSignIn,
     };
   }
 
@@ -117,12 +141,16 @@ class _ServerPingImpl extends ServerPing {
     int? apiVersion,
     int? minClientApiVersion,
     _i4y3a5ag.SignUpMode? signUpMode,
+    String? googleServerClientId,
+    bool? appleSignIn,
   }) : super._(
          serverTime: serverTime,
          version: version,
          apiVersion: apiVersion,
          minClientApiVersion: minClientApiVersion,
          signUpMode: signUpMode,
+         googleServerClientId: googleServerClientId,
+         appleSignIn: appleSignIn,
        );
 
   /// Returns a shallow copy of this [ServerPing]
@@ -135,6 +163,8 @@ class _ServerPingImpl extends ServerPing {
     Object? apiVersion = _Undefined,
     Object? minClientApiVersion = _Undefined,
     Object? signUpMode = _Undefined,
+    Object? googleServerClientId = _Undefined,
+    Object? appleSignIn = _Undefined,
   }) {
     return ServerPing(
       serverTime: serverTime ?? this.serverTime,
@@ -146,6 +176,10 @@ class _ServerPingImpl extends ServerPing {
       signUpMode: signUpMode is _i4y3a5ag.SignUpMode?
           ? signUpMode
           : this.signUpMode,
+      googleServerClientId: googleServerClientId is String?
+          ? googleServerClientId
+          : this.googleServerClientId,
+      appleSignIn: appleSignIn is bool? ? appleSignIn : this.appleSignIn,
     );
   }
 }

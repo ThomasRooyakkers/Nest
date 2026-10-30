@@ -77,6 +77,14 @@ const unscopedMethods = {
   'emailIdp.verifyPasswordResetCode',
   'emailIdp.finishPasswordReset',
   'emailIdp.hasAccount',
+  // Google and Apple sign-in (SocialSignIn's rules).
+  'googleIdp.signIn',
+  'googleIdp.login',
+  'googleIdp.loginWithCode',
+  'googleIdp.hasAccount',
+  'appleIdp.signIn',
+  'appleIdp.login',
+  'appleIdp.hasAccount',
   'jwtRefresh.refreshAccessToken',
   // Public health check, no data.
   'health.ping',

@@ -71,6 +71,65 @@ import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
 import 'package:serverpod_client/serverpod_client.dart' as _isc;
 import 'protocol.dart' as _il2as5qe;
 
+/// Sign in with Apple, available when the host configured an Apple key
+/// (see `HostSettings.appleSignInEnabled`). Follows [SocialSignIn]'s rules.
+/// {@category Endpoint}
+class EndpointAppleIdp extends _iaic.EndpointAppleIdpBase {
+  EndpointAppleIdp(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'appleIdp';
+
+  /// Signs in with Apple's identity token and authorization code. A new
+  /// account needs [inviteCode] on an invite-only server.
+  _ida.Future<_iacc.AuthSuccess> signIn({
+    required String identityToken,
+    required String authorizationCode,
+    required bool isNativeApplePlatformSignIn,
+    String? firstName,
+    String? lastName,
+    String? inviteCode,
+  }) => caller.callServerEndpoint<_iacc.AuthSuccess>(
+    'appleIdp',
+    'signIn',
+    {
+      'identityToken': identityToken,
+      'authorizationCode': authorizationCode,
+      'isNativeApplePlatformSignIn': isNativeApplePlatformSignIn,
+      'firstName': firstName,
+      'lastName': lastName,
+      'inviteCode': inviteCode,
+    },
+  );
+
+  /// The auth module's sign-in, under the same rules (without an invite).
+  @override
+  _ida.Future<_iacc.AuthSuccess> login({
+    required String identityToken,
+    required String authorizationCode,
+    required bool isNativeApplePlatformSignIn,
+    String? firstName,
+    String? lastName,
+  }) => caller.callServerEndpoint<_iacc.AuthSuccess>(
+    'appleIdp',
+    'login',
+    {
+      'identityToken': identityToken,
+      'authorizationCode': authorizationCode,
+      'isNativeApplePlatformSignIn': isNativeApplePlatformSignIn,
+      'firstName': firstName,
+      'lastName': lastName,
+    },
+  );
+
+  @override
+  _ida.Future<bool> hasAccount() => caller.callServerEndpoint<bool>(
+    'appleIdp',
+    'hasAccount',
+    {},
+  );
+}
+
 /// By extending [EmailIdpBaseEndpoint], the email identity provider endpoints
 /// are made available on the server and enable the corresponding sign-in widget
 /// on the client.
@@ -241,6 +300,69 @@ class EndpointEmailIdp extends _iaic.EndpointEmailIdpBase {
   @override
   _ida.Future<bool> hasAccount() => caller.callServerEndpoint<bool>(
     'emailIdp',
+    'hasAccount',
+    {},
+  );
+}
+
+/// Google sign-in, available when the host configured a Google client
+/// (see `HostSettings.googleClientSecret`). Follows [SocialSignIn]'s rules.
+/// {@category Endpoint}
+class EndpointGoogleIdp extends _iaic.EndpointGoogleIdpBase {
+  EndpointGoogleIdp(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'googleIdp';
+
+  /// Signs in with a Google ID token. A new account needs [inviteCode] on
+  /// an invite-only server.
+  _ida.Future<_iacc.AuthSuccess> signIn({
+    required String idToken,
+    String? accessToken,
+    String? inviteCode,
+  }) => caller.callServerEndpoint<_iacc.AuthSuccess>(
+    'googleIdp',
+    'signIn',
+    {
+      'idToken': idToken,
+      'accessToken': accessToken,
+      'inviteCode': inviteCode,
+    },
+  );
+
+  /// The auth module's sign-in, under the same rules (without an invite).
+  @override
+  _ida.Future<_iacc.AuthSuccess> login({
+    required String idToken,
+    required String? accessToken,
+  }) => caller.callServerEndpoint<_iacc.AuthSuccess>(
+    'googleIdp',
+    'login',
+    {
+      'idToken': idToken,
+      'accessToken': accessToken,
+    },
+  );
+
+  /// The web flow, under the same rules (without an invite).
+  @override
+  _ida.Future<_iacc.AuthSuccess> loginWithCode({
+    required String code,
+    required String codeVerifier,
+    required String redirectUri,
+  }) => caller.callServerEndpoint<_iacc.AuthSuccess>(
+    'googleIdp',
+    'loginWithCode',
+    {
+      'code': code,
+      'codeVerifier': codeVerifier,
+      'redirectUri': redirectUri,
+    },
+  );
+
+  @override
+  _ida.Future<bool> hasAccount() => caller.callServerEndpoint<bool>(
+    'googleIdp',
     'hasAccount',
     {},
   );
@@ -1212,7 +1334,9 @@ class Client extends _isc.ServerpodClientShared {
              disconnectStreamsOnLostInternetConnection,
          httpClientOverride: httpClientOverride,
        ) {
+    appleIdp = EndpointAppleIdp(this);
     emailIdp = EndpointEmailIdp(this);
+    googleIdp = EndpointGoogleIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
     adminAudit = EndpointAdminAudit(this);
     adminBackups = EndpointAdminBackups(this);
@@ -1231,7 +1355,11 @@ class Client extends _isc.ServerpodClientShared {
     modules = Modules(this);
   }
 
+  late final EndpointAppleIdp appleIdp;
+
   late final EndpointEmailIdp emailIdp;
+
+  late final EndpointGoogleIdp googleIdp;
 
   late final EndpointJwtRefresh jwtRefresh;
 
@@ -1267,7 +1395,9 @@ class Client extends _isc.ServerpodClientShared {
 
   @override
   Map<String, _isc.EndpointRef> get endpointRefLookup => {
+    'appleIdp': appleIdp,
     'emailIdp': emailIdp,
+    'googleIdp': googleIdp,
     'jwtRefresh': jwtRefresh,
     'adminAudit': adminAudit,
     'adminBackups': adminBackups,

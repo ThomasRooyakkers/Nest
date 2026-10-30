@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:serverpod_auth_idp_server/core.dart';
+import 'package:serverpod_auth_idp_server/providers/apple.dart';
 import 'package:serverpod_auth_idp_server/providers/email.dart';
+import 'package:serverpod_auth_idp_server/providers/google.dart';
 
 import 'src/generated/serverpod.dart';
 import 'src/services/built_in_catalog.dart';
 import 'src/services/host_settings.dart';
 import 'src/services/sign_up_policy.dart';
+import 'src/services/social_sign_in.dart';
 import 'src/services/verification_mail.dart';
 import 'src/web/web_app_config_route.dart';
 
@@ -86,6 +89,38 @@ Future<Serverpod> createServerpod(
               transaction: transaction,
             ),
       ),
+      // Google and Apple sign-in, each only when the host configured it.
+      if (HostSettings.googleClientSecret case final secret?)
+        GoogleIdpConfig(
+          clientSecret: GoogleClientSecret.fromJsonString(secret),
+          onAfterGoogleAccountCreated:
+              (session, authUser, account, {required transaction}) =>
+                  SocialSignIn.recordNewIdentity(
+                    session,
+                    authUserId: authUser.id,
+                    email: account.email,
+                    // The provider only accepts verified Google emails.
+                    emailVerified: true,
+                  ),
+        ),
+      if (HostSettings.appleSignInEnabled)
+        AppleIdpConfig(
+          serviceIdentifier: HostSettings.appleServiceId!,
+          bundleIdentifier: HostSettings.appleBundleId,
+          redirectUri:
+              'https://${pod.config.apiServer.publicHost}/auth/apple/callback',
+          teamId: HostSettings.appleTeamId!,
+          keyId: HostSettings.appleKeyId!,
+          key: HostSettings.appleKey!,
+          onAfterAppleAccountCreated:
+              (session, authUser, account, {required transaction}) =>
+                  SocialSignIn.recordNewIdentity(
+                    session,
+                    authUserId: authUser.id,
+                    email: account.email,
+                    emailVerified: account.isEmailVerified ?? false,
+                  ),
+        ),
     ],
   );
 

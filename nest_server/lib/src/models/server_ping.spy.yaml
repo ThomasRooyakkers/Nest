@@ -15,3 +15,8 @@ fields:
   ### How new accounts can be created. Null on servers from before sign-up
   ### modes existed (anyone could sign up).
   signUpMode: SignUpMode?
+  ### Google OAuth client ID the server accepts ID tokens for. Null when the
+  ### server has no Google sign-in (or is older than API level 9).
+  googleServerClientId: String?
+  ### Whether the server accepts Sign in with Apple. Null on older servers.
+  appleSignIn: bool?

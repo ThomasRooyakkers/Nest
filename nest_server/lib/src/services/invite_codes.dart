@@ -30,7 +30,11 @@ abstract final class InviteCodes {
   ///
   /// Throws [NestErrorCode.invalidInviteCode] when there is none and
   /// [NestErrorCode.inviteExpired] when the code has expired.
-  static Future<Household> findHousehold(Session session, String code) async {
+  static Future<Household> findHousehold(
+    Session session,
+    String code, {
+    Transaction? transaction,
+  }) async {
     final normalized = normalize(code);
     if (normalized.length != length) {
       throw NestException(code: NestErrorCode.invalidInviteCode);
@@ -39,6 +43,7 @@ abstract final class InviteCodes {
     final household = await Household.db.findFirstRow(
       session,
       where: (t) => t.inviteCode.equals(normalized),
+      transaction: transaction,
     );
     if (household == null || household.status != HouseholdStatus.active) {
       throw NestException(code: NestErrorCode.invalidInviteCode);

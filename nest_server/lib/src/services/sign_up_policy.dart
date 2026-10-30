@@ -21,17 +21,23 @@ abstract final class SignUpPolicy {
     Session session, {
     required String email,
     required String inviteCode,
+    Transaction? transaction,
   }) async {
     final normalized = email.trim().toLowerCase();
     if (!normalized.contains('@') || normalized.length > 320) {
       throw NestException(code: NestErrorCode.invalidInput);
     }
-    final household = await InviteCodes.findHousehold(session, inviteCode);
+    final household = await InviteCodes.findHousehold(
+      session,
+      inviteCode,
+      transaction: transaction,
+    );
     final expiresAt = DateTime.now().toUtc().add(inviteValidFor);
 
     final existing = await SignUpInvite.db.findFirstRow(
       session,
       where: (t) => t.email.equals(normalized),
+      transaction: transaction,
     );
     if (existing == null) {
       await SignUpInvite.db.insertRow(
@@ -41,6 +47,7 @@ abstract final class SignUpPolicy {
           householdId: household.id!,
           expiresAt: expiresAt,
         ),
+        transaction: transaction,
       );
     } else {
       await SignUpInvite.db.updateRow(
@@ -50,17 +57,23 @@ abstract final class SignUpPolicy {
           expiresAt: expiresAt,
           updatedAt: DateTime.now(),
         ),
+        transaction: transaction,
       );
     }
     return household.name;
   }
 
   /// Throws [NestErrorCode.inviteRequired] when [email] may not register.
-  static Future<void> checkMayRegister(Session session, String email) async {
+  static Future<void> checkMayRegister(
+    Session session,
+    String email, {
+    Transaction? transaction,
+  }) async {
     if (HostSettings.signUpMode == SignUpMode.open) return;
     final normalized = email.trim().toLowerCase();
     if (normalized == HostSettings.superAdminEmail) return;
-    if (await _validInvite(session, normalized) == null) {
+    if (await _validInvite(session, normalized, transaction: transaction) ==
+        null) {
       throw NestException(code: NestErrorCode.inviteRequired);
     }
   }

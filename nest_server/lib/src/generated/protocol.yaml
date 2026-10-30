@@ -1,3 +1,7 @@
+appleIdp:
+  - signIn:
+  - login:
+  - hasAccount:
 emailIdp:
   - startRegistration:
   - login:
@@ -6,6 +10,11 @@ emailIdp:
   - startPasswordReset:
   - verifyPasswordResetCode:
   - finishPasswordReset:
+  - hasAccount:
+googleIdp:
+  - signIn:
+  - login:
+  - loginWithCode:
   - hasAccount:
 jwtRefresh:
   - refreshAccessToken:

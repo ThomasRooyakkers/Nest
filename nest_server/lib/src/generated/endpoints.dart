@@ -34,7 +34,9 @@ import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
+import '../auth/apple_idp_endpoint.dart' as _ilq63su8;
 import '../auth/email_idp_endpoint.dart' as _iuc1hd5t;
+import '../auth/google_idp_endpoint.dart' as _i71axiz0;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
 import '../endpoints/admin/admin_audit_endpoint.dart' as _isry7q4f;
 import '../endpoints/admin/admin_backups_endpoint.dart' as _ihn2grnq;
@@ -55,10 +57,22 @@ class Endpoints extends _is.EndpointDispatch {
   @override
   void initializeEndpoints(_is.Server server) {
     var endpoints = <String, _is.Endpoint>{
+      'appleIdp': _ilq63su8.AppleIdpEndpoint()
+        ..initialize(
+          server,
+          'appleIdp',
+          null,
+        ),
       'emailIdp': _iuc1hd5t.EmailIdpEndpoint()
         ..initialize(
           server,
           'emailIdp',
+          null,
+        ),
+      'googleIdp': _i71axiz0.GoogleIdpEndpoint()
+        ..initialize(
+          server,
+          'googleIdp',
           null,
         ),
       'jwtRefresh': _inwq3ztq.JwtRefreshEndpoint()
@@ -152,6 +166,116 @@ class Endpoints extends _is.EndpointDispatch {
           null,
         ),
     };
+    connectors['appleIdp'] = _is.EndpointConnector(
+      name: 'appleIdp',
+      endpoint: endpoints['appleIdp']!,
+      methodConnectors: {
+        'signIn': _is.MethodConnector(
+          name: 'signIn',
+          params: {
+            'identityToken': _is.ParameterDescription(
+              name: 'identityToken',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'authorizationCode': _is.ParameterDescription(
+              name: 'authorizationCode',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'isNativeApplePlatformSignIn': _is.ParameterDescription(
+              name: 'isNativeApplePlatformSignIn',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+            'firstName': _is.ParameterDescription(
+              name: 'firstName',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+            'lastName': _is.ParameterDescription(
+              name: 'lastName',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+            'inviteCode': _is.ParameterDescription(
+              name: 'inviteCode',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['appleIdp'] as _ilq63su8.AppleIdpEndpoint).signIn(
+                    session,
+                    identityToken: params['identityToken'],
+                    authorizationCode: params['authorizationCode'],
+                    isNativeApplePlatformSignIn:
+                        params['isNativeApplePlatformSignIn'],
+                    firstName: params['firstName'],
+                    lastName: params['lastName'],
+                    inviteCode: params['inviteCode'],
+                  ),
+        ),
+        'login': _is.MethodConnector(
+          name: 'login',
+          params: {
+            'identityToken': _is.ParameterDescription(
+              name: 'identityToken',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'authorizationCode': _is.ParameterDescription(
+              name: 'authorizationCode',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'isNativeApplePlatformSignIn': _is.ParameterDescription(
+              name: 'isNativeApplePlatformSignIn',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+            'firstName': _is.ParameterDescription(
+              name: 'firstName',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+            'lastName': _is.ParameterDescription(
+              name: 'lastName',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['appleIdp'] as _ilq63su8.AppleIdpEndpoint).login(
+                    session,
+                    identityToken: params['identityToken'],
+                    authorizationCode: params['authorizationCode'],
+                    isNativeApplePlatformSignIn:
+                        params['isNativeApplePlatformSignIn'],
+                    firstName: params['firstName'],
+                    lastName: params['lastName'],
+                  ),
+        ),
+        'hasAccount': _is.MethodConnector(
+          name: 'hasAccount',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['appleIdp'] as _ilq63su8.AppleIdpEndpoint)
+                  .hasAccount(session),
+        ),
+      },
+    );
     connectors['emailIdp'] = _is.EndpointConnector(
       name: 'emailIdp',
       endpoint: endpoints['emailIdp']!,
@@ -328,6 +452,109 @@ class Endpoints extends _is.EndpointDispatch {
                 _is.Session session,
                 Map<String, dynamic> params,
               ) async => (endpoints['emailIdp'] as _iuc1hd5t.EmailIdpEndpoint)
+                  .hasAccount(session),
+        ),
+      },
+    );
+    connectors['googleIdp'] = _is.EndpointConnector(
+      name: 'googleIdp',
+      endpoint: endpoints['googleIdp']!,
+      methodConnectors: {
+        'signIn': _is.MethodConnector(
+          name: 'signIn',
+          params: {
+            'idToken': _is.ParameterDescription(
+              name: 'idToken',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'accessToken': _is.ParameterDescription(
+              name: 'accessToken',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+            'inviteCode': _is.ParameterDescription(
+              name: 'inviteCode',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['googleIdp'] as _i71axiz0.GoogleIdpEndpoint)
+                  .signIn(
+                    session,
+                    idToken: params['idToken'],
+                    accessToken: params['accessToken'],
+                    inviteCode: params['inviteCode'],
+                  ),
+        ),
+        'login': _is.MethodConnector(
+          name: 'login',
+          params: {
+            'idToken': _is.ParameterDescription(
+              name: 'idToken',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'accessToken': _is.ParameterDescription(
+              name: 'accessToken',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['googleIdp'] as _i71axiz0.GoogleIdpEndpoint).login(
+                    session,
+                    idToken: params['idToken'],
+                    accessToken: params['accessToken'],
+                  ),
+        ),
+        'loginWithCode': _is.MethodConnector(
+          name: 'loginWithCode',
+          params: {
+            'code': _is.ParameterDescription(
+              name: 'code',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'codeVerifier': _is.ParameterDescription(
+              name: 'codeVerifier',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'redirectUri': _is.ParameterDescription(
+              name: 'redirectUri',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['googleIdp'] as _i71axiz0.GoogleIdpEndpoint)
+                  .loginWithCode(
+                    session,
+                    code: params['code'],
+                    codeVerifier: params['codeVerifier'],
+                    redirectUri: params['redirectUri'],
+                  ),
+        ),
+        'hasAccount': _is.MethodConnector(
+          name: 'hasAccount',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['googleIdp'] as _i71axiz0.GoogleIdpEndpoint)
                   .hasAccount(session),
         ),
       },

@@ -13,8 +13,8 @@ const nestServerVersion = '0.8.1';
 /// 3: tasks. 4: recipes, adding several shopping items at once.
 /// 5: meal planning, meal slots per household. 6: watchlist.
 /// 7: admin portal (users, system health, backups, audit log).
-/// 8: deleting your own account.
-const nestApiVersion = 8;
+/// 8: deleting your own account. 9: Google and Apple sign-in.
+const nestApiVersion = 9;
 
 /// Oldest app API level this server still works with. Raise it only when a
 /// change breaks older apps.
@@ -32,6 +32,8 @@ class HealthEndpoint extends Endpoint {
       apiVersion: nestApiVersion,
       minClientApiVersion: nestMinClientApiVersion,
       signUpMode: HostSettings.signUpMode,
+      googleServerClientId: HostSettings.googleServerClientId,
+      appleSignIn: HostSettings.appleSignInEnabled,
     );
   }
 }
