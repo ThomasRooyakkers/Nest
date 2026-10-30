@@ -28,6 +28,8 @@ te kennen.
 - Optioneel: een [Resend](https://resend.com)-account om aanmeldcodes te
   mailen. Zonder account verschijnen de codes in het serverlog en geef je ze
   zelf door.
+- Optioneel: een gratis [TMDB](https://www.themoviedb.org)-account voor het
+  zoeken naar films in de kijklijst (zie "Filmgegevens" hieronder).
 
 ## 1. Haal de bestanden op
 
@@ -56,6 +58,7 @@ Open `.env` in een editor. Elke instelling wordt in het bestand uitgelegd.
 | `NEST_IMAGE`, `NEST_VERSION` | het serverimage en de versie; laat de waarden uit `.env.example` staan, tenzij je een bepaalde versie wilt |
 | `DATABASE_PASSWORD`, `SERVICE_SECRET`, `EMAIL_SECRET_HASH_PEPPER`, `JWT_HMAC_SHA512_PRIVATE_KEY`, `JWT_REFRESH_TOKEN_HASH_PEPPER` | elk een andere willekeurige waarde |
 | `RESEND_API_KEY`, `MAIL_FROM` | optioneel, zie "Mail" hieronder |
+| `TMDB_API_KEY` | optioneel, zie "Filmgegevens" hieronder |
 
 Maak elk geheim met:
 
@@ -168,6 +171,25 @@ Om aanmeld- en wachtwoordcodes te mailen:
 3. Pas het toe: `docker compose up -d`.
 
 De mails zijn in het Engels en het Nederlands.
+
+## Filmgegevens
+
+De kijklijst zoekt films en series via [TMDB](https://www.themoviedb.org),
+met je eigen gratis sleutel. Alleen de server praat met TMDB; de apps tonen
+de posters van de beeldserver van TMDB.
+
+1. Maak een TMDB-account en vraag een API-sleutel aan onder Settings → API.
+2. Zet de API-sleutel (of het API read access token) in `.env`:
+
+   ```bash
+   TMDB_API_KEY=...
+   ```
+
+3. Pas het toe: `docker compose up -d`.
+
+Zonder sleutel biedt de zoekfunctie van de kijklijst een paar voorbeeldtitels,
+zodat je de functie kunt uitproberen. Nest toont de vermelding van TMDB op de
+kijklijst en het scherm Over Nest, zoals de voorwaarden van TMDB vragen.
 
 ## Bijwerken
 

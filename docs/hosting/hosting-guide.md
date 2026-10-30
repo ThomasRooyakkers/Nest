@@ -26,6 +26,8 @@ code.
   Caddy or nginx).
 - Optional: a [Resend](https://resend.com) account to email sign-up codes.
   Without one, the codes appear in the server log and you pass them on.
+- Optional: a free [TMDB](https://www.themoviedb.org) account for the
+  watchlist's film search (see "Film data" below).
 
 ## 1. Get the files
 
@@ -54,6 +56,7 @@ Open `.env` in an editor. Every setting is explained in the file.
 | `NEST_IMAGE`, `NEST_VERSION` | the server image and version; keep the values from `.env.example` unless you want a specific version |
 | `DATABASE_PASSWORD`, `SERVICE_SECRET`, `EMAIL_SECRET_HASH_PEPPER`, `JWT_HMAC_SHA512_PRIVATE_KEY`, `JWT_REFRESH_TOKEN_HASH_PEPPER` | each a different random value |
 | `RESEND_API_KEY`, `MAIL_FROM` | optional, see "Mail" below |
+| `TMDB_API_KEY` | optional, see "Film data" below |
 
 Make each secret with:
 
@@ -166,6 +169,25 @@ To email sign-up and password reset codes:
 3. Apply it: `docker compose up -d`.
 
 The emails are in English and Dutch.
+
+## Film data
+
+The watchlist finds films and series through [TMDB](https://www.themoviedb.org),
+with your own free key. Only the server talks to TMDB; the apps show the
+posters from TMDB's image server.
+
+1. Create a TMDB account and request an API key under Settings → API.
+2. Set the API key (or the API read access token) in `.env`:
+
+   ```bash
+   TMDB_API_KEY=...
+   ```
+
+3. Apply it: `docker compose up -d`.
+
+Without a key the watchlist search offers a few sample titles, so the
+feature can be tried. Nest shows TMDB's attribution on the watchlist and the
+About screen, as TMDB's terms require.
 
 ## Updating
 

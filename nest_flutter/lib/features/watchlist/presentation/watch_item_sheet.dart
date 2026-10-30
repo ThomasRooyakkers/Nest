@@ -164,12 +164,17 @@ class _WatchItemSheetState extends ConsumerState<_WatchItemSheet> {
                   ChoiceChip(
                     label: Text(statusLabel(l10n, status)),
                     selected: item.status == status,
-                    onSelected: _busy || item.status == status
+                    // The current status stays enabled (a disabled chip is
+                    // greyed out); tapping it again does nothing.
+                    onSelected: _busy
                         ? null
-                        : (_) => _run(
-                            (r) =>
-                                r.setStatus(widget.householdId, item, status),
-                          ),
+                        : (_) {
+                            if (item.status == status) return;
+                            _run(
+                              (r) =>
+                                  r.setStatus(widget.householdId, item, status),
+                            );
+                          },
                   ),
               ],
             ),

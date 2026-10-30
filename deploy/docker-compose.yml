@@ -43,6 +43,8 @@ services:
       # Mail. Without both, sign-up and reset codes are written to the log.
       SERVERPOD_PASSWORD_resendApiKey: ${RESEND_API_KEY:-}
       SERVERPOD_PASSWORD_mailFrom: ${MAIL_FROM:-}
+      # Film data for the watchlist. Without it, sample titles.
+      SERVERPOD_PASSWORD_tmdbApiKey: ${TMDB_API_KEY:-}
     # For your own https proxy: the API on 8080 and the web app on 8082, on
     # this machine only. The tunnel reaches the server inside Docker.
     ports:

@@ -2,8 +2,11 @@
 
 ## Current phase
 
-**Phase 6 — Meal Planning: done and released (2026-10-30).** Server 0.5.0 /
-API level 5 runs on the Pi. Waiting for Thomas before phase 7 (Watchlist).
+**Phase 7 — Watchlist: built (2026-10-30), not released yet.** Server 0.6.0 /
+API level 6 (local). Waiting for Thomas: release to the Pi with a TMDB key,
+then phase 8 (Admin + backups).
+
+Phase 6 (Meal Planning) is done and released as 0.5.0.
 
 Phase 5 (Recipes) is done and released as 0.4.0.
 
@@ -529,6 +532,78 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   served config OK. The Meals screen was not opened on production (no
   account used).
 
+### Phase 7 — Watchlist (2026-10-30)
+
+- **Models + migration `20261030101948724`:** `watchlist_item` (household,
+  `tmdbId`, `type` movie/series, title, posterPath, year, TMDB `rating`,
+  `status` want/watching/watched, added by, `householdRating` 1–5; unique
+  per household, type and TMDB id), enums `WatchType` and `WatchStatus`,
+  `TmdbTitle` (a search result), `WatchlistEvent` (live updates), error
+  code `filmDataUnavailable`.
+- **Film data (`services/tmdb_service.dart`):** `TmdbService` with
+  `HttpTmdbService` (TMDB API v3 `search/multi` and details, in the
+  caller's language en-US/nl-NL; takes a v3 API key or a v4 read access
+  token; uses `dart:io`, no new dependency) and `FakeTmdbService` (20 films
+  and series, some with Dutch titles, no posters). The host setting
+  `tmdbApiKey` (`TMDB_API_KEY` in `deploy/.env`) picks the real one;
+  without it the server uses the fake.
+- **Endpoint `watchlist`** (all guarded with `HouseholdGuard.require(...,
+  feature: watchlist)`): `items`, `search` (1–100 characters), `add` (by
+  type and TMDB id; the server fetches the details itself instead of
+  trusting the app; a title already on the list is returned as it is),
+  `setStatus`, `setRating` (1–5 or null), `remove` and the streaming
+  `watch`. TMDB failures become `filmDataUnavailable`.
+- **API level 6**, server version 0.6.0. The app (API level 6) hides the
+  Watch tab on servers below level 6.
+- **Tests:** isolation test covers every watchlist method for household B
+  plus "household A's id with B's item"; 11 watchlist endpoint tests (with
+  an unreachable TMDB) and 4 TMDB parsing tests. 286 server tests.
+- **Seed:** per seed household 8 titles from the fake film data (4 to
+  watch, 2 watching, 2 watched with a rating), added by different members.
+- **App:**
+  - **Watch tab** (`/watch`): "Find a film or series" button, status chips
+    Want to watch / Watching / Watched with counts (remembered on the
+    device), "Pick something for tonight" on Want to watch, and a
+    three-column grid of 2:3 posters (lavender placeholder with a film or
+    TV icon when there is no poster) with title, type · year, TMDB rating
+    (or our hearts when rated) and the avatar of who added it. The TMDB
+    attribution line is under the grid, on the search screen and on About.
+  - **Search** (`/watch/search`): searches 400 ms after typing, rows with
+    poster, title, type · year, rating and overview, "+" to add or "On the
+    list".
+  - **Item sheet:** status, our rating (five hearts, tap again or "Clear
+    rating" to clear) and Remove from the watchlist.
+  - **Tonight:** a random title from Want to watch, "Pick another" (never
+    the same one twice in a row) and "Start watching" (moves it to
+    Watching).
+  - Posters load from `image.tmdb.org` (w342) directly; on the web with
+    the `<img>` fallback, as TMDB's images may not allow cross-origin reads.
+  - The home screen's "Coming soon" card and the `ComingSoonScreen`
+    placeholder are gone (every tab now has its feature).
+- **Offline + realtime:** the watchlist is cached in drift and readable
+  offline; searching and changes need a connection (like recipes and
+  meals). Live updates through `LiveSyncLoop` while the tab is open.
+- **App tests (169):** logic (per status, newest first, counts, tonight's
+  pick and pick another, on the list, poster urls), repository (cache,
+  offline read, add/change/remove, failed change, live events) and screen
+  (grid with details and attribution, status tabs, search and add, no
+  results, film data error, status and rating in the sheet, remove,
+  tonight's pick, live add, offline notice, hidden on API level 5, Dutch
+  with text scale 2).
+- **Hosting:** `TMDB_API_KEY` in `deploy/.env.example`, the Compose file
+  and `passwords.yaml.example`; "Film data" section in the hosting guide
+  (EN/NL).
+- **Verified** against the local server (migration applied, seed run,
+  release web build served on 8082) in the in-app browser at phone size,
+  signed in as seed user Jan (Dutch): the seeded watchlist with counts,
+  searching "planeet" found the Dutch titles, adding "Planeet Aarde" put
+  it first on Wil ik zien and showed "Op de lijst", tonight's pick,
+  setting Bluey to Gezien with 4 hearts moved it to the Gezien tab with
+  the counts updated. A chip of the current status looked disabled in the
+  sheet; fixed after the browser check (covered by the widget tests).
+  **Not verified:** the real TMDB service (no key on this Mac) and real
+  posters; the app on a phone.
+
 ## Next
 
 1. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
@@ -541,7 +616,11 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
    tunnel and its two hostnames in Cloudflare, and the folder).
 4. **Thomas:** try Tasks, Recipes and the meal plan on the web and on the
    iPhone build (taking a photo needs the phone).
-5. Phase 7 — Watchlist (CLAUDE.md section 10).
+5. **Thomas:** create a TMDB API key (themoviedb.org → Settings → API) and
+   decide on releasing 0.6.0. Releasing: tag `v0.6.0`, let CI publish the
+   image, set `NEST_VERSION=0.6.0` and `TMDB_API_KEY` in `~/nest/deploy/.env`
+   on the Pi, run `deploy/deploy.sh`, then check a real search.
+6. Phase 8 — Admin + backups (CLAUDE.md section 10).
 
 ## Open questions
 
@@ -559,6 +638,13 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   later checks.
 
 ## Deviations from CLAUDE.md
+
+- **TMDB is picked by the key, not a `tmdb: fake|tmdb` setting:** with
+  `tmdbApiKey` set the server uses TMDB, without it the fake film data. A
+  host without a key gets sample titles instead of an error.
+- **`householdRating` is 1–5 hearts**, shared by the household; the grid
+  shows it instead of TMDB's rating once set.
+- **"Pick something for tonight" picks from Want to watch only.**
 
 - **Tasks store `dueDate` + `dueMinutes` instead of `dueAt`:** the due day is
   a calendar day (00:00 UTC, the same for everyone in the household) and the
