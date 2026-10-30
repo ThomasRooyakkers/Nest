@@ -51,7 +51,8 @@ cd nest_server && dart bin/seed.dart --apply-migrations
 This creates the households "Home" and "Test family" and the users
 `thomas@nest.test` (super-admin), `sarah@`, `emma@`, `oma@` (in both
 households) and `jan@nest.test`, all with the `seedPassword`, plus sample
-shopping lists, stores and items for both households. It can run while
+shopping lists, stores and items, tasks, recipes and a meal plan for both
+households. It can run while
 `serverpod start` is running and skips every part that already exists, so it
 can be run again after a new feature adds fixtures. The built-in shopping
 catalog is not seed data: the server syncs it at every start.

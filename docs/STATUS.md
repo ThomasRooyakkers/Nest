@@ -2,8 +2,11 @@
 
 ## Current phase
 
-**Phase 5 — Recipes: done and released (2026-10-28).** Server 0.4.0 / API
-level 4 runs on the Pi. Waiting for Thomas before phase 6 (Meal Planning).
+**Phase 6 — Meal Planning: built (2026-10-30), not released.** Server 0.5.0 /
+API level 5 in the repo; the Pi still runs 0.4.0. Waiting for Thomas: release
+0.5.0 to the Pi, then phase 7 (Watchlist).
+
+Phase 5 (Recipes) is done and released as 0.4.0.
 
 Phase 4 (Tasks) is done and released as 0.3.0.
 
@@ -453,6 +456,70 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   a login, web app and served config OK. The recipe screens were not opened
   on production (no account used).
 
+### Phase 6 — Meal Planning (2026-10-30)
+
+- **Models + migration `20261030092904205`:** `meal_plan_entry` (household,
+  `date` as 00:00 UTC like task due dates, `slot` breakfast/lunch/dinner,
+  optional recipe with `onDelete=SetNull`, `freeText`, optional `servings`,
+  `prepAheadNote`, created by; unique per household, day and slot), enum
+  `MealSlot`, `MealPlanEvent` (live updates), and `household.mealSlots`
+  (meals planned besides dinner; null = dinner only).
+- **Endpoint `mealPlan`** (all guarded with `HouseholdGuard.require(...,
+  feature: mealPlanning)`): `entries` (a date range, at most 93 days),
+  `save` (create or change, including moving to another day; a meal already
+  planned on that day and slot is replaced; checks the slot is switched on,
+  the recipe belongs to the household and the lengths; with a recipe the
+  server stores its title in `freeText`), `remove` and the streaming
+  `watch`. **`household.setMealSlots`** (owners) switches breakfast and lunch
+  on or off. Deleting a recipe keeps its planned meals as free text with the
+  title and tells meal plan watchers.
+- **API level 5**, server version 0.5.0. The app (API level 5) hides the
+  Meals tab on servers below level 5.
+- **Tests:** isolation test covers every meal plan method and
+  `setMealSlots` for household B, plus "household A's id with B's meal" and
+  "with B's recipe"; 13 meal plan endpoint tests. 247 server tests.
+- **Seed:** per seed household, yesterday "Leftovers", the seeded recipes
+  today, tomorrow (with a prep-ahead note) and in five days, "Pizza night"
+  and next week "Dinner at grandma's".
+- **App:**
+  - **Meals tab** (`/meals`): title with (owners) a "Meals to plan" button
+    for breakfast and lunch, previous/next week with "This week", "Next
+    week", "Last week" or the dates and "Back to this week", a strip of the
+    seven days (today in honey, a dot on planned days; tapping scrolls to
+    that day) and a card per day. Title, week and strip stay put; the days
+    scroll, and this week opens at today. Weeks start on Monday for
+    everyone.
+  - **Day card:** each planned slot (labels only when more than dinner is
+    planned) as a honey tile with title, servings, the prep-ahead note and
+    "Open recipe" (`/meals/recipes/:id`, at the meal's servings), or a
+    dashed "+ Plan dinner".
+  - **Meal sheet:** Recipe or Something else, a recipe list (with search
+    from six recipes), servings stepper, day (date picker, moves the meal),
+    prep-ahead note, Save and Remove from the plan; errors show in the
+    sheet.
+  - The dashed "add" outline moved to `nest_shared` (`DashedPillPainter`);
+    Meals left the home screen's "Coming soon" card.
+- **Offline + realtime:** planned meals are cached in drift per week shown
+  and readable offline; changes need a connection (like recipes). Live
+  updates through `LiveSyncLoop`, one sync per shown week.
+- **App tests (146):** week logic (Monday start, month/year end, time
+  change), slots, titles and servings; repository (cache per week, offline
+  read, replace on the same day, failed change offline); screen (week,
+  open at today, strip scroll, previous/next, plan free text, plan recipe
+  with servings, open recipe at servings, move and remove, live add, lunch
+  for owners only, offline notice, failed save, hidden on API level 4,
+  Dutch with text scale 2).
+- **Verified** against the local server (migration applied, seed run,
+  release web build served on 8082) in the in-app browser at phone size,
+  signed in as seed user Jan (Dutch): the week opens at today with the
+  seeded meals, the strip scrolls to a day, planning Pumpkin soup with a
+  note on Sunday saves and shows, "Recept openen" opens the recipe at 6
+  servings inside the Meals tab, and switching Lunch on adds a lunch slot to
+  every day (switched off again). This found that the lazy list could not
+  scroll the strip to days not yet built and that the strip scrolled away;
+  both fixed. **Not verified:** the app on a phone, and the 10 px gap under
+  the strip added after the browser check (covered by the widget tests).
+
 ## Next
 
 1. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
@@ -463,9 +530,11 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 3. **Thomas:** remove the second server when no longer needed
    (`cd ~/nest-test && docker compose down -v`, then delete the "Nest test"
    tunnel and its two hostnames in Cloudflare, and the folder).
-4. **Thomas:** try Tasks and Recipes on the web and on the iPhone build
-   (taking a photo needs the phone).
-5. Phase 6 — Meal Planning (CLAUDE.md section 10).
+4. **Thomas:** try Tasks, Recipes and the meal plan on the web and on the
+   iPhone build (taking a photo needs the phone).
+5. **Release 0.5.0** (with Thomas's OK): tag `v0.5.0`, CI and the "Server
+   image" workflow, then `NEST_VERSION=0.5.0` and `deploy/deploy.sh` on the Pi.
+6. Phase 7 — Watchlist (CLAUDE.md section 10).
 
 ## Open questions
 
@@ -496,6 +565,14 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
 - **Recipe changes need a connection** (reading and cooking work offline);
   queuing photo uploads offline was not worth the complexity.
 - **Favourites are per household** (as in section 6), not per member.
+- **Meal plan weeks start on Monday** for everyone, so members with
+  different languages see the same weeks.
+- **A recipe meal also stores the recipe's title** (`freeText`), so it keeps
+  its name when the recipe is deleted; the app shows the recipe's current
+  title while it exists.
+- **Breakfast and lunch are switched on by owners on the meal plan screen**
+  (`household.setMealSlots`), not in settings: there is no feature toggle UI
+  yet.
 - **Add to list lets the user untick ingredients** before adding; items
   already to buy start unticked and the server skips them anyway.
 

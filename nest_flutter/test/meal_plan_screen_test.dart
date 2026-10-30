@@ -90,6 +90,21 @@ void main() {
     );
   });
 
+  testWidgets('this week opens at today; a day in the strip scrolls to it', (
+    tester,
+  ) async {
+    await openMeals(tester);
+    final strip = tester.getBottomLeft(find.text('Wed')).dy;
+    double top(String text) => tester.getTopLeft(find.text(text)).dy;
+    // Wednesday's card is just below the strip; Monday's scrolled away.
+    expect(top('Wednesday'), inInclusiveRange(strip, strip + 80));
+    expect(top('Monday'), lessThan(strip));
+
+    await tester.tap(find.text('Mon'));
+    await tester.pumpAndSettle();
+    expect(top('Monday'), inInclusiveRange(strip, strip + 80));
+  });
+
   testWidgets('previous and next week', (tester) async {
     await openMeals(tester);
     await tester.tap(find.byTooltip('Next week'));

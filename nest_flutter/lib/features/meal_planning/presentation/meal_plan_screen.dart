@@ -33,16 +33,41 @@ class MealPlanScreen extends ConsumerStatefulWidget {
 class _MealPlanScreenState extends ConsumerState<MealPlanScreen> {
   static const _maxWidth = 560.0;
 
+  final _scroll = ScrollController();
   final _dayKeys = List.generate(7, (_) => GlobalKey());
 
-  void _scrollToDay(int index) {
+  /// The week the day list was last positioned for: this week opens at
+  /// today, other weeks at their Monday.
+  DateTime? _positionedWeek;
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  /// Scrolls the day list so day [index] of the week is at the top.
+  void _scrollToDay(int index, {bool animate = true}) {
     final dayContext = _dayKeys[index].currentContext;
     if (dayContext == null) return;
     Scrollable.ensureVisible(
       dayContext,
-      duration: const Duration(milliseconds: 300),
+      duration: animate ? const Duration(milliseconds: 300) : Duration.zero,
       curve: Curves.easeOut,
     );
+  }
+
+  void _position(DateTime weekStart, DateTime today) {
+    if (_positionedWeek == weekStart) return;
+    _positionedWeek = weekStart;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !_scroll.hasClients) return;
+      if (weekStart == weekStartOf(today)) {
+        _scrollToDay(today.difference(weekStart).inDays, animate: false);
+      } else {
+        _scroll.jumpTo(0);
+      }
+    });
   }
 
   @override
@@ -71,77 +96,97 @@ class _MealPlanScreenState extends ConsumerState<MealPlanScreen> {
     final side = width > _maxWidth + 2 * NestSpacing.screen
         ? (width - _maxWidth) / 2
         : NestSpacing.screen;
+    if (entries != null) _position(weekStart, today);
 
+    // The title, week and day strip stay put; the days scroll below them.
     return Scaffold(
       body: SafeArea(
         bottom: false,
-        child: RefreshIndicator(
-          onRefresh: () async => ref
-              .read(mealPlanSyncProvider(householdId, weekStart).notifier)
-              .retryNow(),
-          // Not lazy, so the week strip can scroll to any day's card.
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.fromLTRB(
-              side,
-              NestSpacing.screen,
-              side,
-              // Room for the floating tab bar.
-              NestSpacing.screen + 72 + MediaQuery.paddingOf(context).bottom,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        l10n.mealsTitle,
-                        style: textTheme.headlineMedium,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(side, NestSpacing.screen, side, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          l10n.mealsTitle,
+                          style: textTheme.headlineMedium,
+                        ),
                       ),
-                    ),
-                    if (household.role == MembershipRole.owner)
-                      IconButton(
-                        tooltip: l10n.mealSlotsButton,
-                        icon: const Icon(LucideIcons.slidersHorizontal),
-                        onPressed: () => _showSlotsSheet(context, household),
-                      ),
-                  ],
-                ),
-                const SizedBox(height: NestSpacing.gapSmall),
-                _WeekHeader(weekStart: weekStart, today: today),
-                const SizedBox(height: NestSpacing.gapSmall),
-                _WeekStrip(
-                  days: days,
-                  today: today,
-                  slots: slots,
-                  entries: entries ?? const [],
-                  recipes: recipes,
-                  onSelect: _scrollToDay,
-                ),
-                if (syncState == LiveSyncState.offline) ...[
+                      if (household.role == MembershipRole.owner)
+                        IconButton(
+                          tooltip: l10n.mealSlotsButton,
+                          icon: const Icon(LucideIcons.slidersHorizontal),
+                          onPressed: () => _showSlotsSheet(context, household),
+                        ),
+                    ],
+                  ),
                   const SizedBox(height: NestSpacing.gapSmall),
-                  NestNotice(l10n.mealsOffline, tone: NestNoticeTone.info),
-                ],
-                const SizedBox(height: NestSpacing.gap),
-                if (entries == null)
-                  const Center(child: CircularProgressIndicator())
-                else
-                  for (final (index, day) in days.indexed) ...[
-                    if (index > 0) const SizedBox(height: NestSpacing.gapSmall),
-                    _DayCard(
-                      key: _dayKeys[index],
-                      householdId: householdId,
-                      day: day,
-                      isToday: day == today,
-                      slots: slots,
-                      entries: entries,
-                      recipes: recipes,
-                    ),
+                  _WeekHeader(weekStart: weekStart, today: today),
+                  const SizedBox(height: NestSpacing.gapSmall),
+                  _WeekStrip(
+                    days: days,
+                    today: today,
+                    slots: slots,
+                    entries: entries ?? const [],
+                    recipes: recipes,
+                    onSelect: _scrollToDay,
+                  ),
+                  if (syncState == LiveSyncState.offline) ...[
+                    const SizedBox(height: NestSpacing.gapSmall),
+                    NestNotice(l10n.mealsOffline, tone: NestNoticeTone.info),
                   ],
-              ],
+                ],
+              ),
             ),
-          ),
+            const SizedBox(height: NestSpacing.gapSmall),
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async => ref
+                    .read(mealPlanSyncProvider(householdId, weekStart).notifier)
+                    .retryNow(),
+                // Not lazy, so the week strip can scroll to any day's card.
+                child: SingleChildScrollView(
+                  controller: _scroll,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.fromLTRB(
+                    side,
+                    0,
+                    side,
+                    // Room for the floating tab bar.
+                    NestSpacing.screen +
+                        72 +
+                        MediaQuery.paddingOf(context).bottom,
+                  ),
+                  child: entries == null
+                      ? const Center(child: CircularProgressIndicator())
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            for (final (index, day) in days.indexed) ...[
+                              if (index > 0)
+                                const SizedBox(height: NestSpacing.gapSmall),
+                              _DayCard(
+                                key: _dayKeys[index],
+                                householdId: householdId,
+                                day: day,
+                                isToday: day == today,
+                                slots: slots,
+                                entries: entries,
+                                recipes: recipes,
+                              ),
+                            ],
+                          ],
+                        ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
