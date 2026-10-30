@@ -44,6 +44,7 @@ mealPlan:
 profile:
   - me:
   - updateMe:
+  - deleteMe:
 recipe:
   - recipes:
   - save:

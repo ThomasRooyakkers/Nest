@@ -30,7 +30,7 @@ class RecipeEndpoint extends Endpoint {
   /// Largest photo accepted; the app resizes photos well below this.
   static const maxPhotoBytes = 1024 * 1024;
 
-  static const _photoStorage = 'private';
+  static const photoStorage = 'private';
 
   /// All of the household's recipes with their ingredients and steps.
   Future<List<Recipe>> recipes(Session session, int householdId) async {
@@ -164,7 +164,7 @@ class RecipeEndpoint extends Endpoint {
       path =
           'recipes/${access.householdId}/$recipeId-${_randomName()}.$extension';
       await session.storage.storeFile(
-        storageId: _photoStorage,
+        storageId: photoStorage,
         path: path,
         byteData: photo,
       );
@@ -173,7 +173,7 @@ class RecipeEndpoint extends Endpoint {
       session,
       recipe.copyWith(photoPath: path, updatedAt: DateTime.now()),
     );
-    if (recipe.photoPath case final old?) await _deletePhoto(session, old);
+    if (recipe.photoPath case final old?) await deletePhoto(session, old);
     final saved = await _recipe(session, access, recipeId);
     await _post(session, access, recipes: [saved]);
     return saved;
@@ -190,12 +190,12 @@ class RecipeEndpoint extends Endpoint {
     final path = recipe.photoPath;
     if (path == null) return null;
     if (!await session.storage.fileExists(
-      storageId: _photoStorage,
+      storageId: photoStorage,
       path: path,
     )) {
       return null;
     }
-    return session.storage.retrieveFile(storageId: _photoStorage, path: path);
+    return session.storage.retrieveFile(storageId: photoStorage, path: path);
   }
 
   /// Deletes a recipe with its photo. Meal plans and shopping items that
@@ -210,7 +210,7 @@ class RecipeEndpoint extends Endpoint {
           t.recipeId.equals(recipeId),
     );
     await Recipe.db.deleteRow(session, recipe);
-    if (recipe.photoPath case final path?) await _deletePhoto(session, path);
+    if (recipe.photoPath case final path?) await deletePhoto(session, path);
     await _post(session, access, removedRecipeIds: [recipeId]);
     await MealPlanEndpoint.postRecipeRemoved(
       session,
@@ -379,9 +379,10 @@ class RecipeEndpoint extends Endpoint {
     ).join();
   }
 
-  static Future<void> _deletePhoto(Session session, String path) async {
+  /// Deletes a stored recipe photo; a failure is only logged.
+  static Future<void> deletePhoto(Session session, String path) async {
     try {
-      await session.storage.deleteFile(storageId: _photoStorage, path: path);
+      await session.storage.deleteFile(storageId: photoStorage, path: path);
     } on Exception catch (e) {
       // The recipe is already updated; a stray file only takes space.
       session.log('Could not delete recipe photo $path: $e');

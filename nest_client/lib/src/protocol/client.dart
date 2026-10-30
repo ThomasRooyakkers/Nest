@@ -646,6 +646,19 @@ class EndpointProfile extends _isc.EndpointRef {
       'locale': locale,
     },
   );
+
+  /// Deletes the signed-in user's account and signs them out everywhere.
+  ///
+  /// A household where they are the only member is deleted with all its
+  /// data. In a household that has other members, the longest-standing
+  /// member becomes owner when the user was its last owner. Tasks assigned
+  /// to them go back to anyone and their name disappears from items they
+  /// added (the relations set those to null).
+  _ida.Future<void> deleteMe() => caller.callServerEndpoint<void>(
+    'profile',
+    'deleteMe',
+    {},
+  );
 }
 
 /// The household's recipe library, with ingredients, steps and a photo.

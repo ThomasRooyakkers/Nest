@@ -912,6 +912,16 @@ class Endpoints extends _is.EndpointDispatch {
                     params['locale'],
                   ),
         ),
+        'deleteMe': _is.MethodConnector(
+          name: 'deleteMe',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['profile'] as _i2cx2pww.ProfileEndpoint)
+                  .deleteMe(session),
+        ),
       },
     );
     connectors['recipe'] = _is.EndpointConnector(

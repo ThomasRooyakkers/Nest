@@ -90,4 +90,5 @@ const unscopedMethods = {
   // The caller's own profile.
   'profile.me',
   'profile.updateMe',
+  'profile.deleteMe',
 };

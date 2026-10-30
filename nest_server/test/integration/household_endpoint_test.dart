@@ -218,6 +218,85 @@ void main() {
     });
   });
 
+  withServerpod('Given deleting your own account', (sessionBuilder, endpoints) {
+    late TestSessionBuilder anna;
+    late TestSessionBuilder bram;
+    late int sharedId;
+
+    setUp(() async {
+      anna = await signedInUser(sessionBuilder, name: 'Anna');
+      bram = await signedInUser(sessionBuilder, name: 'Bram');
+      sharedId = (await endpoints.household.create(anna, 'Home')).household.id!;
+      final code = (await endpoints.household.createInvite(
+        anna,
+        sharedId,
+      )).code;
+      await endpoints.household.join(bram, code);
+    });
+
+    test('removes the user and signs them out of everything', () async {
+      final me = await endpoints.profile.me(anna);
+      await endpoints.profile.deleteMe(anna);
+
+      final session = sessionBuilder.build();
+      expect(await NestUser.db.findById(session, me.id!), isNull);
+      expect(await AuthUser.db.findById(session, me.authUserId), isNull);
+      expect(
+        await Membership.db.count(
+          session,
+          where: (t) => t.userId.equals(me.id!),
+        ),
+        0,
+      );
+    });
+
+    test('a household with other members stays and gets a new owner', () async {
+      final bramId = (await endpoints.profile.me(bram)).id!;
+      final list = (await endpoints.shopping.lists(bram, sharedId)).first;
+      final annaId = (await endpoints.profile.me(anna)).id!;
+      await endpoints.shopping.saveList(
+        anna,
+        sharedId,
+        list.copyWith(memberIds: [annaId, bramId]),
+      );
+
+      await endpoints.profile.deleteMe(anna);
+
+      final members = await endpoints.household.members(bram, sharedId);
+      expect(members.map((m) => (m.name, m.role)), [
+        ('Bram', MembershipRole.owner),
+      ]);
+      final lists = await endpoints.shopping.lists(bram, sharedId);
+      expect(lists.first.memberIds, [bramId]);
+    });
+
+    test('a household where they are alone is deleted with its data', () async {
+      final soloId = (await endpoints.household.create(
+        anna,
+        'Solo',
+      )).household.id!;
+      await endpoints.profile.deleteMe(anna);
+
+      final session = sessionBuilder.build();
+      expect(await Household.db.findById(session, soloId), isNull);
+      expect(
+        await ShoppingList.db.count(
+          session,
+          where: (t) => t.householdId.equals(soloId),
+        ),
+        0,
+      );
+      expect(await Household.db.findById(session, sharedId), isNotNull);
+    });
+
+    test('signed-out callers cannot delete anything', () {
+      expect(
+        endpoints.profile.deleteMe(sessionBuilder),
+        throwsNest(NestErrorCode.notSignedIn),
+      );
+    });
+  });
+
   withServerpod('Given the admin households endpoint', (
     sessionBuilder,
     endpoints,

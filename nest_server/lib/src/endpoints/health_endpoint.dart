@@ -13,7 +13,8 @@ const nestServerVersion = '0.7.0';
 /// 3: tasks. 4: recipes, adding several shopping items at once.
 /// 5: meal planning, meal slots per household. 6: watchlist.
 /// 7: admin portal (users, system health, backups, audit log).
-const nestApiVersion = 7;
+/// 8: deleting your own account.
+const nestApiVersion = 8;
 
 /// Oldest app API level this server still works with. Raise it only when a
 /// change breaks older apps.
