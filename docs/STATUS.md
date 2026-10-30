@@ -2,10 +2,11 @@
 
 ## Current phase
 
-**Phase 8 — Admin + backups: built, not yet released (2026-10-30).** Admin
-endpoints, the restic backup job and the admin portal are done and tested
-locally (server 0.7.0 / API level 7). Waiting for Thomas to release it to the
-Pi (backup targets, `RESTIC_PASSWORD`, admin domain behind Cloudflare Access).
+**Phase 8 — Admin + backups: released as 0.7.0 (2026-10-30).** Server
+0.7.0 / API level 7 and the restic backup job run on the Pi; the first
+backup succeeded. Still to do with Thomas: route `nest-admin.g3cko.be` in the
+tunnel behind Cloudflare Access, a second backup target (NFS/OneDrive), and
+a restore test.
 
 Phase 7 (Watchlist) is done and released as 0.6.0.
 
@@ -645,7 +646,7 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
   soft shadows instead of hairline borders, body 15/650, native-feeling
   controls, frosted tab bar.
 
-### Phase 8 — Admin + backups (2026-10-30, not released)
+### Phase 8 — Admin + backups (2026-10-30)
 
 - **Server:** admin endpoints under `endpoints/admin/` (households, users,
   system health, backups, audit log), each starting with
@@ -677,6 +678,22 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
   show real data. **Not verified:** the backup container itself (needs
   Docker; runs on the Pi), a real restic run to NFS/OneDrive, and a restore.
 
+- **Released (2026-10-30, with Thomas's OK):** CI (format, analyze, tests)
+  passed on `37ecbe5`; tag `v0.7.0`; the "Server image" workflow published
+  `nest-server:0.7.0` and the new `nest-backup:0.7.0` (both pullable without
+  login). Pi `~/nest/deploy/.env` (backup `.env.bak-*` next to it):
+  `RESTIC_PASSWORD` generated on the Pi (61 characters, never printed;
+  **Thomas: copy it into your password manager**), `BACKUP_TARGETS=local=/backups/restic`,
+  `BACKUP_TIME=03:00`, `TZ=Europe/Brussels`,
+  `NEST_ADMIN_DOMAIN=nest-admin.g3cko.be`, `NEST_VERSION=0.7.0`; empty
+  `rclone` folder created. `deploy/deploy.sh` (pre-update dump in
+  `backups/`). Verified: health 0.7.0 / API 7 over https, web app 200,
+  migration `20261030120148533` applied, the backup job caught up at once
+  (`backup_run` 1: succeeded, local, 148766 bytes, snapshot `5cbe45b0`,
+  4 s) and `nest-backup snapshots local` lists it. **Not verified:** the
+  portal on production (hostname not routed yet), Back up now on
+  production, a restore.
+
 ## Next
 
 1. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
@@ -691,14 +708,14 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
    iPhone build (taking a photo needs the phone).
 5. **Thomas:** try the watchlist at https://nest.g3cko.be (search, real
    posters, tonight's pick) and on the iPhone build.
-6. **Release phase 8 (with Thomas):** set `RESTIC_PASSWORD` (keep a copy in
-   a password manager), `BACKUP_TARGETS` (local + NFS and/or OneDrive via
-   `~/nest/rclone/rclone.conf`) and `NEST_ADMIN_DOMAIN=nest-admin.g3cko.be`
-   in `~/nest/deploy/.env`; route `nest-admin.g3cko.be` to port 8082 in the
-   tunnel and put Cloudflare Access in front; tag `v0.7.0`, deploy, press
-   Back up now and check both targets.
-7. **Test a restore** on a spare machine or a throwaway database (needed
-   for the phase 9 gate).
+6. **Thomas:** copy `RESTIC_PASSWORD` from `~/nest/deploy/.env` on the Pi
+   into your password manager. In the Cloudflare tunnel "Nest", add
+   `nest-admin.g3cko.be` → `http://nest:8082` and protect it with a
+   Cloudflare Access application (your email only). Then sign in and press
+   Back up now.
+7. **Test a restore** into a throwaway database on the Pi (needed for the
+   phase 9 gate), and add a second backup target (NFS share and/or OneDrive
+   via `~/nest/deploy/rclone/rclone.conf`).
 8. Phase 9 — Dashboard + release (CLAUDE.md section 10).
 
 ## Open questions
