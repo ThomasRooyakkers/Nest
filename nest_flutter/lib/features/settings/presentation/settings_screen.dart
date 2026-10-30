@@ -9,6 +9,7 @@ import 'package:nest_shared/nest_shared.dart';
 
 import '../../../app/router.dart';
 import '../../../core/backend/error_messages.dart';
+import '../../../core/backend/server_health_repository.dart';
 import '../../../core/household/household_repository.dart';
 import '../../../core/widgets/language_picker.dart';
 import '../../../l10n/app_localizations.dart';
@@ -55,11 +56,54 @@ class SettingsScreen extends ConsumerWidget {
               onPressed: () => ref.read(authRepositoryProvider).signOut(),
               child: Text(l10n.signOut),
             ),
+            // Servers before API level 8 cannot delete accounts.
+            if (ref.watch(serverSupportsProvider(8))) ...[
+              const SizedBox(height: 12),
+              TextButton(
+                style: TextButton.styleFrom(
+                  foregroundColor: NestColors.of(context).warningInk,
+                ),
+                onPressed: () => _deleteAccount(context, ref),
+                child: Text(l10n.deleteAccount),
+              ),
+            ],
           ],
         ),
       ),
     );
   }
+}
+
+Future<void> _deleteAccount(BuildContext context, WidgetRef ref) async {
+  final l10n = AppLocalizations.of(context);
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(l10n.deleteAccountTitle),
+      content: Text(l10n.deleteAccountConfirm),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: Text(l10n.cancelButton),
+        ),
+        FilledButton(
+          style: FilledButton.styleFrom(
+            backgroundColor: NestColors.of(context).warningInk,
+          ),
+          onPressed: () => Navigator.pop(context, true),
+          child: Text(l10n.deleteAccountButton),
+        ),
+      ],
+    ),
+  );
+  if (confirmed != true || !context.mounted) return;
+  final messenger = ScaffoldMessenger.of(context);
+  final deleted = await _guarded(
+    context,
+    () => ref.read(profileRepositoryProvider).deleteAccount(),
+  );
+  if (!deleted) return;
+  messenger.showSnackBar(SnackBar(content: Text(l10n.accountDeleted)));
 }
 
 /// Runs [action] and shows a localized error in a snack bar if it fails.

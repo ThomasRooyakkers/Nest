@@ -240,6 +240,46 @@ void main() {
       expect(find.text('Create invite code'), findsNothing);
     });
 
+    testWidgets('an account can be deleted after confirming', (tester) async {
+      final profile = FakeProfileRepository(testUser());
+      await pumpNestApp(tester, profile: profile);
+      await tester.tap(find.byTooltip('Settings'));
+      await tester.pumpAndSettle();
+
+      await tester.scrollUntilVisible(
+        find.text('Delete account'),
+        200,
+        scrollable: mainScrollable,
+      );
+      await tester.tap(find.text('Delete account'));
+      await tester.pumpAndSettle();
+      expect(find.text('Delete your account?'), findsOneWidget);
+
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+      expect(profile.deleted, isFalse);
+
+      await tester.tap(find.text('Delete account'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete for good'));
+      await tester.pumpAndSettle();
+      expect(profile.deleted, isTrue);
+    });
+
+    testWidgets('servers before API level 8 offer no account deletion', (
+      tester,
+    ) async {
+      await pumpNestApp(tester, health: FakeHealthRepository(apiVersion: 7));
+      await tester.tap(find.byTooltip('Settings'));
+      await tester.pumpAndSettle();
+      await tester.scrollUntilVisible(
+        find.text('Sign out'),
+        200,
+        scrollable: mainScrollable,
+      );
+      expect(find.text('Delete account'), findsNothing);
+    });
+
     testWidgets('settings lay out in Dutch with large text', (tester) async {
       await pumpNestApp(
         tester,

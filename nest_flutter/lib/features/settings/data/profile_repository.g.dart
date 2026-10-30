@@ -54,7 +54,7 @@ final class ProfileRepositoryProvider
   }
 }
 
-String _$profileRepositoryHash() => r'56c50acb53473fe68d144a84f1647b4ec39112ac';
+String _$profileRepositoryHash() => r'd2e8763b99485c50e60f106213ef16c88f490d54';
 
 /// The signed-in user, or `null` when signed out.
 

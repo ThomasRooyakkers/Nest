@@ -1243,4 +1243,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dashboardAllTasks => 'All tasks';
+
+  @override
+  String get deleteAccount => 'Delete account';
+
+  @override
+  String get deleteAccountTitle => 'Delete your account?';
+
+  @override
+  String get deleteAccountConfirm =>
+      'This permanently deletes your account. Households where you are the only member are deleted with all their lists, recipes, tasks and photos. In other households, someone else becomes owner. This cannot be undone.';
+
+  @override
+  String get deleteAccountButton => 'Delete for good';
+
+  @override
+  String get accountDeleted => 'Your account has been deleted.';
 }

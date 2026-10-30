@@ -1245,4 +1245,20 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get dashboardAllTasks => 'Alle taken';
+
+  @override
+  String get deleteAccount => 'Account verwijderen';
+
+  @override
+  String get deleteAccountTitle => 'Je account verwijderen?';
+
+  @override
+  String get deleteAccountConfirm =>
+      'Hiermee verwijder je je account voorgoed. Huishoudens waar je het enige lid bent, worden verwijderd met al hun lijsten, recepten, taken en foto\'s. In andere huishoudens wordt iemand anders eigenaar. Dit kan niet ongedaan worden gemaakt.';
+
+  @override
+  String get deleteAccountButton => 'Definitief verwijderen';
+
+  @override
+  String get accountDeleted => 'Je account is verwijderd.';
 }

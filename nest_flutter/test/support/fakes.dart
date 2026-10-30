@@ -36,6 +36,11 @@ class FakeProfileRepository implements ProfileRepository {
     required String name,
     required String locale,
   }) async => user = user.copyWith(name: name.trim(), locale: locale);
+
+  var deleted = false;
+
+  @override
+  Future<void> deleteAccount() async => deleted = true;
 }
 
 class FakeHouseholdRepository implements HouseholdRepository {
@@ -157,6 +162,7 @@ Future<ProviderContainer> pumpNestApp(
   WidgetTester tester, {
   bool signedIn = true,
   NestUser? user,
+  FakeProfileRepository? profile,
   List<MyHousehold>? households,
   List<HouseholdMember> members = const [],
   Locale? deviceLocale,
@@ -203,7 +209,7 @@ Future<ProviderContainer> pumpNestApp(
       nestDatabaseProvider.overrideWithValue(db),
       signedInProvider.overrideWithBuild((ref, notifier) => signedIn),
       profileRepositoryProvider.overrideWithValue(
-        FakeProfileRepository(user ?? testUser()),
+        profile ?? FakeProfileRepository(user ?? testUser()),
       ),
       householdRepositoryProvider.overrideWithValue(
         FakeHouseholdRepository(

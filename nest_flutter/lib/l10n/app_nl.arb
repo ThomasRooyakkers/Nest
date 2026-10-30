@@ -353,5 +353,10 @@
   "dashboardTasksToday": "{count, plural, =0{Niets voor vandaag} =1{1 taak vandaag} other{{count} taken vandaag}}",
   "dashboardTodayTitle": "Taken voor vandaag",
   "dashboardNoTasksToday": "Niets te doen vandaag.",
-  "dashboardAllTasks": "Alle taken"
+  "dashboardAllTasks": "Alle taken",
+  "deleteAccount": "Account verwijderen",
+  "deleteAccountTitle": "Je account verwijderen?",
+  "deleteAccountConfirm": "Hiermee verwijder je je account voorgoed. Huishoudens waar je het enige lid bent, worden verwijderd met al hun lijsten, recepten, taken en foto's. In andere huishoudens wordt iemand anders eigenaar. Dit kan niet ongedaan worden gemaakt.",
+  "deleteAccountButton": "Definitief verwijderen",
+  "accountDeleted": "Je account is verwijderd."
 }

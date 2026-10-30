@@ -2221,6 +2221,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All tasks'**
   String get dashboardAllTasks;
+
+  /// Account deletion in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get deleteAccount;
+
+  /// Account deletion in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your account?'**
+  String get deleteAccountTitle;
+
+  /// Account deletion in settings
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently deletes your account. Households where you are the only member are deleted with all their lists, recipes, tasks and photos. In other households, someone else becomes owner. This cannot be undone.'**
+  String get deleteAccountConfirm;
+
+  /// Account deletion in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Delete for good'**
+  String get deleteAccountButton;
+
+  /// Account deletion in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been deleted.'**
+  String get accountDeleted;
 }
 
 class _AppLocalizationsDelegate

@@ -1708,5 +1708,25 @@
   "dashboardAllTasks": "All tasks",
   "@dashboardAllTasks": {
     "description": "Link from the dashboard to the tasks screen."
+  },
+  "deleteAccount": "Delete account",
+  "@deleteAccount": {
+    "description": "Account deletion in settings"
+  },
+  "deleteAccountTitle": "Delete your account?",
+  "@deleteAccountTitle": {
+    "description": "Account deletion in settings"
+  },
+  "deleteAccountConfirm": "This permanently deletes your account. Households where you are the only member are deleted with all their lists, recipes, tasks and photos. In other households, someone else becomes owner. This cannot be undone.",
+  "@deleteAccountConfirm": {
+    "description": "Account deletion in settings"
+  },
+  "deleteAccountButton": "Delete for good",
+  "@deleteAccountButton": {
+    "description": "Account deletion in settings"
+  },
+  "accountDeleted": "Your account has been deleted.",
+  "@accountDeleted": {
+    "description": "Account deletion in settings"
   }
 }

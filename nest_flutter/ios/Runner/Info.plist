@@ -19,10 +19,6 @@
 		<string>en</string>
 		<string>nl</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>Nest uses the camera to take a photo of a recipe.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Nest uses your photos to add a picture to a recipe.</string>
 	<key>CFBundleName</key>
 	<string>Nest</string>
 	<key>CFBundlePackageType</key>
@@ -33,8 +29,14 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Nest uses the camera to take a photo of a recipe.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Nest uses your photos to add a picture to a recipe.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
