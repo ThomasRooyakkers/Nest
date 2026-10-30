@@ -6,6 +6,27 @@
 is built and tested locally (not released yet). Next in phase 9: real
 Google/Apple sign-in and TestFlight / Play internal testing.
 
+**Google and Apple sign-in (2026-10-30, built, not released):** server API
+level 9 / app API level 9. `GoogleIdpEndpoint` and `AppleIdpEndpoint` wrap
+the auth module's sign-in in `SocialSignIn` (one transaction): a new
+identity whose verified email matches an existing account (email sign-in or
+another provider) is merged into it; otherwise it is a new account under the
+sign-up mode (invite code from Create account, super-admin email, or open
+server), takes the provider's name, and joins the invite's household. A
+refused sign-in leaves nothing behind. Providers switch on per host
+(`GOOGLE_CLIENT_SECRET_JSON`, `APPLE_*` in `.env`); `health.ping` reports
+`googleServerClientId` and `appleSignIn`, and the iOS app shows "Continue
+with Apple/Google" only then (never on web/Android this round). Delete
+account revokes Sign in with Apple at Apple. New direct dependencies, with
+Thomas's OK: `google_sign_in` 7.2.0 and `sign_in_with_apple` 8.2.0 (app),
+`sign_in_with_apple_server` 1.0.0 (server), all already in the tree via the
+auth module. Google "G" logo rasterized from the auth module's
+`google.svg`. iOS: `Runner.entitlements` with Sign in with Apple. **Still
+needed:** the Google iOS client ID (`googleIosClientId` in
+`social_sign_in_repository.dart` + URL scheme in Info.plist), keys in the
+Pi's `.env`, a release, and a test on a real device. 336 server and 185 app
+tests pass; unsigned release build compiles.
+
 **App Store readiness (2026-10-30):** account deletion (server API level 8,
 `profile.deleteMe`; Settings, Delete account, hidden on older servers), a new
 app icon (two overlapping houses, chosen by Thomas), a bilingual privacy page
