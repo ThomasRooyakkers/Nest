@@ -63,6 +63,7 @@ Future<void> seed(Session session, {required String password}) async {
     await _seedShopping(session, household);
     await _seedTasks(session, household);
     await _seedRecipes(session, household);
+    await _seedMealPlan(session, household);
   }
 }
 
@@ -459,4 +460,58 @@ Future<void> _seedRecipes(Session session, Household household) async {
         RecipeStep(recipeId: saved.id!, position: index, text: text),
     ]);
   }
+}
+
+/// Dinners for this week and next: the seeded recipes, a few free-text
+/// meals and empty days, one with a prep-ahead note.
+Future<void> _seedMealPlan(Session session, Household household) async {
+  final householdId = household.id!;
+  if (await MealPlanEntry.db.count(
+        session,
+        where: (t) => t.householdId.equals(householdId),
+      ) >
+      0) {
+    session.log('Meal plan of ${household.name} already present.');
+    return;
+  }
+
+  final recipes = await Recipe.db.find(
+    session,
+    where: (t) => t.householdId.equals(householdId),
+    orderBy: (t) => t.id,
+  );
+  final owner = await Membership.db.findFirstRow(
+    session,
+    where: (t) =>
+        t.householdId.equals(householdId) & t.role.equals(MembershipRole.owner),
+  );
+  final now = DateTime.now();
+  DateTime day(int offset) =>
+      DateTime.utc(now.year, now.month, now.day + offset);
+  MealPlanEntry recipeMeal(int offset, Recipe recipe, {String note = ''}) =>
+      MealPlanEntry(
+        householdId: householdId,
+        date: day(offset),
+        recipeId: recipe.id,
+        freeText: recipe.title,
+        prepAheadNote: note,
+        createdById: owner?.userId,
+      );
+  MealPlanEntry textMeal(int offset, String text) => MealPlanEntry(
+    householdId: householdId,
+    date: day(offset),
+    freeText: text,
+    createdById: owner?.userId,
+  );
+
+  await MealPlanEntry.db.insert(session, [
+    textMeal(-1, 'Leftovers'),
+    if (recipes.length > 1) recipeMeal(0, recipes[1]),
+    if (recipes.length > 2)
+      recipeMeal(1, recipes[2], note: 'Take the stock out of the freezer'),
+    textMeal(3, 'Pizza night'),
+    if (recipes.isNotEmpty) recipeMeal(5, recipes[0]),
+    textMeal(8, 'Dinner at grandma\'s'),
+  ]);
+  session.log('Seeded the meal plan for ${household.name}.');
 }

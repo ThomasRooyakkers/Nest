@@ -20,6 +20,7 @@ void main() {
     late ShoppingItem itemB;
     late Task taskB;
     late Recipe recipeB;
+    late MealPlanEntry mealB;
     final photo = ByteData.sublistView(
       Uint8List.fromList([0xFF, 0xD8, 0xFF, 0xE0, 1, 2, 3]),
     );
@@ -32,6 +33,8 @@ void main() {
           endpoints.household.rename(s, id, 'Taken over'),
       'household.setFeatures': (s, id) =>
           endpoints.household.setFeatures(s, id, []),
+      'household.setMealSlots': (s, id) =>
+          endpoints.household.setMealSlots(s, id, [MealSlot.lunch]),
       'household.createInvite': (s, id) =>
           endpoints.household.createInvite(s, id),
       'household.revokeInvite': (s, id) =>
@@ -96,6 +99,19 @@ void main() {
       'recipe.photo': (s, id) => endpoints.recipe.photo(s, id, recipeB.id!),
       'recipe.remove': (s, id) => endpoints.recipe.remove(s, id, recipeB.id!),
       'recipe.watch': (s, id) => endpoints.recipe.watch(s, id).first,
+      'mealPlan.entries': (s, id) => endpoints.mealPlan.entries(
+        s,
+        id,
+        today,
+        today.add(const Duration(days: 7)),
+      ),
+      'mealPlan.save': (s, id) => endpoints.mealPlan.save(
+        s,
+        id,
+        mealB.copyWith(freeText: 'Taken over', recipeId: null),
+      ),
+      'mealPlan.remove': (s, id) => endpoints.mealPlan.remove(s, id, mealB.id!),
+      'mealPlan.watch': (s, id) => endpoints.mealPlan.watch(s, id).first,
     };
 
     /// Household A's own id combined with ids of household B's rows.
@@ -187,6 +203,17 @@ void main() {
           endpoints.recipe.setPhoto(s, a, recipeB.id!, photo),
       'recipe.photo': (s, a) => endpoints.recipe.photo(s, a, recipeB.id!),
       'recipe.remove': (s, a) => endpoints.recipe.remove(s, a, recipeB.id!),
+      'mealPlan.save': (s, a) => endpoints.mealPlan.save(
+        s,
+        a,
+        mealB.copyWith(freeText: 'Taken over', recipeId: null),
+      ),
+      'mealPlan.save (recipe of B)': (s, a) => endpoints.mealPlan.save(
+        s,
+        a,
+        MealPlanEntry(householdId: a, date: today, recipeId: recipeB.id),
+      ),
+      'mealPlan.remove': (s, a) => endpoints.mealPlan.remove(s, a, mealB.id!),
     };
 
     late TestSessionBuilder userA;
@@ -257,6 +284,16 @@ void main() {
         recipeB.id!,
         photo,
       );
+      mealB = (await endpoints.mealPlan.save(
+        userB,
+        householdB,
+        MealPlanEntry(
+          householdId: 0,
+          date: today,
+          recipeId: recipeB.id,
+          prepAheadNote: 'Soak the beans',
+        ),
+      )).entries!.single;
     });
 
     for (final MapEntry(key: name, value: call)
@@ -315,6 +352,14 @@ void main() {
           recipeB.id!,
         );
         expect(stored?.lengthInBytes, photo.lengthInBytes);
+        final meals = await endpoints.mealPlan.entries(
+          userB,
+          householdB,
+          today,
+          today.add(const Duration(days: 1)),
+        );
+        expect(meals.single.toJson(), mealB.toJson());
+        expect(b.household.mealSlots, isNull);
       },
     );
 
@@ -325,6 +370,15 @@ void main() {
       expect(await endpoints.shopping.items(userA, householdA), isEmpty);
       expect(await endpoints.task.tasks(userA, householdA), isEmpty);
       expect(await endpoints.recipe.recipes(userA, householdA), isEmpty);
+      expect(
+        await endpoints.mealPlan.entries(
+          userA,
+          householdA,
+          today,
+          today.add(const Duration(days: 7)),
+        ),
+        isEmpty,
+      );
     });
 
     test('A list may not name members of another household', () async {

@@ -1,0 +1,27 @@
+### A planned meal: a recipe from the library or free text, for one meal
+### of one day. There is at most one entry per day and meal.
+class: MealPlanEntry
+table: meal_plan_entry
+fields:
+  household: Household?, relation(onDelete=Cascade)
+  ### Calendar day, as 00:00 UTC of that day (no time zone): the day is
+  ### the same for everyone in the household.
+  date: DateTime
+  slot: MealSlot, default=dinner
+  ### The recipe to cook; null for a free-text meal.
+  recipe: Recipe?, relation(optional, onDelete=SetNull)
+  ### What to eat, e.g. "Pizza night". With a recipe, the server puts the
+  ### recipe's title here, so the meal keeps its name when the recipe is
+  ### deleted.
+  freeText: String, default=''
+  ### Servings to cook; null for the recipe's own servings.
+  servings: int?
+  ### Something to do in advance, e.g. "Take the chicken out of the freezer".
+  prepAheadNote: String, default=''
+  createdBy: NestUser?, relation(optional, onDelete=SetNull)
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now
+indexes:
+  meal_plan_entry_day_idx:
+    fields: householdId, date, slot
+    unique: true

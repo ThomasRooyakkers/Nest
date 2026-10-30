@@ -15,6 +15,9 @@ import 'package:nest_server/src/generated/admin_household_summary.dart'
     as _it78yatv;
 import 'package:nest_server/src/generated/household_feature.dart' as _iez4op0n;
 import 'package:nest_server/src/generated/household_member.dart' as _i9scnr3x;
+import 'package:nest_server/src/generated/meals/meal_plan_entry.dart'
+    as _i33h3ld7;
+import 'package:nest_server/src/generated/meals/meal_slot.dart' as _iliwnvwg;
 import 'package:nest_server/src/generated/my_household.dart' as _i87acs67;
 import 'package:nest_server/src/generated/recipes/recipe.dart' as _iei9bazg;
 import 'package:nest_server/src/generated/shopping/catalog_item.dart'
@@ -40,6 +43,9 @@ import 'household_feature.dart' as _idhxy0am;
 import 'household_invite.dart' as _itc130bt;
 import 'household_member.dart' as _iv10erpj;
 import 'household_status.dart' as _imk37xix;
+import 'meals/meal_plan_entry.dart' as _ieufxm3y;
+import 'meals/meal_plan_event.dart' as _ig1w91gd;
+import 'meals/meal_slot.dart' as _irc89x16;
 import 'membership.dart' as _iu35fd1a;
 import 'membership_role.dart' as _iur1rrwm;
 import 'my_household.dart' as _i46wom1w;
@@ -73,6 +79,9 @@ export 'household_feature.dart';
 export 'household_invite.dart';
 export 'household_member.dart';
 export 'household_status.dart';
+export 'meals/meal_plan_entry.dart';
+export 'meals/meal_plan_event.dart';
+export 'meals/meal_slot.dart';
 export 'membership.dart';
 export 'membership_role.dart';
 export 'my_household.dart';
@@ -316,6 +325,12 @@ class Protocol extends _is.DatabaseSerializationManager {
           dartType: 'List<protocol:HouseholdFeature>',
         ),
         _isp.ColumnDefinition(
+          name: 'mealSlots',
+          columnType: _isp.ColumnType.json,
+          isNullable: true,
+          dartType: 'List<protocol:MealSlot>?',
+        ),
+        _isp.ColumnDefinition(
           name: 'inviteCode',
           columnType: _isp.ColumnType.text,
           isNullable: true,
@@ -351,6 +366,142 @@ class Protocol extends _is.DatabaseSerializationManager {
             _isp.IndexElementDefinition(
               type: _isp.IndexElementDefinitionType.column,
               definition: 'inviteCode',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'meal_plan_entry',
+      dartName: 'MealPlanEntry',
+      schema: 'public',
+      module: 'nest',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'householdId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'date',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isp.ColumnDefinition(
+          name: 'slot',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:MealSlot',
+          columnDefault: '\'dinner\'',
+        ),
+        _isp.ColumnDefinition(
+          name: 'recipeId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'freeText',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+          columnDefault: '\'\'',
+        ),
+        _isp.ColumnDefinition(
+          name: 'servings',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'prepAheadNote',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+          columnDefault: '\'\'',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdById',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+        _isp.ColumnDefinition(
+          name: 'updatedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'meal_plan_entry_fk_0',
+          columns: ['householdId'],
+          referenceTable: 'household',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'meal_plan_entry_fk_1',
+          columns: ['recipeId'],
+          referenceTable: 'recipe',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.setNull,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'meal_plan_entry_fk_2',
+          columns: ['createdById'],
+          referenceTable: 'nest_user',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.setNull,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'meal_plan_entry_day_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'householdId',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'date',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'slot',
             ),
           ],
           type: 'btree',
@@ -1431,6 +1582,15 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _imk37xix.HouseholdStatus) {
       return _imk37xix.HouseholdStatus.fromJson(data) as T;
     }
+    if (t == _ieufxm3y.MealPlanEntry) {
+      return _ieufxm3y.MealPlanEntry.fromJson(data) as T;
+    }
+    if (t == _ig1w91gd.MealPlanEvent) {
+      return _ig1w91gd.MealPlanEvent.fromJson(data) as T;
+    }
+    if (t == _irc89x16.MealSlot) {
+      return _irc89x16.MealSlot.fromJson(data) as T;
+    }
     if (t == _iu35fd1a.Membership) {
       return _iu35fd1a.Membership.fromJson(data) as T;
     }
@@ -1538,6 +1698,17 @@ class Protocol extends _is.DatabaseSerializationManager {
       return (data != null ? _imk37xix.HouseholdStatus.fromJson(data) : null)
           as T;
     }
+    if (t == _is.getType<_ieufxm3y.MealPlanEntry?>()) {
+      return (data != null ? _ieufxm3y.MealPlanEntry.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_ig1w91gd.MealPlanEvent?>()) {
+      return (data != null ? _ig1w91gd.MealPlanEvent.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_irc89x16.MealSlot?>()) {
+      return (data != null ? _irc89x16.MealSlot.fromJson(data) : null) as T;
+    }
     if (t == _is.getType<_iu35fd1a.Membership?>()) {
       return (data != null ? _iu35fd1a.Membership.fromJson(data) : null) as T;
     }
@@ -1635,6 +1806,43 @@ class Protocol extends _is.DatabaseSerializationManager {
               .toList()
           as T;
     }
+    if (t == List<_irc89x16.MealSlot>) {
+      return (data as List)
+              .map((e) => deserialize<_irc89x16.MealSlot>(e))
+              .toList()
+          as T;
+    }
+    if (t == _is.getType<List<_irc89x16.MealSlot>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_irc89x16.MealSlot>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<_ieufxm3y.MealPlanEntry>) {
+      return (data as List)
+              .map((e) => deserialize<_ieufxm3y.MealPlanEntry>(e))
+              .toList()
+          as T;
+    }
+    if (t == _is.getType<List<_ieufxm3y.MealPlanEntry>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_ieufxm3y.MealPlanEntry>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<int>) {
+      return (data as List).map((e) => deserialize<int>(e)).toList() as T;
+    }
+    if (t == _is.getType<List<int>?>()) {
+      return (data != null
+              ? (data as List).map((e) => deserialize<int>(e)).toList()
+              : null)
+          as T;
+    }
     if (t == List<_i2xp5czv.RecipeIngredient>) {
       return (data as List)
               .map((e) => deserialize<_i2xp5czv.RecipeIngredient>(e))
@@ -1674,15 +1882,6 @@ class Protocol extends _is.DatabaseSerializationManager {
               ? (data as List)
                     .map((e) => deserialize<_ihz7f6c5.Recipe>(e))
                     .toList()
-              : null)
-          as T;
-    }
-    if (t == List<int>) {
-      return (data as List).map((e) => deserialize<int>(e)).toList() as T;
-    }
-    if (t == _is.getType<List<int>?>()) {
-      return (data != null
-              ? (data as List).map((e) => deserialize<int>(e)).toList()
               : null)
           as T;
     }
@@ -1782,6 +1981,18 @@ class Protocol extends _is.DatabaseSerializationManager {
               .toList()
           as T;
     }
+    if (t == List<_iliwnvwg.MealSlot>) {
+      return (data as List)
+              .map((e) => deserialize<_iliwnvwg.MealSlot>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_i33h3ld7.MealPlanEntry>) {
+      return (data as List)
+              .map((e) => deserialize<_i33h3ld7.MealPlanEntry>(e))
+              .toList()
+          as T;
+    }
     if (t == List<_iei9bazg.Recipe>) {
       return (data as List)
               .map((e) => deserialize<_iei9bazg.Recipe>(e))
@@ -1844,6 +2055,9 @@ class Protocol extends _is.DatabaseSerializationManager {
       _itc130bt.HouseholdInvite => 'HouseholdInvite',
       _iv10erpj.HouseholdMember => 'HouseholdMember',
       _imk37xix.HouseholdStatus => 'HouseholdStatus',
+      _ieufxm3y.MealPlanEntry => 'MealPlanEntry',
+      _ig1w91gd.MealPlanEvent => 'MealPlanEvent',
+      _irc89x16.MealSlot => 'MealSlot',
       _iu35fd1a.Membership => 'Membership',
       _iur1rrwm.MembershipRole => 'MembershipRole',
       _i46wom1w.MyHousehold => 'MyHousehold',
@@ -1898,6 +2112,12 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'HouseholdMember';
       case _imk37xix.HouseholdStatus():
         return 'HouseholdStatus';
+      case _ieufxm3y.MealPlanEntry():
+        return 'MealPlanEntry';
+      case _ig1w91gd.MealPlanEvent():
+        return 'MealPlanEvent';
+      case _irc89x16.MealSlot():
+        return 'MealSlot';
       case _iu35fd1a.Membership():
         return 'Membership';
       case _iur1rrwm.MembershipRole():
@@ -1996,6 +2216,15 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (dataClassName == 'HouseholdStatus') {
       return deserialize<_imk37xix.HouseholdStatus>(data['data']);
+    }
+    if (dataClassName == 'MealPlanEntry') {
+      return deserialize<_ieufxm3y.MealPlanEntry>(data['data']);
+    }
+    if (dataClassName == 'MealPlanEvent') {
+      return deserialize<_ig1w91gd.MealPlanEvent>(data['data']);
+    }
+    if (dataClassName == 'MealSlot') {
+      return deserialize<_irc89x16.MealSlot>(data['data']);
     }
     if (dataClassName == 'Membership') {
       return deserialize<_iu35fd1a.Membership>(data['data']);
@@ -2120,6 +2349,8 @@ class Protocol extends _is.DatabaseSerializationManager {
         return _ihc3ja42.AdminAuditLog.t;
       case _ijonbu5t.Household:
         return _ijonbu5t.Household.t;
+      case _ieufxm3y.MealPlanEntry:
+        return _ieufxm3y.MealPlanEntry.t;
       case _iu35fd1a.Membership:
         return _iu35fd1a.Membership.t;
       case _iasjmgi7.NestUser:

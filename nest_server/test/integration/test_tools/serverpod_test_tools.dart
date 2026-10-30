@@ -20,6 +20,11 @@ import 'package:nest_server/src/generated/household_feature.dart' as _iez4op0n;
 import 'package:nest_server/src/generated/household_invite.dart' as _i2zbtjh1;
 import 'package:nest_server/src/generated/household_member.dart' as _i9scnr3x;
 import 'package:nest_server/src/generated/household_status.dart' as _i544oeia;
+import 'package:nest_server/src/generated/meals/meal_plan_entry.dart'
+    as _i33h3ld7;
+import 'package:nest_server/src/generated/meals/meal_plan_event.dart'
+    as _isy2vrem;
+import 'package:nest_server/src/generated/meals/meal_slot.dart' as _iliwnvwg;
 import 'package:nest_server/src/generated/my_household.dart' as _i87acs67;
 import 'package:nest_server/src/generated/nest_user.dart' as _io4rmg6h;
 import 'package:nest_server/src/generated/recipes/recipe.dart' as _iei9bazg;
@@ -190,6 +195,8 @@ class TestEndpoints {
 
   late final _HouseholdEndpoint household;
 
+  late final _MealPlanEndpoint mealPlan;
+
   late final _ProfileEndpoint profile;
 
   late final _RecipeEndpoint recipe;
@@ -225,6 +232,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     household = _HouseholdEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    mealPlan = _MealPlanEndpoint(
       endpoints,
       serializationManager,
     );
@@ -889,6 +900,41 @@ class _HouseholdEndpoint {
     });
   }
 
+  _ida.Future<_i87acs67.MyHousehold> setMealSlots(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    List<_iliwnvwg.MealSlot> slots,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'household',
+            method: 'setMealSlots',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'household',
+          methodName: 'setMealSlots',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'slots': slots,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i87acs67.MyHousehold>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
   _ida.Future<_i2zbtjh1.HouseholdInvite> createInvite(
     _ist.TestSessionBuilder sessionBuilder,
     int householdId,
@@ -1011,6 +1057,157 @@ class _HouseholdEndpoint {
         await _localUniqueSession.close();
       }
     });
+  }
+}
+
+class _MealPlanEndpoint {
+  _MealPlanEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<List<_i33h3ld7.MealPlanEntry>> entries(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    DateTime from,
+    DateTime to,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'mealPlan',
+            method: 'entries',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'mealPlan',
+          methodName: 'entries',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'from': from,
+            'to': to,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_i33h3ld7.MealPlanEntry>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_isy2vrem.MealPlanEvent> save(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    _i33h3ld7.MealPlanEntry entry,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'mealPlan',
+            method: 'save',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'mealPlan',
+          methodName: 'save',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'entry': entry,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_isy2vrem.MealPlanEvent>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<void> remove(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+    int entryId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'mealPlan',
+            method: 'remove',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'mealPlan',
+          methodName: 'remove',
+          parameters: _ist.testObjectToJson({
+            'householdId': householdId,
+            'entryId': entryId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Stream<_isy2vrem.MealPlanEvent> watch(
+    _ist.TestSessionBuilder sessionBuilder,
+    int householdId,
+  ) {
+    var _localTestStreamManager =
+        _ist.TestStreamManager<_isy2vrem.MealPlanEvent>();
+    _ist.callStreamFunctionAndHandleExceptions(
+      () async {
+        var _localUniqueSession =
+            (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+              endpoint: 'mealPlan',
+              method: 'watch',
+            );
+        var _localCallContext = await _endpointDispatch
+            .getMethodStreamCallContext(
+              createSessionCallback: (_) => _localUniqueSession,
+              endpointPath: 'mealPlan',
+              methodName: 'watch',
+              arguments: {'householdId': householdId},
+              requestedInputStreams: [],
+              serializationManager: _serializationManager,
+            );
+        await _localTestStreamManager.callStreamMethod(
+          _localCallContext,
+          _localUniqueSession,
+          {},
+        );
+      },
+      _localTestStreamManager.outputStreamController,
+    );
+    return _localTestStreamManager.outputStreamController.stream;
   }
 }
 

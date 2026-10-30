@@ -19,6 +19,11 @@ import 'package:nest_client/src/protocol/household_feature.dart' as _iejl7hre;
 import 'package:nest_client/src/protocol/household_invite.dart' as _iidsgy2i;
 import 'package:nest_client/src/protocol/household_member.dart' as _ihqqoxyh;
 import 'package:nest_client/src/protocol/household_status.dart' as _iluf117q;
+import 'package:nest_client/src/protocol/meals/meal_plan_entry.dart'
+    as _i0zriapn;
+import 'package:nest_client/src/protocol/meals/meal_plan_event.dart'
+    as _i5lx2h1m;
+import 'package:nest_client/src/protocol/meals/meal_slot.dart' as _iebxn6ex;
 import 'package:nest_client/src/protocol/my_household.dart' as _itexq6j2;
 import 'package:nest_client/src/protocol/nest_user.dart' as _i7k4hj0f;
 import 'package:nest_client/src/protocol/recipes/recipe.dart' as _iexyob0t;
@@ -381,6 +386,21 @@ class EndpointHousehold extends _isc.EndpointRef {
     },
   );
 
+  /// Chooses which meals besides dinner the household plans (breakfast,
+  /// lunch). Owners only. Meals already planned in a slot that is switched
+  /// off are kept, but not shown.
+  _ida.Future<_itexq6j2.MyHousehold> setMealSlots(
+    int householdId,
+    List<_iebxn6ex.MealSlot> slots,
+  ) => caller.callServerEndpoint<_itexq6j2.MyHousehold>(
+    'household',
+    'setMealSlots',
+    {
+      'householdId': householdId,
+      'slots': slots,
+    },
+  );
+
   /// Creates a new invite code, replacing any previous one. Owners only.
   _ida.Future<_iidsgy2i.HouseholdInvite> createInvite(int householdId) =>
       caller.callServerEndpoint<_iidsgy2i.HouseholdInvite>(
@@ -411,6 +431,76 @@ class EndpointHousehold extends _isc.EndpointRef {
     'leave',
     {'householdId': householdId},
   );
+}
+
+/// The household's meal plan: per day a dinner (and breakfast and lunch
+/// where the household switched them on), from the recipe library or free
+/// text. Every change is also sent to [watch], so all members see it live.
+/// {@category Endpoint}
+class EndpointMealPlan extends _isc.EndpointRef {
+  EndpointMealPlan(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'mealPlan';
+
+  /// Meals planned on the days from [from] up to (not including) [to].
+  _ida.Future<List<_i0zriapn.MealPlanEntry>> entries(
+    int householdId,
+    DateTime from,
+    DateTime to,
+  ) => caller.callServerEndpoint<List<_i0zriapn.MealPlanEntry>>(
+    'mealPlan',
+    'entries',
+    {
+      'householdId': householdId,
+      'from': from,
+      'to': to,
+    },
+  );
+
+  /// Plans a meal, or changes a planned one (when [entry] has an id),
+  /// including moving it to another day.
+  ///
+  /// There is one meal per day and slot: a meal already planned there is
+  /// replaced (a new entry takes its place and id; a moved one removes it).
+  /// Returns every entry that changed.
+  _ida.Future<_i5lx2h1m.MealPlanEvent> save(
+    int householdId,
+    _i0zriapn.MealPlanEntry entry,
+  ) => caller.callServerEndpoint<_i5lx2h1m.MealPlanEvent>(
+    'mealPlan',
+    'save',
+    {
+      'householdId': householdId,
+      'entry': entry,
+    },
+  );
+
+  /// Removes a planned meal.
+  _ida.Future<void> remove(
+    int householdId,
+    int entryId,
+  ) => caller.callServerEndpoint<void>(
+    'mealPlan',
+    'remove',
+    {
+      'householdId': householdId,
+      'entryId': entryId,
+    },
+  );
+
+  /// Changes to the household's meal plan as they happen. The app loads
+  /// the weeks it shows first and then applies these events.
+  _ida.Stream<_i5lx2h1m.MealPlanEvent> watch(int householdId) =>
+      caller.callStreamingServerEndpoint<
+        _ida.Stream<_i5lx2h1m.MealPlanEvent>,
+        _i5lx2h1m.MealPlanEvent
+      >(
+        'mealPlan',
+        'watch',
+        {'householdId': householdId},
+        {},
+      );
 }
 
 /// The signed-in user's own profile. Not household-scoped.
@@ -895,6 +985,7 @@ class Client extends _isc.ServerpodClientShared {
     adminHouseholds = EndpointAdminHouseholds(this);
     health = EndpointHealth(this);
     household = EndpointHousehold(this);
+    mealPlan = EndpointMealPlan(this);
     profile = EndpointProfile(this);
     recipe = EndpointRecipe(this);
     shopping = EndpointShopping(this);
@@ -912,6 +1003,8 @@ class Client extends _isc.ServerpodClientShared {
   late final EndpointHealth health;
 
   late final EndpointHousehold household;
+
+  late final EndpointMealPlan mealPlan;
 
   late final EndpointProfile profile;
 
@@ -932,6 +1025,7 @@ class Client extends _isc.ServerpodClientShared {
     'adminHouseholds': adminHouseholds,
     'health': health,
     'household': household,
+    'mealPlan': mealPlan,
     'profile': profile,
     'recipe': recipe,
     'shopping': shopping,

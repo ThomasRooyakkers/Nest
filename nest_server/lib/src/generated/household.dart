@@ -14,6 +14,7 @@ import 'package:nest_server/src/generated/protocol.dart' as _imc1swab;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'household_feature.dart' as _idhxy0am;
 import 'household_status.dart' as _imk37xix;
+import 'meals/meal_slot.dart' as _irc89x16;
 
 /// A family. All feature data is scoped to a household.
 abstract class Household
@@ -23,6 +24,7 @@ abstract class Household
     required this.name,
     _imk37xix.HouseholdStatus? status,
     required this.enabledFeatures,
+    this.mealSlots,
     this.inviteCode,
     this.inviteExpiresAt,
     DateTime? createdAt,
@@ -36,6 +38,7 @@ abstract class Household
     required String name,
     _imk37xix.HouseholdStatus? status,
     required List<_idhxy0am.HouseholdFeature> enabledFeatures,
+    List<_irc89x16.MealSlot>? mealSlots,
     String? inviteCode,
     DateTime? inviteExpiresAt,
     DateTime? createdAt,
@@ -55,6 +58,11 @@ abstract class Household
           .deserialize<List<_idhxy0am.HouseholdFeature>>(
             jsonSerialization['enabledFeatures'],
           ),
+      mealSlots: jsonSerialization['mealSlots'] == null
+          ? null
+          : _imc1swab.Protocol().deserialize<List<_irc89x16.MealSlot>>(
+              jsonSerialization['mealSlots'],
+            ),
       inviteCode: jsonSerialization['inviteCode'] as String?,
       inviteExpiresAt: jsonSerialization['inviteExpiresAt'] == null
           ? null
@@ -84,6 +92,10 @@ abstract class Household
   /// Features switched on for this household.
   List<_idhxy0am.HouseholdFeature> enabledFeatures;
 
+  /// Meals planned besides dinner (breakfast, lunch); null or empty for
+  /// dinner only.
+  List<_irc89x16.MealSlot>? mealSlots;
+
   /// Current invite code; only returned to owners.
   String? inviteCode;
 
@@ -104,6 +116,7 @@ abstract class Household
     String? name,
     _imk37xix.HouseholdStatus? status,
     List<_idhxy0am.HouseholdFeature>? enabledFeatures,
+    List<_irc89x16.MealSlot>? mealSlots,
     String? inviteCode,
     DateTime? inviteExpiresAt,
     DateTime? createdAt,
@@ -117,6 +130,8 @@ abstract class Household
       'name': name,
       'status': status.toJson(),
       'enabledFeatures': enabledFeatures.toJson(valueToJson: (v) => v.toJson()),
+      if (mealSlots != null)
+        'mealSlots': mealSlots?.toJson(valueToJson: (v) => v.toJson()),
       if (inviteCode != null) 'inviteCode': inviteCode,
       if (inviteExpiresAt != null) 'inviteExpiresAt': inviteExpiresAt?.toJson(),
       'createdAt': createdAt.toJson(),
@@ -132,6 +147,8 @@ abstract class Household
       'name': name,
       'status': status.toJson(),
       'enabledFeatures': enabledFeatures.toJson(valueToJson: (v) => v.toJson()),
+      if (mealSlots != null)
+        'mealSlots': mealSlots?.toJson(valueToJson: (v) => v.toJson()),
       if (inviteCode != null) 'inviteCode': inviteCode,
       if (inviteExpiresAt != null) 'inviteExpiresAt': inviteExpiresAt?.toJson(),
       'createdAt': createdAt.toJson(),
@@ -175,6 +192,7 @@ class _HouseholdImpl extends Household {
     required String name,
     _imk37xix.HouseholdStatus? status,
     required List<_idhxy0am.HouseholdFeature> enabledFeatures,
+    List<_irc89x16.MealSlot>? mealSlots,
     String? inviteCode,
     DateTime? inviteExpiresAt,
     DateTime? createdAt,
@@ -184,6 +202,7 @@ class _HouseholdImpl extends Household {
          name: name,
          status: status,
          enabledFeatures: enabledFeatures,
+         mealSlots: mealSlots,
          inviteCode: inviteCode,
          inviteExpiresAt: inviteExpiresAt,
          createdAt: createdAt,
@@ -199,6 +218,7 @@ class _HouseholdImpl extends Household {
     String? name,
     _imk37xix.HouseholdStatus? status,
     List<_idhxy0am.HouseholdFeature>? enabledFeatures,
+    Object? mealSlots = _Undefined,
     Object? inviteCode = _Undefined,
     Object? inviteExpiresAt = _Undefined,
     DateTime? createdAt,
@@ -210,6 +230,9 @@ class _HouseholdImpl extends Household {
       status: status ?? this.status,
       enabledFeatures:
           enabledFeatures ?? this.enabledFeatures.map((e0) => e0).toList(),
+      mealSlots: mealSlots is List<_irc89x16.MealSlot>?
+          ? mealSlots
+          : this.mealSlots?.map((e0) => e0).toList(),
       inviteCode: inviteCode is String? ? inviteCode : this.inviteCode,
       inviteExpiresAt: inviteExpiresAt is DateTime?
           ? inviteExpiresAt
@@ -241,6 +264,13 @@ class HouseholdUpdateTable extends _is.UpdateTable<HouseholdTable> {
   >
   enabledFeatures(List<_idhxy0am.HouseholdFeature> value) => _is.ColumnValue(
     table.enabledFeatures,
+    value,
+  );
+
+  _is.ColumnValue<List<_irc89x16.MealSlot>, List<_irc89x16.MealSlot>> mealSlots(
+    List<_irc89x16.MealSlot>? value,
+  ) => _is.ColumnValue(
+    table.mealSlots,
     value,
   );
 
@@ -285,6 +315,10 @@ class HouseholdTable extends _is.Table<int?> {
       'enabledFeatures',
       this,
     );
+    mealSlots = _is.ColumnSerializable<List<_irc89x16.MealSlot>>(
+      'mealSlots',
+      this,
+    );
     inviteCode = _is.ColumnString(
       'inviteCode',
       this,
@@ -315,6 +349,10 @@ class HouseholdTable extends _is.Table<int?> {
   late final _is.ColumnSerializable<List<_idhxy0am.HouseholdFeature>>
   enabledFeatures;
 
+  /// Meals planned besides dinner (breakfast, lunch); null or empty for
+  /// dinner only.
+  late final _is.ColumnSerializable<List<_irc89x16.MealSlot>> mealSlots;
+
   /// Current invite code; only returned to owners.
   late final _is.ColumnString inviteCode;
 
@@ -330,6 +368,7 @@ class HouseholdTable extends _is.Table<int?> {
     name,
     status,
     enabledFeatures,
+    mealSlots,
     inviteCode,
     inviteExpiresAt,
     createdAt,

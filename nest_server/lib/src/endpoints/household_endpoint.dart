@@ -116,6 +116,28 @@ class HouseholdEndpoint extends Endpoint {
     return _myHousehold(household, access.membership.role);
   }
 
+  /// Chooses which meals besides dinner the household plans (breakfast,
+  /// lunch). Owners only. Meals already planned in a slot that is switched
+  /// off are kept, but not shown.
+  Future<MyHousehold> setMealSlots(
+    Session session,
+    int householdId,
+    List<MealSlot> slots,
+  ) async {
+    final access = await HouseholdGuard.requireOwner(session, householdId);
+    final household = await Household.db.updateRow(
+      session,
+      access.household.copyWith(
+        mealSlots: [
+          for (final slot in MealSlot.values)
+            if (slot != MealSlot.dinner && slots.contains(slot)) slot,
+        ],
+        updatedAt: DateTime.now(),
+      ),
+    );
+    return _myHousehold(household, access.membership.role);
+  }
+
   /// Creates a new invite code, replacing any previous one. Owners only.
   Future<HouseholdInvite> createInvite(Session session, int householdId) async {
     final access = await HouseholdGuard.requireOwner(session, householdId);

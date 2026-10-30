@@ -15,6 +15,9 @@ import 'package:nest_client/src/protocol/admin_household_summary.dart'
     as _ipf5tkzm;
 import 'package:nest_client/src/protocol/household_feature.dart' as _iejl7hre;
 import 'package:nest_client/src/protocol/household_member.dart' as _ihqqoxyh;
+import 'package:nest_client/src/protocol/meals/meal_plan_entry.dart'
+    as _i0zriapn;
+import 'package:nest_client/src/protocol/meals/meal_slot.dart' as _iebxn6ex;
 import 'package:nest_client/src/protocol/my_household.dart' as _itexq6j2;
 import 'package:nest_client/src/protocol/recipes/recipe.dart' as _iexyob0t;
 import 'package:nest_client/src/protocol/shopping/catalog_item.dart'
@@ -39,6 +42,9 @@ import 'household_feature.dart' as _idhxy0am;
 import 'household_invite.dart' as _itc130bt;
 import 'household_member.dart' as _iv10erpj;
 import 'household_status.dart' as _imk37xix;
+import 'meals/meal_plan_entry.dart' as _ieufxm3y;
+import 'meals/meal_plan_event.dart' as _ig1w91gd;
+import 'meals/meal_slot.dart' as _irc89x16;
 import 'membership.dart' as _iu35fd1a;
 import 'membership_role.dart' as _iur1rrwm;
 import 'my_household.dart' as _i46wom1w;
@@ -71,6 +77,9 @@ export 'household_feature.dart';
 export 'household_invite.dart';
 export 'household_member.dart';
 export 'household_status.dart';
+export 'meals/meal_plan_entry.dart';
+export 'meals/meal_plan_event.dart';
+export 'meals/meal_slot.dart';
 export 'membership.dart';
 export 'membership_role.dart';
 export 'my_household.dart';
@@ -152,6 +161,15 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == _imk37xix.HouseholdStatus) {
       return _imk37xix.HouseholdStatus.fromJson(data) as T;
+    }
+    if (t == _ieufxm3y.MealPlanEntry) {
+      return _ieufxm3y.MealPlanEntry.fromJson(data) as T;
+    }
+    if (t == _ig1w91gd.MealPlanEvent) {
+      return _ig1w91gd.MealPlanEvent.fromJson(data) as T;
+    }
+    if (t == _irc89x16.MealSlot) {
+      return _irc89x16.MealSlot.fromJson(data) as T;
     }
     if (t == _iu35fd1a.Membership) {
       return _iu35fd1a.Membership.fromJson(data) as T;
@@ -257,6 +275,17 @@ class Protocol extends _isc.SerializationManager {
       return (data != null ? _imk37xix.HouseholdStatus.fromJson(data) : null)
           as T;
     }
+    if (t == _isc.getType<_ieufxm3y.MealPlanEntry?>()) {
+      return (data != null ? _ieufxm3y.MealPlanEntry.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ig1w91gd.MealPlanEvent?>()) {
+      return (data != null ? _ig1w91gd.MealPlanEvent.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_irc89x16.MealSlot?>()) {
+      return (data != null ? _irc89x16.MealSlot.fromJson(data) : null) as T;
+    }
     if (t == _isc.getType<_iu35fd1a.Membership?>()) {
       return (data != null ? _iu35fd1a.Membership.fromJson(data) : null) as T;
     }
@@ -351,6 +380,43 @@ class Protocol extends _isc.SerializationManager {
               .toList()
           as T;
     }
+    if (t == List<_irc89x16.MealSlot>) {
+      return (data as List)
+              .map((e) => deserialize<_irc89x16.MealSlot>(e))
+              .toList()
+          as T;
+    }
+    if (t == _isc.getType<List<_irc89x16.MealSlot>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_irc89x16.MealSlot>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<_ieufxm3y.MealPlanEntry>) {
+      return (data as List)
+              .map((e) => deserialize<_ieufxm3y.MealPlanEntry>(e))
+              .toList()
+          as T;
+    }
+    if (t == _isc.getType<List<_ieufxm3y.MealPlanEntry>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_ieufxm3y.MealPlanEntry>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == List<int>) {
+      return (data as List).map((e) => deserialize<int>(e)).toList() as T;
+    }
+    if (t == _isc.getType<List<int>?>()) {
+      return (data != null
+              ? (data as List).map((e) => deserialize<int>(e)).toList()
+              : null)
+          as T;
+    }
     if (t == List<_i2xp5czv.RecipeIngredient>) {
       return (data as List)
               .map((e) => deserialize<_i2xp5czv.RecipeIngredient>(e))
@@ -390,15 +456,6 @@ class Protocol extends _isc.SerializationManager {
               ? (data as List)
                     .map((e) => deserialize<_ihz7f6c5.Recipe>(e))
                     .toList()
-              : null)
-          as T;
-    }
-    if (t == List<int>) {
-      return (data as List).map((e) => deserialize<int>(e)).toList() as T;
-    }
-    if (t == _isc.getType<List<int>?>()) {
-      return (data != null
-              ? (data as List).map((e) => deserialize<int>(e)).toList()
               : null)
           as T;
     }
@@ -498,6 +555,18 @@ class Protocol extends _isc.SerializationManager {
               .toList()
           as T;
     }
+    if (t == List<_iebxn6ex.MealSlot>) {
+      return (data as List)
+              .map((e) => deserialize<_iebxn6ex.MealSlot>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_i0zriapn.MealPlanEntry>) {
+      return (data as List)
+              .map((e) => deserialize<_i0zriapn.MealPlanEntry>(e))
+              .toList()
+          as T;
+    }
     if (t == List<_iexyob0t.Recipe>) {
       return (data as List)
               .map((e) => deserialize<_iexyob0t.Recipe>(e))
@@ -557,6 +626,9 @@ class Protocol extends _isc.SerializationManager {
       _itc130bt.HouseholdInvite => 'HouseholdInvite',
       _iv10erpj.HouseholdMember => 'HouseholdMember',
       _imk37xix.HouseholdStatus => 'HouseholdStatus',
+      _ieufxm3y.MealPlanEntry => 'MealPlanEntry',
+      _ig1w91gd.MealPlanEvent => 'MealPlanEvent',
+      _irc89x16.MealSlot => 'MealSlot',
       _iu35fd1a.Membership => 'Membership',
       _iur1rrwm.MembershipRole => 'MembershipRole',
       _i46wom1w.MyHousehold => 'MyHousehold',
@@ -610,6 +682,12 @@ class Protocol extends _isc.SerializationManager {
         return 'HouseholdMember';
       case _imk37xix.HouseholdStatus():
         return 'HouseholdStatus';
+      case _ieufxm3y.MealPlanEntry():
+        return 'MealPlanEntry';
+      case _ig1w91gd.MealPlanEvent():
+        return 'MealPlanEvent';
+      case _irc89x16.MealSlot():
+        return 'MealSlot';
       case _iu35fd1a.Membership():
         return 'Membership';
       case _iur1rrwm.MembershipRole():
@@ -702,6 +780,15 @@ class Protocol extends _isc.SerializationManager {
     }
     if (dataClassName == 'HouseholdStatus') {
       return deserialize<_imk37xix.HouseholdStatus>(data['data']);
+    }
+    if (dataClassName == 'MealPlanEntry') {
+      return deserialize<_ieufxm3y.MealPlanEntry>(data['data']);
+    }
+    if (dataClassName == 'MealPlanEvent') {
+      return deserialize<_ig1w91gd.MealPlanEvent>(data['data']);
+    }
+    if (dataClassName == 'MealSlot') {
+      return deserialize<_irc89x16.MealSlot>(data['data']);
     }
     if (dataClassName == 'Membership') {
       return deserialize<_iu35fd1a.Membership>(data['data']);

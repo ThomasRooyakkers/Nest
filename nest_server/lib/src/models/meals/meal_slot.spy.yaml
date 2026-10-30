@@ -1,0 +1,8 @@
+### A meal of the day that can be planned. Dinner is always planned;
+### breakfast and lunch are switched on per household.
+enum: MealSlot
+serialized: byName
+values:
+  - breakfast
+  - lunch
+  - dinner

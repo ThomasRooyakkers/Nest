@@ -1,0 +1,6 @@
+### A change in a household's meal plan, sent to everyone watching.
+class: MealPlanEvent
+fields:
+  householdId: int
+  entries: List<MealPlanEntry>?
+  removedEntryIds: List<int>?

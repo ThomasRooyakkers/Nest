@@ -21,10 +21,16 @@ household:
   - members:
   - rename:
   - setFeatures:
+  - setMealSlots:
   - createInvite:
   - revokeInvite:
   - join:
   - leave:
+mealPlan:
+  - entries:
+  - save:
+  - remove:
+  - watch:
 profile:
   - me:
   - updateMe:

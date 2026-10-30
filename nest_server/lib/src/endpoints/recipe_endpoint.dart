@@ -5,6 +5,7 @@ import 'package:serverpod/serverpod.dart';
 
 import '../generated/protocol.dart';
 import '../services/household_guard.dart';
+import 'meal_plan_endpoint.dart';
 
 /// The household's recipe library, with ingredients, steps and a photo.
 /// Every change is also sent to [watch], so all members see it live.
@@ -202,9 +203,20 @@ class RecipeEndpoint extends Endpoint {
   Future<void> remove(Session session, int householdId, int recipeId) async {
     final access = await _guard(session, householdId);
     final recipe = await _recipe(session, access, recipeId);
+    final planned = await MealPlanEntry.db.find(
+      session,
+      where: (t) =>
+          t.householdId.equals(access.householdId) &
+          t.recipeId.equals(recipeId),
+    );
     await Recipe.db.deleteRow(session, recipe);
     if (recipe.photoPath case final path?) await _deletePhoto(session, path);
     await _post(session, access, removedRecipeIds: [recipeId]);
+    await MealPlanEndpoint.postRecipeRemoved(
+      session,
+      access.householdId,
+      planned,
+    );
   }
 
   // Live updates.

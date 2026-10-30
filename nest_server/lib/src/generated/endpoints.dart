@@ -13,6 +13,9 @@
 import 'dart:typed_data' as _idt;
 import 'package:nest_server/src/generated/household_feature.dart' as _iez4op0n;
 import 'package:nest_server/src/generated/household_status.dart' as _i544oeia;
+import 'package:nest_server/src/generated/meals/meal_plan_entry.dart'
+    as _i33h3ld7;
+import 'package:nest_server/src/generated/meals/meal_slot.dart' as _iliwnvwg;
 import 'package:nest_server/src/generated/recipes/recipe.dart' as _iei9bazg;
 import 'package:nest_server/src/generated/shopping/new_shopping_item.dart'
     as _i97lm970;
@@ -32,6 +35,7 @@ import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
 import '../endpoints/admin/admin_households_endpoint.dart' as _iy84ve0g;
 import '../endpoints/health_endpoint.dart' as _ica9y4w0;
 import '../endpoints/household_endpoint.dart' as _izqmqbob;
+import '../endpoints/meal_plan_endpoint.dart' as _ioif1jmi;
 import '../endpoints/profile_endpoint.dart' as _i2cx2pww;
 import '../endpoints/recipe_endpoint.dart' as _iotgfwtb;
 import '../endpoints/shopping_endpoint.dart' as _i0uz9s3h;
@@ -70,6 +74,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'household',
+          null,
+        ),
+      'mealPlan': _ioif1jmi.MealPlanEndpoint()
+        ..initialize(
+          server,
+          'mealPlan',
           null,
         ),
       'profile': _i2cx2pww.ProfileEndpoint()
@@ -492,6 +502,31 @@ class Endpoints extends _is.EndpointDispatch {
                     params['features'],
                   ),
         ),
+        'setMealSlots': _is.MethodConnector(
+          name: 'setMealSlots',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'slots': _is.ParameterDescription(
+              name: 'slots',
+              type: _is.getType<List<_iliwnvwg.MealSlot>>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['household'] as _izqmqbob.HouseholdEndpoint)
+                  .setMealSlots(
+                    session,
+                    params['householdId'],
+                    params['slots'],
+                  ),
+        ),
         'createInvite': _is.MethodConnector(
           name: 'createInvite',
           params: {
@@ -567,6 +602,114 @@ class Endpoints extends _is.EndpointDispatch {
                     session,
                     params['householdId'],
                   ),
+        ),
+      },
+    );
+    connectors['mealPlan'] = _is.EndpointConnector(
+      name: 'mealPlan',
+      endpoint: endpoints['mealPlan']!,
+      methodConnectors: {
+        'entries': _is.MethodConnector(
+          name: 'entries',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'from': _is.ParameterDescription(
+              name: 'from',
+              type: _is.getType<DateTime>(),
+              nullable: false,
+            ),
+            'to': _is.ParameterDescription(
+              name: 'to',
+              type: _is.getType<DateTime>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['mealPlan'] as _ioif1jmi.MealPlanEndpoint).entries(
+                    session,
+                    params['householdId'],
+                    params['from'],
+                    params['to'],
+                  ),
+        ),
+        'save': _is.MethodConnector(
+          name: 'save',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'entry': _is.ParameterDescription(
+              name: 'entry',
+              type: _is.getType<_i33h3ld7.MealPlanEntry>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['mealPlan'] as _ioif1jmi.MealPlanEndpoint).save(
+                    session,
+                    params['householdId'],
+                    params['entry'],
+                  ),
+        ),
+        'remove': _is.MethodConnector(
+          name: 'remove',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'entryId': _is.ParameterDescription(
+              name: 'entryId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['mealPlan'] as _ioif1jmi.MealPlanEndpoint).remove(
+                    session,
+                    params['householdId'],
+                    params['entryId'],
+                  ),
+        ),
+        'watch': _is.MethodStreamConnector(
+          name: 'watch',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          streamParams: {},
+          returnType: _is.MethodStreamReturnType.streamType,
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+                Map<String, Stream> streamParams,
+              ) => (endpoints['mealPlan'] as _ioif1jmi.MealPlanEndpoint).watch(
+                session,
+                params['householdId'],
+              ),
         ),
       },
     );

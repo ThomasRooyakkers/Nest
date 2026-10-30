@@ -10,6 +10,7 @@ const householdScopedMethods = {
   'household.members',
   'household.rename',
   'household.setFeatures',
+  'household.setMealSlots',
   'household.createInvite',
   'household.revokeInvite',
   'household.leave',
@@ -39,6 +40,10 @@ const householdScopedMethods = {
   'recipe.photo',
   'recipe.remove',
   'recipe.watch',
+  'mealPlan.entries',
+  'mealPlan.save',
+  'mealPlan.remove',
+  'mealPlan.watch',
 };
 
 /// Admin methods (start with `AdminGuard`). Each one must be exercised in

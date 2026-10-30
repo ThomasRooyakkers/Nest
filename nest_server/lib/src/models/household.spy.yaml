@@ -6,6 +6,9 @@ fields:
   status: HouseholdStatus, default=active
   ### Features switched on for this household.
   enabledFeatures: List<HouseholdFeature>
+  ### Meals planned besides dinner (breakfast, lunch); null or empty for
+  ### dinner only.
+  mealSlots: List<MealSlot>?
   ### Current invite code; only returned to owners.
   inviteCode: String?
   inviteExpiresAt: DateTime?
