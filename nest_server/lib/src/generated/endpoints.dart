@@ -36,7 +36,11 @@ import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
 import '../auth/email_idp_endpoint.dart' as _iuc1hd5t;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
+import '../endpoints/admin/admin_audit_endpoint.dart' as _isry7q4f;
+import '../endpoints/admin/admin_backups_endpoint.dart' as _ihn2grnq;
 import '../endpoints/admin/admin_households_endpoint.dart' as _iy84ve0g;
+import '../endpoints/admin/admin_system_endpoint.dart' as _ip4fayzs;
+import '../endpoints/admin/admin_users_endpoint.dart' as _iscnlbye;
 import '../endpoints/health_endpoint.dart' as _ica9y4w0;
 import '../endpoints/household_endpoint.dart' as _izqmqbob;
 import '../endpoints/meal_plan_endpoint.dart' as _ioif1jmi;
@@ -63,10 +67,34 @@ class Endpoints extends _is.EndpointDispatch {
           'jwtRefresh',
           null,
         ),
+      'adminAudit': _isry7q4f.AdminAuditEndpoint()
+        ..initialize(
+          server,
+          'adminAudit',
+          null,
+        ),
+      'adminBackups': _ihn2grnq.AdminBackupsEndpoint()
+        ..initialize(
+          server,
+          'adminBackups',
+          null,
+        ),
       'adminHouseholds': _iy84ve0g.AdminHouseholdsEndpoint()
         ..initialize(
           server,
           'adminHouseholds',
+          null,
+        ),
+      'adminSystem': _ip4fayzs.AdminSystemEndpoint()
+        ..initialize(
+          server,
+          'adminSystem',
+          null,
+        ),
+      'adminUsers': _iscnlbye.AdminUsersEndpoint()
+        ..initialize(
+          server,
+          'adminUsers',
           null,
         ),
       'health': _ica9y4w0.HealthEndpoint()
@@ -330,6 +358,66 @@ class Endpoints extends _is.EndpointDispatch {
         ),
       },
     );
+    connectors['adminAudit'] = _is.EndpointConnector(
+      name: 'adminAudit',
+      endpoint: endpoints['adminAudit']!,
+      methodConnectors: {
+        'entries': _is.MethodConnector(
+          name: 'entries',
+          params: {
+            'beforeId': _is.ParameterDescription(
+              name: 'beforeId',
+              type: _is.getType<int?>(),
+              nullable: true,
+            ),
+            'limit': _is.ParameterDescription(
+              name: 'limit',
+              type: _is.getType<int?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminAudit'] as _isry7q4f.AdminAuditEndpoint)
+                      .entries(
+                        session,
+                        beforeId: params['beforeId'],
+                        limit: params['limit'],
+                      ),
+        ),
+      },
+    );
+    connectors['adminBackups'] = _is.EndpointConnector(
+      name: 'adminBackups',
+      endpoint: endpoints['adminBackups']!,
+      methodConnectors: {
+        'overview': _is.MethodConnector(
+          name: 'overview',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminBackups'] as _ihn2grnq.AdminBackupsEndpoint)
+                      .overview(session),
+        ),
+        'requestBackup': _is.MethodConnector(
+          name: 'requestBackup',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminBackups'] as _ihn2grnq.AdminBackupsEndpoint)
+                      .requestBackup(session),
+        ),
+      },
+    );
     connectors['adminHouseholds'] = _is.EndpointConnector(
       name: 'adminHouseholds',
       endpoint: endpoints['adminHouseholds']!,
@@ -371,6 +459,66 @@ class Endpoints extends _is.EndpointDispatch {
                         session,
                         params['householdId'],
                         params['status'],
+                      ),
+        ),
+      },
+    );
+    connectors['adminSystem'] = _is.EndpointConnector(
+      name: 'adminSystem',
+      endpoint: endpoints['adminSystem']!,
+      methodConnectors: {
+        'health': _is.MethodConnector(
+          name: 'health',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminSystem'] as _ip4fayzs.AdminSystemEndpoint)
+                      .health(session),
+        ),
+      },
+    );
+    connectors['adminUsers'] = _is.EndpointConnector(
+      name: 'adminUsers',
+      endpoint: endpoints['adminUsers']!,
+      methodConnectors: {
+        'list': _is.MethodConnector(
+          name: 'list',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminUsers'] as _iscnlbye.AdminUsersEndpoint)
+                      .list(session),
+        ),
+        'setDisabled': _is.MethodConnector(
+          name: 'setDisabled',
+          params: {
+            'userId': _is.ParameterDescription(
+              name: 'userId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'disabled': _is.ParameterDescription(
+              name: 'disabled',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminUsers'] as _iscnlbye.AdminUsersEndpoint)
+                      .setDisabled(
+                        session,
+                        params['userId'],
+                        params['disabled'],
                       ),
         ),
       },

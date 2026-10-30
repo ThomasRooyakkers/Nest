@@ -1,0 +1,7 @@
+### Backups page of the admin portal.
+class: AdminBackups
+fields:
+  ### Most recent runs, newest first.
+  runs: List<BackupRun>
+  ### A "Back up now" that the backup job has not picked up yet.
+  pendingRequest: BackupRequest?

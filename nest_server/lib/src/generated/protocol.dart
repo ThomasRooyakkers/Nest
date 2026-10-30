@@ -11,8 +11,12 @@
 // ignore_for_file: dead_code, unnecessary_type_check
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:nest_server/src/generated/admin_household_summary.dart'
-    as _it78yatv;
+import 'package:nest_server/src/generated/admin/admin_audit_entry.dart'
+    as _isazwzo0;
+import 'package:nest_server/src/generated/admin/admin_household_summary.dart'
+    as _if8bmo50;
+import 'package:nest_server/src/generated/admin/admin_user_summary.dart'
+    as _ik5zjdct;
 import 'package:nest_server/src/generated/household_feature.dart' as _iez4op0n;
 import 'package:nest_server/src/generated/household_member.dart' as _i9scnr3x;
 import 'package:nest_server/src/generated/meals/meal_plan_entry.dart'
@@ -40,8 +44,15 @@ import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
-import 'admin_audit_log.dart' as _ihc3ja42;
-import 'admin_household_summary.dart' as _isoedyc0;
+import 'admin/admin_audit_entry.dart' as _i0hg09us;
+import 'admin/admin_audit_log.dart' as _iha05d3i;
+import 'admin/admin_backups.dart' as _iwl7hvp6;
+import 'admin/admin_household_summary.dart' as _i1ee57op;
+import 'admin/admin_system_health.dart' as _i9cu0zbm;
+import 'admin/admin_user_summary.dart' as _infu3osd;
+import 'admin/backup_request.dart' as _iskrofwd;
+import 'admin/backup_run.dart' as _iabyer0k;
+import 'admin/backup_run_status.dart' as _io9tgzbh;
 import 'household.dart' as _ijonbu5t;
 import 'household_feature.dart' as _idhxy0am;
 import 'household_invite.dart' as _itc130bt;
@@ -81,8 +92,15 @@ import 'watchlist/watch_status.dart' as _itdekt2o;
 import 'watchlist/watch_type.dart' as _irhe6aqe;
 import 'watchlist/watchlist_event.dart' as _i1vaprkc;
 import 'watchlist/watchlist_item.dart' as _i28z76f1;
-export 'admin_audit_log.dart';
-export 'admin_household_summary.dart';
+export 'admin/admin_audit_entry.dart';
+export 'admin/admin_audit_log.dart';
+export 'admin/admin_backups.dart';
+export 'admin/admin_household_summary.dart';
+export 'admin/admin_system_health.dart';
+export 'admin/admin_user_summary.dart';
+export 'admin/backup_request.dart';
+export 'admin/backup_run.dart';
+export 'admin/backup_run_status.dart';
 export 'household.dart';
 export 'household_feature.dart';
 export 'household_invite.dart';
@@ -191,6 +209,145 @@ class Protocol extends _is.DatabaseSerializationManager {
             _isp.IndexElementDefinition(
               type: _isp.IndexElementDefinitionType.column,
               definition: 'at',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'backup_request',
+      dartName: 'BackupRequest',
+      schema: 'public',
+      module: 'nest',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'requestedBy',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'requestedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+        _isp.ColumnDefinition(
+          name: 'pickedUpAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+        _isp.ColumnDefinition(
+          name: 'updatedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'backup_run',
+      dartName: 'BackupRun',
+      schema: 'public',
+      module: 'nest',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'startedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isp.ColumnDefinition(
+          name: 'finishedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'status',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:BackupRunStatus',
+        ),
+        _isp.ColumnDefinition(
+          name: 'sizeBytes',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'snapshotId',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'target',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'error',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+        _isp.ColumnDefinition(
+          name: 'updatedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'backup_run_started_at_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'startedAt',
             ),
           ],
           type: 'btree',
@@ -1711,11 +1868,32 @@ class Protocol extends _is.DatabaseSerializationManager {
       }
     }
 
-    if (t == _ihc3ja42.AdminAuditLog) {
-      return _ihc3ja42.AdminAuditLog.fromJson(data) as T;
+    if (t == _i0hg09us.AdminAuditEntry) {
+      return _i0hg09us.AdminAuditEntry.fromJson(data) as T;
     }
-    if (t == _isoedyc0.AdminHouseholdSummary) {
-      return _isoedyc0.AdminHouseholdSummary.fromJson(data) as T;
+    if (t == _iha05d3i.AdminAuditLog) {
+      return _iha05d3i.AdminAuditLog.fromJson(data) as T;
+    }
+    if (t == _iwl7hvp6.AdminBackups) {
+      return _iwl7hvp6.AdminBackups.fromJson(data) as T;
+    }
+    if (t == _i1ee57op.AdminHouseholdSummary) {
+      return _i1ee57op.AdminHouseholdSummary.fromJson(data) as T;
+    }
+    if (t == _i9cu0zbm.AdminSystemHealth) {
+      return _i9cu0zbm.AdminSystemHealth.fromJson(data) as T;
+    }
+    if (t == _infu3osd.AdminUserSummary) {
+      return _infu3osd.AdminUserSummary.fromJson(data) as T;
+    }
+    if (t == _iskrofwd.BackupRequest) {
+      return _iskrofwd.BackupRequest.fromJson(data) as T;
+    }
+    if (t == _iabyer0k.BackupRun) {
+      return _iabyer0k.BackupRun.fromJson(data) as T;
+    }
+    if (t == _io9tgzbh.BackupRunStatus) {
+      return _io9tgzbh.BackupRunStatus.fromJson(data) as T;
     }
     if (t == _ijonbu5t.Household) {
       return _ijonbu5t.Household.fromJson(data) as T;
@@ -1834,14 +2012,40 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _i28z76f1.WatchlistItem) {
       return _i28z76f1.WatchlistItem.fromJson(data) as T;
     }
-    if (t == _is.getType<_ihc3ja42.AdminAuditLog?>()) {
-      return (data != null ? _ihc3ja42.AdminAuditLog.fromJson(data) : null)
+    if (t == _is.getType<_i0hg09us.AdminAuditEntry?>()) {
+      return (data != null ? _i0hg09us.AdminAuditEntry.fromJson(data) : null)
           as T;
     }
-    if (t == _is.getType<_isoedyc0.AdminHouseholdSummary?>()) {
+    if (t == _is.getType<_iha05d3i.AdminAuditLog?>()) {
+      return (data != null ? _iha05d3i.AdminAuditLog.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_iwl7hvp6.AdminBackups?>()) {
+      return (data != null ? _iwl7hvp6.AdminBackups.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_i1ee57op.AdminHouseholdSummary?>()) {
       return (data != null
-              ? _isoedyc0.AdminHouseholdSummary.fromJson(data)
+              ? _i1ee57op.AdminHouseholdSummary.fromJson(data)
               : null)
+          as T;
+    }
+    if (t == _is.getType<_i9cu0zbm.AdminSystemHealth?>()) {
+      return (data != null ? _i9cu0zbm.AdminSystemHealth.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_infu3osd.AdminUserSummary?>()) {
+      return (data != null ? _infu3osd.AdminUserSummary.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_iskrofwd.BackupRequest?>()) {
+      return (data != null ? _iskrofwd.BackupRequest.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_iabyer0k.BackupRun?>()) {
+      return (data != null ? _iabyer0k.BackupRun.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_io9tgzbh.BackupRunStatus?>()) {
+      return (data != null ? _io9tgzbh.BackupRunStatus.fromJson(data) : null)
           as T;
     }
     if (t == _is.getType<_ijonbu5t.Household?>()) {
@@ -1977,6 +2181,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (t == _is.getType<_i28z76f1.WatchlistItem?>()) {
       return (data != null ? _i28z76f1.WatchlistItem.fromJson(data) : null)
+          as T;
+    }
+    if (t == List<_iabyer0k.BackupRun>) {
+      return (data as List)
+              .map((e) => deserialize<_iabyer0k.BackupRun>(e))
+              .toList()
           as T;
     }
     if (t == List<String>) {
@@ -2153,9 +2363,21 @@ class Protocol extends _is.DatabaseSerializationManager {
               : null)
           as T;
     }
-    if (t == List<_it78yatv.AdminHouseholdSummary>) {
+    if (t == List<_isazwzo0.AdminAuditEntry>) {
       return (data as List)
-              .map((e) => deserialize<_it78yatv.AdminHouseholdSummary>(e))
+              .map((e) => deserialize<_isazwzo0.AdminAuditEntry>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_if8bmo50.AdminHouseholdSummary>) {
+      return (data as List)
+              .map((e) => deserialize<_if8bmo50.AdminHouseholdSummary>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_ik5zjdct.AdminUserSummary>) {
+      return (data as List)
+              .map((e) => deserialize<_ik5zjdct.AdminUserSummary>(e))
               .toList()
           as T;
     }
@@ -2256,8 +2478,15 @@ class Protocol extends _is.DatabaseSerializationManager {
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
-      _ihc3ja42.AdminAuditLog => 'AdminAuditLog',
-      _isoedyc0.AdminHouseholdSummary => 'AdminHouseholdSummary',
+      _i0hg09us.AdminAuditEntry => 'AdminAuditEntry',
+      _iha05d3i.AdminAuditLog => 'AdminAuditLog',
+      _iwl7hvp6.AdminBackups => 'AdminBackups',
+      _i1ee57op.AdminHouseholdSummary => 'AdminHouseholdSummary',
+      _i9cu0zbm.AdminSystemHealth => 'AdminSystemHealth',
+      _infu3osd.AdminUserSummary => 'AdminUserSummary',
+      _iskrofwd.BackupRequest => 'BackupRequest',
+      _iabyer0k.BackupRun => 'BackupRun',
+      _io9tgzbh.BackupRunStatus => 'BackupRunStatus',
       _ijonbu5t.Household => 'Household',
       _idhxy0am.HouseholdFeature => 'HouseholdFeature',
       _itc130bt.HouseholdInvite => 'HouseholdInvite',
@@ -2311,10 +2540,24 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
 
     switch (data) {
-      case _ihc3ja42.AdminAuditLog():
+      case _i0hg09us.AdminAuditEntry():
+        return 'AdminAuditEntry';
+      case _iha05d3i.AdminAuditLog():
         return 'AdminAuditLog';
-      case _isoedyc0.AdminHouseholdSummary():
+      case _iwl7hvp6.AdminBackups():
+        return 'AdminBackups';
+      case _i1ee57op.AdminHouseholdSummary():
         return 'AdminHouseholdSummary';
+      case _i9cu0zbm.AdminSystemHealth():
+        return 'AdminSystemHealth';
+      case _infu3osd.AdminUserSummary():
+        return 'AdminUserSummary';
+      case _iskrofwd.BackupRequest():
+        return 'BackupRequest';
+      case _iabyer0k.BackupRun():
+        return 'BackupRun';
+      case _io9tgzbh.BackupRunStatus():
+        return 'BackupRunStatus';
       case _ijonbu5t.Household():
         return 'Household';
       case _idhxy0am.HouseholdFeature():
@@ -2419,11 +2662,32 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
     }
+    if (dataClassName == 'AdminAuditEntry') {
+      return deserialize<_i0hg09us.AdminAuditEntry>(data['data']);
+    }
     if (dataClassName == 'AdminAuditLog') {
-      return deserialize<_ihc3ja42.AdminAuditLog>(data['data']);
+      return deserialize<_iha05d3i.AdminAuditLog>(data['data']);
+    }
+    if (dataClassName == 'AdminBackups') {
+      return deserialize<_iwl7hvp6.AdminBackups>(data['data']);
     }
     if (dataClassName == 'AdminHouseholdSummary') {
-      return deserialize<_isoedyc0.AdminHouseholdSummary>(data['data']);
+      return deserialize<_i1ee57op.AdminHouseholdSummary>(data['data']);
+    }
+    if (dataClassName == 'AdminSystemHealth') {
+      return deserialize<_i9cu0zbm.AdminSystemHealth>(data['data']);
+    }
+    if (dataClassName == 'AdminUserSummary') {
+      return deserialize<_infu3osd.AdminUserSummary>(data['data']);
+    }
+    if (dataClassName == 'BackupRequest') {
+      return deserialize<_iskrofwd.BackupRequest>(data['data']);
+    }
+    if (dataClassName == 'BackupRun') {
+      return deserialize<_iabyer0k.BackupRun>(data['data']);
+    }
+    if (dataClassName == 'BackupRunStatus') {
+      return deserialize<_io9tgzbh.BackupRunStatus>(data['data']);
     }
     if (dataClassName == 'Household') {
       return deserialize<_ijonbu5t.Household>(data['data']);
@@ -2583,8 +2847,12 @@ class Protocol extends _is.DatabaseSerializationManager {
       }
     }
     switch (t) {
-      case _ihc3ja42.AdminAuditLog:
-        return _ihc3ja42.AdminAuditLog.t;
+      case _iha05d3i.AdminAuditLog:
+        return _iha05d3i.AdminAuditLog.t;
+      case _iskrofwd.BackupRequest:
+        return _iskrofwd.BackupRequest.t;
+      case _iabyer0k.BackupRun:
+        return _iabyer0k.BackupRun.t;
       case _ijonbu5t.Household:
         return _ijonbu5t.Household.t;
       case _ieufxm3y.MealPlanEntry:

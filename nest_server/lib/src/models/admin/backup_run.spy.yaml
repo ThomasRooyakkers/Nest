@@ -1,0 +1,21 @@
+### One backup of the database to one target. Written by the backup job
+### (deploy/backup/backup.sh), read by the admin portal.
+class: BackupRun
+table: backup_run
+fields:
+  startedAt: DateTime
+  finishedAt: DateTime?
+  status: BackupRunStatus
+  ### Size of the database dump in bytes.
+  sizeBytes: int?
+  ### The restic snapshot, used to restore.
+  snapshotId: String?
+  ### Name of the backup target, e.g. `local` or `onedrive`.
+  target: String
+  ### Short error message of a failed run.
+  error: String?
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now
+indexes:
+  backup_run_started_at_idx:
+    fields: startedAt

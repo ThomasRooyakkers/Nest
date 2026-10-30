@@ -1,0 +1,24 @@
+### System health page of the admin portal: metadata and counts only.
+class: AdminSystemHealth
+fields:
+  serverTime: DateTime
+  version: String
+  apiVersion: int
+  ### When this server process started.
+  startedAt: DateTime
+  databaseOk: bool
+  databaseSizeBytes: int?
+  ### Disk of the server's data (null when it cannot be read).
+  diskFreeBytes: int?
+  diskTotalBytes: int?
+  householdCount: int
+  activeHouseholdCount: int
+  userCount: int
+  disabledUserCount: int
+  signUpMode: SignUpMode
+  mailConfigured: bool
+  filmDataConfigured: bool
+  ### The newest backup run of each target.
+  lastBackups: List<BackupRun>
+  ### Newest successful backup of any target.
+  lastSuccessfulBackupAt: DateTime?

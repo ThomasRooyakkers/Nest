@@ -8,3 +8,5 @@ fields:
   ownerNames: List<String>
   enabledFeatures: List<HouseholdFeature>
   createdAt: DateTime
+  ### Newest change to the household or its data (time only).
+  lastActivityAt: DateTime?

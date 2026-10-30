@@ -1,0 +1,7 @@
+### Outcome of a backup run. Stored by name, so the backup job can write it.
+enum: BackupRunStatus
+serialized: byName
+values:
+  - running
+  - succeeded
+  - failed

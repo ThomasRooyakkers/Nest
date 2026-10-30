@@ -35,6 +35,17 @@ void main() {
         householdId,
         HouseholdStatus.suspended,
       ),
+      'adminUsers.list': (s) => endpoints.adminUsers.list(s),
+      'adminUsers.setDisabled': (s) async => endpoints.adminUsers.setDisabled(
+        s,
+        (await endpoints.profile.me(user)).id!,
+        false,
+      ),
+      'adminSystem.health': (s) => endpoints.adminSystem.health(s),
+      'adminBackups.overview': (s) => endpoints.adminBackups.overview(s),
+      'adminBackups.requestBackup': (s) =>
+          endpoints.adminBackups.requestBackup(s),
+      'adminAudit.entries': (s) => endpoints.adminAudit.entries(s),
     };
 
     for (final MapEntry(key: name, value: call) in adminCalls.entries) {

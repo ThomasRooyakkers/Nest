@@ -2,6 +2,7 @@ import 'package:serverpod/serverpod.dart';
 
 import '../../generated/protocol.dart';
 import '../../services/admin_guard.dart';
+import '../../services/household_activity.dart';
 
 /// Household management for the admin portal. Metadata and counts only.
 class AdminHouseholdsEndpoint extends Endpoint {
@@ -16,11 +17,13 @@ class AdminHouseholdsEndpoint extends Endpoint {
       session,
       include: Membership.include(user: NestUser.include()),
     );
+    final activity = await HouseholdActivity.lastActivity(session);
     return [
       for (final household in households)
         _summary(
           household,
           memberships.where((m) => m.householdId == household.id).toList(),
+          activity[household.id],
         ),
     ];
   }
@@ -55,12 +58,17 @@ class AdminHouseholdsEndpoint extends Endpoint {
       where: (t) => t.householdId.equals(householdId),
       include: Membership.include(user: NestUser.include()),
     );
-    return _summary(updated, memberships);
+    final activity = await HouseholdActivity.lastActivity(
+      session,
+      householdId: householdId,
+    );
+    return _summary(updated, memberships, activity[householdId]);
   }
 
   static AdminHouseholdSummary _summary(
     Household household,
     List<Membership> memberships,
+    DateTime? lastActivityAt,
   ) => AdminHouseholdSummary(
     id: household.id!,
     name: household.name,
@@ -72,5 +80,6 @@ class AdminHouseholdsEndpoint extends Endpoint {
     ],
     enabledFeatures: household.enabledFeatures,
     createdAt: household.createdAt,
+    lastActivityAt: lastActivityAt,
   );
 }

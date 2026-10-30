@@ -55,7 +55,16 @@ const householdScopedMethods = {
 
 /// Admin methods (start with `AdminGuard`). Each one must be exercised in
 /// `admin_access_test.dart`.
-const adminMethods = {'adminHouseholds.list', 'adminHouseholds.setStatus'};
+const adminMethods = {
+  'adminHouseholds.list',
+  'adminHouseholds.setStatus',
+  'adminUsers.list',
+  'adminUsers.setDisabled',
+  'adminSystem.health',
+  'adminBackups.overview',
+  'adminBackups.requestBackup',
+  'adminAudit.entries',
+};
 
 /// Methods that are deliberately not household-scoped.
 const unscopedMethods = {

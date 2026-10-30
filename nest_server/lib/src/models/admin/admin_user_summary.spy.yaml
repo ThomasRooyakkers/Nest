@@ -1,0 +1,11 @@
+### A user as the admin portal sees them. No household content.
+class: AdminUserSummary
+fields:
+  id: int
+  name: String
+  email: String?
+  locale: String
+  isSuperAdmin: bool
+  disabledAt: DateTime?
+  householdCount: int
+  createdAt: DateTime

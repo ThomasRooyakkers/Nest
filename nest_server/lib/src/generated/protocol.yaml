@@ -9,9 +9,19 @@ emailIdp:
   - hasAccount:
 jwtRefresh:
   - refreshAccessToken:
+adminAudit:
+  - entries:
+adminBackups:
+  - overview:
+  - requestBackup:
 adminHouseholds:
   - list:
   - setStatus:
+adminSystem:
+  - health:
+adminUsers:
+  - list:
+  - setDisabled:
 health:
   - ping:
 household:

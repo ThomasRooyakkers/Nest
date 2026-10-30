@@ -1,0 +1,11 @@
+### "Back up now" from the admin portal. The backup job picks it up within a
+### minute and sets [pickedUpAt].
+class: BackupRequest
+table: backup_request
+fields:
+  ### `NestUser.id` of the admin who asked.
+  requestedBy: int
+  requestedAt: DateTime, default=now
+  pickedUpAt: DateTime?
+  createdAt: DateTime, default=now
+  updatedAt: DateTime, default=now

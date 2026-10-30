@@ -1,0 +1,11 @@
+### An audit log row with the admin's name, for the admin portal.
+class: AdminAuditEntry
+fields:
+  id: int
+  at: DateTime
+  adminId: int
+  adminName: String
+  action: String
+  targetType: String
+  targetId: String?
+  details: String?

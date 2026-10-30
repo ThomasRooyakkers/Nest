@@ -4,7 +4,7 @@ import '../generated/protocol.dart';
 import '../services/host_settings.dart';
 
 /// Nest server version reported by the health check.
-const nestServerVersion = '0.6.0';
+const nestServerVersion = '0.7.0';
 
 /// API level of this server. Raise it when endpoints or models change in a
 /// way an app may depend on; the app compares it with the level it needs.
@@ -12,7 +12,8 @@ const nestServerVersion = '0.6.0';
 /// 1: phases 0–2 (no levels reported). 2: bring your own backend.
 /// 3: tasks. 4: recipes, adding several shopping items at once.
 /// 5: meal planning, meal slots per household. 6: watchlist.
-const nestApiVersion = 6;
+/// 7: admin portal (users, system health, backups, audit log).
+const nestApiVersion = 7;
 
 /// Oldest app API level this server still works with. Raise it only when a
 /// change breaks older apps.

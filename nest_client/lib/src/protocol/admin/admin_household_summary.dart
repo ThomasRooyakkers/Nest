@@ -10,14 +10,14 @@
 // ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:nest_server/src/generated/protocol.dart' as _imc1swab;
-import 'package:serverpod/serverpod.dart' as _is;
-import 'household_feature.dart' as _idhxy0am;
-import 'household_status.dart' as _imk37xix;
+import 'package:nest_client/src/protocol/protocol.dart' as _ilcqbmdc;
+import 'package:serverpod_client/serverpod_client.dart' as _isc;
+import '../household_feature.dart' as _im1kgcet;
+import '../household_status.dart' as _iq0kpv8c;
 
 /// Household metadata for the admin portal. Never contains household content.
 abstract class AdminHouseholdSummary
-    implements _is.SerializableModel, _is.ProtocolSerialization {
+    implements _isc.SerializableModel, _isc.ProtocolSerialization {
   AdminHouseholdSummary._({
     required this.id,
     required this.name,
@@ -26,16 +26,18 @@ abstract class AdminHouseholdSummary
     required this.ownerNames,
     required this.enabledFeatures,
     required this.createdAt,
+    this.lastActivityAt,
   });
 
   factory AdminHouseholdSummary({
     required int id,
     required String name,
-    required _imk37xix.HouseholdStatus status,
+    required _iq0kpv8c.HouseholdStatus status,
     required int memberCount,
     required List<String> ownerNames,
-    required List<_idhxy0am.HouseholdFeature> enabledFeatures,
+    required List<_im1kgcet.HouseholdFeature> enabledFeatures,
     required DateTime createdAt,
+    DateTime? lastActivityAt,
   }) = _AdminHouseholdSummaryImpl;
 
   factory AdminHouseholdSummary.fromJson(
@@ -44,20 +46,25 @@ abstract class AdminHouseholdSummary
     return AdminHouseholdSummary(
       id: jsonSerialization['id'] as int,
       name: jsonSerialization['name'] as String,
-      status: _imk37xix.HouseholdStatus.fromJson(
+      status: _iq0kpv8c.HouseholdStatus.fromJson(
         (jsonSerialization['status'] as String),
       ),
       memberCount: jsonSerialization['memberCount'] as int,
-      ownerNames: _imc1swab.Protocol().deserialize<List<String>>(
+      ownerNames: _ilcqbmdc.Protocol().deserialize<List<String>>(
         jsonSerialization['ownerNames'],
       ),
-      enabledFeatures: _imc1swab.Protocol()
-          .deserialize<List<_idhxy0am.HouseholdFeature>>(
+      enabledFeatures: _ilcqbmdc.Protocol()
+          .deserialize<List<_im1kgcet.HouseholdFeature>>(
             jsonSerialization['enabledFeatures'],
           ),
-      createdAt: _is.DateTimeJsonExtension.fromJson(
+      createdAt: _isc.DateTimeJsonExtension.fromJson(
         jsonSerialization['createdAt'],
       ),
+      lastActivityAt: jsonSerialization['lastActivityAt'] == null
+          ? null
+          : _isc.DateTimeJsonExtension.fromJson(
+              jsonSerialization['lastActivityAt'],
+            ),
     );
   }
 
@@ -65,27 +72,31 @@ abstract class AdminHouseholdSummary
 
   String name;
 
-  _imk37xix.HouseholdStatus status;
+  _iq0kpv8c.HouseholdStatus status;
 
   int memberCount;
 
   List<String> ownerNames;
 
-  List<_idhxy0am.HouseholdFeature> enabledFeatures;
+  List<_im1kgcet.HouseholdFeature> enabledFeatures;
 
   DateTime createdAt;
 
+  /// Newest change to the household or its data (time only).
+  DateTime? lastActivityAt;
+
   /// Returns a shallow copy of this [AdminHouseholdSummary]
   /// with some or all fields replaced by the given arguments.
-  @_is.useResult
+  @_isc.useResult
   AdminHouseholdSummary copyWith({
     int? id,
     String? name,
-    _imk37xix.HouseholdStatus? status,
+    _iq0kpv8c.HouseholdStatus? status,
     int? memberCount,
     List<String>? ownerNames,
-    List<_idhxy0am.HouseholdFeature>? enabledFeatures,
+    List<_im1kgcet.HouseholdFeature>? enabledFeatures,
     DateTime? createdAt,
+    DateTime? lastActivityAt,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -98,6 +109,7 @@ abstract class AdminHouseholdSummary
       'ownerNames': ownerNames.toJson(),
       'enabledFeatures': enabledFeatures.toJson(valueToJson: (v) => v.toJson()),
       'createdAt': createdAt.toJson(),
+      if (lastActivityAt != null) 'lastActivityAt': lastActivityAt?.toJson(),
     };
   }
 
@@ -112,24 +124,28 @@ abstract class AdminHouseholdSummary
       'ownerNames': ownerNames.toJson(),
       'enabledFeatures': enabledFeatures.toJson(valueToJson: (v) => v.toJson()),
       'createdAt': createdAt.toJson(),
+      if (lastActivityAt != null) 'lastActivityAt': lastActivityAt?.toJson(),
     };
   }
 
   @override
   String toString() {
-    return _is.SerializationManager.encode(this);
+    return _isc.SerializationManager.encode(this);
   }
 }
+
+class _Undefined {}
 
 class _AdminHouseholdSummaryImpl extends AdminHouseholdSummary {
   _AdminHouseholdSummaryImpl({
     required int id,
     required String name,
-    required _imk37xix.HouseholdStatus status,
+    required _iq0kpv8c.HouseholdStatus status,
     required int memberCount,
     required List<String> ownerNames,
-    required List<_idhxy0am.HouseholdFeature> enabledFeatures,
+    required List<_im1kgcet.HouseholdFeature> enabledFeatures,
     required DateTime createdAt,
+    DateTime? lastActivityAt,
   }) : super._(
          id: id,
          name: name,
@@ -138,20 +154,22 @@ class _AdminHouseholdSummaryImpl extends AdminHouseholdSummary {
          ownerNames: ownerNames,
          enabledFeatures: enabledFeatures,
          createdAt: createdAt,
+         lastActivityAt: lastActivityAt,
        );
 
   /// Returns a shallow copy of this [AdminHouseholdSummary]
   /// with some or all fields replaced by the given arguments.
-  @_is.useResult
+  @_isc.useResult
   @override
   AdminHouseholdSummary copyWith({
     int? id,
     String? name,
-    _imk37xix.HouseholdStatus? status,
+    _iq0kpv8c.HouseholdStatus? status,
     int? memberCount,
     List<String>? ownerNames,
-    List<_idhxy0am.HouseholdFeature>? enabledFeatures,
+    List<_im1kgcet.HouseholdFeature>? enabledFeatures,
     DateTime? createdAt,
+    Object? lastActivityAt = _Undefined,
   }) {
     return AdminHouseholdSummary(
       id: id ?? this.id,
@@ -162,6 +180,9 @@ class _AdminHouseholdSummaryImpl extends AdminHouseholdSummary {
       enabledFeatures:
           enabledFeatures ?? this.enabledFeatures.map((e0) => e0).toList(),
       createdAt: createdAt ?? this.createdAt,
+      lastActivityAt: lastActivityAt is DateTime?
+          ? lastActivityAt
+          : this.lastActivityAt,
     );
   }
 }

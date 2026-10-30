@@ -14,8 +14,16 @@
 import 'dart:async' as _ida;
 import 'dart:io' as _idi;
 import 'dart:typed_data' as _idt;
-import 'package:nest_server/src/generated/admin_household_summary.dart'
-    as _it78yatv;
+import 'package:nest_server/src/generated/admin/admin_audit_entry.dart'
+    as _isazwzo0;
+import 'package:nest_server/src/generated/admin/admin_backups.dart'
+    as _i0mq6lub;
+import 'package:nest_server/src/generated/admin/admin_household_summary.dart'
+    as _if8bmo50;
+import 'package:nest_server/src/generated/admin/admin_system_health.dart'
+    as _ia4fyvbr;
+import 'package:nest_server/src/generated/admin/admin_user_summary.dart'
+    as _ik5zjdct;
 import 'package:nest_server/src/generated/household_feature.dart' as _iez4op0n;
 import 'package:nest_server/src/generated/household_invite.dart' as _i2zbtjh1;
 import 'package:nest_server/src/generated/household_member.dart' as _i9scnr3x;
@@ -199,7 +207,15 @@ class TestEndpoints {
 
   late final _JwtRefreshEndpoint jwtRefresh;
 
+  late final _AdminAuditEndpoint adminAudit;
+
+  late final _AdminBackupsEndpoint adminBackups;
+
   late final _AdminHouseholdsEndpoint adminHouseholds;
+
+  late final _AdminSystemEndpoint adminSystem;
+
+  late final _AdminUsersEndpoint adminUsers;
 
   late final _HealthEndpoint health;
 
@@ -235,7 +251,23 @@ class _InternalTestEndpoints extends TestEndpoints
       endpoints,
       serializationManager,
     );
+    adminAudit = _AdminAuditEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    adminBackups = _AdminBackupsEndpoint(
+      endpoints,
+      serializationManager,
+    );
     adminHouseholds = _AdminHouseholdsEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    adminSystem = _AdminSystemEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    adminUsers = _AdminUsersEndpoint(
       endpoints,
       serializationManager,
     );
@@ -596,6 +628,123 @@ class _JwtRefreshEndpoint {
   }
 }
 
+class _AdminAuditEndpoint {
+  _AdminAuditEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<List<_isazwzo0.AdminAuditEntry>> entries(
+    _ist.TestSessionBuilder sessionBuilder, {
+    int? beforeId,
+    int? limit,
+  }) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'adminAudit',
+            method: 'entries',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'adminAudit',
+          methodName: 'entries',
+          parameters: _ist.testObjectToJson({
+            'beforeId': beforeId,
+            'limit': limit,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_isazwzo0.AdminAuditEntry>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _AdminBackupsEndpoint {
+  _AdminBackupsEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<_i0mq6lub.AdminBackups> overview(
+    _ist.TestSessionBuilder sessionBuilder,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'adminBackups',
+            method: 'overview',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'adminBackups',
+          methodName: 'overview',
+          parameters: _ist.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i0mq6lub.AdminBackups>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_i0mq6lub.AdminBackups> requestBackup(
+    _ist.TestSessionBuilder sessionBuilder,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'adminBackups',
+            method: 'requestBackup',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'adminBackups',
+          methodName: 'requestBackup',
+          parameters: _ist.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i0mq6lub.AdminBackups>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _AdminHouseholdsEndpoint {
   _AdminHouseholdsEndpoint(
     this._endpointDispatch,
@@ -606,7 +755,7 @@ class _AdminHouseholdsEndpoint {
 
   final _is.SerializationManager _serializationManager;
 
-  _ida.Future<List<_it78yatv.AdminHouseholdSummary>> list(
+  _ida.Future<List<_if8bmo50.AdminHouseholdSummary>> list(
     _ist.TestSessionBuilder sessionBuilder,
   ) async {
     return _ist.callAwaitableFunctionAndHandleExceptions(() async {
@@ -628,7 +777,7 @@ class _AdminHouseholdsEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _ida.Future<List<_it78yatv.AdminHouseholdSummary>>);
+                as _ida.Future<List<_if8bmo50.AdminHouseholdSummary>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -636,7 +785,7 @@ class _AdminHouseholdsEndpoint {
     });
   }
 
-  _ida.Future<_it78yatv.AdminHouseholdSummary> setStatus(
+  _ida.Future<_if8bmo50.AdminHouseholdSummary> setStatus(
     _ist.TestSessionBuilder sessionBuilder,
     int householdId,
     _i544oeia.HouseholdStatus status,
@@ -663,7 +812,124 @@ class _AdminHouseholdsEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _ida.Future<_it78yatv.AdminHouseholdSummary>);
+                as _ida.Future<_if8bmo50.AdminHouseholdSummary>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _AdminSystemEndpoint {
+  _AdminSystemEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<_ia4fyvbr.AdminSystemHealth> health(
+    _ist.TestSessionBuilder sessionBuilder,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'adminSystem',
+            method: 'health',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'adminSystem',
+          methodName: 'health',
+          parameters: _ist.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_ia4fyvbr.AdminSystemHealth>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _AdminUsersEndpoint {
+  _AdminUsersEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<List<_ik5zjdct.AdminUserSummary>> list(
+    _ist.TestSessionBuilder sessionBuilder,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'adminUsers',
+            method: 'list',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'adminUsers',
+          methodName: 'list',
+          parameters: _ist.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_ik5zjdct.AdminUserSummary>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_ik5zjdct.AdminUserSummary> setDisabled(
+    _ist.TestSessionBuilder sessionBuilder,
+    int userId,
+    bool disabled,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'adminUsers',
+            method: 'setDisabled',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'adminUsers',
+          methodName: 'setDisabled',
+          parameters: _ist.testObjectToJson({
+            'userId': userId,
+            'disabled': disabled,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_ik5zjdct.AdminUserSummary>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

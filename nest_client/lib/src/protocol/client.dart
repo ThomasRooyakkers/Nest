@@ -13,8 +13,15 @@
 import 'dart:async' as _ida;
 import 'dart:typed_data' as _idt;
 import 'package:http/http.dart' as _i85jenna;
-import 'package:nest_client/src/protocol/admin_household_summary.dart'
-    as _ipf5tkzm;
+import 'package:nest_client/src/protocol/admin/admin_audit_entry.dart'
+    as _iu6tpcav;
+import 'package:nest_client/src/protocol/admin/admin_backups.dart' as _imqa28ij;
+import 'package:nest_client/src/protocol/admin/admin_household_summary.dart'
+    as _ik1o4tpa;
+import 'package:nest_client/src/protocol/admin/admin_system_health.dart'
+    as _ijlhnrtu;
+import 'package:nest_client/src/protocol/admin/admin_user_summary.dart'
+    as _iavs2480;
 import 'package:nest_client/src/protocol/household_feature.dart' as _iejl7hre;
 import 'package:nest_client/src/protocol/household_invite.dart' as _iidsgy2i;
 import 'package:nest_client/src/protocol/household_member.dart' as _ihqqoxyh;
@@ -281,6 +288,56 @@ class EndpointJwtRefresh extends _iacc.EndpointRefreshJwtTokens {
       );
 }
 
+/// The admin audit log, newest first.
+/// {@category Endpoint}
+class EndpointAdminAudit extends _isc.EndpointRef {
+  EndpointAdminAudit(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'adminAudit';
+
+  /// Up to [limit] entries (1–200, default 50) older than [beforeId], or the newest
+  /// when [beforeId] is null.
+  _ida.Future<List<_iu6tpcav.AdminAuditEntry>> entries({
+    int? beforeId,
+    int? limit,
+  }) => caller.callServerEndpoint<List<_iu6tpcav.AdminAuditEntry>>(
+    'adminAudit',
+    'entries',
+    {
+      'beforeId': beforeId,
+      'limit': limit,
+    },
+  );
+}
+
+/// Backups page of the admin portal. The backup job itself runs in its own
+/// container (deploy/backup) and writes `backup_run` rows.
+/// {@category Endpoint}
+class EndpointAdminBackups extends _isc.EndpointRef {
+  EndpointAdminBackups(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'adminBackups';
+
+  /// The most recent runs and a pending "Back up now".
+  _ida.Future<_imqa28ij.AdminBackups> overview() =>
+      caller.callServerEndpoint<_imqa28ij.AdminBackups>(
+        'adminBackups',
+        'overview',
+        {},
+      );
+
+  /// Asks the backup job to back up now. Does nothing new while an earlier
+  /// request is still waiting.
+  _ida.Future<_imqa28ij.AdminBackups> requestBackup() =>
+      caller.callServerEndpoint<_imqa28ij.AdminBackups>(
+        'adminBackups',
+        'requestBackup',
+        {},
+      );
+}
+
 /// Household management for the admin portal. Metadata and counts only.
 /// {@category Endpoint}
 class EndpointAdminHouseholds extends _isc.EndpointRef {
@@ -290,23 +347,71 @@ class EndpointAdminHouseholds extends _isc.EndpointRef {
   String get name => 'adminHouseholds';
 
   /// All households with member counts and owner names.
-  _ida.Future<List<_ipf5tkzm.AdminHouseholdSummary>> list() =>
-      caller.callServerEndpoint<List<_ipf5tkzm.AdminHouseholdSummary>>(
+  _ida.Future<List<_ik1o4tpa.AdminHouseholdSummary>> list() =>
+      caller.callServerEndpoint<List<_ik1o4tpa.AdminHouseholdSummary>>(
         'adminHouseholds',
         'list',
         {},
       );
 
   /// Suspends or reactivates a household.
-  _ida.Future<_ipf5tkzm.AdminHouseholdSummary> setStatus(
+  _ida.Future<_ik1o4tpa.AdminHouseholdSummary> setStatus(
     int householdId,
     _iluf117q.HouseholdStatus status,
-  ) => caller.callServerEndpoint<_ipf5tkzm.AdminHouseholdSummary>(
+  ) => caller.callServerEndpoint<_ik1o4tpa.AdminHouseholdSummary>(
     'adminHouseholds',
     'setStatus',
     {
       'householdId': householdId,
       'status': status,
+    },
+  );
+}
+
+/// System health for the admin portal: versions, database, disk, counts,
+/// configuration and the last backups. No household content.
+/// {@category Endpoint}
+class EndpointAdminSystem extends _isc.EndpointRef {
+  EndpointAdminSystem(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'adminSystem';
+
+  _ida.Future<_ijlhnrtu.AdminSystemHealth> health() =>
+      caller.callServerEndpoint<_ijlhnrtu.AdminSystemHealth>(
+        'adminSystem',
+        'health',
+        {},
+      );
+}
+
+/// User management for the admin portal. Metadata only.
+/// {@category Endpoint}
+class EndpointAdminUsers extends _isc.EndpointRef {
+  EndpointAdminUsers(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'adminUsers';
+
+  /// All users with their email and number of households.
+  _ida.Future<List<_iavs2480.AdminUserSummary>> list() =>
+      caller.callServerEndpoint<List<_iavs2480.AdminUserSummary>>(
+        'adminUsers',
+        'list',
+        {},
+      );
+
+  /// Disables or re-enables a user. Disabled users can no longer use Nest.
+  /// An admin cannot disable themselves.
+  _ida.Future<_iavs2480.AdminUserSummary> setDisabled(
+    int userId,
+    bool disabled,
+  ) => caller.callServerEndpoint<_iavs2480.AdminUserSummary>(
+    'adminUsers',
+    'setDisabled',
+    {
+      'userId': userId,
+      'disabled': disabled,
     },
   );
 }
@@ -1096,7 +1201,11 @@ class Client extends _isc.ServerpodClientShared {
        ) {
     emailIdp = EndpointEmailIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
+    adminAudit = EndpointAdminAudit(this);
+    adminBackups = EndpointAdminBackups(this);
     adminHouseholds = EndpointAdminHouseholds(this);
+    adminSystem = EndpointAdminSystem(this);
+    adminUsers = EndpointAdminUsers(this);
     health = EndpointHealth(this);
     household = EndpointHousehold(this);
     mealPlan = EndpointMealPlan(this);
@@ -1113,7 +1222,15 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointJwtRefresh jwtRefresh;
 
+  late final EndpointAdminAudit adminAudit;
+
+  late final EndpointAdminBackups adminBackups;
+
   late final EndpointAdminHouseholds adminHouseholds;
+
+  late final EndpointAdminSystem adminSystem;
+
+  late final EndpointAdminUsers adminUsers;
 
   late final EndpointHealth health;
 
@@ -1139,7 +1256,11 @@ class Client extends _isc.ServerpodClientShared {
   Map<String, _isc.EndpointRef> get endpointRefLookup => {
     'emailIdp': emailIdp,
     'jwtRefresh': jwtRefresh,
+    'adminAudit': adminAudit,
+    'adminBackups': adminBackups,
     'adminHouseholds': adminHouseholds,
+    'adminSystem': adminSystem,
+    'adminUsers': adminUsers,
     'health': health,
     'household': household,
     'mealPlan': mealPlan,
