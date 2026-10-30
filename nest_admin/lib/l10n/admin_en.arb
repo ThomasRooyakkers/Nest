@@ -1,7 +1,577 @@
 {
   "@@locale": "en",
   "adminTitle": "Nest admin",
-  "@adminTitle": {"description": "Title of the admin portal."},
-  "adminPlaceholderBody": "Households, users, backups and system health will be managed here.",
-  "@adminPlaceholderBody": {"description": "Placeholder text on the admin portal's first screen."}
+  "@adminTitle": {
+    "description": "Title of the admin portal."
+  },
+  "signInIntro": "Sign in with your super-admin account.",
+  "@signInIntro": {
+    "description": "Text under the title on the sign-in screen."
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Label of the email field."
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Label of the password field."
+  },
+  "signIn": "Sign in",
+  "@signIn": {
+    "description": "Button that signs in."
+  },
+  "signOut": "Sign out",
+  "@signOut": {
+    "description": "Button that signs out."
+  },
+  "signedInAs": "Signed in as {name}",
+  "@signedInAs": {
+    "description": "Shown at the bottom of the side menu.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "navHouseholds": "Households",
+  "@navHouseholds": {
+    "description": "Side menu item and page title."
+  },
+  "navUsers": "Users",
+  "@navUsers": {
+    "description": "Side menu item and page title."
+  },
+  "navBackups": "Backups",
+  "@navBackups": {
+    "description": "Side menu item and page title."
+  },
+  "navHealth": "System health",
+  "@navHealth": {
+    "description": "Side menu item and page title."
+  },
+  "navAudit": "Audit log",
+  "@navAudit": {
+    "description": "Side menu item and page title."
+  },
+  "refresh": "Refresh",
+  "@refresh": {
+    "description": "Tooltip of the button that reloads a page."
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Button that closes a dialog without doing anything."
+  },
+  "unknown": "Unknown",
+  "@unknown": {
+    "description": "Shown when a value could not be read."
+  },
+  "noName": "(no name yet)",
+  "@noName": {
+    "description": "Shown for a user who has not entered a name."
+  },
+  "loadMore": "Load more",
+  "@loadMore": {
+    "description": "Button that loads older audit log entries."
+  },
+  "copied": "Copied",
+  "@copied": {
+    "description": "Snack bar after copying text."
+  },
+  "summaryLastBackup": "Last backup",
+  "@summaryLastBackup": {
+    "description": "Label of the last backup card."
+  },
+  "summaryServer": "Server",
+  "@summaryServer": {
+    "description": "Label of the server health card."
+  },
+  "summaryDisk": "Free space",
+  "@summaryDisk": {
+    "description": "Label of the disk space card."
+  },
+  "backupNever": "Never",
+  "@backupNever": {
+    "description": "Shown when there has been no successful backup."
+  },
+  "backupLate": "More than a day ago: check the backups",
+  "@backupLate": {
+    "description": "Warning when the last successful backup is too old."
+  },
+  "backupOnTime": "Backups are up to date",
+  "@backupOnTime": {
+    "description": "Shown when the last backup is recent."
+  },
+  "healthOk": "All good",
+  "@healthOk": {
+    "description": "Server and database are working."
+  },
+  "healthDatabaseDown": "Database problem",
+  "@healthDatabaseDown": {
+    "description": "The database could not be read."
+  },
+  "serverVersion": "Version {version}, up {uptime}",
+  "@serverVersion": {
+    "description": "Server version and how long it has been running.",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "uptime": {
+        "type": "String"
+      }
+    }
+  },
+  "diskFree": "{size} free",
+  "@diskFree": {
+    "description": "Free disk space.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "diskOf": "of {size}",
+  "@diskOf": {
+    "description": "Total disk size, under the free space.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "durationDays": "{count, plural, =1{1 day} other{{count} days}}",
+  "@durationDays": {
+    "description": "A duration in days.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "durationHours": "{count, plural, =1{1 hour} other{{count} hours}}",
+  "@durationHours": {
+    "description": "A duration in hours.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "durationMinutes": "{count, plural, =1{1 minute} other{{count} minutes}}",
+  "@durationMinutes": {
+    "description": "A duration in minutes.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "householdsEmpty": "No households yet.",
+  "@householdsEmpty": {
+    "description": "Shown when there are no households."
+  },
+  "usersEmpty": "No users yet.",
+  "@usersEmpty": {
+    "description": "Shown when there are no users."
+  },
+  "backupsEmpty": "No backups yet. The first one runs at the backup time, or press Back up now.",
+  "@backupsEmpty": {
+    "description": "Shown when there are no backup runs."
+  },
+  "auditEmpty": "No admin actions yet.",
+  "@auditEmpty": {
+    "description": "Shown when the audit log is empty."
+  },
+  "columnName": "Name",
+  "@columnName": {
+    "description": "Table column."
+  },
+  "columnOwners": "Owner",
+  "@columnOwners": {
+    "description": "Table column: owners of a household."
+  },
+  "columnMembers": "Members",
+  "@columnMembers": {
+    "description": "Table column."
+  },
+  "columnFeatures": "Features",
+  "@columnFeatures": {
+    "description": "Table column: features switched on."
+  },
+  "columnLastActivity": "Last activity",
+  "@columnLastActivity": {
+    "description": "Table column."
+  },
+  "columnStatus": "Status",
+  "@columnStatus": {
+    "description": "Table column."
+  },
+  "columnAction": "Action",
+  "@columnAction": {
+    "description": "Table column with a button."
+  },
+  "columnEmail": "Email",
+  "@columnEmail": {
+    "description": "Table column."
+  },
+  "columnHouseholds": "Households",
+  "@columnHouseholds": {
+    "description": "Table column: number of households."
+  },
+  "columnLanguage": "Language",
+  "@columnLanguage": {
+    "description": "Table column."
+  },
+  "columnSince": "Since",
+  "@columnSince": {
+    "description": "Table column: when the account was created."
+  },
+  "columnStarted": "Started",
+  "@columnStarted": {
+    "description": "Table column: when a backup started."
+  },
+  "columnTarget": "Target",
+  "@columnTarget": {
+    "description": "Table column: where a backup went, or what an admin action was about."
+  },
+  "columnSize": "Size",
+  "@columnSize": {
+    "description": "Table column."
+  },
+  "columnSnapshot": "Snapshot",
+  "@columnSnapshot": {
+    "description": "Table column: backup snapshot id."
+  },
+  "columnDetails": "Details",
+  "@columnDetails": {
+    "description": "Table column: duration or error of a backup."
+  },
+  "columnWhen": "When",
+  "@columnWhen": {
+    "description": "Table column."
+  },
+  "columnAdmin": "Admin",
+  "@columnAdmin": {
+    "description": "Table column: who did an admin action."
+  },
+  "columnActionDone": "Action",
+  "@columnActionDone": {
+    "description": "Table column: what an admin did."
+  },
+  "featureShopping": "Shopping",
+  "@featureShopping": {
+    "description": "Feature name."
+  },
+  "featureRecipes": "Recipes",
+  "@featureRecipes": {
+    "description": "Feature name."
+  },
+  "featureMeals": "Meals",
+  "@featureMeals": {
+    "description": "Feature name."
+  },
+  "featureTasks": "Tasks",
+  "@featureTasks": {
+    "description": "Feature name."
+  },
+  "featureWatchlist": "Watchlist",
+  "@featureWatchlist": {
+    "description": "Feature name."
+  },
+  "statusActive": "Active",
+  "@statusActive": {
+    "description": "Status of a household or user."
+  },
+  "statusSuspended": "Suspended",
+  "@statusSuspended": {
+    "description": "Status of a household."
+  },
+  "statusDisabled": "Disabled",
+  "@statusDisabled": {
+    "description": "Status of a user."
+  },
+  "superAdmin": "Super-admin",
+  "@superAdmin": {
+    "description": "Badge next to a super-admin's name."
+  },
+  "suspend": "Suspend",
+  "@suspend": {
+    "description": "Button that suspends a household."
+  },
+  "reactivate": "Reactivate",
+  "@reactivate": {
+    "description": "Button that reactivates a household."
+  },
+  "suspendTitle": "Suspend {name}?",
+  "@suspendTitle": {
+    "description": "Confirmation dialog title.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reactivateTitle": "Reactivate {name}?",
+  "@reactivateTitle": {
+    "description": "Confirmation dialog title.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "suspendMessage": "Members can no longer open this household until it is reactivated. Nothing is deleted.",
+  "@suspendMessage": {
+    "description": "Confirmation dialog text."
+  },
+  "reactivateMessage": "Members can use this household again.",
+  "@reactivateMessage": {
+    "description": "Confirmation dialog text."
+  },
+  "disable": "Disable",
+  "@disable": {
+    "description": "Button that disables a user."
+  },
+  "enable": "Enable",
+  "@enable": {
+    "description": "Button that enables a user again."
+  },
+  "disableTitle": "Disable {name}?",
+  "@disableTitle": {
+    "description": "Confirmation dialog title.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "enableTitle": "Enable {name}?",
+  "@enableTitle": {
+    "description": "Confirmation dialog title.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "disableMessage": "This user can no longer use Nest until enabled again. Nothing is deleted.",
+  "@disableMessage": {
+    "description": "Confirmation dialog text."
+  },
+  "enableMessage": "This user can use Nest again.",
+  "@enableMessage": {
+    "description": "Confirmation dialog text."
+  },
+  "backUpNow": "Back up now",
+  "@backUpNow": {
+    "description": "Button that asks for a backup right away."
+  },
+  "backupRequested": "Backup requested at {time}. It starts within a minute.",
+  "@backupRequested": {
+    "description": "Shown while a Back up now request waits for the backup job.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "backupStatusRunning": "Running",
+  "@backupStatusRunning": {
+    "description": "Backup run status."
+  },
+  "backupStatusSucceeded": "Succeeded",
+  "@backupStatusSucceeded": {
+    "description": "Backup run status."
+  },
+  "backupStatusFailed": "Failed",
+  "@backupStatusFailed": {
+    "description": "Backup run status."
+  },
+  "restoreTitle": "Restore",
+  "@restoreTitle": {
+    "description": "Title of the restore card."
+  },
+  "restoreBody": "Restoring replaces all data on this server with the snapshot. It is done on the server's command line, as described in the hosting guide.",
+  "@restoreBody": {
+    "description": "Explanation on the restore card."
+  },
+  "restoreNoSnapshot": "There is no successful backup to restore yet.",
+  "@restoreNoSnapshot": {
+    "description": "Shown when no snapshot exists."
+  },
+  "restoreSnapshot": "Newest snapshot: {snapshot} in {target}, from {time}. In the folder with docker-compose.yml, run:",
+  "@restoreSnapshot": {
+    "description": "Introduces the restore command.",
+    "placeholders": {
+      "snapshot": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "copyCommand": "Copy command",
+  "@copyCommand": {
+    "description": "Button that copies the restore command."
+  },
+  "healthServer": "Server",
+  "@healthServer": {
+    "description": "Card label."
+  },
+  "healthServerDetail": "API level {api}, up {uptime}",
+  "@healthServerDetail": {
+    "description": "Server card detail.",
+    "placeholders": {
+      "api": {
+        "type": "int"
+      },
+      "uptime": {
+        "type": "String"
+      }
+    }
+  },
+  "healthDatabase": "Database",
+  "@healthDatabase": {
+    "description": "Card label."
+  },
+  "healthDatabaseSize": "Size {size}",
+  "@healthDatabaseSize": {
+    "description": "Database size.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "healthActive": "{count} active",
+  "@healthActive": {
+    "description": "Number of active households.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "healthDisabled": "{count} disabled",
+  "@healthDisabled": {
+    "description": "Number of disabled users.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "healthSetting": "Setting",
+  "@healthSetting": {
+    "description": "Table column."
+  },
+  "healthValue": "Value",
+  "@healthValue": {
+    "description": "Table column."
+  },
+  "healthSignUpMode": "Sign-up",
+  "@healthSignUpMode": {
+    "description": "Setting: who may create an account."
+  },
+  "signUpInviteOnly": "With an invite code only",
+  "@signUpInviteOnly": {
+    "description": "Sign-up mode."
+  },
+  "signUpOpen": "Open to everyone",
+  "@signUpOpen": {
+    "description": "Sign-up mode."
+  },
+  "healthMail": "Mail",
+  "@healthMail": {
+    "description": "Setting: sending sign-up codes by mail."
+  },
+  "healthMailLog": "Not set up: codes in the server log",
+  "@healthMailLog": {
+    "description": "Mail is not configured."
+  },
+  "healthFilmData": "Film data (TMDB)",
+  "@healthFilmData": {
+    "description": "Setting: TMDB key."
+  },
+  "healthFilmDataSample": "Not set up: sample titles",
+  "@healthFilmDataSample": {
+    "description": "TMDB is not configured."
+  },
+  "healthConfigured": "Set up",
+  "@healthConfigured": {
+    "description": "A setting is configured."
+  },
+  "healthBackupTarget": "Backup to {target}",
+  "@healthBackupTarget": {
+    "description": "Last backup of one target.",
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "auditHouseholdSuspended": "Suspended a household",
+  "@auditHouseholdSuspended": {
+    "description": "Audit log action."
+  },
+  "auditHouseholdReactivated": "Reactivated a household",
+  "@auditHouseholdReactivated": {
+    "description": "Audit log action."
+  },
+  "auditHouseholdStatus": "Changed a household's status",
+  "@auditHouseholdStatus": {
+    "description": "Audit log action."
+  },
+  "auditUserDisabled": "Disabled a user",
+  "@auditUserDisabled": {
+    "description": "Audit log action."
+  },
+  "auditUserEnabled": "Enabled a user",
+  "@auditUserEnabled": {
+    "description": "Audit log action."
+  },
+  "auditBackupRequested": "Asked for a backup",
+  "@auditBackupRequested": {
+    "description": "Audit log action."
+  },
+  "errorNotSignedIn": "Please sign in again.",
+  "@errorNotSignedIn": {
+    "description": "Error."
+  },
+  "errorUserDisabled": "This account has been disabled.",
+  "@errorUserDisabled": {
+    "description": "Error."
+  },
+  "errorNotAdmin": "This account is not a super-admin of this server.",
+  "@errorNotAdmin": {
+    "description": "Error."
+  },
+  "errorNotFound": "That no longer exists.",
+  "@errorNotFound": {
+    "description": "Error."
+  },
+  "errorInvalidInput": "That is not possible.",
+  "@errorInvalidInput": {
+    "description": "Error, e.g. disabling your own account."
+  },
+  "errorInvalidCredentials": "Wrong email or password.",
+  "@errorInvalidCredentials": {
+    "description": "Sign-in error."
+  },
+  "errorTooManyAttempts": "Too many attempts. Try again later.",
+  "@errorTooManyAttempts": {
+    "description": "Sign-in error."
+  },
+  "errorNetwork": "Can't reach the server.",
+  "@errorNetwork": {
+    "description": "Network error."
+  },
+  "errorUnknown": "Something went wrong.",
+  "@errorUnknown": {
+    "description": "Unknown error."
+  }
 }
