@@ -55,10 +55,13 @@ Open `.env` in een editor. Elke instelling wordt in het bestand uitgelegd.
 | `NEST_API_DOMAIN` | het adres van de API, bv. `nest-api.example.com` |
 | `SUPER_ADMIN_EMAIL` | je eigen e-mailadres: dat account wordt superbeheerder van de server |
 | `SIGN_UP_MODE` | `invite-only` (aanbevolen: nieuwe accounts hebben een uitnodigingscode van een huishouden nodig) of `open` |
-| `NEST_IMAGE`, `NEST_VERSION` | het serverimage en de versie; laat de waarden uit `.env.example` staan, tenzij je een bepaalde versie wilt |
+| `NEST_IMAGE`, `NEST_BACKUP_IMAGE`, `NEST_VERSION` | het server- en back-upimage en de versie; laat de waarden uit `.env.example` staan, tenzij je een bepaalde versie wilt |
 | `DATABASE_PASSWORD`, `SERVICE_SECRET`, `EMAIL_SECRET_HASH_PEPPER`, `JWT_HMAC_SHA512_PRIVATE_KEY`, `JWT_REFRESH_TOKEN_HASH_PEPPER` | elk een andere willekeurige waarde |
 | `RESEND_API_KEY`, `MAIL_FROM` | optioneel, zie "Mail" hieronder |
 | `TMDB_API_KEY` | optioneel, zie "Filmgegevens" hieronder |
+| `RESTIC_PASSWORD` | een willekeurige waarde die de back-ups versleutelt; bewaar er een kopie van, zie "Back-ups" hieronder |
+| `BACKUP_TARGETS`, `BACKUP_TIME`, `TZ` | waar en wanneer back-ups gemaakt worden; de standaardwaarden werken, zie "Back-ups" hieronder |
+| `NEST_ADMIN_DOMAIN` | optioneel, zie "Beheerportaal" hieronder |
 
 Maak elk geheim met:
 
@@ -205,45 +208,89 @@ versie start. Wil je op een versie blijven, zet dan `NEST_VERSION` in `.env`
 werken met nieuwere servers; is een app te oud voor de server, dan meldt hij
 dat.
 
+## Beheerportaal
+
+Het beheerportaal toont de huishoudens, gebruikers, back-ups, systeemstatus
+en een auditlog van elke beheeractie. Het toont nooit wat een huishouden in
+Nest bewaart (geen lijstitems, recepten of taaknamen).
+
+Zet daarvoor `NEST_ADMIN_DOMAIN` in `.env` (bijvoorbeeld
+`nest-admin.example.com`), stuur het door zoals de web-app (poort 8082) en
+voer `docker compose up -d` uit. Bescherm het adres met een extra aanmelding
+ervoor, bijvoorbeeld Cloudflare Access. Meld aan met het account van
+`SUPER_ADMIN_EMAIL`; andere accounts komen er niet in.
+
 ## Back-ups
 
-De dienst `backup` schrijft elke nacht een databasedump naar
-`~/nest/backups` en bewaart de laatste 14. Kopieer die map regelmatig naar
-een andere plek (een andere schijf of een clouddrive), samen met je `.env`.
-Foto's van recepten staan in de database, dus de dump bevat ze; er is geen
-aparte map om te back-uppen.
+De dienst `backup` maakt elke dag om `BACKUP_TIME` (in tijdzone `TZ`) een
+dump van de database en bewaart die met [restic](https://restic.net),
+versleuteld met `RESTIC_PASSWORD`. Foto's van recepten staan in de database,
+dus de dump bevat ze. Oude back-ups worden uitgedund: de laatste 10, één per
+dag gedurende 14 dagen, één per week gedurende 8 weken en één per maand
+gedurende een jaar.
 
-Nu meteen een dump maken:
+Standaard gaan de back-ups naar `~/nest/backups/restic` op dezelfde machine.
+Voeg een tweede plek toe in `BACKUP_TARGETS`, zodat een kapotte schijf de
+back-ups niet meeneemt:
+
+- **Een map, zoals een NFS-share** die op deze machine gekoppeld is: zet
+  `BACKUP_EXTRA_DIR` op die map en voeg `nas=/backups-extra/restic` toe.
+- **OneDrive of een andere clouddrive** via [rclone](https://rclone.org):
+  voer `rclone config` uit op een willekeurige computer, maak een remote met
+  de naam `onedrive`, kopieer het `rclone.conf` dat dat oplevert naar
+  `~/nest/rclone/` en voeg `onedrive=rclone:onedrive:nest` toe.
+
+Bijvoorbeeld `BACKUP_TARGETS=local=/backups/restic onedrive=rclone:onedrive:nest`.
+Voer daarna `docker compose up -d` uit. Elke back-up komt in elke bestemming
+terecht, en elke bestemming krijgt een eigen rij op de pagina Back-ups van
+het beheerportaal, met de fout als het misliep.
+
+Bewaar `RESTIC_PASSWORD` en `.env` ook op een andere plek, bijvoorbeeld in
+een wachtwoordbeheerder: zonder `RESTIC_PASSWORD` is geen enkele back-up nog
+te lezen.
+
+Maak nu meteen een back-up met "Nu back-uppen" in het beheerportaal (hij
+start binnen een minuut), of:
 
 ```bash
-docker compose exec postgres pg_dump -U postgres nest | gzip > backups/nest-handmatig.sql.gz
+cd ~/nest
+docker compose exec backup nest-backup now
+```
+
+Toon de back-ups (snapshots) van een bestemming:
+
+```bash
+docker compose run --rm backup snapshots local
 ```
 
 ### Terugzetten
 
-Dit vervangt alle gegevens op de server door de dump.
+Dit vervangt alle gegevens op de server door de back-up. De pagina Back-ups
+van het beheerportaal toont deze opdrachten met de bestemming en snapshot
+van elke back-up al ingevuld.
 
 ```bash
 cd ~/nest
 docker compose stop nest
-docker compose exec postgres dropdb -U postgres nest
-docker compose exec postgres createdb -U postgres nest
-gunzip -c backups/nest-JJJJMMDD-UUMMSS.sql.gz | docker compose exec -T postgres psql -U postgres -d nest
+docker compose run --rm backup restore local 1a2b3c4d
 docker compose start nest
 ```
 
-Gebruik dezelfde geheimen in `.env` als de server die de dump maakte, anders
-kan niemand aanmelden.
+Vervang `local` door de bestemming en `1a2b3c4d` door de snapshot. Gebruik
+dezelfde geheimen in `.env` als de server die de back-up maakte, anders kan
+niemand aanmelden.
 
 Probeer één keer een terugzetting op een reservemachine voor je op je
 back-ups vertrouwt.
 
 ## Verhuizen naar een nieuwe machine
 
-Installeer Docker op de nieuwe machine, kopieer `docker-compose.yml`, `.env`
-en de laatste dump, start alleen de database (`docker compose up -d
-postgres`), zet de dump terug zoals hierboven en voer `docker compose up -d`
-uit. Laat daarna de tunnel of proxy naar de nieuwe machine wijzen.
+Installeer Docker op de nieuwe machine en kopieer `docker-compose.yml`,
+`.env`, de map `rclone` en, voor de bestemming `local`, de map `backups`.
+Start alleen de database (`docker compose up -d postgres`), zet de laatste
+back-up terug zoals hierboven (`docker compose run --rm backup restore ...`)
+en voer `docker compose up -d` uit. Laat daarna de tunnel of proxy naar de
+nieuwe machine wijzen.
 
 ## Problemen oplossen
 

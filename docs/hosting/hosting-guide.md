@@ -53,10 +53,13 @@ Open `.env` in an editor. Every setting is explained in the file.
 | `NEST_API_DOMAIN` | the API address, e.g. `nest-api.example.com` |
 | `SUPER_ADMIN_EMAIL` | your own email address: that account becomes the server's super-admin |
 | `SIGN_UP_MODE` | `invite-only` (recommended: new accounts need a household invite code) or `open` |
-| `NEST_IMAGE`, `NEST_VERSION` | the server image and version; keep the values from `.env.example` unless you want a specific version |
+| `NEST_IMAGE`, `NEST_BACKUP_IMAGE`, `NEST_VERSION` | the server and backup images and the version; keep the values from `.env.example` unless you want a specific version |
 | `DATABASE_PASSWORD`, `SERVICE_SECRET`, `EMAIL_SECRET_HASH_PEPPER`, `JWT_HMAC_SHA512_PRIVATE_KEY`, `JWT_REFRESH_TOKEN_HASH_PEPPER` | each a different random value |
 | `RESEND_API_KEY`, `MAIL_FROM` | optional, see "Mail" below |
 | `TMDB_API_KEY` | optional, see "Film data" below |
+| `RESTIC_PASSWORD` | a random value that encrypts the backups; keep a copy elsewhere, see "Backups" below |
+| `BACKUP_TARGETS`, `BACKUP_TIME`, `TZ` | where and when backups are made; the defaults work, see "Backups" below |
+| `NEST_ADMIN_DOMAIN` | optional, see "Admin portal" below |
 
 Make each secret with:
 
@@ -202,44 +205,85 @@ To stay on a version, set `NEST_VERSION` in `.env` (for example `0.2.0`)
 instead of `latest`. Older Nest apps keep working with newer servers; when an
 app is too old for the server, it says so.
 
+## Admin portal
+
+The admin portal shows the households, users, backups, system health and an
+audit log of every admin action. It never shows what a household keeps in
+Nest (no list items, recipes or task titles).
+
+To use it, set `NEST_ADMIN_DOMAIN` in `.env` (for example
+`nest-admin.example.com`), route it like the web app (port 8082) and run
+`docker compose up -d`. Protect the address with an extra login in front of
+it, for example Cloudflare Access. Sign in with the `SUPER_ADMIN_EMAIL`
+account; other accounts are turned away.
+
 ## Backups
 
-The `backup` service writes a database dump to `~/nest/backups` every night
-and keeps the last 14. Copy that folder somewhere else regularly (another
-disk or a cloud drive), together with your `.env`. Recipe photos are stored
-in the database, so the dump includes them; there is no separate folder to
-back up.
+The `backup` service dumps the database every day at `BACKUP_TIME` (in the
+time zone `TZ`) and stores the dump with [restic](https://restic.net),
+encrypted with `RESTIC_PASSWORD`. Recipe photos are stored in the database,
+so the dump includes them. Old backups are thinned out: the last 10, one a
+day for 14 days, one a week for 8 weeks and one a month for a year.
 
-Make a dump right now:
+By default the backups go to `~/nest/backups/restic` on the same machine. Add
+a second place in `BACKUP_TARGETS` so a broken disk does not take the backups
+with it:
+
+- **A folder, such as an NFS share** mounted on this machine: set
+  `BACKUP_EXTRA_DIR` to the folder and add `nas=/backups-extra/restic`.
+- **OneDrive or another cloud drive** through [rclone](https://rclone.org):
+  run `rclone config` on any computer, create a remote named `onedrive`, copy
+  the resulting `rclone.conf` to `~/nest/rclone/` and add
+  `onedrive=rclone:onedrive:nest`.
+
+For example `BACKUP_TARGETS=local=/backups/restic onedrive=rclone:onedrive:nest`.
+Then run `docker compose up -d`. Each backup is stored in every target, and
+each target gets its own row on the Backups page of the admin portal, with
+the error when it failed.
+
+Keep `RESTIC_PASSWORD` and `.env` somewhere else too, for example in a
+password manager: without `RESTIC_PASSWORD` no backup can be read.
+
+Make a backup right now with "Back up now" in the admin portal (it starts
+within a minute), or:
 
 ```bash
-docker compose exec postgres pg_dump -U postgres nest | gzip > backups/nest-manual.sql.gz
+cd ~/nest
+docker compose exec backup nest-backup now
+```
+
+List the backups (snapshots) of a target:
+
+```bash
+docker compose run --rm backup snapshots local
 ```
 
 ### Restore
 
-This replaces all data on the server with the dump.
+This replaces all data on the server with the backup. The Backups page of
+the admin portal shows these commands with the target and snapshot of each
+backup filled in.
 
 ```bash
 cd ~/nest
 docker compose stop nest
-docker compose exec postgres dropdb -U postgres nest
-docker compose exec postgres createdb -U postgres nest
-gunzip -c backups/nest-YYYYMMDD-HHMMSS.sql.gz | docker compose exec -T postgres psql -U postgres -d nest
+docker compose run --rm backup restore local 1a2b3c4d
 docker compose start nest
 ```
 
-Use the same `.env` secrets as the server that made the dump, or nobody can
-sign in.
+Replace `local` with the target and `1a2b3c4d` with the snapshot. Use the
+same `.env` secrets as the server that made the backup, or nobody can sign
+in.
 
 Try a restore on a spare machine once before you rely on your backups.
 
 ## Moving to a new machine
 
-Install Docker on the new machine, copy `docker-compose.yml`, `.env` and the
-latest dump, start only the database (`docker compose up -d postgres`),
-restore the dump as above and run `docker compose up -d`. Then point the
-tunnel or proxy at the new machine.
+Install Docker on the new machine and copy `docker-compose.yml`, `.env`,
+the `rclone` folder and, for the `local` target, the `backups` folder. Start
+only the database (`docker compose up -d postgres`), restore the latest
+backup as above (`docker compose run --rm backup restore ...`) and run
+`docker compose up -d`. Then point the tunnel or proxy at the new machine.
 
 ## Troubleshooting
 

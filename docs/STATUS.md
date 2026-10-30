@@ -2,9 +2,12 @@
 
 ## Current phase
 
-**Phase 7 — Watchlist: done and released (2026-10-30).** Server 0.6.0 /
-API level 6 runs on the Pi with a TMDB key. Waiting for Thomas before phase 8
-(Admin + backups).
+**Phase 8 — Admin + backups: built, not yet released (2026-10-30).** Admin
+endpoints, the restic backup job and the admin portal are done and tested
+locally (server 0.7.0 / API level 7). Waiting for Thomas to release it to the
+Pi (backup targets, `RESTIC_PASSWORD`, admin domain behind Cloudflare Access).
+
+Phase 7 (Watchlist) is done and released as 0.6.0.
 
 Phase 6 (Meal Planning) is done and released as 0.5.0.
 
@@ -642,6 +645,38 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
   soft shadows instead of hairline borders, body 15/650, native-feeling
   controls, frosted tab bar.
 
+### Phase 8 — Admin + backups (2026-10-30, not released)
+
+- **Server:** admin endpoints under `endpoints/admin/` (households, users,
+  system health, backups, audit log), each starting with
+  `AdminGuard.require` and returning metadata and counts only; every admin
+  action writes an `admin_audit_log` row. `backup_run` and `backup_request`
+  tables; system health reports version/API level, uptime, database, mail,
+  TMDB, free disk space and the backup targets. All admin endpoints are in
+  the "normal user gets an error" test.
+- **Backup job** (`deploy/backup`, image `nest-backup`): `pg_dump` once,
+  stored with restic in every target of `BACKUP_TARGETS` (local folder, NFS
+  share via `BACKUP_EXTRA_DIR`, OneDrive or any rclone remote), daily at
+  `BACKUP_TIME` and on "Back up now" (picked up within 30 s); one
+  `backup_run` row per target with size, snapshot or error; old snapshots
+  thinned with `restic forget`. `nest-backup snapshots` and
+  `nest-backup restore <target> <snapshot>` for restores.
+- **Admin portal** (`nest_admin`, Flutter web, EN/NL): sign-in for the
+  super-admin only, side menu (drawer on narrow screens) with Households
+  (summary cards for last backup, server and free space; table with
+  Suspend/Reactivate), Users (Disable/Enable, not yourself), Backups (runs,
+  Back up now, the restore command for the latest good snapshot), System
+  health and Audit log. Served on its own domain (`NEST_ADMIN_DOMAIN`).
+- **Hosting guide (EN/NL):** new "Admin portal" section; "Backups",
+  "Restore" and "Moving to a new machine" rewritten for restic, with the
+  backup settings in the `.env` table.
+- **Checks:** 8 admin portal widget tests (incl. narrow screen, Dutch,
+  1.6× text); fixed two overflows (name + Super-admin badge, and table
+  buttons/headers breaking mid-word). In the browser against the local
+  server: sign-in as the seeded super-admin, Households, Users and Backups
+  show real data. **Not verified:** the backup container itself (needs
+  Docker; runs on the Pi), a real restic run to NFS/OneDrive, and a restore.
+
 ## Next
 
 1. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
@@ -656,7 +691,15 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
    iPhone build (taking a photo needs the phone).
 5. **Thomas:** try the watchlist at https://nest.g3cko.be (search, real
    posters, tonight's pick) and on the iPhone build.
-6. Phase 8 — Admin + backups (CLAUDE.md section 10).
+6. **Release phase 8 (with Thomas):** set `RESTIC_PASSWORD` (keep a copy in
+   a password manager), `BACKUP_TARGETS` (local + NFS and/or OneDrive via
+   `~/nest/rclone/rclone.conf`) and `NEST_ADMIN_DOMAIN=nest-admin.g3cko.be`
+   in `~/nest/deploy/.env`; route `nest-admin.g3cko.be` to port 8082 in the
+   tunnel and put Cloudflare Access in front; tag `v0.7.0`, deploy, press
+   Back up now and check both targets.
+7. **Test a restore** on a spare machine or a throwaway database (needed
+   for the phase 9 gate).
+8. Phase 9 — Dashboard + release (CLAUDE.md section 10).
 
 ## Open questions
 
