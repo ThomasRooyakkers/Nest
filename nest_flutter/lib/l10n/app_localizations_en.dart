@@ -1022,4 +1022,90 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeRecipesSubtitle => 'Your household\'s recipe library';
+
+  @override
+  String get mealsTitle => 'Meal plan';
+
+  @override
+  String get mealsThisWeek => 'This week';
+
+  @override
+  String get mealsNextWeek => 'Next week';
+
+  @override
+  String get mealsLastWeek => 'Last week';
+
+  @override
+  String get mealsBackToThisWeek => 'Back to this week';
+
+  @override
+  String get mealsToday => 'Today';
+
+  @override
+  String get mealsOffline =>
+      'Offline. You can see the weeks opened before; changes need a connection.';
+
+  @override
+  String get mealSlotBreakfast => 'Breakfast';
+
+  @override
+  String get mealSlotLunch => 'Lunch';
+
+  @override
+  String get mealSlotDinner => 'Dinner';
+
+  @override
+  String get mealPlanBreakfast => 'Plan breakfast';
+
+  @override
+  String get mealPlanLunch => 'Plan lunch';
+
+  @override
+  String get mealPlanDinner => 'Plan dinner';
+
+  @override
+  String get mealNothingPlanned => 'Nothing planned';
+
+  @override
+  String get mealOpenRecipe => 'Open recipe';
+
+  @override
+  String get mealPrepAheadLabel => 'Prep ahead';
+
+  @override
+  String get mealPrepAheadHint => 'E.g. take the chicken out of the freezer';
+
+  @override
+  String get mealFromRecipe => 'Recipe';
+
+  @override
+  String get mealFromText => 'Something else';
+
+  @override
+  String get mealTextLabel => 'What\'s on the menu?';
+
+  @override
+  String get mealNoRecipes =>
+      'No recipes yet. Add them in the recipe library, or choose Something else.';
+
+  @override
+  String get mealDayLabel => 'Day';
+
+  @override
+  String get mealServingsLabel => 'Servings';
+
+  @override
+  String get mealRemove => 'Remove from the plan';
+
+  @override
+  String get mealSlotsButton => 'Meals to plan';
+
+  @override
+  String get mealSlotsHint =>
+      'Dinner is always planned. Switch on breakfast and lunch to plan them too.';
+
+  @override
+  String mealDayMeal(String day, String meal) {
+    return '$day: $meal';
+  }
 }

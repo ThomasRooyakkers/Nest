@@ -19,9 +19,13 @@ import 'recipe_style.dart';
 /// One recipe: photo, times, a servings stepper that rescales the
 /// ingredients, "Add to list", the numbered steps and "Start cooking".
 class RecipeScreen extends ConsumerStatefulWidget {
-  const RecipeScreen({super.key, required this.recipeId});
+  const RecipeScreen({super.key, required this.recipeId, this.initialServings});
 
   final int recipeId;
+
+  /// Servings to show at first, e.g. those of a planned meal; null for the
+  /// recipe's own.
+  final int? initialServings;
 
   @override
   ConsumerState<RecipeScreen> createState() => _RecipeScreenState();
@@ -31,7 +35,7 @@ class _RecipeScreenState extends ConsumerState<RecipeScreen> {
   static const _maxWidth = 640.0;
 
   /// Servings picked with the stepper; null shows the recipe's own.
-  int? _servings;
+  late int? _servings = widget.initialServings;
 
   Future<void> _delete(int householdId, Recipe recipe) async {
     final l10n = AppLocalizations.of(context);

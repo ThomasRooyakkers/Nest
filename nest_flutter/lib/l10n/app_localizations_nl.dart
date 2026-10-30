@@ -1024,4 +1024,90 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get homeRecipesSubtitle => 'Het receptenboek van je huishouden';
+
+  @override
+  String get mealsTitle => 'Weekmenu';
+
+  @override
+  String get mealsThisWeek => 'Deze week';
+
+  @override
+  String get mealsNextWeek => 'Volgende week';
+
+  @override
+  String get mealsLastWeek => 'Vorige week';
+
+  @override
+  String get mealsBackToThisWeek => 'Terug naar deze week';
+
+  @override
+  String get mealsToday => 'Vandaag';
+
+  @override
+  String get mealsOffline =>
+      'Offline. Je ziet de weken die je al opende; wijzigen kan pas met verbinding.';
+
+  @override
+  String get mealSlotBreakfast => 'Ontbijt';
+
+  @override
+  String get mealSlotLunch => 'Lunch';
+
+  @override
+  String get mealSlotDinner => 'Avondeten';
+
+  @override
+  String get mealPlanBreakfast => 'Ontbijt plannen';
+
+  @override
+  String get mealPlanLunch => 'Lunch plannen';
+
+  @override
+  String get mealPlanDinner => 'Avondeten plannen';
+
+  @override
+  String get mealNothingPlanned => 'Niets gepland';
+
+  @override
+  String get mealOpenRecipe => 'Recept openen';
+
+  @override
+  String get mealPrepAheadLabel => 'Vooraf doen';
+
+  @override
+  String get mealPrepAheadHint => 'Bijv. de kip uit de diepvries halen';
+
+  @override
+  String get mealFromRecipe => 'Recept';
+
+  @override
+  String get mealFromText => 'Iets anders';
+
+  @override
+  String get mealTextLabel => 'Wat staat er op het menu?';
+
+  @override
+  String get mealNoRecipes =>
+      'Nog geen recepten. Voeg ze toe in de receptenbibliotheek, of kies Iets anders.';
+
+  @override
+  String get mealDayLabel => 'Dag';
+
+  @override
+  String get mealServingsLabel => 'Porties';
+
+  @override
+  String get mealRemove => 'Uit het weekmenu halen';
+
+  @override
+  String get mealSlotsButton => 'Te plannen maaltijden';
+
+  @override
+  String get mealSlotsHint =>
+      'Avondeten plan je altijd. Zet ontbijt en lunch aan om die ook te plannen.';
+
+  @override
+  String mealDayMeal(String day, String meal) {
+    return '$day: $meal';
+  }
 }

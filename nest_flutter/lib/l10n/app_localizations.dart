@@ -1849,6 +1849,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your household\'s recipe library'**
   String get homeRecipesSubtitle;
+
+  /// Title of the meal plan screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal plan'**
+  String get mealsTitle;
+
+  /// Week label for the current week.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get mealsThisWeek;
+
+  /// Week label, and the button to show the next week.
+  ///
+  /// In en, this message translates to:
+  /// **'Next week'**
+  String get mealsNextWeek;
+
+  /// Week label, and the button to show the previous week.
+  ///
+  /// In en, this message translates to:
+  /// **'Last week'**
+  String get mealsLastWeek;
+
+  /// Button shown on other weeks.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to this week'**
+  String get mealsBackToThisWeek;
+
+  /// Badge on today's card.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get mealsToday;
+
+  /// Notice on the meal plan without a connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline. You can see the weeks opened before; changes need a connection.'**
+  String get mealsOffline;
+
+  /// Meal of the day.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get mealSlotBreakfast;
+
+  /// Meal of the day.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get mealSlotLunch;
+
+  /// Meal of the day.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner'**
+  String get mealSlotDinner;
+
+  /// Button on a day without breakfast.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan breakfast'**
+  String get mealPlanBreakfast;
+
+  /// Button on a day without lunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan lunch'**
+  String get mealPlanLunch;
+
+  /// Button on a day without dinner.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan dinner'**
+  String get mealPlanDinner;
+
+  /// Screen reader text for a day without meals.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing planned'**
+  String get mealNothingPlanned;
+
+  /// Button on a planned meal with a recipe.
+  ///
+  /// In en, this message translates to:
+  /// **'Open recipe'**
+  String get mealOpenRecipe;
+
+  /// Label of the prep-ahead note.
+  ///
+  /// In en, this message translates to:
+  /// **'Prep ahead'**
+  String get mealPrepAheadLabel;
+
+  /// Hint in the prep-ahead field.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g. take the chicken out of the freezer'**
+  String get mealPrepAheadHint;
+
+  /// Choice in the meal sheet: a recipe from the library.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipe'**
+  String get mealFromRecipe;
+
+  /// Choice in the meal sheet: free text.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get mealFromText;
+
+  /// Free-text field in the meal sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s on the menu?'**
+  String get mealTextLabel;
+
+  /// Meal sheet without recipes.
+  ///
+  /// In en, this message translates to:
+  /// **'No recipes yet. Add them in the recipe library, or choose Something else.'**
+  String get mealNoRecipes;
+
+  /// Section of the meal sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get mealDayLabel;
+
+  /// Section of the meal sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Servings'**
+  String get mealServingsLabel;
+
+  /// Button in the meal sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from the plan'**
+  String get mealRemove;
+
+  /// Tooltip and title of the meal slots setting (owners).
+  ///
+  /// In en, this message translates to:
+  /// **'Meals to plan'**
+  String get mealSlotsButton;
+
+  /// Explanation in the meal slots setting.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner is always planned. Switch on breakfast and lunch to plan them too.'**
+  String get mealSlotsHint;
+
+  /// Screen reader text for a day in the week strip.
+  ///
+  /// In en, this message translates to:
+  /// **'{day}: {meal}'**
+  String mealDayMeal(String day, String meal);
 }
 
 class _AppLocalizationsDelegate

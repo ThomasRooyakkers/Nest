@@ -2,7 +2,7 @@ import 'package:nest_client/nest_client.dart';
 
 /// API level of this app. Raise it together with the server's
 /// `nestApiVersion` when the app starts using new endpoints.
-const appApiVersion = 4;
+const appApiVersion = 5;
 
 /// Oldest server API level this app works with. Features a server does not
 /// have yet must stay optional (CLAUDE.md rule 6) instead of raising this.
@@ -14,6 +14,10 @@ const tasksApiVersion = 3;
 /// Server API level that added recipes (and adding several shopping items
 /// at once). Older servers do not show recipes.
 const recipesApiVersion = 4;
+
+/// Server API level that added the meal plan. Older servers do not show
+/// the Meals tab.
+const mealPlanApiVersion = 5;
 
 /// Version of the app, shown on the About screen. Keep in step with
 /// `version` in pubspec.yaml.

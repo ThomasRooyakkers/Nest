@@ -17,6 +17,7 @@ import 'package:nest_flutter/features/auth/data/auth_repository.dart';
 import 'package:nest_flutter/features/settings/data/profile_repository.dart';
 import 'package:nest_flutter/features/tasks/presentation/task_providers.dart';
 
+import 'fake_meal_plan_server.dart';
 import 'fake_recipe_server.dart';
 import 'fake_shopping_server.dart';
 import 'fake_task_server.dart';
@@ -70,6 +71,19 @@ class FakeHouseholdRepository implements HouseholdRepository {
   @override
   Future<MyHousehold> rename(int householdId, String name) async =>
       throw UnimplementedError();
+
+  @override
+  Future<MyHousehold> setMealSlots(
+    int householdId,
+    List<MealSlot> slots,
+  ) async {
+    final index = households.indexWhere((h) => h.household.id == householdId);
+    final updated = households[index].copyWith(
+      household: households[index].household.copyWith(mealSlots: slots),
+    );
+    households = [...households]..[index] = updated;
+    return updated;
+  }
 
   @override
   Future<void> leave(int householdId) async {}
@@ -149,6 +163,7 @@ Future<ProviderContainer> pumpNestApp(
   FakeShoppingServer? shoppingServer,
   FakeTaskServer? taskServer,
   FakeRecipeServer? recipeServer,
+  FakeMealPlanServer? mealPlanServer,
   NestDatabase? database,
   FakeHealthRepository? health,
   FakeServerSwitcher? serverSwitcher,
@@ -179,6 +194,7 @@ Future<ProviderContainer> pumpNestApp(
               server: shoppingServer,
               taskServer: taskServer,
               recipeServer: recipeServer,
+              mealPlanServer: mealPlanServer,
             ),
       ),
       nestDatabaseProvider.overrideWithValue(db),

@@ -622,7 +622,7 @@ class _AddStoreChip extends StatelessWidget {
         customBorder: const StadiumBorder(),
         onTap: onTap,
         child: CustomPaint(
-          painter: _DashedPillPainter(colors.checkboxIdle),
+          painter: DashedPillPainter(colors.checkboxIdle),
           child: Container(
             constraints: const BoxConstraints(
               minHeight: NestSizes.minTouchTarget,
@@ -647,34 +647,4 @@ class _AddStoreChip extends StatelessWidget {
       ),
     );
   }
-}
-
-class _DashedPillPainter extends CustomPainter {
-  _DashedPillPainter(this.color);
-
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5;
-    final rect = Offset.zero & size;
-    final path = Path()
-      ..addRRect(
-        RRect.fromRectAndRadius(
-          rect.deflate(0.75),
-          Radius.circular(size.height / 2),
-        ),
-      );
-    for (final metric in path.computeMetrics()) {
-      for (var d = 0.0; d < metric.length; d += 9) {
-        canvas.drawPath(metric.extractPath(d, d + 5), paint);
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(_DashedPillPainter old) => old.color != color;
 }

@@ -34,7 +34,10 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
   );
 
   const pill = StadiumBorder();
-  const minButtonSize = Size(NestSizes.minTouchTarget, NestSizes.minTouchTarget);
+  const minButtonSize = Size(
+    NestSizes.minTouchTarget,
+    NestSizes.minTouchTarget,
+  );
 
   final colorScheme = ColorScheme(
     brightness: Brightness.light,

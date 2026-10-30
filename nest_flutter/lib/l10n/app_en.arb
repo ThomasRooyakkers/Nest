@@ -1397,5 +1397,123 @@
   "homeRecipesSubtitle": "Your household's recipe library",
   "@homeRecipesSubtitle": {
     "description": "Home screen card under Recipes."
+  },
+  "mealsTitle": "Meal plan",
+  "@mealsTitle": {
+    "description": "Title of the meal plan screen."
+  },
+  "mealsThisWeek": "This week",
+  "@mealsThisWeek": {
+    "description": "Week label for the current week."
+  },
+  "mealsNextWeek": "Next week",
+  "@mealsNextWeek": {
+    "description": "Week label, and the button to show the next week."
+  },
+  "mealsLastWeek": "Last week",
+  "@mealsLastWeek": {
+    "description": "Week label, and the button to show the previous week."
+  },
+  "mealsBackToThisWeek": "Back to this week",
+  "@mealsBackToThisWeek": {
+    "description": "Button shown on other weeks."
+  },
+  "mealsToday": "Today",
+  "@mealsToday": {
+    "description": "Badge on today's card."
+  },
+  "mealsOffline": "Offline. You can see the weeks opened before; changes need a connection.",
+  "@mealsOffline": {
+    "description": "Notice on the meal plan without a connection."
+  },
+  "mealSlotBreakfast": "Breakfast",
+  "@mealSlotBreakfast": {
+    "description": "Meal of the day."
+  },
+  "mealSlotLunch": "Lunch",
+  "@mealSlotLunch": {
+    "description": "Meal of the day."
+  },
+  "mealSlotDinner": "Dinner",
+  "@mealSlotDinner": {
+    "description": "Meal of the day."
+  },
+  "mealPlanBreakfast": "Plan breakfast",
+  "@mealPlanBreakfast": {
+    "description": "Button on a day without breakfast."
+  },
+  "mealPlanLunch": "Plan lunch",
+  "@mealPlanLunch": {
+    "description": "Button on a day without lunch."
+  },
+  "mealPlanDinner": "Plan dinner",
+  "@mealPlanDinner": {
+    "description": "Button on a day without dinner."
+  },
+  "mealNothingPlanned": "Nothing planned",
+  "@mealNothingPlanned": {
+    "description": "Screen reader text for a day without meals."
+  },
+  "mealOpenRecipe": "Open recipe",
+  "@mealOpenRecipe": {
+    "description": "Button on a planned meal with a recipe."
+  },
+  "mealPrepAheadLabel": "Prep ahead",
+  "@mealPrepAheadLabel": {
+    "description": "Label of the prep-ahead note."
+  },
+  "mealPrepAheadHint": "E.g. take the chicken out of the freezer",
+  "@mealPrepAheadHint": {
+    "description": "Hint in the prep-ahead field."
+  },
+  "mealFromRecipe": "Recipe",
+  "@mealFromRecipe": {
+    "description": "Choice in the meal sheet: a recipe from the library."
+  },
+  "mealFromText": "Something else",
+  "@mealFromText": {
+    "description": "Choice in the meal sheet: free text."
+  },
+  "mealTextLabel": "What's on the menu?",
+  "@mealTextLabel": {
+    "description": "Free-text field in the meal sheet."
+  },
+  "mealNoRecipes": "No recipes yet. Add them in the recipe library, or choose Something else.",
+  "@mealNoRecipes": {
+    "description": "Meal sheet without recipes."
+  },
+  "mealDayLabel": "Day",
+  "@mealDayLabel": {
+    "description": "Section of the meal sheet."
+  },
+  "mealServingsLabel": "Servings",
+  "@mealServingsLabel": {
+    "description": "Section of the meal sheet."
+  },
+  "mealRemove": "Remove from the plan",
+  "@mealRemove": {
+    "description": "Button in the meal sheet."
+  },
+  "mealSlotsButton": "Meals to plan",
+  "@mealSlotsButton": {
+    "description": "Tooltip and title of the meal slots setting (owners)."
+  },
+  "mealSlotsHint": "Dinner is always planned. Switch on breakfast and lunch to plan them too.",
+  "@mealSlotsHint": {
+    "description": "Explanation in the meal slots setting."
+  },
+  "mealDayMeal": "{day}: {meal}",
+  "@mealDayMeal": {
+    "description": "Screen reader text for a day in the week strip.",
+    "placeholders": {
+      "day": {
+        "type": "String",
+        "example": "Wednesday 28 October"
+      },
+      "meal": {
+        "type": "String",
+        "example": "Pumpkin soup"
+      }
+    }
   }
 }

@@ -6,6 +6,7 @@ import '../core/widgets/coming_soon_screen.dart';
 import '../features/auth/presentation/onboarding_screen.dart';
 import '../features/auth/presentation/sign_in_screen.dart';
 import '../features/dashboard/presentation/home_screen.dart';
+import '../features/meal_planning/presentation/meal_plan_screen.dart';
 import '../features/recipes/presentation/cooking_screen.dart';
 import '../features/recipes/presentation/recipe_edit_screen.dart';
 import '../features/recipes/presentation/recipe_screen.dart';
@@ -38,6 +39,7 @@ abstract final class Routes {
   static const newStore = '/shopping/stores/new';
   static String editStore(int storeId) => '/shopping/stores/$storeId';
   static const meals = '/meals';
+  static String mealRecipe(int recipeId) => '/meals/recipes/$recipeId';
   static const tasks = '/tasks';
   static const watch = '/watch';
   static const settings = '/settings';
@@ -169,8 +171,8 @@ GoRouter router(Ref ref) {
                 path: Routes.home,
                 builder: (context, state) => const HomeScreen(),
                 routes: [
-                  // Recipes open from the home screen (and later the meal
-                  // plan); editing and cooking cover the tab bar.
+                  // Recipes open from the home screen (and the meal plan);
+                  // editing and cooking cover the tab bar.
                   GoRoute(
                     path: 'recipes',
                     builder: (context, state) => const RecipesScreen(),
@@ -230,7 +232,24 @@ GoRouter router(Ref ref) {
               ),
             ],
           ),
-          _comingSoonBranch(Routes.meals, (l10n) => l10n.featureMeals),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: Routes.meals,
+                builder: (context, state) => const MealPlanScreen(),
+                routes: [
+                  // A planned meal's recipe, at the meal's servings.
+                  GoRoute(
+                    path: 'recipes/:recipeId',
+                    builder: (context, state) => RecipeScreen(
+                      recipeId: _recipeId(state),
+                      initialServings: state.extra as int?,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
           StatefulShellBranch(
             routes: [
               GoRoute(

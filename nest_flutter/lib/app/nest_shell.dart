@@ -45,6 +45,7 @@ final _tabs = [
     LucideIcons.utensils,
     (l10n) => l10n.tabMeals,
     HouseholdFeature.mealPlanning,
+    mealPlanApiVersion,
   ),
   _Tab(
     3,

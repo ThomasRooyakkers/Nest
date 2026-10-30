@@ -33,6 +33,10 @@ class HouseholdRepository {
   Future<MyHousehold> rename(int householdId, String name) =>
       _client.household.rename(householdId, name);
 
+  /// Meals planned besides dinner. Owners only.
+  Future<MyHousehold> setMealSlots(int householdId, List<MealSlot> slots) =>
+      _client.household.setMealSlots(householdId, slots);
+
   Future<void> leave(int householdId) => _client.household.leave(householdId);
 }
 
