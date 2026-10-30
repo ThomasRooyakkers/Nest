@@ -2,9 +2,8 @@
 
 ## Current phase
 
-**Phase 6 — Meal Planning: built (2026-10-30), not released.** Server 0.5.0 /
-API level 5 in the repo; the Pi still runs 0.4.0. Waiting for Thomas: release
-0.5.0 to the Pi, then phase 7 (Watchlist).
+**Phase 6 — Meal Planning: done and released (2026-10-30).** Server 0.5.0 /
+API level 5 runs on the Pi. Waiting for Thomas before phase 7 (Watchlist).
 
 Phase 5 (Recipes) is done and released as 0.4.0.
 
@@ -519,6 +518,16 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   scroll the strip to days not yet built and that the strip scrolled away;
   both fixed. **Not verified:** the app on a phone, and the 10 px gap under
   the strip added after the browser check (covered by the widget tests).
+- **Released (2026-10-30, with Thomas's OK):** tag `v0.5.0`; CI (analyze,
+  format, tests) passed on `5f07198` and the "Server image" workflow
+  published `ghcr.io/thomasrooyakkers/nest-server:0.5.0` and `:latest`
+  (arm64 + amd64). Pi: `NEST_VERSION=0.5.0` in `~/nest/deploy/.env` (backup
+  `.env.bak-*` next to it), `deploy/deploy.sh` (dump
+  `nest-pre-update-20261030-100839.sql.gz`). Verified over https: health
+  0.5.0 / API 5, migration `20261030092904205` applied (no meals planned
+  yet), `mealPlan.entries` answers `notSignedIn` without a login, web app and
+  served config OK. The Meals screen was not opened on production (no
+  account used).
 
 ## Next
 
@@ -532,9 +541,7 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
    tunnel and its two hostnames in Cloudflare, and the folder).
 4. **Thomas:** try Tasks, Recipes and the meal plan on the web and on the
    iPhone build (taking a photo needs the phone).
-5. **Release 0.5.0** (with Thomas's OK): tag `v0.5.0`, CI and the "Server
-   image" workflow, then `NEST_VERSION=0.5.0` and `deploy/deploy.sh` on the Pi.
-6. Phase 7 — Watchlist (CLAUDE.md section 10).
+5. Phase 7 — Watchlist (CLAUDE.md section 10).
 
 ## Open questions
 
