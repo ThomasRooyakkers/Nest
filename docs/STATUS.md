@@ -2,9 +2,9 @@
 
 ## Current phase
 
-**Phase 7 — Watchlist: built (2026-10-30), not released yet.** Server 0.6.0 /
-API level 6 (local). Waiting for Thomas: release to the Pi with a TMDB key,
-then phase 8 (Admin + backups).
+**Phase 7 — Watchlist: done and released (2026-10-30).** Server 0.6.0 /
+API level 6 runs on the Pi with a TMDB key. Waiting for Thomas before phase 8
+(Admin + backups).
 
 Phase 6 (Meal Planning) is done and released as 0.5.0.
 
@@ -603,6 +603,17 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   sheet; fixed after the browser check (covered by the widget tests).
   **Not verified:** the real TMDB service (no key on this Mac) and real
   posters; the app on a phone.
+- **Released (2026-10-30, with Thomas's OK):** CI (analyze, format, tests)
+  passed on `e79af1e`; tag `v0.6.0`; the "Server image" workflow published
+  `ghcr.io/thomasrooyakkers/nest-server:0.6.0` and `:latest` (arm64 +
+  amd64). Pi: Thomas set `TMDB_API_KEY` in `~/nest/deploy/.env`;
+  `NEST_VERSION=0.6.0` (backup `.env.bak-*` next to it), `deploy/deploy.sh`
+  (dump `nest-pre-update-20261030-113025.sql.gz`). Verified over https:
+  health 0.6.0 / API 6, migration `20261030101948724` applied (watchlist
+  empty), `watchlist.search` answers `notSignedIn` without a login, web app
+  200, and the key works from the Pi (a TMDB search for "paddington" in
+  Dutch returned 20 results). **Not verified:** a search through Nest
+  itself on production (no account used) and real posters in the app.
 
 ## Next
 
@@ -616,10 +627,8 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
    tunnel and its two hostnames in Cloudflare, and the folder).
 4. **Thomas:** try Tasks, Recipes and the meal plan on the web and on the
    iPhone build (taking a photo needs the phone).
-5. **Thomas:** create a TMDB API key (themoviedb.org → Settings → API) and
-   decide on releasing 0.6.0. Releasing: tag `v0.6.0`, let CI publish the
-   image, set `NEST_VERSION=0.6.0` and `TMDB_API_KEY` in `~/nest/deploy/.env`
-   on the Pi, run `deploy/deploy.sh`, then check a real search.
+5. **Thomas:** try the watchlist at https://nest.g3cko.be (search, real
+   posters, tonight's pick) and on the iPhone build.
 6. Phase 8 — Admin + backups (CLAUDE.md section 10).
 
 ## Open questions
