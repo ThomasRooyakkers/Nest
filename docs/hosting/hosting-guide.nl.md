@@ -194,6 +194,21 @@ Zonder sleutel biedt de zoekfunctie van de kijklijst een paar voorbeeldtitels,
 zodat je de functie kunt uitproberen. Nest toont de vermelding van TMDB op de
 kijklijst en het scherm Over Nest, zoals de voorwaarden van TMDB vragen.
 
+## Aanmelden met Google en Apple
+
+De gepubliceerde Nest-app voor iOS kan "Doorgaan met Apple" en "Doorgaan met
+Google" aanbieden. Daarvoor zijn sleutels nodig die voor die app (bundle-ID
+`be.g3cko.nest`) zijn uitgegeven en bij de beheerder van de app horen. Op je
+eigen server biedt de app dus alleen aanmelden met e-mail aan, tenzij je een
+eigen iOS-app bouwt en publiceert met je eigen Google-client en Apple-sleutel
+(zie de instellingen `GOOGLE_*` en `APPLE_*` in `.env.example`).
+
+Als ze aan staan, gelden dezelfde regels als bij e-mail: een nieuw account op
+een server met alleen uitnodigingen heeft een uitnodigingscode van een
+huishouden nodig (in te vullen bij Account aanmaken, vóór je op de knop tikt),
+en wie met een Google- of Apple-adres aanmeldt dat al bij een account hoort,
+komt in dat account terecht.
+
 ## Bijwerken
 
 ```bash

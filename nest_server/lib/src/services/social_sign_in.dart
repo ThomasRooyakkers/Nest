@@ -143,7 +143,38 @@ abstract final class SocialSignIn {
       authUserId: authUserId,
       transaction: transaction,
     );
+    await _nameFromProfile(session, authUserId, transaction: transaction);
     return authUserId;
+  }
+
+  /// Uses the name Google or Apple gave as the Nest name, so the app does
+  /// not have to ask for it.
+  static Future<void> _nameFromProfile(
+    Session session,
+    UuidValue authUserId, {
+    required Transaction transaction,
+  }) async {
+    final profile = await UserProfile.db.findFirstRow(
+      session,
+      where: (t) => t.authUserId.equals(authUserId),
+      transaction: transaction,
+    );
+    final name = (profile?.fullName ?? profile?.userName)?.trim() ?? '';
+    if (name.isEmpty) return;
+    final user = await NestUser.db.findFirstRow(
+      session,
+      where: (t) => t.authUserId.equals(authUserId),
+      transaction: transaction,
+    );
+    if (user == null || user.name.isNotEmpty) return;
+    await NestUser.db.updateRow(
+      session,
+      user.copyWith(
+        name: name.length > 60 ? name.substring(0, 60) : name,
+        updatedAt: DateTime.now(),
+      ),
+      transaction: transaction,
+    );
   }
 
   /// The auth user with [email]: its email sign-in, or any profile (Google,

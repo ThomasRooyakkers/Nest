@@ -358,5 +358,9 @@
   "deleteAccountTitle": "Je account verwijderen?",
   "deleteAccountConfirm": "Hiermee verwijder je je account voorgoed. Huishoudens waar je het enige lid bent, worden verwijderd met al hun lijsten, recepten, taken en foto's. In andere huishoudens wordt iemand anders eigenaar. Dit kan niet ongedaan worden gemaakt.",
   "deleteAccountButton": "Definitief verwijderen",
-  "accountDeleted": "Je account is verwijderd."
+  "accountDeleted": "Je account is verwijderd.",
+  "orDivider": "of",
+  "continueWithApple": "Doorgaan met Apple",
+  "continueWithGoogle": "Doorgaan met Google",
+  "socialSignInNeedsInvite": "Nieuw bij Nest? Tik op Account aanmaken, vul je uitnodigingscode in en ga dan verder met Apple of Google."
 }

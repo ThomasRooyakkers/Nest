@@ -192,6 +192,20 @@ Without a key the watchlist search offers a few sample titles, so the
 feature can be tried. Nest shows TMDB's attribution on the watchlist and the
 About screen, as TMDB's terms require.
 
+## Google and Apple sign-in
+
+The published Nest iOS app can offer "Continue with Apple" and "Continue
+with Google". Both need keys issued for that app (bundle ID `be.g3cko.nest`),
+which belong to the app's maintainer, so on your own server the app offers
+email sign-in only, unless you build and publish your own iOS app with your
+own Google client and Apple key (see the `GOOGLE_*` and `APPLE_*` settings in
+`.env.example`).
+
+When they are on, the same rules apply as for email: a new account on an
+invite-only server needs a household invite code (typed on Create account
+before tapping the button), and someone whose Google or Apple email matches
+an existing account signs into that account.
+
 ## Updating
 
 ```bash

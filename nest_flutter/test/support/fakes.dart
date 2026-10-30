@@ -14,6 +14,7 @@ import 'package:nest_flutter/core/server/server_check.dart';
 import 'package:nest_flutter/core/server/server_compatibility.dart';
 import 'package:nest_flutter/core/server/server_session.dart';
 import 'package:nest_flutter/features/auth/data/auth_repository.dart';
+import 'package:nest_flutter/features/auth/data/social_sign_in_repository.dart';
 import 'package:nest_flutter/features/settings/data/profile_repository.dart';
 import 'package:nest_flutter/features/tasks/presentation/task_providers.dart';
 
@@ -100,11 +101,15 @@ class FakeHealthRepository implements ServerHealthRepository {
     this.apiVersion = appApiVersion,
     this.minClientApiVersion = 1,
     this.signUpMode = SignUpMode.inviteOnly,
+    this.googleServerClientId,
+    this.appleSignIn,
   });
 
   final int? apiVersion;
   final int? minClientApiVersion;
   final SignUpMode? signUpMode;
+  final String? googleServerClientId;
+  final bool? appleSignIn;
 
   @override
   Future<ServerPing> ping() async => ServerPing(
@@ -113,7 +118,32 @@ class FakeHealthRepository implements ServerHealthRepository {
     apiVersion: apiVersion,
     minClientApiVersion: minClientApiVersion,
     signUpMode: signUpMode,
+    googleServerClientId: googleServerClientId,
+    appleSignIn: appleSignIn,
   );
+}
+
+/// Records Google and Apple sign-ins instead of talking to the providers.
+class FakeSocialSignInRepository implements SocialSignInRepository {
+  final calls = <(String, String?)>[];
+  Object? error;
+
+  @override
+  Future<bool> signInWithGoogle({
+    required String serverClientId,
+    String? inviteCode,
+  }) async {
+    calls.add(('google:$serverClientId', inviteCode));
+    if (error case final e?) throw e;
+    return true;
+  }
+
+  @override
+  Future<bool> signInWithApple({String? inviteCode}) async {
+    calls.add(('apple', inviteCode));
+    if (error case final e?) throw e;
+    return true;
+  }
 }
 
 /// Records server switches instead of restarting the app.
@@ -177,6 +207,7 @@ Future<ProviderContainer> pumpNestApp(
   FakeServerSwitcher? serverSwitcher,
   ServerChecker? serverChecker,
   FakeNestClient? client,
+  FakeSocialSignInRepository? socialSignIn,
   DateTime Function()? clock,
 }) async {
   tester.view.physicalSize = const Size(375, 812);
@@ -227,6 +258,10 @@ Future<ProviderContainer> pumpNestApp(
       if (serverChecker != null)
         serverCheckerProvider.overrideWithValue(serverChecker),
       if (clock != null) clockProvider.overrideWithValue(clock),
+      googleIosClientProvider.overrideWithValue('ios-client'),
+      socialSignInRepositoryProvider.overrideWithValue(
+        socialSignIn ?? FakeSocialSignInRepository(),
+      ),
     ],
   );
   addTearDown(container.dispose);

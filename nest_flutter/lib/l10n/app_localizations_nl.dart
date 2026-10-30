@@ -1261,4 +1261,17 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get accountDeleted => 'Je account is verwijderd.';
+
+  @override
+  String get orDivider => 'of';
+
+  @override
+  String get continueWithApple => 'Doorgaan met Apple';
+
+  @override
+  String get continueWithGoogle => 'Doorgaan met Google';
+
+  @override
+  String get socialSignInNeedsInvite =>
+      'Nieuw bij Nest? Tik op Account aanmaken, vul je uitnodigingscode in en ga dan verder met Apple of Google.';
 }

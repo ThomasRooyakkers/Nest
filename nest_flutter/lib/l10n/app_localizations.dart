@@ -2251,6 +2251,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your account has been deleted.'**
   String get accountDeleted;
+
+  /// Between email sign-in and Google/Apple sign-in
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get orDivider;
+
+  /// Sign in with Apple button
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Apple'**
+  String get continueWithApple;
+
+  /// Google sign-in button
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get continueWithGoogle;
+
+  /// Shown when a new Google/Apple user tries to sign in without an invite code
+  ///
+  /// In en, this message translates to:
+  /// **'New to Nest? Tap Create account, enter your invite code, then continue with Apple or Google.'**
+  String get socialSignInNeedsInvite;
 }
 
 class _AppLocalizationsDelegate

@@ -37,14 +37,14 @@ void main() {
     });
 
     /// An auth user with a profile, as the provider creates it.
-    Future<UuidValue> identity(String? email) async {
+    Future<UuidValue> identity(String? email, {String? fullName}) async {
       final user = await AuthUser.db.insertRow(
         session,
         AuthUser(scopeNames: {}),
       );
       await UserProfile.db.insertRow(
         session,
-        UserProfile(authUserId: user.id!, email: email),
+        UserProfile(authUserId: user.id!, email: email, fullName: fullName),
       );
       return user.id!;
     }
@@ -147,6 +147,19 @@ void main() {
         fresh,
       );
       expect(await householdsOf(fresh), ['Home']);
+    });
+
+    test('a new account takes the name Google or Apple gave', () async {
+      final fresh = await identity(
+        'gijs@example.com',
+        fullName: ' Gijs Peeters ',
+      );
+      await settle(fresh, email: 'gijs@example.com', inviteCode: code);
+      final user = await NestUser.db.findFirstRow(
+        session,
+        where: (t) => t.authUserId.equals(fresh),
+      );
+      expect(user!.name, 'Gijs Peeters');
     });
 
     test('a wrong invite code is refused', () async {

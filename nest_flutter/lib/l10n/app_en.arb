@@ -1728,5 +1728,21 @@
   "accountDeleted": "Your account has been deleted.",
   "@accountDeleted": {
     "description": "Account deletion in settings"
+  },
+  "orDivider": "or",
+  "@orDivider": {
+    "description": "Between email sign-in and Google/Apple sign-in"
+  },
+  "continueWithApple": "Continue with Apple",
+  "@continueWithApple": {
+    "description": "Sign in with Apple button"
+  },
+  "continueWithGoogle": "Continue with Google",
+  "@continueWithGoogle": {
+    "description": "Google sign-in button"
+  },
+  "socialSignInNeedsInvite": "New to Nest? Tap Create account, enter your invite code, then continue with Apple or Google.",
+  "@socialSignInNeedsInvite": {
+    "description": "Shown when a new Google/Apple user tries to sign in without an invite code"
   }
 }

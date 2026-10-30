@@ -46,6 +46,13 @@ services:
       SERVERPOD_PASSWORD_mailFrom: ${MAIL_FROM:-}
       # Film data for the watchlist. Without it, sample titles.
       SERVERPOD_PASSWORD_tmdbApiKey: ${TMDB_API_KEY:-}
+      # Google and Apple sign-in in the iOS app. Each is off when not set.
+      SERVERPOD_PASSWORD_googleClientSecret: ${GOOGLE_CLIENT_SECRET_JSON:-}
+      SERVERPOD_PASSWORD_appleServiceId: ${APPLE_SERVICE_ID:-}
+      SERVERPOD_PASSWORD_appleTeamId: ${APPLE_TEAM_ID:-}
+      SERVERPOD_PASSWORD_appleKeyId: ${APPLE_KEY_ID:-}
+      SERVERPOD_PASSWORD_appleKey: ${APPLE_KEY:-}
+      SERVERPOD_PASSWORD_appleBundleId: ${APPLE_BUNDLE_ID:-}
     # For your own https proxy: the API on 8080 and the web app on 8082, on
     # this machine only. The tunnel reaches the server inside Docker.
     ports:

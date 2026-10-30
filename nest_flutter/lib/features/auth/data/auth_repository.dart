@@ -5,6 +5,7 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../../../core/backend/nest_client.dart';
 import '../../../core/database/nest_database.dart';
+import 'social_sign_in_repository.dart';
 
 part 'auth_repository.g.dart';
 
@@ -44,6 +45,7 @@ class AuthRepository {
   /// sees nothing of this one.
   Future<void> signOut() async {
     await _client.auth.signOutDevice();
+    await SocialSignInRepository.signOutGoogle();
     await _db.clearAll();
   }
 }

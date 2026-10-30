@@ -16,6 +16,7 @@ import '../../../core/widgets/centered_form.dart';
 import '../../../core/widgets/language_picker.dart';
 import '../../../l10n/app_localizations.dart';
 import '../data/auth_repository.dart';
+import 'social_sign_in_buttons.dart';
 
 /// Email + password sign-in, registration and password reset.
 ///
@@ -204,6 +205,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 : () => c.navigateTo(EmailFlowScreen.requestPasswordReset),
             child: Text(l10n.forgotPassword),
           ),
+          const SocialSignInButtons(),
           const Divider(height: 24),
           Wrap(
             alignment: WrapAlignment.center,
@@ -256,6 +258,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             busy: busy || _redeeming,
             onPressed: start,
           ),
+          SocialSignInButtons(inviteCode: () => _inviteCode.text),
           backToSignIn(),
         ];
 
