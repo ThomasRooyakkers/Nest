@@ -1243,10 +1243,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dashboardAllTasks => 'All tasks';
-
-  @override
-  String get dashboardWatchingNow => 'Watching now';
-
-  @override
-  String get dashboardUpNext => 'Up next to watch';
 }

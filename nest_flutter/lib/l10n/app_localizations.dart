@@ -2221,18 +2221,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All tasks'**
   String get dashboardAllTasks;
-
-  /// Dashboard watchlist card label for a title being watched.
-  ///
-  /// In en, this message translates to:
-  /// **'Watching now'**
-  String get dashboardWatchingNow;
-
-  /// Dashboard watchlist card label for the next title on Want to watch.
-  ///
-  /// In en, this message translates to:
-  /// **'Up next to watch'**
-  String get dashboardUpNext;
 }
 
 class _AppLocalizationsDelegate

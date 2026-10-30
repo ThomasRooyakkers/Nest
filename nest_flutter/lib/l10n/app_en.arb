@@ -1708,13 +1708,5 @@
   "dashboardAllTasks": "All tasks",
   "@dashboardAllTasks": {
     "description": "Link from the dashboard to the tasks screen."
-  },
-  "dashboardWatchingNow": "Watching now",
-  "@dashboardWatchingNow": {
-    "description": "Dashboard watchlist card label for a title being watched."
-  },
-  "dashboardUpNext": "Up next to watch",
-  "@dashboardUpNext": {
-    "description": "Dashboard watchlist card label for the next title on Want to watch."
   }
 }

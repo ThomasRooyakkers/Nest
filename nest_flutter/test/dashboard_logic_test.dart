@@ -56,37 +56,4 @@ void main() {
     expect(itemsToBuy(items, list), 2);
     expect(itemsToBuy(items, null), 0);
   });
-
-  test('what to watch: latest Watching, else the oldest Want to watch', () {
-    WatchlistItem item(
-      int id,
-      WatchStatus status,
-      int createdDay,
-      int updatedDay,
-    ) => WatchlistItem(
-      id: id,
-      householdId: 1,
-      tmdbId: id,
-      type: WatchType.movie,
-      title: 'Film $id',
-      status: status,
-      createdAt: day(createdDay),
-      updatedAt: day(updatedDay),
-    );
-    final want = [
-      item(1, WatchStatus.want, -3, -3),
-      item(2, WatchStatus.want, -5, -1),
-      item(3, WatchStatus.watched, -9, 0),
-    ];
-    expect(nextToWatch(want)?.id, 2);
-    expect(
-      nextToWatch([
-        ...want,
-        item(4, WatchStatus.watching, -8, -4),
-        item(5, WatchStatus.watching, -8, -2),
-      ])?.id,
-      5,
-    );
-    expect(nextToWatch([want.last]), isNull);
-  });
 }

@@ -16,14 +16,3 @@ int itemsToBuy(Iterable<ShoppingItem> items, ShoppingList? list) => list == null
             (i) => i.listId == list.id && i.status == ShoppingItemStatus.toBuy,
           )
           .length;
-
-/// What to show from the watchlist: the title most recently set to
-/// Watching, else the one longest on Want to watch; null when neither.
-WatchlistItem? nextToWatch(Iterable<WatchlistItem> items) {
-  final watching = items.where((i) => i.status == WatchStatus.watching).toList()
-    ..sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
-  if (watching.isNotEmpty) return watching.first;
-  final want = items.where((i) => i.status == WatchStatus.want).toList()
-    ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
-  return want.firstOrNull;
-}

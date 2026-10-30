@@ -715,21 +715,23 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
   list (opens Shopping) and tasks for today (opens Tasks); **Today's
   tasks**: overdue and due today, up to 5, with check-off, due label,
   recurrence and assignee (the Tasks screen's row, now shared as
-  `TaskRow`), and "All tasks"; **watchlist**: the title most recently set
-  to Watching, else the oldest on Want to watch; the Recipes card. Every
+  `TaskRow`), and "All tasks"; the Recipes card. No watchlist card
+  (Thomas, 2026-10-30). Every
   card hides when its feature is off or the server is too old. The server
   card moved off the home screen (Settings and About show it).
-- The dashboard keeps the meal plan (this week), recipes, shopping, tasks
-  and watchlist in live sync while it is shown; the feature screens share
+- The dashboard keeps the meal plan (this week), recipes, shopping and
+  tasks in live sync while it is shown; the feature screens share
   these syncs.
 - No server change (API level stays 7).
-- **Checks:** 179 app tests pass (new `dashboard_test.dart`: 7 widget
-  tests incl. Dutch with 2× text, check-off and Open recipe;
-  `dashboard_logic_test.dart`: 3). Four existing tests adjusted: tab
+- **Checks:** 177 app tests pass (new `dashboard_test.dart`: 6 widget
+  tests incl. Dutch with 2× text, check-off, Open recipe and that the
+  watchlist is not shown; `dashboard_logic_test.dart`: 2). Four existing tests adjusted: tab
   finders that also matched the new tiles, the Recipes card now at the
   bottom, and the meal plan test's load count (this week stays in sync).
   Checked on the web at phone size against the local server with the seed
-  data. **Not verified:** on production and on a phone.
+  data, and in the iOS simulator against production (empty household:
+  "Nothing planned", "Nothing to buy", "Nothing due today"). **Not
+  verified:** with real data on production, and on a phone.
 
 ## Next
 
@@ -772,6 +774,8 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
 
 ## Deviations from CLAUDE.md
 
+- **No watchlist card on the dashboard** (Thomas, 2026-10-30), although
+  section 7 lists "next item on the watchlist".
 - **TMDB is picked by the key, not a `tmdb: fake|tmdb` setting:** with
   `tmdbApiKey` set the server uses TMDB, without it the fake film data. A
   host without a key gets sample titles instead of an error.

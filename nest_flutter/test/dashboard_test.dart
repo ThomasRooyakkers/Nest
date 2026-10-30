@@ -107,40 +107,44 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('shows tonight, the tiles, today\'s tasks and what to watch', (
-    tester,
-  ) async {
-    await openHome(tester);
-    expect(find.text('WEDNESDAY, OCTOBER 28'), findsOneWidget);
-    expect(find.text('TONIGHT'), findsOneWidget);
-    expect(find.text('Pumpkin soup'), findsOneWidget);
-    expect(find.text('4 servings'), findsOneWidget);
-    expect(find.text('Prep ahead: Roast the pumpkin'), findsOneWidget);
-    expect(find.text('Pizza night'), findsNothing);
+  testWidgets(
+    'shows tonight, the tiles and today\'s tasks, not the watchlist',
+    (
+      tester,
+    ) async {
+      await openHome(tester);
+      expect(find.text('WEDNESDAY, OCTOBER 28'), findsOneWidget);
+      expect(find.text('TONIGHT'), findsOneWidget);
+      expect(find.text('Pumpkin soup'), findsOneWidget);
+      expect(find.text('4 servings'), findsOneWidget);
+      expect(find.text('Prep ahead: Roast the pumpkin'), findsOneWidget);
+      expect(find.text('Pizza night'), findsNothing);
 
-    expect(find.text('2 items to buy'), findsOneWidget);
-    expect(find.text('2 tasks today'), findsOneWidget);
+      expect(find.text('2 items to buy'), findsOneWidget);
+      expect(find.text('2 tasks today'), findsOneWidget);
 
-    await scrollTo(tester, find.text('Water the plants'));
-    // Overdue first, then today's; tomorrow's and done tasks are left out.
-    expect(
-      tester.getTopLeft(find.text('Bins out')).dy,
-      lessThan(tester.getTopLeft(find.text('Water the plants')).dy),
-    );
-    expect(find.text('Book the dentist'), findsNothing);
-    expect(find.text('Pay rent'), findsNothing);
-    expect(
-      find.descendant(
-        of: find.widgetWithText(TaskRow, 'Water the plants'),
-        matching: find.byType(NestAvatar),
-      ),
-      findsOneWidget,
-    );
+      await scrollTo(tester, find.text('Water the plants'));
+      // Overdue first, then today's; tomorrow's and done tasks are left out.
+      expect(
+        tester.getTopLeft(find.text('Bins out')).dy,
+        lessThan(tester.getTopLeft(find.text('Water the plants')).dy),
+      );
+      expect(find.text('Book the dentist'), findsNothing);
+      expect(find.text('Pay rent'), findsNothing);
+      expect(
+        find.descendant(
+          of: find.widgetWithText(TaskRow, 'Water the plants'),
+          matching: find.byType(NestAvatar),
+        ),
+        findsOneWidget,
+      );
 
-    await scrollTo(tester, find.text('Bluey'));
-    expect(find.text('WATCHING NOW'), findsOneWidget);
-    expect(find.text('Paddington 2'), findsNothing);
-  });
+      // The watchlist has titles, but the dashboard does not show them.
+      await scrollTo(tester, find.text("Your household's recipe library"));
+      expect(find.text('Bluey'), findsNothing);
+      expect(find.text('Paddington 2'), findsNothing);
+    },
+  );
 
   testWidgets('a task is checked off on the dashboard', (tester) async {
     await openHome(tester);
@@ -172,13 +176,10 @@ void main() {
   testWidgets('an empty day offers to plan dinner', (tester) async {
     meals.entries.clear();
     tasks.tasks.clear();
-    watchlist.items.clear();
     await openHome(tester);
     expect(find.text('Nothing planned for tonight yet.'), findsOneWidget);
     expect(find.text('Nothing due today'), findsOneWidget);
     await scrollTo(tester, find.text('Nothing due today.'));
-    expect(find.text('WATCHING NOW'), findsNothing);
-    expect(find.text('UP NEXT TO WATCH'), findsNothing);
 
     await scrollTo(tester, find.text('Plan dinner'));
     await tester.tap(find.text('Plan dinner'));
@@ -196,23 +197,13 @@ void main() {
     expect(find.text("Your household's recipe library"), findsNothing);
   });
 
-  testWidgets('the next title to watch when nothing is being watched', (
-    tester,
-  ) async {
-    watchlist.items.removeWhere((i) => i.status == WatchStatus.watching);
-    await openHome(tester);
-    await scrollTo(tester, find.text('Paddington 2'));
-    expect(find.text('UP NEXT TO WATCH'), findsOneWidget);
-  });
-
   testWidgets('lays out in Dutch with large text', (tester) async {
     await openHome(tester, locale: const Locale('nl'), textScale: 2);
     expect(tester.takeException(), isNull);
     expect(find.text('VANAVOND'), findsOneWidget);
     expect(find.text('Recept openen'), findsOneWidget);
     await scrollTo(tester, find.text('2 taken vandaag'));
-    await scrollTo(tester, find.text('Bluey'));
-    expect(find.text('NU AAN HET KIJKEN'), findsOneWidget);
+    await scrollTo(tester, find.text('Recepten'));
     expect(tester.takeException(), isNull);
   });
 }

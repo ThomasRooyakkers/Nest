@@ -1245,10 +1245,4 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get dashboardAllTasks => 'Alle taken';
-
-  @override
-  String get dashboardWatchingNow => 'Nu aan het kijken';
-
-  @override
-  String get dashboardUpNext => 'Hierna kijken';
 }

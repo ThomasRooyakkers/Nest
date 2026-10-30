@@ -353,7 +353,5 @@
   "dashboardTasksToday": "{count, plural, =0{Niets voor vandaag} =1{1 taak vandaag} other{{count} taken vandaag}}",
   "dashboardTodayTitle": "Taken voor vandaag",
   "dashboardNoTasksToday": "Niets te doen vandaag.",
-  "dashboardAllTasks": "Alle taken",
-  "dashboardWatchingNow": "Nu aan het kijken",
-  "dashboardUpNext": "Hierna kijken"
+  "dashboardAllTasks": "Alle taken"
 }

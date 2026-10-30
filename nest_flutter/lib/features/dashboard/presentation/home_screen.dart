@@ -22,14 +22,12 @@ import '../../shopping_list/presentation/shopping_providers.dart';
 import '../../tasks/domain/task_logic.dart';
 import '../../tasks/presentation/task_providers.dart';
 import '../../tasks/presentation/task_row.dart';
-import '../../watchlist/presentation/watchlist_providers.dart';
-import '../../watchlist/presentation/watchlist_style.dart';
 import '../domain/dashboard_logic.dart';
 
 /// The dashboard: greeting with today's date and the household switcher,
-/// tonight's dinner, tiles for items to buy and tasks for today, today's
-/// tasks with check-off, and what to watch next. Cards of features that are
-/// switched off (or that the server does not have) are hidden.
+/// tonight's dinner, tiles for items to buy and tasks for today, and
+/// today's tasks with check-off. Cards of features that are switched off
+/// (or that the server does not have) are hidden.
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -78,7 +76,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final mealsOn = ref.watch(mealPlanAvailableProvider);
     final shoppingOn = _featureOn(HouseholdFeature.shopping, 1);
     final tasksOn = _featureOn(HouseholdFeature.tasks, tasksApiVersion);
-    final watchOn = _featureOn(HouseholdFeature.watchlist, watchlistApiVersion);
     final recipesOn = ref.watch(recipesAvailableProvider);
 
     // Keep the shown features in sync while the dashboard is open (the
@@ -91,7 +88,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       }
       if (shoppingOn) ref.watch(shoppingSyncProvider(householdId));
       if (tasksOn) ref.watch(taskSyncProvider(householdId));
-      if (watchOn) ref.watch(watchlistSyncProvider(householdId));
     }
 
     return Scaffold(
@@ -149,7 +145,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     max: _maxTasks,
                   ),
                 ),
-              if (watchOn) _WatchCard(householdId: householdId),
             ],
             if (recipesOn) const _Gap(_RecipesCard()),
           ],
@@ -436,76 +431,6 @@ class _TodayTasks extends ConsumerWidget {
                 ),
         ),
       ],
-    );
-  }
-}
-
-/// The title being watched, else the next one to watch.
-class _WatchCard extends ConsumerWidget {
-  const _WatchCard({required this.householdId});
-
-  final int householdId;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
-    final colors = NestColors.of(context);
-    final textTheme = Theme.of(context).textTheme;
-    final item = nextToWatch(
-      ref.watch(watchlistItemsProvider(householdId)).value ?? const [],
-    );
-    if (item == null) return const SizedBox.shrink();
-    final ink = colors.lavenderInk;
-
-    return _Gap(
-      Material(
-        color: colors.lavender,
-        borderRadius: BorderRadius.circular(NestRadii.card),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(NestRadii.card),
-          onTap: () => context.go(Routes.watch),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 56,
-                  child: PosterImage(
-                    posterPath: item.posterPath,
-                    type: item.type,
-                    radius: 10,
-                  ),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        (item.status == WatchStatus.watching
-                                ? l10n.dashboardWatchingNow
-                                : l10n.dashboardUpNext)
-                            .toUpperCase(),
-                        style: textTheme.labelMedium?.copyWith(color: ink),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        item.title,
-                        style: textTheme.titleMedium?.copyWith(color: ink),
-                      ),
-                      Text(
-                        typeAndYear(l10n, item.type, item.year),
-                        style: textTheme.bodyMedium?.copyWith(color: ink),
-                      ),
-                    ],
-                  ),
-                ),
-                Icon(LucideIcons.chevronRight, color: ink),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
