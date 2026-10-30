@@ -20,8 +20,15 @@ published `nest-server:0.8.0` and `nest-backup:0.8.0`. Pi: `NEST_VERSION=0.8.0`
 in `~/nest/deploy/.env` (backup `.env.bak-*` next to it), `deploy/deploy.sh`
 (dump `nest-pre-update-20261030-160132.sql.gz`). Verified over https: health
 0.8.0 / API 8, web app 200 (includes the dashboard), `privacy.html` 200, no
-errors in the server log. No migration in this release. Still with Thomas:
-the privacy contact email, signing team in Xcode, the App Store Connect
+errors in the server log. No migration in this release.
+
+**0.8.1 (2026-10-30, deployed by Thomas):** contact email on the privacy
+page. CI passed on `6eb0002`, tag `v0.8.1`, images published; Thomas set
+`NEST_VERSION=0.8.1` and ran `deploy/deploy.sh` (dump
+`nest-pre-update-20261030-173015.sql.gz`). Verified: health 0.8.1 / API 8,
+web app 200, no errors in the log; Cloudflare's email obfuscation rewrites
+the address on `privacy.html` (decodes in the browser to the right
+address). Still with Thomas: signing team in Xcode, the App Store Connect
 record, a reviewer demo account, and the upload to TestFlight.
 
 **Phase 8 — Admin + backups: released as 0.7.0 (2026-10-30).** Server
