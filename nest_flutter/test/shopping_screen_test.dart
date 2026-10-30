@@ -71,8 +71,12 @@ void main() {
       textScale: textScale,
       user: user,
     );
+    // The tab bar's label (the dashboard has a Shopping tile too).
+    final label = locale?.languageCode == 'nl' ? 'Boodschappen' : 'Shopping';
     await tester.tap(
-      find.text(locale?.languageCode == 'nl' ? 'Boodschappen' : 'Shopping'),
+      find.byWidgetPredicate(
+        (w) => w is Text && w.data == label && w.maxLines == 1,
+      ),
     );
     await tester.pumpAndSettle();
     return container;

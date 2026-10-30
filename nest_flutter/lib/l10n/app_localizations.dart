@@ -2179,6 +2179,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This product uses the TMDB API but is not endorsed or certified by TMDB.'**
   String get tmdbAttribution;
+
+  /// Label of the dashboard card with tonight's dinner.
+  ///
+  /// In en, this message translates to:
+  /// **'Tonight'**
+  String get dashboardTonight;
+
+  /// Dashboard dinner card when no dinner is planned today.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing planned for tonight yet.'**
+  String get dashboardNothingPlanned;
+
+  /// Button on the dashboard dinner card that opens tonight's recipe.
+  ///
+  /// In en, this message translates to:
+  /// **'Open recipe'**
+  String get dashboardOpenRecipe;
+
+  /// Dashboard tile: open tasks that are overdue or due today.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing due today} =1{1 task today} other{{count} tasks today}}'**
+  String dashboardTasksToday(int count);
+
+  /// Title of the dashboard card listing today's tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s tasks'**
+  String get dashboardTodayTitle;
+
+  /// Dashboard task card when no task is due today or overdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing due today.'**
+  String get dashboardNoTasksToday;
+
+  /// Link from the dashboard to the tasks screen.
+  ///
+  /// In en, this message translates to:
+  /// **'All tasks'**
+  String get dashboardAllTasks;
+
+  /// Dashboard watchlist card label for a title being watched.
+  ///
+  /// In en, this message translates to:
+  /// **'Watching now'**
+  String get dashboardWatchingNow;
+
+  /// Dashboard watchlist card label for the next title on Want to watch.
+  ///
+  /// In en, this message translates to:
+  /// **'Up next to watch'**
+  String get dashboardUpNext;
 }
 
 class _AppLocalizationsDelegate

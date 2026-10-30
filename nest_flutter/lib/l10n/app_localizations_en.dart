@@ -1213,4 +1213,40 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get tmdbAttribution =>
       'This product uses the TMDB API but is not endorsed or certified by TMDB.';
+
+  @override
+  String get dashboardTonight => 'Tonight';
+
+  @override
+  String get dashboardNothingPlanned => 'Nothing planned for tonight yet.';
+
+  @override
+  String get dashboardOpenRecipe => 'Open recipe';
+
+  @override
+  String dashboardTasksToday(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tasks today',
+      one: '1 task today',
+      zero: 'Nothing due today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get dashboardTodayTitle => 'Today\'s tasks';
+
+  @override
+  String get dashboardNoTasksToday => 'Nothing due today.';
+
+  @override
+  String get dashboardAllTasks => 'All tasks';
+
+  @override
+  String get dashboardWatchingNow => 'Watching now';
+
+  @override
+  String get dashboardUpNext => 'Up next to watch';
 }

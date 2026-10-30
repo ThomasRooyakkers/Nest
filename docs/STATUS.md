@@ -2,6 +2,10 @@
 
 ## Current phase
 
+**Phase 9 — Dashboard + release: in progress (2026-10-30).** The dashboard
+is built and tested locally (not released yet). Next in phase 9: real
+Google/Apple sign-in and TestFlight / Play internal testing.
+
 **Phase 8 — Admin + backups: released as 0.7.0 (2026-10-30).** Server
 0.7.0 / API level 7 and the restic backup job run on the Pi; the first
 backup succeeded. Still to do with Thomas: route `nest-admin.g3cko.be` in the
@@ -701,6 +705,31 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
   tables grow every minute). **But production had no accounts or
   household data yet** (only the 127 built-in catalog items), so the test
   proves the mechanism, not real household data or recipe photos.
+
+### Phase 9 — Dashboard (2026-10-30, not released)
+
+- **Home screen is the dashboard** (CLAUDE.md section 7): greeting with
+  today's date and the household switcher; **Tonight** (honey) with
+  tonight's dinner, servings, prep-ahead note and "Open recipe", or
+  "Plan dinner" on an empty day; **tiles** for items to buy on the shown
+  list (opens Shopping) and tasks for today (opens Tasks); **Today's
+  tasks**: overdue and due today, up to 5, with check-off, due label,
+  recurrence and assignee (the Tasks screen's row, now shared as
+  `TaskRow`), and "All tasks"; **watchlist**: the title most recently set
+  to Watching, else the oldest on Want to watch; the Recipes card. Every
+  card hides when its feature is off or the server is too old. The server
+  card moved off the home screen (Settings and About show it).
+- The dashboard keeps the meal plan (this week), recipes, shopping, tasks
+  and watchlist in live sync while it is shown; the feature screens share
+  these syncs.
+- No server change (API level stays 7).
+- **Checks:** 179 app tests pass (new `dashboard_test.dart`: 7 widget
+  tests incl. Dutch with 2× text, check-off and Open recipe;
+  `dashboard_logic_test.dart`: 3). Four existing tests adjusted: tab
+  finders that also matched the new tiles, the Recipes card now at the
+  bottom, and the meal plan test's load count (this week stays in sync).
+  Checked on the web at phone size against the local server with the seed
+  data. **Not verified:** on production and on a phone.
 
 ## Next
 

@@ -346,5 +346,14 @@
   "watchClearRating": "Beoordeling wissen",
   "watchRemove": "Van de kijklijst halen",
   "watchRemoved": "{title} is van de kijklijst gehaald.",
-  "tmdbAttribution": "Dit product gebruikt de TMDB API, maar wordt niet onderschreven of gecertificeerd door TMDB."
+  "tmdbAttribution": "Dit product gebruikt de TMDB API, maar wordt niet onderschreven of gecertificeerd door TMDB.",
+  "dashboardTonight": "Vanavond",
+  "dashboardNothingPlanned": "Nog niets gepland voor vanavond.",
+  "dashboardOpenRecipe": "Recept openen",
+  "dashboardTasksToday": "{count, plural, =0{Niets voor vandaag} =1{1 taak vandaag} other{{count} taken vandaag}}",
+  "dashboardTodayTitle": "Taken voor vandaag",
+  "dashboardNoTasksToday": "Niets te doen vandaag.",
+  "dashboardAllTasks": "Alle taken",
+  "dashboardWatchingNow": "Nu aan het kijken",
+  "dashboardUpNext": "Hierna kijken"
 }

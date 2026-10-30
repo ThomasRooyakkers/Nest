@@ -123,8 +123,9 @@ void main() {
     await tester.tap(find.byTooltip('Last week'));
     await tester.pumpAndSettle();
     expect(find.text('Last week'), findsWidgets);
-    // This week loads again when shown again.
-    expect(server.calls.where((c) => c == 'entries'), hasLength(5));
+    // This week, next week, the week after and last week; this week stays
+    // in sync for the dashboard, so it is not loaded again.
+    expect(server.calls.where((c) => c == 'entries'), hasLength(4));
   });
 
   testWidgets('a dinner is planned as free text', (tester) async {

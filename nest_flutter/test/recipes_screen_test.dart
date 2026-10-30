@@ -53,7 +53,15 @@ void main() {
     final card = find.text(
       locale?.languageCode == 'nl' ? 'Recepten' : 'Recipes',
     );
-    await tester.ensureVisible(card.first);
+    // The card is the last one on the dashboard: scroll to the end, so the
+    // floating tab bar does not cover it.
+    await tester.scrollUntilVisible(
+      card,
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, -2000));
+    await tester.pumpAndSettle();
     await tester.tap(card.first);
     await tester.pumpAndSettle();
   }
