@@ -201,19 +201,6 @@ class _TaskSheetState extends ConsumerState<_TaskSheet> {
               decoration: InputDecoration(
                 labelText: l10n.taskNotesLabel,
                 counterText: '',
-                // Pill inputs look odd once notes wrap.
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(NestRadii.tile),
-                  borderSide: BorderSide(color: colors.borderStrong),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(NestRadii.tile),
-                  borderSide: BorderSide(color: colors.borderStrong),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(NestRadii.tile),
-                  borderSide: BorderSide(color: colors.accent, width: 2),
-                ),
               ),
             ),
             if (members.length > 1 || _assigneeId != null) ...[

@@ -37,18 +37,22 @@ class HomeScreen extends ConsumerWidget {
                     child: HouseholdSwitcher(),
                   ),
                 ),
-                IconButton(
+                NestRoundButton(
                   tooltip: l10n.settingsTitle,
-                  icon: const Icon(Icons.settings_outlined),
+                  icon: LucideIcons.settings,
                   onPressed: () => context.go(Routes.settings),
                 ),
               ],
             ),
             const SizedBox(height: NestSpacing.gap),
+            const SizedBox(height: 8),
             Text(today.toUpperCase(), style: textTheme.labelMedium),
             const SizedBox(height: 4),
-            Text(l10n.greeting(name), style: textTheme.headlineMedium),
-            const SizedBox(height: NestSpacing.gap),
+            Text(
+              l10n.greeting(name),
+              style: textTheme.headlineMedium?.copyWith(fontSize: 34),
+            ),
+            const SizedBox(height: NestSpacing.screen),
             if (ref.watch(recipesAvailableProvider)) ...[
               const _RecipesCard(),
               const SizedBox(height: NestSpacing.gap),
@@ -81,11 +85,11 @@ class _RecipesCard extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 48,
-                height: 48,
+                width: 52,
+                height: 52,
                 decoration: BoxDecoration(
-                  color: colors.surface,
-                  shape: BoxShape.circle,
+                  color: colors.surface.withValues(alpha: 0.7),
+                  borderRadius: BorderRadius.circular(18),
                 ),
                 child: Icon(LucideIcons.cookingPot, color: colors.roseInk),
               ),
@@ -96,7 +100,7 @@ class _RecipesCard extends StatelessWidget {
                   children: [
                     Text(
                       l10n.featureRecipes,
-                      style: textTheme.titleLarge?.copyWith(
+                      style: textTheme.titleMedium?.copyWith(
                         color: colors.roseInk,
                       ),
                     ),

@@ -312,18 +312,6 @@ class _MealSheetState extends ConsumerState<_MealSheet> {
               decoration: InputDecoration(
                 hintText: l10n.mealPrepAheadHint,
                 counterText: '',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(NestRadii.tile),
-                  borderSide: BorderSide(color: colors.borderStrong),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(NestRadii.tile),
-                  borderSide: BorderSide(color: colors.borderStrong),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(NestRadii.tile),
-                  borderSide: BorderSide(color: colors.accent, width: 2),
-                ),
               ),
             ),
             if (_error case final error?) ...[

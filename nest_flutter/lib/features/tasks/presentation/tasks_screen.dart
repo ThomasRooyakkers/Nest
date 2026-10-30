@@ -111,7 +111,7 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
               ],
               const SizedBox(height: NestSpacing.gap),
               if (tasks == null)
-                const Center(child: CircularProgressIndicator())
+                const Center(child: CircularProgressIndicator.adaptive())
               else
                 _TaskList(
                   householdId: householdId,
@@ -149,9 +149,9 @@ class _FilterChips extends ConsumerWidget {
           button: true,
           child: Material(
             color: isSelected ? colors.ink : colors.surface,
-            shape: StadiumBorder(
-              side: BorderSide(color: isSelected ? colors.ink : colors.border),
-            ),
+            elevation: isSelected ? 0 : 1,
+            shadowColor: colors.ink.withValues(alpha: 0.18),
+            shape: const StadiumBorder(),
             child: InkWell(
               customBorder: const StadiumBorder(),
               onTap: () =>

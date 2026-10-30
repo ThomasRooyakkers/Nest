@@ -146,7 +146,7 @@ class _RecipesScreenState extends ConsumerState<RecipesScreen> {
             ],
             const SizedBox(height: NestSpacing.gap),
             if (shown == null)
-              const Center(child: CircularProgressIndicator())
+              const Center(child: CircularProgressIndicator.adaptive())
             else if (shown.isEmpty)
               NestCard(
                 child: Row(
@@ -202,9 +202,10 @@ class _RecipeCard extends StatelessWidget {
 
     return Material(
       color: colors.surface,
+      elevation: 1,
+      shadowColor: colors.ink.withValues(alpha: 0.18),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(NestRadii.card),
-        side: BorderSide(color: colors.border),
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(

@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -117,73 +120,125 @@ class _TabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final colors = NestColors.of(context);
-    final textTheme = Theme.of(context).textTheme;
     final bottomInset = MediaQuery.viewPaddingOf(context).bottom;
+    final radius = BorderRadius.circular(NestRadii.tabBar);
 
     return Padding(
       padding: EdgeInsets.fromLTRB(
         16,
         0,
         16,
-        bottomInset > 20 ? bottomInset : 20,
+        bottomInset > 20 ? bottomInset - 6 : 20,
       ),
-      child: Container(
-        padding: const EdgeInsets.all(6),
+      child: DecoratedBox(
         decoration: BoxDecoration(
-          color: colors.surface,
-          borderRadius: BorderRadius.circular(NestRadii.tabBar),
-          border: Border.all(color: colors.border),
+          borderRadius: radius,
+          boxShadow: NestShadows.floating(colors),
         ),
-        child: Row(
-          children: [
-            for (final tab in tabs)
-              Expanded(
-                child: Semantics(
-                  selected: tab.branch == current,
-                  button: true,
-                  child: Material(
-                    color: tab.branch == current
-                        ? colors.accentTint
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(20),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(20),
-                      onTap: () => onSelect(tab.branch),
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(minHeight: 52),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                tab.icon,
-                                size: 22,
-                                color: tab.branch == current
-                                    ? colors.accentDark
-                                    : colors.inkMuted,
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                tab.label(l10n),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: textTheme.labelSmall?.copyWith(
-                                  color: tab.branch == current
-                                      ? colors.accentDark
-                                      : colors.inkMuted,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+        // Frosted glass: content scrolling underneath stays faintly visible.
+        child: ClipRRect(
+          borderRadius: radius,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+            child: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: colors.surface.withValues(alpha: 0.82),
+                borderRadius: radius,
+                border: Border.all(
+                  color: colors.surface.withValues(alpha: 0.6),
+                ),
+              ),
+              child: Row(
+                children: [
+                  for (final tab in tabs)
+                    Expanded(
+                      child: _TabButton(
+                        icon: tab.icon,
+                        label: tab.label(l10n),
+                        selected: tab.branch == current,
+                        onTap: () {
+                          if (tab.branch != current) {
+                            HapticFeedback.selectionClick();
+                          }
+                          onSelect(tab.branch);
+                        },
                       ),
                     ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TabButton extends StatelessWidget {
+  const _TabButton({
+    required this.icon,
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NestColors.of(context);
+    final textTheme = Theme.of(context).textTheme;
+    final color = selected ? colors.accentDark : colors.inkMuted;
+
+    return Semantics(
+      selected: selected,
+      button: true,
+      label: label,
+      excludeSemantics: true,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOutCubic,
+          constraints: const BoxConstraints(minHeight: 54),
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 7),
+          decoration: BoxDecoration(
+            color: selected
+                ? colors.accentTint
+                : colors.accentTint.withValues(alpha: 0),
+            borderRadius: BorderRadius.circular(NestRadii.tabBar - 6),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedScale(
+                scale: selected ? 1.08 : 1,
+                duration: const Duration(milliseconds: 220),
+                curve: Curves.easeOutBack,
+                child: Icon(icon, size: 22, color: color),
+              ),
+              const SizedBox(height: 3),
+              // Long Dutch labels shrink instead of being cut off.
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  style: textTheme.labelSmall?.copyWith(
+                    color: color,
+                    fontSize: 10.5,
+                    letterSpacing: 0,
                   ),
                 ),
               ),
-          ],
+            ],
+          ),
         ),
       ),
     );

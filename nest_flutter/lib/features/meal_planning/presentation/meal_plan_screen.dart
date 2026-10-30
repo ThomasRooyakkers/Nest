@@ -119,9 +119,9 @@ class _MealPlanScreenState extends ConsumerState<MealPlanScreen> {
                         ),
                       ),
                       if (household.role == MembershipRole.owner)
-                        IconButton(
+                        NestRoundButton(
                           tooltip: l10n.mealSlotsButton,
-                          icon: const Icon(LucideIcons.slidersHorizontal),
+                          icon: LucideIcons.slidersHorizontal,
                           onPressed: () => _showSlotsSheet(context, household),
                         ),
                     ],
@@ -164,7 +164,9 @@ class _MealPlanScreenState extends ConsumerState<MealPlanScreen> {
                         MediaQuery.paddingOf(context).bottom,
                   ),
                   child: entries == null
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        )
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -203,7 +205,6 @@ class _WeekHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final colors = NestColors.of(context);
     final textTheme = Theme.of(context).textTheme;
     final thisWeek = weekStartOf(today);
     final offset = weekStart.difference(thisWeek).inDays ~/ 7;
@@ -217,16 +218,7 @@ class _WeekHeader extends ConsumerWidget {
     final week = ref.read(shownWeekProvider.notifier);
 
     Widget arrow(IconData icon, String tooltip, VoidCallback onPressed) =>
-        IconButton(
-          tooltip: tooltip,
-          constraints: const BoxConstraints(
-            minWidth: NestSizes.minTouchTarget,
-            minHeight: NestSizes.minTouchTarget,
-          ),
-          style: IconButton.styleFrom(backgroundColor: colors.chip),
-          icon: Icon(icon, size: 20),
-          onPressed: onPressed,
-        );
+        NestRoundButton(icon: icon, tooltip: tooltip, onPressed: onPressed);
 
     return Row(
       children: [
@@ -307,11 +299,10 @@ class _WeekStrip extends StatelessWidget {
                   excludeSemantics: true,
                   child: Material(
                     color: isToday ? colors.honey : colors.surface,
+                    elevation: isToday ? 0 : 1,
+                    shadowColor: colors.ink.withValues(alpha: 0.18),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
-                      side: BorderSide(
-                        color: isToday ? colors.honey : colors.border,
-                      ),
                     ),
                     child: InkWell(
                       borderRadius: BorderRadius.circular(16),
@@ -587,6 +578,8 @@ class _MealTile extends StatelessWidget {
                       backgroundColor: colors.surface,
                       foregroundColor: colors.honeyInk,
                       minimumSize: const Size(0, NestSizes.minTouchTarget),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      textStyle: textTheme.labelLarge?.copyWith(fontSize: 14),
                     ),
                     icon: const Icon(LucideIcons.bookOpen, size: 18),
                     label: Text(l10n.mealOpenRecipe),
@@ -716,7 +709,7 @@ class _SlotsSheetState extends ConsumerState<_SlotsSheet> {
             Text(l10n.mealSlotsHint, style: textTheme.bodyMedium),
             const SizedBox(height: 8),
             for (final slot in [MealSlot.breakfast, MealSlot.lunch])
-              SwitchListTile(
+              SwitchListTile.adaptive(
                 contentPadding: EdgeInsets.zero,
                 title: Text(slotLabel(l10n, slot)),
                 value: current.contains(slot),

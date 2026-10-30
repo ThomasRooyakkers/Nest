@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nest_client/nest_client.dart';
 import 'package:nest_shared/nest_shared.dart';
@@ -60,6 +61,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     final l10n = AppLocalizations.of(context);
     final shared = NestSharedLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
+    final colors = NestColors.of(context);
 
     return Scaffold(
       body: ListenableBuilder(
@@ -68,10 +70,35 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           final error = controller.error;
           return CenteredForm(
             children: [
-              Text(shared.appName, style: textTheme.headlineMedium),
-              const SizedBox(height: 4),
-              Text(l10n.signInSubtitle, style: textTheme.bodyMedium),
+              Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: colors.accent,
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: Icon(
+                    LucideIcons.house,
+                    color: colors.surface,
+                    size: 28,
+                  ),
+                ),
+              ),
               const SizedBox(height: NestSpacing.gap),
+              Text(
+                shared.appName,
+                style: textTheme.headlineMedium?.copyWith(fontSize: 34),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                l10n.signInSubtitle,
+                style: textTheme.bodyLarge?.copyWith(
+                  color: colors.inkMuted,
+                ),
+              ),
+              const SizedBox(height: NestSpacing.screen),
               NestCard(
                 child: AutofillGroup(
                   child: Column(
@@ -154,9 +181,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         suffixIcon: IconButton(
           tooltip: _obscurePassword ? l10n.showPassword : l10n.hidePassword,
           icon: Icon(
-            _obscurePassword
-                ? Icons.visibility_outlined
-                : Icons.visibility_off_outlined,
+            _obscurePassword ? LucideIcons.eye : LucideIcons.eyeOff,
           ),
           onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
         ),

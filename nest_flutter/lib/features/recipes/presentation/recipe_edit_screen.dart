@@ -340,19 +340,7 @@ class _RecipeEditScreenState extends ConsumerState<RecipeEditScreen> {
       child: Text(label, style: textTheme.titleMedium),
     );
 
-    // Multi-line fields look odd as pills.
-    final boxBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(NestRadii.tile),
-      borderSide: BorderSide(color: colors.borderStrong),
-    );
-    final boxDecoration = InputDecoration(
-      border: boxBorder,
-      enabledBorder: boxBorder,
-      focusedBorder: boxBorder.copyWith(
-        borderSide: BorderSide(color: colors.accent, width: 2),
-      ),
-      counterText: '',
-    );
+    const boxDecoration = InputDecoration(counterText: '');
 
     return PopScope(
       canPop: !_dirty,

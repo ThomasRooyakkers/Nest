@@ -49,7 +49,7 @@ class StartScreen extends ConsumerWidget {
             ),
           ] else
             Center(
-              child: CircularProgressIndicator(
+              child: CircularProgressIndicator.adaptive(
                 semanticsLabel: l10n.loadingLabel,
               ),
             ),

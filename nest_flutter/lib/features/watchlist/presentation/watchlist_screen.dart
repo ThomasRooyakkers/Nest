@@ -87,7 +87,7 @@ class WatchlistScreen extends ConsumerWidget {
               ],
               const SizedBox(height: NestSpacing.gap),
               if (shown == null)
-                const Center(child: CircularProgressIndicator())
+                const Center(child: CircularProgressIndicator.adaptive())
               else if (shown.isEmpty)
                 _EmptyCard(status: status)
               else
@@ -116,8 +116,9 @@ class _SearchButton extends StatelessWidget {
       button: true,
       enabled: onTap != null,
       child: Material(
-        color: colors.surface,
-        shape: StadiumBorder(side: BorderSide(color: colors.borderStrong)),
+        // Looks like the other search fields; opens the search screen.
+        color: colors.chip,
+        shape: const StadiumBorder(),
         child: InkWell(
           customBorder: const StadiumBorder(),
           onTap: onTap,
@@ -169,9 +170,9 @@ class _StatusChips extends ConsumerWidget {
           button: true,
           child: Material(
             color: isSelected ? colors.ink : colors.surface,
-            shape: StadiumBorder(
-              side: BorderSide(color: isSelected ? colors.ink : colors.border),
-            ),
+            elevation: isSelected ? 0 : 1,
+            shadowColor: colors.ink.withValues(alpha: 0.18),
+            shape: const StadiumBorder(),
             child: InkWell(
               customBorder: const StadiumBorder(),
               onTap: () =>

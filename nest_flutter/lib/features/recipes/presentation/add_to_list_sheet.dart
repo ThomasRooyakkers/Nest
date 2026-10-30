@@ -169,7 +169,9 @@ class _AddToListSheetState extends ConsumerState<_AddToListSheet> {
               child: list == null
                   ? const Padding(
                       padding: EdgeInsets.all(NestSpacing.screen),
-                      child: Center(child: CircularProgressIndicator()),
+                      child: Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      ),
                     )
                   : ListView(
                       shrinkWrap: true,

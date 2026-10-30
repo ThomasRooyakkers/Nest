@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nest_client/nest_client.dart';
 import 'package:nest_shared/nest_shared.dart';
 
@@ -23,26 +24,35 @@ class HouseholdSwitcher extends ConsumerWidget {
     final canSwitch = households.length > 1;
     final pill = Container(
       constraints: const BoxConstraints(minHeight: NestSizes.minTouchTarget),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsetsDirectional.fromSTEB(5, 5, 14, 5),
       decoration: BoxDecoration(
-        color: colors.accentTint,
+        color: colors.surface,
         borderRadius: BorderRadius.circular(NestRadii.pill),
+        boxShadow: NestShadows.card(colors),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.home_outlined, size: 18, color: colors.accentDark),
-          const SizedBox(width: 8),
+          Container(
+            width: 34,
+            height: 34,
+            decoration: BoxDecoration(
+              color: colors.accentTint,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(LucideIcons.house, size: 17, color: colors.accentDark),
+          ),
+          const SizedBox(width: 10),
           Flexible(
             child: Text(
               active.household.name,
               overflow: TextOverflow.ellipsis,
-              style: textTheme.labelLarge?.copyWith(color: colors.accentDark),
+              style: textTheme.labelLarge,
             ),
           ),
           if (canSwitch) ...[
             const SizedBox(width: 4),
-            Icon(Icons.expand_more, size: 20, color: colors.accentDark),
+            Icon(LucideIcons.chevronDown, size: 18, color: colors.inkMuted),
           ],
         ],
       ),

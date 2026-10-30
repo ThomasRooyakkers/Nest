@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:nest_client/nest_client.dart';
@@ -215,7 +216,7 @@ class _HouseholdCard extends ConsumerWidget {
               if (isOwner)
                 IconButton(
                   tooltip: l10n.renameHousehold,
-                  icon: const Icon(Icons.edit_outlined),
+                  icon: const Icon(LucideIcons.pencil),
                   onPressed: () => _rename(context, ref),
                 ),
             ],
@@ -235,7 +236,7 @@ class _HouseholdCard extends ConsumerWidget {
             AsyncError(:final error) => NestNotice(errorMessage(l10n, error)),
             _ => const Padding(
               padding: EdgeInsets.all(12),
-              child: Center(child: CircularProgressIndicator()),
+              child: Center(child: CircularProgressIndicator.adaptive()),
             ),
           },
           if (isOwner) ...[
@@ -411,7 +412,7 @@ class _InviteSection extends ConsumerWidget {
                 ),
                 IconButton(
                   tooltip: l10n.copyCode,
-                  icon: Icon(Icons.copy_outlined, color: colors.accentDark),
+                  icon: Icon(LucideIcons.copy, color: colors.accentDark),
                   onPressed: () async {
                     final messenger = ScaffoldMessenger.of(context);
                     await Clipboard.setData(ClipboardData(text: code));

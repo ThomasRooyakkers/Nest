@@ -84,7 +84,7 @@ class _ShoppingScreenState extends ConsumerState<ShoppingScreen> {
               ],
               const SizedBox(height: NestSpacing.gap),
               if (list == null)
-                const Center(child: CircularProgressIndicator())
+                const Center(child: CircularProgressIndicator.adaptive())
               else if (query.isNotEmpty)
                 _SearchResults(
                   householdId: householdId,
@@ -540,9 +540,9 @@ class _StoreChips extends ConsumerWidget {
         button: true,
         child: Material(
           color: selected ? colors.ink : colors.surface,
-          shape: StadiumBorder(
-            side: BorderSide(color: selected ? colors.ink : colors.border),
-          ),
+          elevation: selected ? 0 : 1,
+          shadowColor: colors.ink.withValues(alpha: 0.18),
+          shape: const StadiumBorder(),
           child: InkWell(
             customBorder: const StadiumBorder(),
             onTap: onTap,
@@ -561,7 +561,11 @@ class _StoreChips extends ConsumerWidget {
                       decoration: BoxDecoration(
                         color: dot,
                         shape: BoxShape.circle,
-                        border: Border.all(color: colors.borderStrong),
+                        border: Border.all(
+                          color: selected
+                              ? colors.surface.withValues(alpha: 0.6)
+                              : colors.borderStrong,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),

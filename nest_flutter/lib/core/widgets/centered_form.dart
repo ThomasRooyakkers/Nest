@@ -47,9 +47,11 @@ class BusyButton extends StatelessWidget {
       child: busy
           ? SizedBox.square(
               dimension: 20,
-              child: CircularProgressIndicator(
+              child: CircularProgressIndicator.adaptive(
                 strokeWidth: 2.5,
-                color: NestColors.of(context).accentDark,
+                valueColor: AlwaysStoppedAnimation(
+                  NestColors.of(context).inkMuted,
+                ),
                 semanticsLabel: label,
               ),
             )

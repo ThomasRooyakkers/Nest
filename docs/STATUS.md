@@ -615,6 +615,30 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   Dutch returned 20 results). **Not verified:** a search through Nest
   itself on production (no account used) and real posters in the app.
 
+### UI refresh (2026-10-30)
+
+Thomas asked for a more modern, less "Android" look. The colour palette and
+Nunito stay; how they are applied changed, mostly in `nest_shared`:
+
+- **Theme:** iOS page transitions on every platform, no ink ripples (a quiet
+  highlight instead), compact centred titles on pushed screens, tighter title
+  tracking, lighter body weights, soft filled inputs with the label inside
+  (sage fill while focused), filled secondary buttons instead of outlines,
+  ink-coloured selected chips, iOS-style switch and segmented control, round
+  checkboxes, rounded sheets with a drag handle, rounded dialogs and floating
+  snack bars. Spinners and switches use the `.adaptive` variants.
+- **Surfaces:** cards and white tiles/chips lose their hairline border and get
+  a very soft shadow (`NestShadows`); tinted cards stay flat.
+- **Tab bar:** frosted, translucent floating bar with an animated active pill
+  and a haptic tick; long Dutch labels shrink instead of being cut off.
+- **New shared widget** `NestRoundButton` for header actions (home settings,
+  meal plan week arrows and slots). Household switcher is a white pill with
+  an icon disc; sign-in has an app mark. Last Material icons replaced by
+  Lucide.
+- Checked on the iPhone 18 Pro simulator (home, shopping, meals, tasks,
+  watchlist, settings, sign in) against the local server; 169 app tests,
+  16 shared tests and the admin test pass.
+
 ## Next
 
 1. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
@@ -647,6 +671,12 @@ sections 1, 3 (rule 6), 4, 5, 6, 7, 9 and 10 were updated accordingly.
   later checks.
 
 ## Deviations from CLAUDE.md
+
+- **Soft shadows instead of hairline borders on cards** (UI refresh,
+  2026-10-30, at Thomas's request for a more modern look): section 8 says
+  "hairline border instead of shadows". The shadows are very light
+  (`NestShadows`, ink at 4–10 %), not heavy. Body text is weight 650 instead
+  of 700. Section 8 itself is not changed yet; waiting for Thomas's OK.
 
 - **TMDB is picked by the key, not a `tmdb: fake|tmdb` setting:** with
   `tmdbApiKey` set the server uses TMDB, without it the fake film data. A

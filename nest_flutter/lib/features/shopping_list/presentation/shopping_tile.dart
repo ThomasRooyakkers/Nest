@@ -50,9 +50,10 @@ class ShoppingTile extends StatelessWidget {
       excludeSemantics: true,
       child: Material(
         color: background,
+        elevation: toBuy ? 0 : 1,
+        shadowColor: colors.ink.withValues(alpha: 0.18),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(NestRadii.tile),
-          side: toBuy ? BorderSide.none : BorderSide(color: colors.border),
         ),
         clipBehavior: Clip.antiAlias,
         child: InkWell(

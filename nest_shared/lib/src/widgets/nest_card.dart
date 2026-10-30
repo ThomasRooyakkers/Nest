@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../theme/nest_colors.dart';
+import '../theme/nest_shadows.dart';
 import '../theme/nest_tokens.dart';
 
-/// White card with a hairline border and large radius.
+/// White card with a large radius, lifted by a very soft shadow. Tinted
+/// cards ([color] set) lie flat on the background.
 class NestCard extends StatelessWidget {
   const NestCard({
     super.key,
@@ -25,7 +27,7 @@ class NestCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color ?? colors.surface,
         borderRadius: BorderRadius.circular(NestRadii.card),
-        border: Border.all(color: colors.border),
+        boxShadow: color == null ? NestShadows.card(colors) : null,
       ),
       child: Padding(padding: padding, child: child),
     );

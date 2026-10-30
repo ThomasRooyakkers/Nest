@@ -18,6 +18,12 @@ abstract final class NestRadii {
   static const double tabBar = 26;
   static const double badge = 8;
 
+  /// Bottom sheets and dialogs.
+  static const double sheet = 30;
+
+  /// Text fields (multi-line fields stay readable with this radius).
+  static const double input = 18;
+
   /// Fully rounded buttons, inputs and chips.
   static const double pill = 999;
 }

@@ -30,7 +30,9 @@ class StoreEditorScreen extends ConsumerWidget {
     final stores = ref.watch(shoppingStoresProvider(householdId));
 
     if (storeId != null && !stores.hasValue) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator.adaptive()),
+      );
     }
     final store = stores.value?.where((s) => s.id == storeId).firstOrNull;
     return _StoreEditor(

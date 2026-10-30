@@ -90,7 +90,7 @@ class _RecipeScreenState extends ConsumerState<RecipeScreen> {
                   padding: const EdgeInsets.all(NestSpacing.screen),
                   child: Text(l10n.recipeNotFound, style: textTheme.bodyLarge),
                 )
-              : const CircularProgressIndicator(),
+              : const CircularProgressIndicator.adaptive(),
         ),
       );
     }

@@ -140,7 +140,9 @@ class _WatchlistSearchScreenState extends ConsumerState<WatchlistSearchScreen> {
                         padding: EdgeInsets.all(14),
                         child: SizedBox.square(
                           dimension: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          child: CircularProgressIndicator.adaptive(
+                            strokeWidth: 2,
+                          ),
                         ),
                       )
                     : null,
@@ -281,7 +283,7 @@ class _ResultRow extends StatelessWidget {
               icon: adding
                   ? const SizedBox.square(
                       dimension: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                      child: CircularProgressIndicator.adaptive(strokeWidth: 2),
                     )
                   : const Icon(LucideIcons.plus),
             ),
