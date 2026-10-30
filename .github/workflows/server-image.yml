@@ -1,7 +1,8 @@
 name: Server image
 
-# Builds the Nest server image (web app included) for arm64 and amd64 and
-# publishes it to ghcr.io/<owner>/nest-server. Runs for a version tag that
+# Builds the Nest server image (web app and admin portal included) and the
+# backup image for arm64 and amd64 and publishes them to
+# ghcr.io/<owner>/nest-server and ghcr.io/<owner>/nest-backup. Runs for a version tag that
 # matches nestServerVersion, e.g. v0.2.0, or by hand.
 on:
   push:
@@ -48,4 +49,5 @@ jobs:
         # Image names must be lower case; the owner may not be.
         run: |
           export IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/nest-server"
+          export BACKUP_IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/nest-backup"
           deploy/build-image.sh --push

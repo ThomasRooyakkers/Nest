@@ -23,6 +23,10 @@ abstract final class HostSettings {
     return _password('superAdminEmail')?.toLowerCase();
   }
 
+  /// `adminDomain`: the host name the admin portal is served on, e.g.
+  /// `nest-admin.example.com`, or `null` when this server has none.
+  static String? get adminDomain => _password('adminDomain')?.toLowerCase();
+
   /// `mailFrom`: sender of sign-up and reset emails, e.g.
   /// `Nest <nest@example.com>`; its domain must be verified with the mail
   /// provider.

@@ -1,6 +1,6 @@
-# A Nest server: PostgreSQL, the Nest server (API and web app), a nightly
-# database dump and, optionally, a Cloudflare Tunnel. Put this file and your
-# .env (from .env.example) in one folder and run:
+# A Nest server: PostgreSQL, the Nest server (API, web app and admin
+# portal), daily backups and, optionally, a Cloudflare Tunnel. Put this
+# file and your .env (from .env.example) in one folder and run:
 #   docker compose up -d
 # See docs/hosting/hosting-guide.md (English) or hosting-guide.nl.md (Dutch).
 name: nest
@@ -31,7 +31,8 @@ services:
       # Host settings: this server's addresses and who may sign up.
       SERVERPOD_API_SERVER_PUBLIC_HOST: ${NEST_API_DOMAIN:?set in .env}
       SERVERPOD_WEB_SERVER_PUBLIC_HOST: ${NEST_WEB_DOMAIN:?set in .env}
-      SERVERPOD_ALLOWED_ORIGINS: https://${NEST_WEB_DOMAIN}
+      SERVERPOD_ALLOWED_ORIGINS: https://${NEST_WEB_DOMAIN}${NEST_ADMIN_DOMAIN:+,https://${NEST_ADMIN_DOMAIN}}
+      SERVERPOD_PASSWORD_adminDomain: ${NEST_ADMIN_DOMAIN:-}
       SERVERPOD_PASSWORD_superAdminEmail: ${SUPER_ADMIN_EMAIL:-}
       SERVERPOD_PASSWORD_signUpMode: ${SIGN_UP_MODE:-invite-only}
       # Secrets.
@@ -62,26 +63,30 @@ services:
     depends_on:
       - nest
 
-  # Nightly database dump into ./backups, keeping the last 14.
+  # Daily backup with restic (and "Back up now" from the admin portal) into
+  # the targets of BACKUP_TARGETS: by default ./backups/restic. See
+  # deploy/backup/backup.sh and the hosting guide.
   backup:
-    image: postgres:16-alpine
+    image: ${NEST_BACKUP_IMAGE:-ghcr.io/thomasrooyakkers/nest-backup}:${NEST_VERSION:-latest}
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
     environment:
+      PGHOST: postgres
+      PGUSER: postgres
+      PGDATABASE: nest
       PGPASSWORD: ${DATABASE_PASSWORD}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD:?set in .env}
+      BACKUP_TARGETS: ${BACKUP_TARGETS:-local=/backups/restic}
+      BACKUP_TIME: ${BACKUP_TIME:-03:00}
+      TZ: ${TZ:-UTC}
     volumes:
       - ./backups:/backups
-    entrypoint: ["/bin/sh", "-c"]
-    command:
-      - |
-        while true; do
-          file=/backups/nest-$$(date +%Y%m%d-%H%M%S).sql.gz
-          pg_dump -h postgres -U postgres nest | gzip > "$$file.tmp" && mv "$$file.tmp" "$$file" && echo "backup: wrote $$file"
-          ls -1t /backups/nest-*.sql.gz | tail -n +15 | xargs -r rm --
-          sleep 86400
-        done
+      # A second folder, e.g. an NFS share mounted on this machine.
+      - ${BACKUP_EXTRA_DIR:-./backups}:/backups-extra
+      # rclone remotes (OneDrive and others): rclone.conf in this folder.
+      - ./rclone:/config/rclone
 
 volumes:
   pgdata:

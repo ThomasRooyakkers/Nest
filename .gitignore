@@ -36,5 +36,7 @@ pubspec_overrides.yaml
 build/
 # Web app copied into the server image by deploy/deploy.sh
 nest_server/web/app/
+nest_server/web/admin/
 # Database dumps on the Pi
 deploy/backups/
+deploy/rclone/

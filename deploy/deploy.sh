@@ -15,7 +15,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SSH=(ssh -i "$SSH_KEY" "$HOST")
 
 echo "Checking the Pi's .env"
-"${SSH[@]}" 'cd ~/nest/deploy && missing=""; for k in NEST_WEB_DOMAIN NEST_API_DOMAIN SUPER_ADMIN_EMAIL NEST_IMAGE COMPOSE_PROFILES; do grep -Eq "^$k=.+" .env || missing="$missing $k"; done; [ -z "$missing" ] || { echo "Missing in .env:$missing"; exit 1; }'
+"${SSH[@]}" 'cd ~/nest/deploy && missing=""; for k in NEST_WEB_DOMAIN NEST_API_DOMAIN SUPER_ADMIN_EMAIL NEST_IMAGE COMPOSE_PROFILES RESTIC_PASSWORD; do grep -Eq "^$k=.+" .env || missing="$missing $k"; done; [ -z "$missing" ] || { echo "Missing in .env:$missing"; exit 1; }'
 
 echo "Dumping the database"
 # Through the backup container, which owns ./backups.

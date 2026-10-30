@@ -5,6 +5,7 @@ import 'package:serverpod_auth_idp_server/providers/email.dart';
 
 import 'src/generated/serverpod.dart';
 import 'src/services/built_in_catalog.dart';
+import 'src/services/host_settings.dart';
 import 'src/services/sign_up_policy.dart';
 import 'src/services/verification_mail.dart';
 import 'src/web/web_app_config_route.dart';
@@ -92,6 +93,27 @@ Future<Serverpod> createServerpod(
   // includes it and hosts need no extra volume.
   pod.addCloudStorage(DatabaseCloudStorage('private'));
   pod.addCloudStorage(DatabaseCloudStorage('public'));
+
+  // The admin portal, when built into web/admin, on its own host name
+  // (`adminDomain`), so hosts can put it behind an access check. Added
+  // before the web app, which answers every other host name.
+  final adminApp = Directory('web/admin');
+  final adminDomain = HostSettings.adminDomain;
+  if (adminApp.existsSync() &&
+      adminDomain != null &&
+      pod.config.webServer != null) {
+    pod.webServer.addRoute(
+      WebAppConfigRoute(
+        pod.config.apiServer,
+        cookieAuth: pod.config.authCookie != null,
+        host: adminDomain,
+      ),
+      WebAppConfigRoute.servedAt,
+    );
+    pod.webServer.addRoute(
+      FlutterRoute(adminApp, enableWasmHeaders: false, host: adminDomain),
+    );
+  }
 
   // The Flutter web app, when built into web/app (production image).
   // Its config.json is generated, so the same build works on every host.

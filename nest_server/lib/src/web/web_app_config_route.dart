@@ -7,9 +7,10 @@ import 'package:serverpod/serverpod.dart';
 /// reads it too, to find the API when a user types the web address.
 ///
 /// `cookieAuth` tells the web app to keep its login in HttpOnly cookies,
-/// which the server only supports when `authCookie` is configured.
+/// which the server only supports when `authCookie` is configured. The admin
+/// portal gets the same file on its own [host].
 class WebAppConfigRoute extends Route {
-  WebAppConfigRoute(this.apiServer, {required this.cookieAuth})
+  WebAppConfigRoute(this.apiServer, {required this.cookieAuth, super.host})
     : super(methods: {Method.get, Method.head});
 
   final ServerConfig apiServer;
