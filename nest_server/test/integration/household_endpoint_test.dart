@@ -289,6 +289,24 @@ void main() {
       expect(await Household.db.findById(session, sharedId), isNotNull);
     });
 
+    test('an Apple link goes too, even when Apple cannot be reached', () async {
+      final me = await endpoints.profile.me(anna);
+      final session = sessionBuilder.build();
+      await AppleAccount.db.insertRow(
+        session,
+        AppleAccount(
+          authUserId: me.authUserId,
+          userIdentifier: 'apple-anna',
+          refreshToken: 'refresh',
+          refreshTokenRequestedWithBundleIdentifier: true,
+        ),
+      );
+
+      await endpoints.profile.deleteMe(anna);
+
+      expect(await AppleAccount.db.count(session), 0);
+    });
+
     test('signed-out callers cannot delete anything', () {
       expect(
         endpoints.profile.deleteMe(sessionBuilder),

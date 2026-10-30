@@ -1,5 +1,7 @@
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_idp_server/core.dart';
+import 'package:serverpod_auth_idp_server/providers/apple.dart';
+import 'package:sign_in_with_apple_server/sign_in_with_apple_server.dart';
 
 import '../generated/protocol.dart';
 import '../services/nest_users.dart';
@@ -31,10 +33,15 @@ class ProfileEndpoint extends Endpoint {
   /// data. In a household that has other members, the longest-standing
   /// member becomes owner when the user was its last owner. Tasks assigned
   /// to them go back to anyone and their name disappears from items they
-  /// added (the relations set those to null).
+  /// added (the relations set those to null). A Sign in with Apple link is
+  /// revoked at Apple, as Apple requires.
   Future<void> deleteMe(Session session) async {
     final user = await NestUsers.require(session);
     final photos = <String>[];
+    final appleAccounts = await AppleAccount.db.find(
+      session,
+      where: (t) => t.authUserId.equals(user.authUserId),
+    );
 
     await session.db.transaction((transaction) async {
       final memberships = await Membership.db.find(
@@ -115,6 +122,28 @@ class ProfileEndpoint extends Endpoint {
     );
     for (final path in photos) {
       await RecipeEndpoint.deletePhoto(session, path);
+    }
+    for (final account in appleAccounts) {
+      await _revokeApple(session, account);
+    }
+  }
+
+  static Future<void> _revokeApple(
+    Session session,
+    AppleAccount account,
+  ) async {
+    try {
+      final config = AuthServices.instance.appleIdp.config;
+      await SignInWithApple(
+        config: config.toSignInWithAppleConfiguration(),
+      ).revokeAuthorization(
+        refreshToken: account.refreshToken,
+        useBundleIdentifier: account.refreshTokenRequestedWithBundleIdentifier,
+      );
+    } on Object catch (e) {
+      // The account is already gone here; the user can also remove Nest
+      // under Apple ID settings.
+      session.log('Could not revoke Sign in with Apple: $e');
     }
   }
 }
