@@ -6,6 +6,16 @@
 is built and tested locally (not released yet). Next in phase 9: real
 Google/Apple sign-in and TestFlight / Play internal testing.
 
+**App Store readiness (2026-10-30):** account deletion (server API level 8,
+`profile.deleteMe`; Settings, Delete account, hidden on older servers), a new
+app icon (two overlapping houses, chosen by Thomas), a bilingual privacy page
+(`web/privacy.html`, served at `https://nest.g3cko.be/privacy.html` after the
+next deploy; its contact email is still a `CONTACT_EMAIL` placeholder) and
+`ITSAppUsesNonExemptEncryption = false`. App API level is now 8. An unsigned
+release build compiles. Still with Thomas: signing team in Xcode, the App
+Store Connect record, deploying server API 8 to the Pi, a reviewer demo
+account, and the upload to TestFlight.
+
 **Phase 8 — Admin + backups: released as 0.7.0 (2026-10-30).** Server
 0.7.0 / API level 7 and the restic backup job run on the Pi; the first
 backup succeeded. Still to do with Thomas: route `nest-admin.g3cko.be` in the
