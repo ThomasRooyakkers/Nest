@@ -179,12 +179,14 @@ Implement these tokens once in `nest_shared` as a `ThemeData` plus a `NestColors
 | rose / roseInk | #F6E1DD / #7A3A30 | recipes |
 | warning / warningInk | #FBE0CC / #8A3A12 | overdue, backup warnings |
 
-- **Type:** Nunito. Screen titles 28/800, card titles 22/800, body 15/700, secondary 13–14/600, labels 11–12/800 with slight letter spacing.
-- **Shape:** cards radius 22–28, tiles 22, buttons and inputs fully rounded (pill), small badges radius 8–10.
+- **Type:** Nunito. Screen titles 28/800 with tight tracking (about −0.6), card titles 22/800, body 15/650, secondary 13–14/600, labels 11–12/800 with slight letter spacing. Pushed screens use a compact centred 17/800 title; tab screens draw their own large title.
+- **Shape:** cards radius 22–28, tiles 22, buttons fully rounded (pill), inputs radius 18, sheets and dialogs 30, small badges radius 8–10.
 - **Spacing:** 20 px screen padding, 10–16 px gaps between cards.
-- **Navigation:** floating bottom tab bar (white, radius 26, 16 px from the sides, 20 px from the bottom) with Home, Shopping, Meals, Tasks, Watch. Active tab: accentTint background, accentDark icon and label. Recipes open from the dashboard and meal plan.
+- **Navigation:** floating bottom tab bar (frosted, translucent white, radius 26, 16 px from the sides, 20 px from the bottom, soft floating shadow) with Home, Shopping, Meals, Tasks, Watch. Active tab: animated accentTint pill, accentDark icon and label; a light haptic tick on change. Recipes open from the dashboard and meal plan.
 - **Icons:** one outline icon set (stroke about 2 px, rounded caps), for example Lucide or Tabler. The shopping catalog needs openly licensed food icons or custom ones; never copy Bring!'s icons or layout assets.
-- **No** gradients, emoji as icons or heavy shadows; a hairline border instead of shadows.
+- **Surfaces:** white cards, tiles and chips have no border but a very soft shadow (`NestShadows`: ink at 4–10 %); tinted cards lie flat. Header actions are round white buttons (`NestRoundButton`).
+- **Controls feel native, not Material:** iOS page transitions, no ink ripples (a quiet highlight instead), `.adaptive` switches and spinners, soft filled inputs with the label inside (sage fill while focused), filled secondary buttons instead of outlines, ink-coloured selected chips, round checkboxes, sheets with a drag handle, floating snack bars.
+- **No** gradients, emoji as icons, heavy shadows or hairline outlines on cards.
 - Reference mockups (Thomas has them in Claude): Dashboard, Shopping, Meal plan, Recipe, Tasks, Watchlist, Admin portal. If a screen is unclear, ask Thomas for a screenshot of the mockup.
 
 ---

@@ -638,6 +638,9 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
 - Checked on the iPhone 18 Pro simulator (home, shopping, meals, tasks,
   watchlist, settings, sign in) against the local server; 169 app tests,
   16 shared tests and the admin test pass.
+- CLAUDE.md section 8 updated to the new look (Thomas's OK, 2026-10-30):
+  soft shadows instead of hairline borders, body 15/650, native-feeling
+  controls, frosted tab bar.
 
 ## Next
 
@@ -671,12 +674,6 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
   later checks.
 
 ## Deviations from CLAUDE.md
-
-- **Soft shadows instead of hairline borders on cards** (UI refresh,
-  2026-10-30, at Thomas's request for a more modern look): section 8 says
-  "hairline border instead of shadows". The shadows are very light
-  (`NestShadows`, ink at 4–10 %), not heavy. Body text is weight 650 instead
-  of 700. Section 8 itself is not changed yet; waiting for Thomas's OK.
 
 - **TMDB is picked by the key, not a `tmdb: fake|tmdb` setting:** with
   `tmdbApiKey` set the server uses TMDB, without it the fake film data. A
