@@ -124,7 +124,7 @@ String categoryLabel(AppLocalizations l10n, ShoppingCategory category) =>
       StoreColor.apricot => (colors.apricot, colors.apricotInk),
       StoreColor.lavender => (colors.lavender, colors.lavenderInk),
       StoreColor.rose => (colors.rose, colors.roseInk),
-      StoreColor.neutral => (colors.chip, colors.ink),
+      StoreColor.neutral => (colors.chip, colors.inkMuted),
     };
 
 String storeColorLabel(AppLocalizations l10n, StoreColor color) =>

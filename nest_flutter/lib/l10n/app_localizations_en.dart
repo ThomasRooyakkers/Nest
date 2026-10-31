@@ -483,19 +483,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get storeColorSage => 'Sage';
 
   @override
-  String get storeColorHoney => 'Honey';
+  String get storeColorHoney => 'Golden tan';
 
   @override
-  String get storeColorApricot => 'Apricot';
+  String get storeColorApricot => 'Terracotta';
 
   @override
-  String get storeColorLavender => 'Lavender';
+  String get storeColorLavender => 'Mauve';
 
   @override
-  String get storeColorRose => 'Rose';
+  String get storeColorRose => 'Dusty rose';
 
   @override
-  String get storeColorNeutral => 'Linen';
+  String get storeColorNeutral => 'Beige';
 
   @override
   String get itemSpec => 'Details';

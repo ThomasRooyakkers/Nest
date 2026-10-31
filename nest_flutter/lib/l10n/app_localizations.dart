@@ -929,31 +929,31 @@ abstract class AppLocalizations {
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Honey'**
+  /// **'Golden tan'**
   String get storeColorHoney;
 
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Apricot'**
+  /// **'Terracotta'**
   String get storeColorApricot;
 
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Lavender'**
+  /// **'Mauve'**
   String get storeColorLavender;
 
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Rose'**
+  /// **'Dusty rose'**
   String get storeColorRose;
 
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Linen'**
+  /// **'Beige'**
   String get storeColorNeutral;
 
   /// Field for an item's spec.

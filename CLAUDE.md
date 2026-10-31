@@ -160,24 +160,26 @@ Implement these tokens once in `nest_shared` as a `ThemeData` plus a `NestColors
 
 | Token | Value | Use |
 | --- | --- | --- |
-| background | #FAF5EE | screen background (soft linen) |
-| surface | #FFFFFF | cards, inputs, tab bar |
-| surfaceAlt | #F6EFE5 | admin side menu |
-| chip | #F3EADF | neutral buttons, inactive segments |
-| border | #EDE3D6 | card and tab bar borders |
-| borderStrong | #E3D7C7 | input borders |
-| divider | #F2EBE1 | rows inside cards |
-| checkboxIdle | #C9BBAA | unchecked boxes, dashed "add" buttons |
-| ink | #2B2420 | primary text, dark buttons |
-| inkMuted | #6B5E55 | secondary text |
-| accent | #3F6B57 | primary actions, checked state, To buy tiles (sage) |
-| accentDark | #2E5242 | text on accent tint |
-| accentTint | #E4EEE6 | active tab, shopping tint |
-| honey / honeyInk | #F8EBC8 / #6E5110 | meals |
-| apricot / apricotInk | #FBE7D6 / #8A4A1C | tasks |
-| lavender / lavenderInk | #E9E3F3 / #4B3D72 | watchlist |
-| rose / roseInk | #F6E1DD / #7A3A30 | recipes |
-| warning / warningInk | #FBE0CC / #8A3A12 | overdue, backup warnings |
+| background | #F7F1E7 | screen background (warm cream) |
+| surface | #FFFDF9 | cards, inputs, tab bar |
+| surfaceAlt | #F1E8DA | admin side menu |
+| chip | #EFE5D5 | neutral buttons, inactive segments |
+| border | #E9DDCB | card and tab bar borders |
+| borderStrong | #DCCCB4 | input borders |
+| divider | #F0E7D9 | rows inside cards |
+| checkboxIdle | #988569 | unchecked boxes, dashed "add" buttons (≥3:1 on surface) |
+| ink | #33281F | primary text, dark buttons |
+| inkMuted | #6E5F51 | secondary text |
+| accent | #627256 | primary actions, checked state, To buy tiles (sage, deepened for white text) |
+| accentDark | #46533A | text on accent tint |
+| accentTint | #E5E9D9 | active tab, shopping tint |
+| honey / honeyInk | #F2E3C6 / #6B5024 | meals (golden tan) |
+| apricot / apricotInk | #EFE0D2 / #6E4A30 | tasks (terracotta) |
+| lavender / lavenderInk | #EADFE0 / #5E4650 | watchlist (dusty mauve) |
+| rose / roseInk | #F3DFD9 / #84483B | recipes (dusty rose) |
+| warning / warningInk | #F7D9CC / #9A3B22 | overdue, backup warnings |
+
+The palette follows the nature-inspired scheme chosen 2026-10-31 (sage green #98A086, dusty rose #A76D5E, golden tan #C4A071, warm beige #DFCCB1, terracotta brown #846044); colours that carry text are deepened so text keeps 4.5:1. Overdue is shown as warningInk text, not a filled badge.
 
 - **Type:** Nunito. Screen titles 28/800 with tight tracking (about −0.6), card titles 22/800, body 15/650, secondary 13–14/600, labels 11–12/800 with slight letter spacing. Pushed screens use a compact centred 17/800 title; tab screens draw their own large title.
 - **Shape:** cards radius 22–28, tiles 22, buttons fully rounded (pill), inputs radius 18, sheets and dialogs 30, small badges radius 8–10.

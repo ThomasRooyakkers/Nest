@@ -110,27 +110,18 @@ class TaskRow extends ConsumerWidget {
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               if (due != null)
-                                overdue
-                                    ? Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 2,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: colors.warning,
-                                          borderRadius: BorderRadius.circular(
-                                            NestRadii.badge,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          due,
-                                          style: textTheme.bodySmall?.copyWith(
-                                            color: colors.warningInk,
-                                            fontWeight: FontWeight.w800,
-                                          ),
-                                        ),
-                                      )
-                                    : Text(due, style: textTheme.bodySmall),
+                                // Overdue stands out by colour and weight,
+                                // not a filled badge, so a list of late
+                                // tasks stays calm.
+                                Text(
+                                  due,
+                                  style: overdue
+                                      ? textTheme.bodySmall?.copyWith(
+                                          color: colors.warningInk,
+                                          fontWeight: FontWeight.w800,
+                                        )
+                                      : textTheme.bodySmall,
+                                ),
                               if (task.recurrence != TaskRecurrence.none)
                                 Semantics(
                                   label: l10n.taskRepeats(

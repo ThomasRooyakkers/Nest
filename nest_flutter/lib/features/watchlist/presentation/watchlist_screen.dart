@@ -425,7 +425,7 @@ class _PosterTile extends StatelessWidget {
                     style: textTheme.labelMedium,
                   ),
                 ),
-                if (addedBy != null) NestAvatar(name: addedBy.name, size: 20),
+                if (addedBy != null) NestAvatar(name: addedBy.name, size: 24),
               ],
             ),
           ],

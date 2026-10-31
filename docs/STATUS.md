@@ -2,6 +2,16 @@
 
 ## Current phase
 
+**UI colour audit (2026-10-31, not released):** at Thomas's request the
+colour tokens follow the nature-inspired palette (sage, dusty rose, golden
+tan, warm beige, terracotta); every text pair checked at 4.5:1 or more.
+Fixes: unchecked boxes and dashed add buttons were 1.9:1 (now 3:1+); overdue
+tasks show red-brown text instead of an orange badge on every row (the
+tasks tile no longer looks like an alert); store dots use the deep store
+colour instead of a near-invisible tint; watchlist avatars 20 → 24 px; store
+colour names updated (Golden tan, Terracotta, Mauve, Dusty rose, Beige).
+CLAUDE.md section 8 updated.
+
 **Phase 9 — Dashboard + release: in progress (2026-10-30).** The dashboard
 is built and tested locally (not released yet). Next in phase 9: real
 Google/Apple sign-in and TestFlight / Play internal testing.

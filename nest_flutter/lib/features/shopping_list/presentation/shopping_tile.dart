@@ -114,7 +114,7 @@ class ShoppingTile extends StatelessWidget {
                           height: 10,
                           margin: const EdgeInsetsDirectional.only(start: 3),
                           decoration: BoxDecoration(
-                            color: storeColors(colors, store.color).$1,
+                            color: storeColors(colors, store.color).$2,
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: toBuy ? colors.surface : colors.border,

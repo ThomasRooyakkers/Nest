@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// Nest "warm and cozy" colour tokens (CLAUDE.md section 8).
+/// Nest "warm and cozy" colour tokens (CLAUDE.md section 8), based on the
+/// nature-inspired palette: sage green, dusty rose, golden tan, warm beige
+/// and terracotta brown, deepened where text needs 4.5:1 contrast.
 ///
 /// Read them in widgets with `NestColors.of(context)`.
 @immutable
@@ -33,29 +35,29 @@ class NestColors extends ThemeExtension<NestColors> {
 
   /// The only palette for now; there is no dark theme in v1.
   static const light = NestColors(
-    background: Color(0xFFFAF5EE),
-    surface: Color(0xFFFFFFFF),
-    surfaceAlt: Color(0xFFF6EFE5),
-    chip: Color(0xFFF3EADF),
-    border: Color(0xFFEDE3D6),
-    borderStrong: Color(0xFFE3D7C7),
-    divider: Color(0xFFF2EBE1),
-    checkboxIdle: Color(0xFFC9BBAA),
-    ink: Color(0xFF2B2420),
-    inkMuted: Color(0xFF6B5E55),
-    accent: Color(0xFF3F6B57),
-    accentDark: Color(0xFF2E5242),
-    accentTint: Color(0xFFE4EEE6),
-    honey: Color(0xFFF8EBC8),
-    honeyInk: Color(0xFF6E5110),
-    apricot: Color(0xFFFBE7D6),
-    apricotInk: Color(0xFF8A4A1C),
-    lavender: Color(0xFFE9E3F3),
-    lavenderInk: Color(0xFF4B3D72),
-    rose: Color(0xFFF6E1DD),
-    roseInk: Color(0xFF7A3A30),
-    warning: Color(0xFFFBE0CC),
-    warningInk: Color(0xFF8A3A12),
+    background: Color(0xFFF7F1E7),
+    surface: Color(0xFFFFFDF9),
+    surfaceAlt: Color(0xFFF1E8DA),
+    chip: Color(0xFFEFE5D5),
+    border: Color(0xFFE9DDCB),
+    borderStrong: Color(0xFFDCCCB4),
+    divider: Color(0xFFF0E7D9),
+    checkboxIdle: Color(0xFF988569),
+    ink: Color(0xFF33281F),
+    inkMuted: Color(0xFF6E5F51),
+    accent: Color(0xFF627256),
+    accentDark: Color(0xFF46533A),
+    accentTint: Color(0xFFE5E9D9),
+    honey: Color(0xFFF2E3C6),
+    honeyInk: Color(0xFF6B5024),
+    apricot: Color(0xFFEFE0D2),
+    apricotInk: Color(0xFF6E4A30),
+    lavender: Color(0xFFEADFE0),
+    lavenderInk: Color(0xFF5E4650),
+    rose: Color(0xFFF3DFD9),
+    roseInk: Color(0xFF84483B),
+    warning: Color(0xFFF7D9CC),
+    warningInk: Color(0xFF9A3B22),
   );
 
   /// Screen background (soft linen).
@@ -79,7 +81,7 @@ class NestColors extends ThemeExtension<NestColors> {
   /// Rows inside cards.
   final Color divider;
 
-  /// Unchecked boxes, dashed "add" buttons.
+  /// Unchecked boxes, dashed "add" buttons (at least 3:1 on surface).
   final Color checkboxIdle;
 
   /// Primary text, dark buttons.
@@ -97,19 +99,19 @@ class NestColors extends ThemeExtension<NestColors> {
   /// Active tab, shopping tint.
   final Color accentTint;
 
-  /// Meals.
+  /// Meals (golden tan).
   final Color honey;
   final Color honeyInk;
 
-  /// Tasks.
+  /// Tasks (terracotta).
   final Color apricot;
   final Color apricotInk;
 
-  /// Watchlist.
+  /// Watchlist (dusty mauve).
   final Color lavender;
   final Color lavenderInk;
 
-  /// Recipes.
+  /// Recipes (dusty rose).
   final Color rose;
   final Color roseInk;
 
