@@ -56,6 +56,50 @@ final class ProfileRepositoryProvider
 
 String _$profileRepositoryHash() => r'd2e8763b99485c50e60f106213ef16c88f490d54';
 
+/// How the signed-in user can sign in. Invalidate after linking.
+
+@ProviderFor(signInMethods)
+final signInMethodsProvider = SignInMethodsProvider._();
+
+/// How the signed-in user can sign in. Invalidate after linking.
+
+final class SignInMethodsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<SignInMethods>,
+          SignInMethods,
+          FutureOr<SignInMethods>
+        >
+    with $FutureModifier<SignInMethods>, $FutureProvider<SignInMethods> {
+  /// How the signed-in user can sign in. Invalidate after linking.
+  SignInMethodsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'signInMethodsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$signInMethodsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<SignInMethods> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<SignInMethods> create(Ref ref) {
+    return signInMethods(ref);
+  }
+}
+
+String _$signInMethodsHash() => r'41fcf912fc363574ddccc432e64ebd147ac300d8';
+
 /// The signed-in user, or `null` when signed out.
 
 @ProviderFor(CurrentUser)

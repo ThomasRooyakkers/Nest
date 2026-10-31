@@ -2273,8 +2273,44 @@ abstract class AppLocalizations {
   /// Shown when a new Google/Apple user tries to sign in without an invite code
   ///
   /// In en, this message translates to:
-  /// **'New to Nest? Tap Create account, enter your invite code, then continue with Apple or Google.'**
+  /// **'New to Nest? Tap Create account, enter your invite code, then continue with Apple or Google. Already have an account? Sign in with email or Google and link Apple under Settings.'**
   String get socialSignInNeedsInvite;
+
+  /// Settings card for linking Apple and Google
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in methods'**
+  String get signInMethodsTitle;
+
+  /// Explains linking in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Link Apple or Google once, and they sign you into this account.'**
+  String get signInMethodsHint;
+
+  /// Button that links Apple or Google to the account
+  ///
+  /// In en, this message translates to:
+  /// **'Link'**
+  String get linkButton;
+
+  /// Shown next to a linked Apple or Google account
+  ///
+  /// In en, this message translates to:
+  /// **'Linked'**
+  String get signInMethodLinkedLabel;
+
+  /// Snack bar after linking
+  ///
+  /// In en, this message translates to:
+  /// **'{provider} is now linked to your account.'**
+  String signInMethodLinked(String provider);
+
+  /// Error when linking an account that belongs to someone else
+  ///
+  /// In en, this message translates to:
+  /// **'This Apple or Google account already belongs to another Nest account.'**
+  String get errorAlreadyLinked;
 }
 
 class _AppLocalizationsDelegate

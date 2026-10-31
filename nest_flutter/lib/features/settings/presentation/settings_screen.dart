@@ -16,6 +16,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../auth/data/auth_repository.dart';
 import '../data/profile_repository.dart';
 import 'server_card.dart';
+import 'sign_in_methods_card.dart';
 
 /// Profile, language, household members and invites, all households.
 class SettingsScreen extends ConsumerWidget {
@@ -38,6 +39,7 @@ class SettingsScreen extends ConsumerWidget {
             const _ProfileCard(),
             const SizedBox(height: NestSpacing.gap),
             const _LanguageCard(),
+            const SignInMethodsCard(),
             if (active != null) ...[
               const SizedBox(height: NestSpacing.gap),
               _HouseholdCard(active: active),

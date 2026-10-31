@@ -1271,5 +1271,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get socialSignInNeedsInvite =>
-      'New to Nest? Tap Create account, enter your invite code, then continue with Apple or Google.';
+      'New to Nest? Tap Create account, enter your invite code, then continue with Apple or Google. Already have an account? Sign in with email or Google and link Apple under Settings.';
+
+  @override
+  String get signInMethodsTitle => 'Sign-in methods';
+
+  @override
+  String get signInMethodsHint =>
+      'Link Apple or Google once, and they sign you into this account.';
+
+  @override
+  String get linkButton => 'Link';
+
+  @override
+  String get signInMethodLinkedLabel => 'Linked';
+
+  @override
+  String signInMethodLinked(String provider) {
+    return '$provider is now linked to your account.';
+  }
+
+  @override
+  String get errorAlreadyLinked =>
+      'This Apple or Google account already belongs to another Nest account.';
 }

@@ -96,4 +96,59 @@ void main() {
     expect(find.text('Doorgaan met Apple'), findsOneWidget);
     expect(tester.takeException(), isNull);
   }, variant: ios);
+
+  group('linking in Settings', () {
+    Future<void> openSettings(WidgetTester tester) async {
+      await tester.tap(find.byTooltip('Settings'));
+      await tester.pumpAndSettle();
+      await tester.scrollUntilVisible(
+        find.text('Sign-in methods'),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+    }
+
+    testWidgets('shows what is linked and links Apple', (tester) async {
+      final social = FakeSocialSignInRepository();
+      await pumpNestApp(tester, health: socialServer(), socialSignIn: social);
+      await openSettings(tester);
+
+      expect(find.text('Linked'), findsOneWidget, reason: 'Google is linked');
+      await tester.tap(find.text('Link'));
+      await tester.pumpAndSettle();
+      expect(social.calls, [('link apple', null)]);
+      expect(find.text('Apple is now linked to your account.'), findsOneWidget);
+    }, variant: ios);
+
+    testWidgets("another account's Apple ID is refused with a message", (
+      tester,
+    ) async {
+      final social = FakeSocialSignInRepository()
+        ..error = NestException(code: NestErrorCode.alreadyLinked);
+      await pumpNestApp(tester, health: socialServer(), socialSignIn: social);
+      await openSettings(tester);
+      await tester.tap(find.text('Link'));
+      await tester.pumpAndSettle();
+      expect(
+        find.text(
+          'This Apple or Google account already belongs to another Nest account.',
+        ),
+        findsOneWidget,
+      );
+    }, variant: ios);
+
+    testWidgets('hidden on servers before linking existed', (tester) async {
+      await pumpNestApp(
+        tester,
+        health: FakeHealthRepository(
+          apiVersion: 9,
+          googleServerClientId: 'server-client',
+          appleSignIn: true,
+        ),
+      );
+      await tester.tap(find.byTooltip('Settings'));
+      await tester.pumpAndSettle();
+      expect(find.text('Sign-in methods'), findsNothing);
+    }, variant: ios);
+  });
 }

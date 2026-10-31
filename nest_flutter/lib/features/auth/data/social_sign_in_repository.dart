@@ -52,6 +52,56 @@ class SocialSignInRepository {
     required String serverClientId,
     String? inviteCode,
   }) async {
+    final idToken = await _googleIdToken(serverClientId);
+    if (idToken == null) return false;
+    final success = await _client.googleIdp.signIn(
+      idToken: idToken,
+      inviteCode: _code(inviteCode),
+    );
+    await _client.auth.updateSignedInUser(success);
+    return true;
+  }
+
+  /// Returns false when the user cancelled.
+  Future<bool> signInWithApple({String? inviteCode}) async {
+    final credential = await _appleCredential();
+    if (credential == null) return false;
+    final success = await _client.appleIdp.signIn(
+      identityToken: credential.identityToken!,
+      authorizationCode: credential.authorizationCode,
+      isNativeApplePlatformSignIn: true,
+      firstName: credential.givenName,
+      lastName: credential.familyName,
+      inviteCode: _code(inviteCode),
+    );
+    await _client.auth.updateSignedInUser(success);
+    return true;
+  }
+
+  /// Links a Google account to the signed-in account. Returns false when
+  /// the user cancelled.
+  Future<bool> linkGoogle({required String serverClientId}) async {
+    final idToken = await _googleIdToken(serverClientId);
+    if (idToken == null) return false;
+    await _client.googleIdp.link(idToken: idToken);
+    return true;
+  }
+
+  /// Links an Apple ID to the signed-in account. Returns false when the
+  /// user cancelled.
+  Future<bool> linkApple() async {
+    final credential = await _appleCredential();
+    if (credential == null) return false;
+    await _client.appleIdp.link(
+      identityToken: credential.identityToken!,
+      authorizationCode: credential.authorizationCode,
+      isNativeApplePlatformSignIn: true,
+    );
+    return true;
+  }
+
+  /// Google's ID token for [serverClientId], or null when cancelled.
+  Future<String?> _googleIdToken(String serverClientId) async {
     final google = GoogleSignIn.instance;
     if (!_googleReady) {
       await google.initialize(
@@ -64,22 +114,16 @@ class SocialSignInRepository {
     try {
       account = await google.authenticate();
     } on GoogleSignInException catch (e) {
-      if (e.code == GoogleSignInExceptionCode.canceled) return false;
+      if (e.code == GoogleSignInExceptionCode.canceled) return null;
       rethrow;
     }
     final idToken = account.authentication.idToken;
     if (idToken == null) throw StateError('Google returned no ID token');
-
-    final success = await _client.googleIdp.signIn(
-      idToken: idToken,
-      inviteCode: _code(inviteCode),
-    );
-    await _client.auth.updateSignedInUser(success);
-    return true;
+    return idToken;
   }
 
-  /// Returns false when the user cancelled.
-  Future<bool> signInWithApple({String? inviteCode}) async {
+  /// Apple's credential with its identity token, or null when cancelled.
+  Future<AuthorizationCredentialAppleID?> _appleCredential() async {
     final AuthorizationCredentialAppleID credential;
     try {
       credential = await SignInWithApple.getAppleIDCredential(
@@ -89,22 +133,13 @@ class SocialSignInRepository {
         ],
       );
     } on SignInWithAppleAuthorizationException catch (e) {
-      if (e.code == AuthorizationErrorCode.canceled) return false;
+      if (e.code == AuthorizationErrorCode.canceled) return null;
       rethrow;
     }
-    final identityToken = credential.identityToken;
-    if (identityToken == null) throw StateError('Apple returned no token');
-
-    final success = await _client.appleIdp.signIn(
-      identityToken: identityToken,
-      authorizationCode: credential.authorizationCode,
-      isNativeApplePlatformSignIn: true,
-      firstName: credential.givenName,
-      lastName: credential.familyName,
-      inviteCode: _code(inviteCode),
-    );
-    await _client.auth.updateSignedInUser(success);
-    return true;
+    if (credential.identityToken == null) {
+      throw StateError('Apple returned no token');
+    }
+    return credential;
   }
 
   /// Forgets the Google account on this device, so the next Google sign-in

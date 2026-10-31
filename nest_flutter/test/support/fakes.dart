@@ -39,6 +39,10 @@ class FakeProfileRepository implements ProfileRepository {
   }) async => user = user.copyWith(name: name.trim(), locale: locale);
 
   var deleted = false;
+  var methods = SignInMethods(email: true, google: true, apple: false);
+
+  @override
+  Future<SignInMethods> signInMethods() async => methods;
 
   @override
   Future<void> deleteAccount() async => deleted = true;
@@ -141,6 +145,20 @@ class FakeSocialSignInRepository implements SocialSignInRepository {
   @override
   Future<bool> signInWithApple({String? inviteCode}) async {
     calls.add(('apple', inviteCode));
+    if (error case final e?) throw e;
+    return true;
+  }
+
+  @override
+  Future<bool> linkGoogle({required String serverClientId}) async {
+    calls.add(('link google', null));
+    if (error case final e?) throw e;
+    return true;
+  }
+
+  @override
+  Future<bool> linkApple() async {
+    calls.add(('link apple', null));
     if (error case final e?) throw e;
     return true;
   }

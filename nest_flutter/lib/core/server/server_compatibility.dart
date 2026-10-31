@@ -2,7 +2,7 @@ import 'package:nest_client/nest_client.dart';
 
 /// API level of this app. Raise it together with the server's
 /// `nestApiVersion` when the app starts using new endpoints.
-const appApiVersion = 9;
+const appApiVersion = 10;
 
 /// Oldest server API level this app works with. Features a server does not
 /// have yet must stay optional (CLAUDE.md rule 6) instead of raising this.

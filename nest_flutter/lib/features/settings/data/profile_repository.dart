@@ -18,6 +18,9 @@ class ProfileRepository {
   Future<NestUser> update({required String name, required String locale}) =>
       _client.profile.updateMe(name, locale);
 
+  /// Email, Google and Apple sign-in of the account.
+  Future<SignInMethods> signInMethods() => _client.profile.signInMethods();
+
   /// Deletes the account on the server, then signs out on this device and
   /// clears the cache.
   Future<void> deleteAccount() async {
@@ -31,6 +34,11 @@ ProfileRepository profileRepository(Ref ref) => ProfileRepository(
   ref.watch(nestClientProvider),
   ref.watch(authRepositoryProvider),
 );
+
+/// How the signed-in user can sign in. Invalidate after linking.
+@riverpod
+Future<SignInMethods> signInMethods(Ref ref) =>
+    ref.watch(profileRepositoryProvider).signInMethods();
 
 /// The signed-in user, or `null` when signed out.
 @Riverpod(keepAlive: true)
