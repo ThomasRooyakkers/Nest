@@ -221,13 +221,20 @@ class _WatchItemSheetState extends ConsumerState<_WatchItemSheet> {
                       child: SizedBox(
                         width: NestSizes.minTouchTarget,
                         height: NestSizes.minTouchTarget,
-                        child: Icon(
-                          LucideIcons.heart,
-                          size: 26,
-                          color: (item.householdRating ?? 0) >= stars
-                              ? colors.roseInk
-                              : colors.checkboxIdle,
-                        ),
+                        // A full gold heart when rated, an outline when
+                        // not: clear at a glance (Lucide has no filled
+                        // heart, so the filled one is Material's).
+                        child: (item.householdRating ?? 0) >= stars
+                            ? Icon(
+                                Icons.favorite_rounded,
+                                size: 30,
+                                color: colors.rating,
+                              )
+                            : Icon(
+                                LucideIcons.heart,
+                                size: 26,
+                                color: colors.checkboxIdle,
+                              ),
                       ),
                     ),
                   ),

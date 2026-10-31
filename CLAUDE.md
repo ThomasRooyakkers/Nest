@@ -179,6 +179,7 @@ Implement these tokens once in `nest_shared` as a `ThemeData` plus a `NestColors
 | lavender / lavenderInk | #DCDDEB / #3A3F66 | watchlist (lilac) |
 | rose / roseInk | #EFE2D6 / #6A3F2C | recipes (blush) |
 | warning / warningInk | #F6DCD0 / #9A3B22 | overdue, backup warnings |
+| rating | #F5B301 | filled rating hearts and stars (gold; an icon fill, never text) |
 
 The palette is "Navy & ivory", chosen 2026-10-31 from side-by-side options (inspired by a navy, ivory and gold marble image). Every text pair keeps 4.5:1 (checked in `nest_shared/test/nest_colors_test.dart`). Overdue is shown as warningInk text, not a filled badge. Token names (honey, apricot, …) are kept from the first palette.
 

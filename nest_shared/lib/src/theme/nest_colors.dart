@@ -32,6 +32,7 @@ class NestColors extends ThemeExtension<NestColors> {
     required this.roseInk,
     required this.warning,
     required this.warningInk,
+    required this.rating,
   });
 
   /// The only palette for now; there is no dark theme in v1.
@@ -60,6 +61,7 @@ class NestColors extends ThemeExtension<NestColors> {
     roseInk: Color(0xFF6A3F2C),
     warning: Color(0xFFF6DCD0),
     warningInk: Color(0xFF9A3B22),
+    rating: Color(0xFFF5B301),
   );
 
   /// Screen background (soft linen).
@@ -126,6 +128,10 @@ class NestColors extends ThemeExtension<NestColors> {
   final Color warning;
   final Color warningInk;
 
+  /// Filled rating hearts and stars (gold). An icon fill only, never text;
+  /// empty hearts use [checkboxIdle] outlines.
+  final Color rating;
+
   static NestColors of(BuildContext context) =>
       Theme.of(context).extension<NestColors>() ?? light;
 
@@ -155,6 +161,7 @@ class NestColors extends ThemeExtension<NestColors> {
     Color? roseInk,
     Color? warning,
     Color? warningInk,
+    Color? rating,
   }) {
     return NestColors(
       background: background ?? this.background,
@@ -181,6 +188,7 @@ class NestColors extends ThemeExtension<NestColors> {
       roseInk: roseInk ?? this.roseInk,
       warning: warning ?? this.warning,
       warningInk: warningInk ?? this.warningInk,
+      rating: rating ?? this.rating,
     );
   }
 
@@ -213,6 +221,7 @@ class NestColors extends ThemeExtension<NestColors> {
       roseInk: l(roseInk, other.roseInk),
       warning: l(warning, other.warning),
       warningInk: l(warningInk, other.warningInk),
+      rating: l(rating, other.rating),
     );
   }
 }

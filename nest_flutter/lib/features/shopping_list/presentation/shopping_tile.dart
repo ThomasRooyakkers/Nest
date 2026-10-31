@@ -93,8 +93,11 @@ class ShoppingTile extends StatelessWidget {
                         textAlign: TextAlign.center,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
+                        // Bolder on navy: thin white text at this size
+                        // reads poorly even at full contrast.
                         style: textTheme.bodySmall?.copyWith(
                           fontSize: 12,
+                          fontWeight: toBuy ? FontWeight.w700 : null,
                           color: toBuy ? colors.onAccent : colors.inkMuted,
                         ),
                       ),
@@ -114,7 +117,11 @@ class ShoppingTile extends StatelessWidget {
                           height: 10,
                           margin: const EdgeInsetsDirectional.only(start: 3),
                           decoration: BoxDecoration(
-                            color: storeColors(colors, store.color).$2,
+                            // Deep store colours vanish on navy, so To buy
+                            // tiles show the light tint.
+                            color: toBuy
+                                ? storeColors(colors, store.color).$1
+                                : storeColors(colors, store.color).$2,
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: toBuy ? colors.surface : colors.border,

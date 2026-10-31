@@ -406,10 +406,11 @@ class _PosterTile extends StatelessWidget {
             Row(
               children: [
                 if (ours != null || rating != null) ...[
+                  // Filled gold: a heart for our rating, a star for TMDB's.
                   Icon(
-                    ours != null ? LucideIcons.heart : LucideIcons.star,
-                    size: 13,
-                    color: ours != null ? colors.roseInk : colors.honeyInk,
+                    ours != null ? Icons.favorite_rounded : Icons.star_rounded,
+                    size: 15,
+                    color: colors.rating,
                   ),
                   const SizedBox(width: 2),
                 ],

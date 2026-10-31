@@ -2,6 +2,19 @@
 
 ## Current phase
 
+**UI readability audit (2026-10-31, not released):** at Thomas's request,
+checked every white-on-colour spot in the iOS Simulator. The real bug: the
+chip theme set its label colour through a `WidgetStateTextStyle`, which
+Flutter's chips do not resolve, so chip labels got no colour or weight of
+their own (white on beige in the watchlist sheet's status chips). The
+label colour is now a `WidgetStateColor` (new test
+`nest_shared/test/nest_chip_theme_test.dart`, fails on the old theme).
+Also: icons on selected (ink) chips are light, store dots use the light
+tint on navy tiles and selected chips, To buy specs are bolder. Watchlist
+ratings are full gold hearts (new `rating` token #F5B301, CLAUDE.md
+section 8; filled heart is Material's, Lucide has none), TMDB ratings on
+cards a filled gold star. App-only, no server or API change.
+
 **Mobile only (2026-10-31, released as 0.12.1):** at Thomas's request the family
 app no longer has a web version; only the admin portal is a web app
 (CLAUDE.md updated). `nest_flutter/web` is gone, with the web-only code

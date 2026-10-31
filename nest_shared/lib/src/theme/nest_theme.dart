@@ -247,13 +247,20 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
       selectedColor: colors.ink,
       disabledColor: colors.chip,
       showCheckmark: false,
-      labelStyle: WidgetStateTextStyle.resolveWith(
-        (states) => textTheme.labelLarge!.copyWith(
-          fontSize: 14,
-          color: states.contains(WidgetState.selected)
+      // The chip resolves only the label's colour per state (a
+      // WidgetStateTextStyle is not resolved and could leave light text on
+      // an unselected chip), so the state lives in the colour.
+      labelStyle: textTheme.labelLarge!.copyWith(
+        fontSize: 14,
+        color: WidgetStateColor.resolveWith(
+          (states) => states.contains(WidgetState.selected)
               ? colors.surface
               : colors.ink,
         ),
+      ),
+      secondaryLabelStyle: textTheme.labelLarge!.copyWith(
+        fontSize: 14,
+        color: colors.surface,
       ),
       iconTheme: IconThemeData(color: colors.ink, size: 18),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),

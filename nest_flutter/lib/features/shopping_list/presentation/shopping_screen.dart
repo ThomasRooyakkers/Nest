@@ -599,7 +599,10 @@ class _StoreChips extends ConsumerWidget {
             chip(
               label: store.name,
               selected: active?.id == store.id,
-              dot: storeColors(colors, store.color).$2,
+              // The light tint on the dark selected chip.
+              dot: active?.id == store.id
+                  ? storeColors(colors, store.color).$1
+                  : storeColors(colors, store.color).$2,
               onTap: () => selection.select(store.id),
             ),
           _AddStoreChip(onTap: () => context.push(Routes.newStore)),

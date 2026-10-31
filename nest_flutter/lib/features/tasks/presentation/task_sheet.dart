@@ -246,7 +246,13 @@ class _TaskSheetState extends ConsumerState<_TaskSheet> {
                   onSelected: (_) => _setDate(tomorrow),
                 ),
                 ChoiceChip(
-                  avatar: const Icon(LucideIcons.calendar, size: 18),
+                  // Light on the dark selected chip (the chip theme's icon
+                  // colour does not follow the selected state).
+                  avatar: Icon(
+                    LucideIcons.calendar,
+                    size: 18,
+                    color: pickedOther ? colors.surface : colors.ink,
+                  ),
                   label: Text(
                     pickedOther
                         ? dayLabel(context, dueDate, now)
@@ -269,12 +275,20 @@ class _TaskSheetState extends ConsumerState<_TaskSheet> {
                     )
                   else
                     InputChip(
-                      avatar: const Icon(LucideIcons.clock, size: 18),
+                      avatar: Icon(
+                        LucideIcons.clock,
+                        size: 18,
+                        color: colors.surface,
+                      ),
                       label: Text(timeLabel(context, dueMinutes)),
                       selected: true,
                       showCheckmark: false,
                       onPressed: _pickTime,
-                      deleteIcon: const Icon(LucideIcons.x, size: 18),
+                      deleteIcon: Icon(
+                        LucideIcons.x,
+                        size: 18,
+                        color: colors.surface,
+                      ),
                       deleteButtonTooltipMessage: l10n.taskTimeRemove,
                       onDeleted: () => setState(() => _dueMinutes = null),
                     ),
