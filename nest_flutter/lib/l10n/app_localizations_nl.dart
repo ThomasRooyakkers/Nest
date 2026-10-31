@@ -1272,10 +1272,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get continueWithGoogle => 'Doorgaan met Google';
 
   @override
-  String get socialSignInNeedsInvite =>
-      'Nieuw bij Nest? Tik op Account aanmaken, vul je uitnodigingscode in en ga dan verder met Apple of Google. Heb je al een account? Meld je aan met e-mail of Google en koppel Apple bij Instellingen.';
-
-  @override
   String get signInMethodsTitle => 'Aanmeldmethoden';
 
   @override

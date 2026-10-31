@@ -1270,10 +1270,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get continueWithGoogle => 'Continue with Google';
 
   @override
-  String get socialSignInNeedsInvite =>
-      'New to Nest? Tap Create account, enter your invite code, then continue with Apple or Google. Already have an account? Sign in with email or Google and link Apple under Settings.';
-
-  @override
   String get signInMethodsTitle => 'Sign-in methods';
 
   @override

@@ -2,7 +2,6 @@ import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_idp_server/core.dart';
 
 import '../generated/protocol.dart';
-import 'host_settings.dart';
 import 'sign_up_policy.dart';
 
 /// Google and Apple sign-in on top of the auth module.
@@ -13,9 +12,10 @@ import 'sign_up_policy.dart';
 ///
 /// * When the provider vouches for the email and a Nest account with that
 ///   email exists, the new identity is merged into that account.
-/// * Otherwise it is a new account and follows the sign-up mode: on an
-///   invite-only server it needs a valid household invite code (or the
-///   super-admin email), and it joins that household.
+/// * Otherwise it is a new account. Unlike email sign-up it needs no invite
+///   code, also on an invite-only server: the app then asks for a name and
+///   to create or join a household. An invite code typed on Create account
+///   joins its household straight away.
 abstract final class SocialSignIn {
   static final _created = Expando<_NewIdentity>();
 
@@ -68,8 +68,9 @@ abstract final class SocialSignIn {
   /// one-off account for an identity the server has not seen) and returns
   /// its owner and whether it is new.
   ///
-  /// Throws [NestErrorCode.alreadyLinked] when the identity already belongs
-  /// to another account.
+  /// Throws [NestErrorCode.alreadyLinked] when the identity belongs to
+  /// another account that is in a household. An account without households
+  /// gives it up, and is removed when that was its only sign-in.
   static Future<void> link(
     Session session, {
     required UuidValue authUserId,
@@ -82,22 +83,74 @@ abstract final class SocialSignIn {
     return session.db.transaction((transaction) async {
       final identity = await authenticate(transaction);
       _created[session] = null;
-      if (identity.authUserId == authUserId) return;
-      if (!identity.newAccount) {
+      final owner = identity.authUserId;
+      if (owner == authUserId) return;
+      // An identity of another account may only move when that account is
+      // in no household: e.g. signed in with Apple once by mistake.
+      if (!identity.newAccount &&
+          await _inAHousehold(session, owner, transaction)) {
         throw NestException(code: NestErrorCode.alreadyLinked);
       }
       await merge(
         session,
         userToKeepId: authUserId,
-        userToRemoveId: identity.authUserId,
+        userToRemoveId: owner,
         transaction: transaction,
       );
-      await AuthUser.db.deleteWhere(
-        session,
-        where: (t) => t.id.equals(identity.authUserId),
-        transaction: transaction,
-      );
+      if (!await _hasSignIn(session, owner, transaction)) {
+        await AuthUser.db.deleteWhere(
+          session,
+          where: (t) => t.id.equals(owner),
+          transaction: transaction,
+        );
+      }
     });
+  }
+
+  static Future<bool> _inAHousehold(
+    Session session,
+    UuidValue authUserId,
+    Transaction transaction,
+  ) async {
+    final user = await NestUser.db.findFirstRow(
+      session,
+      where: (t) => t.authUserId.equals(authUserId),
+      transaction: transaction,
+    );
+    if (user == null) return false;
+    return await Membership.db.count(
+          session,
+          where: (t) => t.userId.equals(user.id!),
+          transaction: transaction,
+        ) >
+        0;
+  }
+
+  static Future<bool> _hasSignIn(
+    Session session,
+    UuidValue authUserId,
+    Transaction transaction,
+  ) async {
+    for (final count in [
+      EmailAccount.db.count(
+        session,
+        where: (t) => t.authUserId.equals(authUserId),
+        transaction: transaction,
+      ),
+      GoogleAccount.db.count(
+        session,
+        where: (t) => t.authUserId.equals(authUserId),
+        transaction: transaction,
+      ),
+      AppleAccount.db.count(
+        session,
+        where: (t) => t.authUserId.equals(authUserId),
+        transaction: transaction,
+      ),
+    ]) {
+      if (await count > 0) return true;
+    }
+    return false;
   }
 
   /// Called from the providers' "account created" hooks.
@@ -115,8 +168,8 @@ abstract final class SocialSignIn {
   /// email (after merging the identity into it), or the new account once the
   /// sign-up rules allow it.
   ///
-  /// Throws [NestException] ([NestErrorCode.inviteRequired] or
-  /// [NestErrorCode.invalidInviteCode]) when a new account is not allowed.
+  /// Throws [NestException] ([NestErrorCode.invalidInviteCode] or
+  /// [NestErrorCode.inviteExpired]) for a wrong invite code.
   static Future<UuidValue> settleNewIdentity(
     Session session, {
     required Transaction transaction,
@@ -152,8 +205,7 @@ abstract final class SocialSignIn {
       }
     }
 
-    // A new account. Without an email (Apple only sends it the first time)
-    // only an open server lets it in.
+    // A new account; it joins the household of a typed invite code.
     final address = normalized ?? '';
     final code = inviteCode?.trim() ?? '';
     if (code.isNotEmpty && address.isNotEmpty) {
@@ -161,17 +213,6 @@ abstract final class SocialSignIn {
         session,
         email: address,
         inviteCode: code,
-        transaction: transaction,
-      );
-    }
-    if (address.isEmpty) {
-      if (HostSettings.signUpMode != SignUpMode.open) {
-        throw NestException(code: NestErrorCode.inviteRequired);
-      }
-    } else {
-      await SignUpPolicy.checkMayRegister(
-        session,
-        address,
         transaction: transaction,
       );
     }

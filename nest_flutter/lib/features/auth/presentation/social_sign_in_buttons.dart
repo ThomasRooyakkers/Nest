@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nest_client/nest_client.dart';
 import 'package:nest_shared/nest_shared.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -13,8 +12,8 @@ import '../data/social_sign_in_repository.dart';
 class SocialSignInButtons extends ConsumerStatefulWidget {
   const SocialSignInButtons({super.key, this.inviteCode});
 
-  /// The invite code typed on the screen, read when a button is tapped.
-  /// Null on the sign-in step, where new users are pointed to Create account.
+  /// The invite code typed on the screen, read when a button is tapped: a
+  /// new account then joins that household. Null on the sign-in step.
   final String Function()? inviteCode;
 
   @override
@@ -54,12 +53,7 @@ class _SocialSignInButtonsState extends ConsumerState<SocialSignInButtons> {
     final code = widget.inviteCode;
 
     final error = _error;
-    final String? message = switch (error) {
-      null => null,
-      NestException(code: NestErrorCode.inviteRequired) when code == null =>
-        l10n.socialSignInNeedsInvite,
-      _ => errorMessage(l10n, error),
-    };
+    final message = error == null ? null : errorMessage(l10n, error);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -201,10 +201,12 @@ email sign-in only, unless you build and publish your own iOS app with your
 own Google client and Apple key (see the `GOOGLE_*` and `APPLE_*` settings in
 `.env.example`).
 
-When they are on, the same rules apply as for email: a new account on an
-invite-only server needs a household invite code (typed on Create account
-before tapping the button), and someone whose Google or Apple email matches
-an existing account signs into that account.
+When they are on, someone whose Google or Apple email matches an existing
+account signs into that account; others can link Apple or Google under
+Settings, Sign-in methods. A new Google or Apple account needs no invite
+code, also on an invite-only server (invite-only applies to email sign-up):
+the app asks for a name and to create or join a household. An invite code
+typed on Create account before tapping the button joins that household.
 
 ## Updating
 

@@ -203,11 +203,14 @@ eigen server biedt de app dus alleen aanmelden met e-mail aan, tenzij je een
 eigen iOS-app bouwt en publiceert met je eigen Google-client en Apple-sleutel
 (zie de instellingen `GOOGLE_*` en `APPLE_*` in `.env.example`).
 
-Als ze aan staan, gelden dezelfde regels als bij e-mail: een nieuw account op
-een server met alleen uitnodigingen heeft een uitnodigingscode van een
-huishouden nodig (in te vullen bij Account aanmaken, vóór je op de knop tikt),
-en wie met een Google- of Apple-adres aanmeldt dat al bij een account hoort,
-komt in dat account terecht.
+Als ze aan staan, komt wie met een Google- of Apple-adres aanmeldt dat al bij
+een account hoort, in dat account terecht; anderen kunnen Apple of Google
+koppelen bij Instellingen, Aanmeldmethoden. Een nieuw Google- of Apple-account
+heeft geen uitnodigingscode nodig, ook niet op een server met alleen
+uitnodigingen (dat geldt voor registreren met e-mail): de app vraagt een naam
+en om een huishouden aan te maken of lid te worden van een huishouden. Een uitnodigingscode
+die je bij Account aanmaken invult voor je op de knop tikt, voegt je meteen
+aan dat huishouden toe.
 
 ## Bijwerken
 

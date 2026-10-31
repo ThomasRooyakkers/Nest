@@ -123,20 +123,19 @@ void main() {
       await identity('cas@example.com');
       final fresh = await identity('cas@example.com');
 
-      await expectLater(
-        settle(fresh, email: 'cas@example.com', verified: false),
-        throwsNest(NestErrorCode.inviteRequired),
+      expect(
+        await settle(fresh, email: 'cas@example.com', verified: false),
+        fresh,
       );
       expect(merges, isEmpty);
     });
 
-    test('a new account needs an invite code on an invite-only server', () {
-      return identity('dirk@example.com').then(
-        (fresh) => expectLater(
-          settle(fresh, email: 'dirk@example.com'),
-          throwsNest(NestErrorCode.inviteRequired),
-        ),
-      );
+    test('a new account needs no invite code, also when invite-only', () async {
+      final fresh = await identity('dirk@example.com');
+
+      expect(await settle(fresh, email: 'dirk@example.com'), fresh);
+      // The app then asks to create or join a household.
+      expect(await householdsOf(fresh), isEmpty);
     });
 
     test('a new account with an invite code joins that household', () async {
@@ -189,12 +188,9 @@ void main() {
       expect(await householdsOf(fresh), isEmpty);
     });
 
-    test('without an email an invite-only server refuses', () async {
+    test('a new account without an email gets in too', () async {
       final fresh = await identity(null);
-      await expectLater(
-        settle(fresh, email: null, inviteCode: code),
-        throwsNest(NestErrorCode.inviteRequired),
-      );
+      expect(await settle(fresh, email: null), fresh);
     });
   });
 
@@ -248,17 +244,45 @@ void main() {
       },
     );
 
-    test("another account's identity is refused", () async {
-      final other = await AuthUser.db.insertRow(
+    test('an identity of an account without households moves over', () async {
+      final stray = await AuthUser.db.insertRow(
         session,
         AuthUser(scopeNames: {}),
       );
+      await link(stray.id!, isNew: false);
+
+      expect(merges, [(me, stray.id!)]);
+      expect(
+        await AuthUser.db.findById(session, stray.id!),
+        isNull,
+        reason: 'it had no other sign-in left',
+      );
+    });
+
+    test("an identity of an account in a household is refused", () async {
+      final other = await signedInUser(sessionBuilder, name: 'Other');
+      await endpoints.household.create(other, 'Theirs');
+      final otherId = (await endpoints.profile.me(other)).authUserId;
       await expectLater(
-        link(other.id!, isNew: false),
+        link(otherId, isNew: false),
         throwsNest(NestErrorCode.alreadyLinked),
       );
       expect(merges, isEmpty);
-      expect(await AuthUser.db.findById(session, other.id!), isNotNull);
+    });
+
+    test("another account's identity is refused", () async {
+      final other = await signedInUser(sessionBuilder, name: 'Other');
+      await endpoints.household.create(other, 'Theirs');
+      final otherUser = await AuthUser.db.findById(
+        session,
+        (await endpoints.profile.me(other)).authUserId,
+      );
+      await expectLater(
+        link(otherUser!.id!, isNew: false),
+        throwsNest(NestErrorCode.alreadyLinked),
+      );
+      expect(merges, isEmpty);
+      expect(await AuthUser.db.findById(session, otherUser.id!), isNotNull);
     });
 
     test('sign-in methods list only the caller\'s own', () async {

@@ -66,25 +66,6 @@ void main() {
     expect(social.calls, [('google:server-client', ' ABCD1234 ')]);
   }, variant: ios);
 
-  testWidgets('a new user without a code is pointed to Create account', (
-    tester,
-  ) async {
-    final social = FakeSocialSignInRepository()
-      ..error = NestException(code: NestErrorCode.inviteRequired);
-    await pumpNestApp(
-      tester,
-      signedIn: false,
-      health: socialServer(),
-      socialSignIn: social,
-    );
-    await tester.tap(find.text('Continue with Google'));
-    await tester.pumpAndSettle();
-    expect(
-      find.textContaining('Tap Create account, enter your invite code'),
-      findsOneWidget,
-    );
-  }, variant: ios);
-
   testWidgets('lays out in Dutch with large text', (tester) async {
     await pumpNestApp(
       tester,

@@ -2270,12 +2270,6 @@ abstract class AppLocalizations {
   /// **'Continue with Google'**
   String get continueWithGoogle;
 
-  /// Shown when a new Google/Apple user tries to sign in without an invite code
-  ///
-  /// In en, this message translates to:
-  /// **'New to Nest? Tap Create account, enter your invite code, then continue with Apple or Google. Already have an account? Sign in with email or Google and link Apple under Settings.'**
-  String get socialSignInNeedsInvite;
-
   /// Settings card for linking Apple and Google
   ///
   /// In en, this message translates to:

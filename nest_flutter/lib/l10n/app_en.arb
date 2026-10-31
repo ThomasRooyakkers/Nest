@@ -1741,10 +1741,6 @@
   "@continueWithGoogle": {
     "description": "Google sign-in button"
   },
-  "socialSignInNeedsInvite": "New to Nest? Tap Create account, enter your invite code, then continue with Apple or Google. Already have an account? Sign in with email or Google and link Apple under Settings.",
-  "@socialSignInNeedsInvite": {
-    "description": "Shown when a new Google/Apple user tries to sign in without an invite code"
-  },
   "signInMethodsTitle": "Sign-in methods",
   "@signInMethodsTitle": {
     "description": "Settings card for linking Apple and Google"
