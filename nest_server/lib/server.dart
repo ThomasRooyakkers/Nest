@@ -36,6 +36,12 @@ Future<Serverpod> createServerpod(
   ServerpodConfig Function(ServerpodConfig)? configOverride,
 }) async {
   final pod = Serverpod(args, configOverride: configOverride);
+  if (HostSettings.googleClientSecret != null &&
+      HostSettings.googleClient == null) {
+    stderr.writeln(
+      'googleClientSecret cannot be read; starting without Google sign-in.',
+    );
+  }
 
   // Initialize authentication services for the server.
   // Token managers will be used to validate and issue authentication keys,
@@ -90,9 +96,9 @@ Future<Serverpod> createServerpod(
             ),
       ),
       // Google and Apple sign-in, each only when the host configured it.
-      if (HostSettings.googleClientSecret case final secret?)
+      if (HostSettings.googleClient case final client?)
         GoogleIdpConfig(
-          clientSecret: GoogleClientSecret.fromJsonString(secret),
+          clientSecret: client,
           onAfterGoogleAccountCreated:
               (session, authUser, account, {required transaction}) =>
                   SocialSignIn.recordNewIdentity(

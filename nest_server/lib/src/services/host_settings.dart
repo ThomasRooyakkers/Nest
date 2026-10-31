@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:serverpod/serverpod.dart';
+import 'package:serverpod_auth_idp_server/providers/google.dart';
 
 import '../generated/protocol.dart';
 
@@ -45,18 +46,32 @@ abstract final class HostSettings {
   /// of type "Web application". Google sign-in is on when it is set.
   static String? get googleClientSecret => _password('googleClientSecret');
 
-  /// The client ID in [googleClientSecret]: the audience of the Google ID
-  /// tokens the server accepts. The app asks Google for tokens for it.
-  static String? get googleServerClientId {
+  /// [googleClientSecret] as the auth module reads it, or null when it is
+  /// not set or cannot be read (the server then starts without Google).
+  static GoogleClientSecret? get googleClient {
     final json = googleClientSecret;
-    if (json == null) return null;
+    return json == null ? null : parseGoogleClient(json);
+  }
+
+  /// Reads a Google client JSON. A web client created without redirect URIs
+  /// (all the iOS app needs) has no `redirect_uris`, which the auth module
+  /// requires, so an empty list is assumed.
+  static GoogleClientSecret? parseGoogleClient(String json) {
     try {
-      final web = (jsonDecode(json) as Map<String, dynamic>)['web'];
-      return (web as Map<String, dynamic>)['client_id'] as String?;
+      final data = jsonDecode(json) as Map<String, dynamic>;
+      (data['web'] as Map<String, dynamic>).putIfAbsent(
+        'redirect_uris',
+        () => <dynamic>[],
+      );
+      return GoogleClientSecret.fromJson(data);
     } on Object {
       return null;
     }
   }
+
+  /// The client ID of [googleClient]: the audience of the Google ID tokens
+  /// the server accepts. The app asks Google for tokens for it.
+  static String? get googleServerClientId => googleClient?.clientId;
 
   /// `appleServiceId`, `appleTeamId`, `appleKeyId` and `appleKey` (the
   /// contents of the `.p8` key; `\n` may stand for line breaks): Sign in

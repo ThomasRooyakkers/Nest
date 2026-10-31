@@ -27,6 +27,23 @@ needed:** the Google iOS client ID (`googleIosClientId` in
 Pi's `.env`, a release, and a test on a real device. 336 server and 185 app
 tests pass; unsigned release build compiles.
 
+**Released as 0.9.0 (2026-10-31, with Thomas's OK):** Thomas's Google
+(iOS client `…7os8jknj…`, web client `…jdqollqd…`) and Apple (Team
+`7UG34L5AG4`, Key `798H6D63K5`, Services ID `be.g3cko.nest.signin`) set up;
+iOS client ID and URL scheme in the app. Secrets added to the Pi's `.env`
+(`GOOGLE_CLIENT_SECRET_JSON`, `APPLE_*`; copied files deleted, backups
+`.env.bak-*`). CI passed on `a2b21c5`, tag `v0.9.0`, images published,
+`deploy/deploy.sh` (dump `nest-pre-update-20261031-091817.sql.gz`).
+**Outage, about 3 minutes:** the server crash-looped because the auth
+module requires `redirect_uris` in the Google JSON and a web client without
+redirect URIs has none; fixed on the Pi by adding `"redirect_uris":[]` to
+the JSON in `.env` and restarting `nest`. Code fix committed afterwards
+(not released yet): a missing `redirect_uris` defaults to empty and an
+unreadable Google setting is logged and skipped instead of stopping the
+server. Verified over https: health 0.9.0 / API 9 with
+`googleServerClientId` and `appleSignIn: true`, web app 200. **Not verified
+yet:** real Google and Apple sign-ins on a device.
+
 **App Store readiness (2026-10-30):** account deletion (server API level 8,
 `profile.deleteMe`; Settings, Delete account, hidden on older servers), a new
 app icon (two overlapping houses, chosen by Thomas), a bilingual privacy page
