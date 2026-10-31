@@ -11,9 +11,10 @@ import '../../../core/backend/server_health_repository.dart';
 part 'social_sign_in_repository.g.dart';
 
 /// The iOS OAuth client of the Nest app in Google Cloud. Not a secret: it
-/// identifies this app to Google. Empty until it is set up, which hides
-/// Google sign-in.
-const googleIosClientId = '';
+/// identifies this app to Google. Its reversed form is the URL scheme in
+/// ios/Runner/Info.plist. Empty hides Google sign-in.
+const googleIosClientId =
+    '245382798173-7os8jknj73qp9rkns6s14khemovjbtmf.apps.googleusercontent.com';
 
 /// [googleIosClientId], replaceable in tests.
 @Riverpod(keepAlive: true)
