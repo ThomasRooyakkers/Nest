@@ -16,8 +16,11 @@ build ipa` gives a signed App Store IPA in `nest_flutter/build/ios/ipa`
 (27 MB, manifest included). `--dart-define=SCREENSHOTS=true` hides the
 debug ribbon; 6.9" screenshots (iPhone 18 Pro Max, 1320x2868, 9:41 status
 bar) in `store-screenshots/en` and `nl` (gitignored): home, shopping,
-meals, tasks, watchlist, recipe. The Dutch set has Dutch UI but the seed's
-English sample content. With Thomas: App Store Connect record, listing,
+meals, tasks, watchlist, recipe. The seed now gives "Test family" Dutch
+sample content (`SeedHousehold.locale`; "Home" stays English); the Dutch
+set was taken as Jan with that household briefly renamed "Familie
+Janssens" in the local database (renamed back). To refresh an existing dev
+database, its Test family content rows were deleted locally and re-seeded. With Thomas: App Store Connect record, listing,
 privacy answers, reviewer account, upload (Transporter), TestFlight.
 
 **UI readability audit (2026-10-31, not released):** at Thomas's request,

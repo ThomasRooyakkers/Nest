@@ -17,11 +17,14 @@ class SeedUser {
 }
 
 /// A development household and its members (first member is the owner).
+/// [locale] is the language of its sample content (user content is never
+/// translated, so each household gets content in one language).
 class SeedHousehold {
-  const SeedHousehold(this.name, this.memberEmails);
+  const SeedHousehold(this.name, this.memberEmails, {this.locale = 'en'});
 
   final String name;
   final List<String> memberEmails;
+  final String locale;
 }
 
 const seedUsers = [
@@ -39,7 +42,11 @@ const seedHouseholds = [
     'emma@nest.test',
     'oma@nest.test',
   ]),
-  SeedHousehold('Test family', ['jan@nest.test', 'oma@nest.test']),
+  // Dutch sample content, for the Dutch App Store screenshots.
+  SeedHousehold('Test family', [
+    'jan@nest.test',
+    'oma@nest.test',
+  ], locale: 'nl'),
 ];
 
 /// Fills a development database with sample data. Each part is skipped when
@@ -59,11 +66,12 @@ Future<void> seed(Session session, {required String password}) async {
       where: (t) => t.name.equals(seedHousehold.name),
     );
     if (household == null) continue;
-    await _seedShopping(session, household);
-    await _seedTasks(session, household);
-    await _seedRecipes(session, household);
-    await _seedMealPlan(session, household);
-    await _seedWatchlist(session, household);
+    final nl = seedHousehold.locale == 'nl';
+    await _seedShopping(session, household, nl: nl);
+    await _seedTasks(session, household, nl: nl);
+    await _seedRecipes(session, household, nl: nl);
+    await _seedMealPlan(session, household, nl: nl);
+    await _seedWatchlist(session, household, nl: nl);
   }
 }
 
@@ -143,7 +151,11 @@ Future<void> _seedUsersAndHouseholds(
 }
 
 /// Sample stores, lists and items, so the shopping screens have data.
-Future<void> _seedShopping(Session session, Household household) async {
+Future<void> _seedShopping(
+  Session session,
+  Household household, {
+  required bool nl,
+}) async {
   final householdId = household.id!;
   if (await ShoppingList.db.count(
         session,
@@ -215,12 +227,12 @@ Future<void> _seedShopping(Session session, Household household) async {
     final lists = await ShoppingList.db.insert(session, [
       ShoppingList(
         householdId: householdId,
-        name: 'Weekly shop',
+        name: nl ? 'Weekboodschappen' : 'Weekly shop',
         memberIds: memberIds,
       ),
       ShoppingList(
         householdId: householdId,
-        name: 'DIY store',
+        name: nl ? 'Bouwmarkt' : 'DIY store',
         memberIds: memberIds.take(1).toList(),
       ),
     ], transaction: transaction);
@@ -236,7 +248,7 @@ Future<void> _seedShopping(Session session, Household household) async {
         householdId: householdId,
         listId: lists.first.id!,
         catalogItemId: catalogItem.id,
-        name: catalogItem.nameEn,
+        name: nl ? catalogItem.nameNl : catalogItem.nameEn,
         spec: spec,
         category: catalogItem.category,
         iconKey: catalogItem.iconKey,
@@ -248,14 +260,18 @@ Future<void> _seedShopping(Session session, Household household) async {
 
     await ShoppingItem.db.insert(session, [
       item('milk', spec: '2 l'),
-      item('bread', spec: 'whole wheat', stores: ['Delhaize']),
+      item(
+        'bread',
+        spec: nl ? 'volkoren' : 'whole wheat',
+        stores: ['Delhaize'],
+      ),
       item('bananas'),
       item('eggs', spec: '12'),
       item('tomatoes', stores: ['Delhaize']),
-      item('cheese', spec: 'young Gouda'),
+      item('cheese', spec: nl ? 'jonge Gouda' : 'young Gouda'),
       item('toothpaste', stores: ['Kruidvat']),
       item('dish_soap', stores: ['Aldi', 'Kruidvat']),
-      item('coffee', spec: 'beans'),
+      item('coffee', spec: nl ? 'bonen' : 'beans'),
       item('apples', recent: true),
       item('pasta', recent: true),
       item('yoghurt', recent: true),
@@ -269,7 +285,11 @@ Future<void> _seedShopping(Session session, Household household) async {
 }
 
 /// Sample tasks around today: overdue, today, upcoming, recurring and done.
-Future<void> _seedTasks(Session session, Household household) async {
+Future<void> _seedTasks(
+  Session session,
+  Household household, {
+  required bool nl,
+}) async {
   final householdId = household.id!;
   if (await Task.db.count(
         session,
@@ -296,8 +316,8 @@ Future<void> _seedTasks(Session session, Household household) async {
   await Task.db.insert(session, [
     Task(
       householdId: householdId,
-      title: 'Take out the bins',
-      notes: 'Green and blue bin',
+      title: nl ? 'Vuilnisbakken buitenzetten' : 'Take out the bins',
+      notes: nl ? 'Groene en blauwe bak' : 'Green and blue bin',
       assigneeId: member(0),
       dueDate: day(0),
       dueMinutes: 20 * 60,
@@ -305,41 +325,44 @@ Future<void> _seedTasks(Session session, Household household) async {
     ),
     Task(
       householdId: householdId,
-      title: 'Water the plants',
+      title: nl ? 'Planten water geven' : 'Water the plants',
       assigneeId: member(1),
       dueDate: day(-2),
       recurrence: TaskRecurrence.weekly,
     ),
     Task(
       householdId: householdId,
-      title: 'Book the dentist',
+      title: nl ? 'Tandarts bellen' : 'Book the dentist',
       assigneeId: member(0),
       dueDate: day(-1),
     ),
     Task(
       householdId: householdId,
-      title: 'Empty the dishwasher',
+      title: nl ? 'Vaatwasser uitruimen' : 'Empty the dishwasher',
       assigneeId: member(2),
       dueDate: day(0),
       recurrence: TaskRecurrence.daily,
     ),
     Task(
       householdId: householdId,
-      title: 'Pay the electricity bill',
+      title: nl ? 'Elektriciteitsfactuur betalen' : 'Pay the electricity bill',
       dueDate: day(3),
       recurrence: TaskRecurrence.monthly,
     ),
     Task(
       householdId: householdId,
-      title: 'Vacuum upstairs',
+      title: nl ? 'Boven stofzuigen' : 'Vacuum upstairs',
       assigneeId: member(1),
       dueDate: day(1),
       dueMinutes: 10 * 60,
     ),
-    Task(householdId: householdId, title: 'Fix the bike light'),
     Task(
       householdId: householdId,
-      title: 'Buy a birthday present',
+      title: nl ? 'Fietslicht maken' : 'Fix the bike light',
+    ),
+    Task(
+      householdId: householdId,
+      title: nl ? 'Verjaardagscadeau kopen' : 'Buy a birthday present',
       assigneeId: member(0),
       dueDate: day(-1),
       doneAt: now.subtract(const Duration(hours: 20)),
@@ -350,7 +373,11 @@ Future<void> _seedTasks(Session session, Household household) async {
 }
 
 /// A few recipes (user content, so in one language), without photos.
-Future<void> _seedRecipes(Session session, Household household) async {
+Future<void> _seedRecipes(
+  Session session,
+  Household household, {
+  required bool nl,
+}) async {
   final householdId = household.id!;
   if (await Recipe.db.count(
         session,
@@ -375,79 +402,9 @@ Future<void> _seedRecipes(Session session, Household household) async {
     note: note,
   );
 
-  final recipes = [
-    (
-      Recipe(
-        householdId: householdId,
-        title: 'Pancakes',
-        description: 'Thin Dutch pancakes for a lazy Sunday.',
-        servings: 4,
-        prepMinutes: 10,
-        cookMinutes: 30,
-        tags: ['Breakfast', 'Sweet'],
-        isFavorite: true,
-      ),
-      [
-        ingredient('Flour', 250, 'g'),
-        ingredient('Milk', 0.5, 'l'),
-        ingredient('Eggs', 2),
-        ingredient('Salt', null, '', 'a pinch'),
-        ingredient('Butter', null, '', 'for the pan'),
-      ],
-      [
-        'Whisk the flour, salt and eggs with half of the milk until smooth.',
-        'Whisk in the rest of the milk and let the batter rest for 15 minutes.',
-        'Melt a little butter in a hot pan, pour in a thin layer of batter '
-            'and bake each pancake golden on both sides.',
-      ],
-    ),
-    (
-      Recipe(
-        householdId: householdId,
-        title: 'Spaghetti bolognese',
-        servings: 4,
-        prepMinutes: 15,
-        cookMinutes: 45,
-        tags: ['Pasta', 'Weeknight'],
-      ),
-      [
-        ingredient('Spaghetti', 400, 'g'),
-        ingredient('Minced beef', 500, 'g'),
-        ingredient('Onion', 1, '', 'finely chopped'),
-        ingredient('Garlic', 2, 'cloves'),
-        ingredient('Tomatoes', 800, 'g', 'tinned'),
-        ingredient('Olive oil', 2, 'tbsp'),
-      ],
-      [
-        'Fry the onion and garlic in the olive oil until soft.',
-        'Add the beef and brown it, then add the tomatoes and simmer for '
-            '30 minutes.',
-        'Cook the spaghetti and serve with the sauce.',
-      ],
-    ),
-    (
-      Recipe(
-        householdId: householdId,
-        title: 'Pumpkin soup',
-        description: 'Velvety and warming.',
-        servings: 6,
-        prepMinutes: 20,
-        cookMinutes: 25,
-        tags: ['Soup', 'Vegetarian'],
-      ),
-      [
-        ingredient('Pumpkin', 1, 'kg'),
-        ingredient('Onion', 1),
-        ingredient('Vegetable stock', 1, 'l'),
-        ingredient('Cream', 100, 'ml'),
-      ],
-      [
-        'Peel and dice the pumpkin and onion.',
-        'Simmer in the stock for 20 minutes, then blend until smooth.',
-        'Stir in the cream and season to taste.',
-      ],
-    ),
-  ];
+  final recipes = nl
+      ? _dutchRecipes(householdId, ingredient)
+      : _englishRecipes(householdId, ingredient);
 
   for (final (recipe, ingredients, steps) in recipes) {
     final saved = await Recipe.db.insertRow(session, recipe);
@@ -464,7 +421,11 @@ Future<void> _seedRecipes(Session session, Household household) async {
 
 /// Dinners for this week and next: the seeded recipes, a few free-text
 /// meals and empty days, one with a prep-ahead note.
-Future<void> _seedMealPlan(Session session, Household household) async {
+Future<void> _seedMealPlan(
+  Session session,
+  Household household, {
+  required bool nl,
+}) async {
   final householdId = household.id!;
   if (await MealPlanEntry.db.count(
         session,
@@ -505,18 +466,28 @@ Future<void> _seedMealPlan(Session session, Household household) async {
   );
 
   await MealPlanEntry.db.insert(session, [
-    textMeal(-1, 'Leftovers'),
+    textMeal(-1, nl ? 'Restjes' : 'Leftovers'),
     if (recipes.length > 1) recipeMeal(0, recipes[1]),
     if (recipes.length > 2)
-      recipeMeal(1, recipes[2], note: 'Take the stock out of the freezer'),
-    textMeal(3, 'Pizza night'),
+      recipeMeal(
+        1,
+        recipes[2],
+        note: nl
+            ? 'Bouillon uit de diepvries halen'
+            : 'Take the stock out of the freezer',
+      ),
+    textMeal(3, nl ? 'Pizza-avond' : 'Pizza night'),
     if (recipes.isNotEmpty) recipeMeal(5, recipes[0]),
-    textMeal(8, 'Dinner at grandma\'s'),
+    textMeal(8, nl ? 'Eten bij oma' : 'Dinner at grandma\'s'),
   ]);
   session.log('Seeded the meal plan for ${household.name}.');
 }
 
-Future<void> _seedWatchlist(Session session, Household household) async {
+Future<void> _seedWatchlist(
+  Session session,
+  Household household, {
+  required bool nl,
+}) async {
   final householdId = household.id!;
   if (await WatchlistItem.db.count(
         session,
@@ -546,7 +517,7 @@ Future<void> _seedWatchlist(Session session, Household household) async {
   final fake = FakeTmdbService();
   final items = <WatchlistItem>[];
   for (final (i, (type, id, status, rating)) in titles.indexed) {
-    final title = (await fake.details(type, id, locale: 'en'))!;
+    final title = (await fake.details(type, id, locale: nl ? 'nl' : 'en'))!;
     items.add(
       WatchlistItem(
         householdId: householdId,
@@ -564,3 +535,162 @@ Future<void> _seedWatchlist(Session session, Household household) async {
   await WatchlistItem.db.insert(session, items);
   session.log('Seeded the watchlist for ${household.name}.');
 }
+
+/// Makes an ingredient (recipe id and position are set when saving).
+typedef _Ingredient =
+    RecipeIngredient Function(
+      String name, [
+      double? quantity,
+      String unit,
+      String note,
+    ]);
+
+typedef _SeedRecipe = (Recipe, List<RecipeIngredient>, List<String>);
+
+List<_SeedRecipe> _englishRecipes(int householdId, _Ingredient ingredient) => [
+  (
+    Recipe(
+      householdId: householdId,
+      title: 'Pancakes',
+      description: 'Thin Dutch pancakes for a lazy Sunday.',
+      servings: 4,
+      prepMinutes: 10,
+      cookMinutes: 30,
+      tags: ['Breakfast', 'Sweet'],
+      isFavorite: true,
+    ),
+    [
+      ingredient('Flour', 250, 'g'),
+      ingredient('Milk', 0.5, 'l'),
+      ingredient('Eggs', 2),
+      ingredient('Salt', null, '', 'a pinch'),
+      ingredient('Butter', null, '', 'for the pan'),
+    ],
+    [
+      'Whisk the flour, salt and eggs with half of the milk until smooth.',
+      'Whisk in the rest of the milk and let the batter rest for 15 minutes.',
+      'Melt a little butter in a hot pan, pour in a thin layer of batter '
+          'and bake each pancake golden on both sides.',
+    ],
+  ),
+  (
+    Recipe(
+      householdId: householdId,
+      title: 'Spaghetti bolognese',
+      servings: 4,
+      prepMinutes: 15,
+      cookMinutes: 45,
+      tags: ['Pasta', 'Weeknight'],
+    ),
+    [
+      ingredient('Spaghetti', 400, 'g'),
+      ingredient('Minced beef', 500, 'g'),
+      ingredient('Onion', 1, '', 'finely chopped'),
+      ingredient('Garlic', 2, 'cloves'),
+      ingredient('Tomatoes', 800, 'g', 'tinned'),
+      ingredient('Olive oil', 2, 'tbsp'),
+    ],
+    [
+      'Fry the onion and garlic in the olive oil until soft.',
+      'Add the beef and brown it, then add the tomatoes and simmer for '
+          '30 minutes.',
+      'Cook the spaghetti and serve with the sauce.',
+    ],
+  ),
+  (
+    Recipe(
+      householdId: householdId,
+      title: 'Pumpkin soup',
+      description: 'Velvety and warming.',
+      servings: 6,
+      prepMinutes: 20,
+      cookMinutes: 25,
+      tags: ['Soup', 'Vegetarian'],
+    ),
+    [
+      ingredient('Pumpkin', 1, 'kg'),
+      ingredient('Onion', 1),
+      ingredient('Vegetable stock', 1, 'l'),
+      ingredient('Cream', 100, 'ml'),
+    ],
+    [
+      'Peel and dice the pumpkin and onion.',
+      'Simmer in the stock for 20 minutes, then blend until smooth.',
+      'Stir in the cream and season to taste.',
+    ],
+  ),
+];
+
+List<_SeedRecipe> _dutchRecipes(int householdId, _Ingredient ingredient) => [
+  (
+    Recipe(
+      householdId: householdId,
+      title: 'Pannenkoeken',
+      description: 'Dunne pannenkoeken voor een luie zondag.',
+      servings: 4,
+      prepMinutes: 10,
+      cookMinutes: 30,
+      tags: ['Ontbijt', 'Zoet'],
+      isFavorite: true,
+    ),
+    [
+      ingredient('Bloem', 250, 'g'),
+      ingredient('Melk', 0.5, 'l'),
+      ingredient('Eieren', 2),
+      ingredient('Zout', null, '', 'een snuifje'),
+      ingredient('Boter', null, '', 'voor de pan'),
+    ],
+    [
+      'Klop de bloem, het zout en de eieren met de helft van de melk glad.',
+      'Klop de rest van de melk erdoor en laat het beslag 15 minuten rusten.',
+      'Smelt een klontje boter in een hete pan, giet er een dun laagje '
+          'beslag in en bak elke pannenkoek aan beide kanten goudbruin.',
+    ],
+  ),
+  (
+    Recipe(
+      householdId: householdId,
+      title: 'Spaghetti bolognese',
+      servings: 4,
+      prepMinutes: 15,
+      cookMinutes: 45,
+      tags: ['Pasta', 'Doordeweeks'],
+    ),
+    [
+      ingredient('Spaghetti', 400, 'g'),
+      ingredient('Rundergehakt', 500, 'g'),
+      ingredient('Ui', 1, '', 'fijngesneden'),
+      ingredient('Knoflook', 2, 'teentjes'),
+      ingredient('Tomaten', 800, 'g', 'uit blik'),
+      ingredient('Olijfolie', 2, 'el'),
+    ],
+    [
+      'Fruit de ui en de knoflook zacht in de olijfolie.',
+      'Bak het gehakt rul, voeg de tomaten toe en laat 30 minuten '
+          'pruttelen.',
+      'Kook de spaghetti en serveer met de saus.',
+    ],
+  ),
+  (
+    Recipe(
+      householdId: householdId,
+      title: 'Pompoensoep',
+      description: 'Fluweelzacht en verwarmend.',
+      servings: 6,
+      prepMinutes: 20,
+      cookMinutes: 25,
+      tags: ['Soep', 'Vegetarisch'],
+    ),
+    [
+      ingredient('Pompoen', 1, 'kg'),
+      ingredient('Ui', 1),
+      ingredient('Groentebouillon', 1, 'l'),
+      ingredient('Room', 100, 'ml'),
+    ],
+    [
+      'Schil de pompoen en de ui en snij ze in blokjes.',
+      'Laat 20 minuten zacht koken in de bouillon en mix tot een gladde soep.',
+      'Roer de room erdoor en breng op smaak.',
+    ],
+  ),
+];
