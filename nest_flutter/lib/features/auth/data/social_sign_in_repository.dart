@@ -27,7 +27,7 @@ typedef SocialSignInOptions = ({String? googleServerClientId, bool apple});
 /// supports them (API level 9, configured by the host).
 @riverpod
 SocialSignInOptions socialSignInOptions(Ref ref) {
-  if (kIsWeb || defaultTargetPlatform != TargetPlatform.iOS) {
+  if (defaultTargetPlatform != TargetPlatform.iOS) {
     return (googleServerClientId: null, apple: false);
   }
   final ping = ref.watch(serverPingProvider).value;

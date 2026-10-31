@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,10 +11,6 @@ abstract interface class ServerSwitcher {
   /// [locale] keeps the language on screen after the restart.
   Future<void> switchTo(ServerAddress server, {Locale? locale});
 }
-
-/// Whether this app can switch servers. The web app always uses the server
-/// it was loaded from.
-bool get canChooseServer => !kIsWeb;
 
 /// The server the app is connected to. Overridden by `NestRoot`.
 @Riverpod(keepAlive: true)

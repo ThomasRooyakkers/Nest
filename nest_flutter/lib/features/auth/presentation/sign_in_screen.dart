@@ -400,11 +400,10 @@ class _ServerRow extends ConsumerWidget {
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             Text(l10n.serverInUse(server.label), style: textTheme.bodyMedium),
-            if (canChooseServer)
-              TextButton(
-                onPressed: () => context.push(Routes.server),
-                child: Text(l10n.changeServer),
-              ),
+            TextButton(
+              onPressed: () => context.push(Routes.server),
+              child: Text(l10n.changeServer),
+            ),
           ],
         ),
       ],

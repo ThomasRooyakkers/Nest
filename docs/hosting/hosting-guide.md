@@ -3,7 +3,7 @@
 *Nederlands: [hosting-guide.nl.md](hosting-guide.nl.md)*
 
 Nest is a private family app. Anyone can run a Nest server for their own
-family: the same Nest app (iPhone, Android, web) connects to whichever server
+family: the same Nest app (iPhone and Android) connects to whichever server
 its users choose. One server can hold several households, and each household
 only ever sees its own data.
 
@@ -18,7 +18,7 @@ code.
 - [Docker](https://docs.docker.com/engine/install/) with the Compose plugin
   (`docker compose version` should work).
 - A domain name with two addresses for your server, for example
-  `nest.example.com` (the web app, the address your family types) and
+  `nest.example.com` (the address your family types in the app) and
   `nest-api.example.com` (the API).
 - A way to reach the server over https from the internet: either a free
   [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
@@ -49,7 +49,7 @@ Open `.env` in an editor. Every setting is explained in the file.
 
 | Setting | What to put |
 | --- | --- |
-| `NEST_WEB_DOMAIN` | the web app address, e.g. `nest.example.com` |
+| `NEST_WEB_DOMAIN` | the address your family types in the app, e.g. `nest.example.com` |
 | `NEST_API_DOMAIN` | the API address, e.g. `nest-api.example.com` |
 | `SUPER_ADMIN_EMAIL` | your own email address: that account becomes the server's super-admin |
 | `SIGN_UP_MODE` | `invite-only` (recommended: new accounts need a household invite code) or `open` |
@@ -92,7 +92,7 @@ Choose one of the two options.
 ### Option B: your own https proxy
 
 The server listens on this machine only: the API on port 8080 and the web
-app on port 8082 (change them with `NEST_API_PORT` and `NEST_WEB_PORT`).
+address on port 8082 (change them with `NEST_API_PORT` and `NEST_WEB_PORT`).
 Let your proxy forward the two domains there, with WebSockets allowed. For
 example with [Caddy](https://caddyserver.com), which also gets the https
 certificates:
@@ -111,10 +111,10 @@ If the proxy runs on another machine, set `NEST_BIND_ADDRESS` to this
 machine's address in the local network (and do not expose the ports to the
 internet directly).
 
-The web app and the API should be on the same site (two subdomains of one
-domain, as above). If they are not, add `SERVERPOD_AUTH_COOKIE_SAME_SITE=none`
-to the `nest` service's environment in `docker-compose.yml`, or signing in on
-the web will not stick.
+The admin portal and the API should be on the same site (two subdomains of
+one domain, as above). If they are not, add
+`SERVERPOD_AUTH_COOKIE_SAME_SITE=none` to the `nest` service's environment in
+`docker-compose.yml`, or signing in to the admin portal will not stick.
 
 ## 4. Start
 
@@ -129,12 +129,15 @@ The first start downloads the images and creates the database; that takes a
 minute. Then check:
 
 - `https://nest-api.example.com/` answers (an empty page is fine), and
-- `https://nest.example.com/` shows the Nest sign-in screen.
+- `https://nest.example.com/` shows a short Nest page that points to the
+  app (Nest has no web version; this address is what your family types in
+  the app).
 
 ## 5. Create your account
 
-1. Open `https://nest.example.com/` and choose **Create account** with the
-   email address of `SUPER_ADMIN_EMAIL`. You need no invite code.
+1. Install the Nest app, tap **Change server** on the sign-in screen, enter
+   `nest.example.com` and tap **Connect**. Then choose **Create account**
+   with the email address of `SUPER_ADMIN_EMAIL`. You need no invite code.
 2. Enter the code from the email. Without mail set up, find it in the log:
 
    ```bash
@@ -148,9 +151,9 @@ minute. Then check:
 
 ## 6. Connect the app
 
-- **Web:** your family uses `https://nest.example.com/`; it always talks to
-  your server.
-- **iPhone and Android:** on the sign-in screen, tap **Change server**, enter
+Nest is an app for iPhone and Android; there is no web version.
+
+- On the sign-in screen, tap **Change server**, enter
   `nest.example.com` and tap **Connect**. The app checks that it is a Nest
   server of a compatible version and remembers it. Settings and About show
   which server the app uses. Switching to another server signs you out and
@@ -228,7 +231,7 @@ audit log of every admin action. It never shows what a household keeps in
 Nest (no list items, recipes or task titles).
 
 To use it, set `NEST_ADMIN_DOMAIN` in `.env` (for example
-`nest-admin.example.com`), route it like the web app (port 8082) and run
+`nest-admin.example.com`), route it like the web address (port 8082) and run
 `docker compose up -d`. Protect the address with an extra login in front of
 it, for example Cloudflare Access. Sign in with the `SUPER_ADMIN_EMAIL`
 account; other accounts are turned away.
@@ -313,8 +316,8 @@ backup as above (`docker compose run --rm backup restore ...`) and run
   `sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder`; on the
   router, restart its DNS service). `dig +short nest.example.com @1.1.1.1`
   shows whether the name exists on the internet.
-- **Signing in on the web does not stick:** see the cookie note under
-  option B.
+- **Signing in to the admin portal does not stick:** see the cookie note
+  under option B.
 - **"This server only accepts new accounts with an invite code":** the
   server is invite-only; get an invite code from a household on it.
 - **Logs:** `docker compose logs --tail 200 nest`.

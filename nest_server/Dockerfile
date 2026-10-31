@@ -1,7 +1,7 @@
-# The Nest server image, with the web app built in. Build it with
-# deploy/build-image.sh, which first builds the web app into
-# nest_server/web/app (the same build works on every host: the server serves
-# its config). By hand, from the project root:
+# The Nest server image, with the admin portal and the static site
+# (web/site) built in. Build it with deploy/build-image.sh, which first builds
+# the admin portal into nest_server/web/admin (the same build works on every
+# host: the server serves its config). By hand, from the project root:
 #   docker build -f nest_server/Dockerfile .
 
 # Build stage
@@ -34,7 +34,7 @@ WORKDIR /app
 
 ARG NEST_VERSION=dev
 LABEL org.opencontainers.image.title="Nest server" \
-      org.opencontainers.image.description="Nest family app server with the web app built in" \
+      org.opencontainers.image.description="Nest family app server with the admin portal built in" \
       org.opencontainers.image.version="$NEST_VERSION" \
       org.opencontainers.image.licenses="NOASSERTION"
 

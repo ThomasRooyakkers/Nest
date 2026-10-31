@@ -3,7 +3,7 @@
 *English: [hosting-guide.md](hosting-guide.md)*
 
 Nest is een privé-gezinsapp. Iedereen kan een Nest-server draaien voor het
-eigen gezin: dezelfde Nest-app (iPhone, Android, web) verbindt met de server
+eigen gezin: dezelfde Nest-app (iPhone en Android) verbindt met de server
 die de gebruikers kiezen. Eén server kan meerdere huishoudens bevatten, en
 elk huishouden ziet alleen zijn eigen gegevens.
 
@@ -19,7 +19,7 @@ te kennen.
 - [Docker](https://docs.docker.com/engine/install/) met de Compose-plugin
   (`docker compose version` moet werken).
 - Een domeinnaam met twee adressen voor je server, bijvoorbeeld
-  `nest.example.com` (de web-app, het adres dat je gezin intypt) en
+  `nest.example.com` (het adres dat je gezin in de app intypt) en
   `nest-api.example.com` (de API).
 - Een manier om de server via https vanaf het internet te bereiken: een
   gratis [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
@@ -51,7 +51,7 @@ Open `.env` in een editor. Elke instelling wordt in het bestand uitgelegd.
 
 | Instelling | Wat vul je in |
 | --- | --- |
-| `NEST_WEB_DOMAIN` | het adres van de web-app, bv. `nest.example.com` |
+| `NEST_WEB_DOMAIN` | het adres dat je gezin in de app intypt, bv. `nest.example.com` |
 | `NEST_API_DOMAIN` | het adres van de API, bv. `nest-api.example.com` |
 | `SUPER_ADMIN_EMAIL` | je eigen e-mailadres: dat account wordt superbeheerder van de server |
 | `SIGN_UP_MODE` | `invite-only` (aanbevolen: nieuwe accounts hebben een uitnodigingscode van een huishouden nodig) of `open` |
@@ -93,7 +93,7 @@ Kies een van de twee mogelijkheden.
 
 ### Mogelijkheid B: je eigen https-proxy
 
-De server luistert alleen op deze machine: de API op poort 8080 en de web-app
+De server luistert alleen op deze machine: de API op poort 8080 en het webadres
 op poort 8082 (aan te passen met `NEST_API_PORT` en `NEST_WEB_PORT`). Laat je
 proxy de twee domeinen daarheen doorsturen, met WebSockets toegestaan.
 Bijvoorbeeld met [Caddy](https://caddyserver.com), dat ook de
@@ -113,10 +113,11 @@ Draait de proxy op een andere machine, zet dan `NEST_BIND_ADDRESS` op het
 adres van deze machine in het lokale netwerk (en stel de poorten niet
 rechtstreeks open naar het internet).
 
-De web-app en de API horen op dezelfde site te staan (twee subdomeinen van
-één domein, zoals hierboven). Is dat niet zo, voeg dan
+Het beheerportaal en de API horen op dezelfde site te staan (twee
+subdomeinen van één domein, zoals hierboven). Is dat niet zo, voeg dan
 `SERVERPOD_AUTH_COOKIE_SAME_SITE=none` toe aan de omgeving van de dienst
-`nest` in `docker-compose.yml`, anders blijf je op het web niet aangemeld.
+`nest` in `docker-compose.yml`, anders blijf je in het beheerportaal niet
+aangemeld.
 
 ## 4. Starten
 
@@ -131,12 +132,15 @@ De eerste start downloadt de images en maakt de database aan; dat duurt een
 minuut. Controleer daarna:
 
 - `https://nest-api.example.com/` antwoordt (een lege pagina is goed), en
-- `https://nest.example.com/` toont het aanmeldscherm van Nest.
+- `https://nest.example.com/` toont een korte Nest-pagina die naar de app
+  verwijst (Nest heeft geen webversie; dit adres typt je gezin in de app).
 
 ## 5. Maak je account
 
-1. Open `https://nest.example.com/` en kies **Account aanmaken** met het
-   e-mailadres van `SUPER_ADMIN_EMAIL`. Je hebt geen uitnodigingscode nodig.
+1. Installeer de Nest-app, tik op het aanmeldscherm op **Server wijzigen**,
+   vul `nest.example.com` in en tik op **Verbinden**. Kies dan **Account
+   aanmaken** met het e-mailadres van `SUPER_ADMIN_EMAIL`. Je hebt geen
+   uitnodigingscode nodig.
 2. Vul de code uit de e-mail in. Zonder mail vind je hem in het log:
 
    ```bash
@@ -150,9 +154,9 @@ minuut. Controleer daarna:
 
 ## 6. Verbind de app
 
-- **Web:** je gezin gebruikt `https://nest.example.com/`; die praat altijd
-  met jouw server.
-- **iPhone en Android:** tik op het aanmeldscherm op **Server wijzigen**, vul
+Nest is een app voor iPhone en Android; er is geen webversie.
+
+- Tik op het aanmeldscherm op **Server wijzigen**, vul
   `nest.example.com` in en tik op **Verbinden**. De app controleert dat het
   een Nest-server met een geschikte versie is en onthoudt hem. Instellingen
   en Over Nest tonen welke server de app gebruikt. Overschakelen naar een
@@ -233,7 +237,7 @@ en een auditlog van elke beheeractie. Het toont nooit wat een huishouden in
 Nest bewaart (geen lijstitems, recepten of taaknamen).
 
 Zet daarvoor `NEST_ADMIN_DOMAIN` in `.env` (bijvoorbeeld
-`nest-admin.example.com`), stuur het door zoals de web-app (poort 8082) en
+`nest-admin.example.com`), stuur het door zoals het webadres (poort 8082) en
 voer `docker compose up -d` uit. Bescherm het adres met een extra aanmelding
 ervoor, bijvoorbeeld Cloudflare Access. Meld aan met het account van
 `SUPER_ADMIN_EMAIL`; andere accounts komen er niet in.
@@ -323,8 +327,8 @@ nieuwe machine wijzen.
   `sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder`; op de
   router: herstart de DNS-dienst). `dig +short nest.example.com @1.1.1.1`
   toont of de naam op het internet bestaat.
-- **Aanmelden op het web blijft niet bewaard:** zie de opmerking over cookies
-  bij mogelijkheid B.
+- **Aanmelden in het beheerportaal blijft niet bewaard:** zie de opmerking
+  over cookies bij mogelijkheid B.
 - **"Deze server aanvaardt alleen nieuwe accounts met een
   uitnodigingscode":** de server is `invite-only`; vraag een
   uitnodigingscode aan een huishouden op die server.

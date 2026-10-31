@@ -70,7 +70,7 @@ class ServerCard extends ConsumerWidget {
               child: Text(shared.retry),
             ),
           ],
-          if (showDetails && canChooseServer) ...[
+          if (showDetails) ...[
             const SizedBox(height: 12),
             OutlinedButton(
               onPressed: () => context.push(Routes.server),

@@ -34,7 +34,8 @@ pubspec_overrides.yaml
 
 # Build output
 build/
-# Web app copied into the server image by deploy/deploy.sh
+# Admin portal (and the old web app) copied into the server image by
+# deploy/build-image.sh; nest_server/web/site is tracked
 nest_server/web/app/
 nest_server/web/admin/
 # Database dumps on the Pi

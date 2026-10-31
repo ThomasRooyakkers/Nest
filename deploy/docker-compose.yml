@@ -1,4 +1,4 @@
-# A Nest server: PostgreSQL, the Nest server (API, web app and admin
+# A Nest server: PostgreSQL, the Nest server (API, web address and admin
 # portal), daily backups and, optionally, a Cloudflare Tunnel. Put this
 # file and your .env (from .env.example) in one folder and run:
 #   docker compose up -d
@@ -53,7 +53,7 @@ services:
       SERVERPOD_PASSWORD_appleKeyId: ${APPLE_KEY_ID:-}
       SERVERPOD_PASSWORD_appleKey: ${APPLE_KEY:-}
       SERVERPOD_PASSWORD_appleBundleId: ${APPLE_BUNDLE_ID:-}
-    # For your own https proxy: the API on 8080 and the web app on 8082, on
+    # For your own https proxy: the API on 8080 and the web address on 8082, on
     # this machine only. The tunnel reaches the server inside Docker.
     ports:
       - "${NEST_BIND_ADDRESS:-127.0.0.1}:${NEST_API_PORT:-8080}:8080"

@@ -56,17 +56,8 @@ typedef QueuedOp = ({int id, Map<String, dynamic> data});
 class NestDatabase extends _$NestDatabase {
   NestDatabase(super.executor);
 
-  /// The on-device database (IndexedDB/OPFS through a worker on the web).
-  NestDatabase.defaults()
-    : super(
-        driftDatabase(
-          name: 'nest',
-          web: DriftWebOptions(
-            sqlite3Wasm: Uri.parse('sqlite3.wasm'),
-            driftWorker: Uri.parse('drift_worker.js'),
-          ),
-        ),
-      );
+  /// The on-device database.
+  NestDatabase.defaults() : super(driftDatabase(name: 'nest'));
 
   @override
   int get schemaVersion => 2;

@@ -6,13 +6,13 @@ This file tells Claude Code everything it needs to build **Nest**, a family hous
 
 ## 1. What Nest is
 
-Nest is a private, bilingual (English + Dutch) family app for iOS, Android and web, built with Flutter. It is **bring your own backend**: anyone can host a Nest server for their own family, and one app connects to whichever server the user chooses. Thomas hosts one for his family and relatives at `nest.g3cko.be`. Each server is multi-tenant: it serves several households, and each household sees only its own data. A separate admin portal lets each server's super-admin manage households, users, backups and system health.
+Nest is a private, bilingual (English + Dutch) family app for iOS and Android, built with Flutter. Only the admin portal is a web application; the family app has no web version (decided 2026-10-31: a mobile-only experience). It is **bring your own backend**: anyone can host a Nest server for their own family, and one app connects to whichever server the user chooses. Thomas hosts one for his family and relatives at `nest.g3cko.be`. Each server is multi-tenant: it serves several households, and each household sees only its own data. A separate admin portal lets each server's super-admin manage households, users, backups and system health.
 
 **v1 features:** Dashboard, Shopping List (Bring!-style tiles, multiple lists, manually added stores), Recipes, Meal Planning, Tasks, Watchlist (TMDB), admin portal, and a self-hosting kit (published server image and hosting guide) so others can run their own server.
 
 **Out of scope for v1:** notifications of any kind (push, reminders, daily summary; removed 2026-10-28, may return later), expenses, notes, calendar, general file storage, recipe import from websites, sending a whole week's meal plan to the shopping list, paid subscriptions.
 
-**Production:** Thomas's server runs on a Raspberry Pi at home with Docker Compose, reachable through a Cloudflare Tunnel at `nest.g3cko.be` (web app), `nest-api.g3cko.be` (API) and, later, `nest-admin.g3cko.be` (admin portal, behind Cloudflare Access). Other hosts use the same image and Compose file with their own domain, either behind a Cloudflare Tunnel or their own HTTPS proxy.
+**Production:** Thomas's server runs on a Raspberry Pi at home with Docker Compose, reachable through a Cloudflare Tunnel at `nest.g3cko.be` (the address users type in the app; serves a short page pointing to the app, the privacy policy and the config the app uses to find the API), `nest-api.g3cko.be` (API) and, later, `nest-admin.g3cko.be` (admin portal, behind Cloudflare Access). Other hosts use the same image and Compose file with their own domain, either behind a Cloudflare Tunnel or their own HTTPS proxy.
 
 ---
 
@@ -57,7 +57,7 @@ Nest is a private, bilingual (English + Dutch) family app for iOS, Android and w
 | Backups (later) | `pg_dump` + restic to an NFS share and to OneDrive (via rclone) |
 | Mail | Resend (HTTPS API) when a key is configured; codes in the server log otherwise |
 | Admin portal | Flutter web app in the same repo |
-| Self-hosting | Multi-arch (arm64 + amd64) server image with the web app built in, Docker Compose file, hosting guide |
+| Self-hosting | Multi-arch (arm64 + amd64) server image with the admin portal and a small static site built in, Docker Compose file, hosting guide |
 | CI (later) | GitHub Actions: tests, arm64 server image |
 
 Use the models Serverpod generates in the data layer. Use `freezed` only for UI-only state classes if they become complex.
@@ -82,7 +82,7 @@ nest/
     test/              # integration tests incl. isolation tests
   nest_client/         # generated, never edit by hand
   nest_shared/         # shared Flutter package: theme, design tokens, common widgets, l10n
-  nest_flutter/        # the mobile/web app
+  nest_flutter/        # the mobile app (iOS, Android; runs on macOS for development)
     lib/
       main.dart
       app/             # app widget, theme wiring, go_router config
@@ -146,9 +146,9 @@ Child tables without `householdId` (recipe_ingredients, recipe_steps) are only r
 
 **Watchlist.** Search films and series via the server (TMDB). Status tabs: Want to watch, Watching, Watched. "Pick something for tonight" chooses a random title. Three-column poster grid (2:3 posters) with title, type, year, rating and who added it. Show the TMDB attribution line on the watchlist and the About screen: "This product uses the TMDB API but is not endorsed or certified by TMDB." IMDb is not used (no public API, scraping not allowed).
 
-**Choosing a server.** The sign-in screen shows the server in use (default `nest.g3cko.be`) with "Change server". The user enters an address; the app checks that it is a reachable Nest server with a compatible version before switching, and remembers the choice. Signing out keeps the server; switching server signs out and clears the local cache. Settings and the About screen show the server and its version. The web app always uses the server it was loaded from.
+**Choosing a server.** The sign-in screen shows the server in use (default `nest.g3cko.be`) with "Change server". The user enters an address; the app checks that it is a reachable Nest server with a compatible version before switching, and remembers the choice. Signing out keeps the server; switching server signs out and clears the local cache. Settings and the About screen show the server and its version. The address may be the server's API or its web address: the web address serves `assets/assets/config.json` with the API address, which the app reads.
 
-**Self-hosting kit.** A published multi-arch server image (web app included), the Compose file (Postgres, server, backup; Cloudflare Tunnel optional) and a hosting guide in English and Dutch: requirements, `.env` settings (domain, secrets, mail, super-admin email, TMDB key, sign-up mode), first start, updating, backups and restore. Sign-up mode per server: invite-only (default: an account can only be created with a valid household invite code, except the configured super-admin) or open.
+**Self-hosting kit.** A published multi-arch server image (admin portal and static site included), the Compose file (Postgres, server, backup; Cloudflare Tunnel optional) and a hosting guide in English and Dutch: requirements, `.env` settings (domain, secrets, mail, super-admin email, TMDB key, sign-up mode), first start, updating, backups and restore. Sign-up mode per server: invite-only (default: an account can only be created with a valid household invite code, except the configured super-admin) or open.
 
 **Admin portal** (`nest_admin`, Flutter web). Side menu: Households, Users, Backups, System health, Audit log; stacks on narrow screens. Households page: summary cards (last backup, server health, SSD free space), table with name, owner, members, enabled features, last activity, status, and a Suspend/Reactivate action. Backups: recent runs, "Back up now". Restores stay a documented command-line task; the portal only shows the command and the snapshot to use.
 
@@ -215,7 +215,7 @@ Do the phases in order. At each gate, stop and report to Thomas.
 0. **Setup** — check prerequisites (`flutter doctor`, Docker running, Serverpod CLI installed). Create the project with `serverpod create nest` in this folder, add `nest_shared` and `nest_admin`, wire gen-l10n (EN/NL) and the design tokens, set up `.gitignore`, `docs/STATUS.md`, and a README with run instructions. App shows a themed, bilingual placeholder screen connected to the local server.
 1. **Foundation** — email/password sign-in, households, memberships, invite codes, household switcher, settings with language choice, `HouseholdGuard`, `AdminGuard`, seed command, isolation tests. **Gate: isolation tests pass.**
 2. **Shopping List** — lists, catalog, stores, tiles, recently used, realtime sync, drift offline cache, deployment to Thomas's Pi. **Gate: Thomas's household can use it daily.**
-3. **Bring your own backend** — server choice in the app (sign-in, settings, About) with a version/compatibility check (`health` returns server and API version); everything host-specific moved to server configuration (domain, allowed origins, mail sender, super-admin by email, sign-up mode invite-only/open); login cookies for the web app; published multi-arch server image with the web app built in; generic Compose file and `.env.example`; hosting guide (EN/NL); Thomas's Pi moved onto the published image. **Gate: a second server, set up from the guide alone on a clean machine, works with the same app build, and the app switches between the two.**
+3. **Bring your own backend** — server choice in the app (sign-in, settings, About) with a version/compatibility check (`health` returns server and API version); everything host-specific moved to server configuration (domain, allowed origins, mail sender, super-admin by email, sign-up mode invite-only/open); login cookies for the web clients (since 2026-10-31 only the admin portal); published multi-arch server image; generic Compose file and `.env.example`; hosting guide (EN/NL); Thomas's Pi moved onto the published image. **Gate: a second server, set up from the guide alone on a clean machine, works with the same app build, and the app switches between the two.**
 4. **Tasks** — tasks, recurrence, filters, assignees (no reminders).
 5. **Recipes** — library, photos (stored via Serverpod file uploads), scaling, cooking mode, add to list.
 6. **Meal Planning** — week strip, dinner per day, linked recipes, prep-ahead note.

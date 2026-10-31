@@ -137,7 +137,7 @@ Future<Serverpod> createServerpod(
 
   // The admin portal, when built into web/admin, on its own host name
   // (`adminDomain`), so hosts can put it behind an access check. Added
-  // before the web app, which answers every other host name.
+  // before the site, which answers every other host name.
   final adminApp = Directory('web/admin');
   final adminDomain = HostSettings.adminDomain;
   if (adminApp.existsSync() &&
@@ -156,21 +156,19 @@ Future<Serverpod> createServerpod(
     );
   }
 
-  // The Flutter web app, when built into web/app (production image).
-  // Its config.json is generated, so the same build works on every host.
-  // Skipped without a web server, e.g. in development after a local build.
-  final webApp = Directory('web/app');
-  if (webApp.existsSync() && pod.config.webServer != null) {
+  // The family app is mobile only. Every other host name gets a small static
+  // site from web/site: a page telling visitors to install the app, the
+  // privacy policy, and the config.json the app reads to find the API when a
+  // user types this web address instead of the API's.
+  final site = Directory('web/site');
+  if (pod.config.webServer != null) {
     pod.webServer.addRoute(
-      WebAppConfigRoute(
-        pod.config.apiServer,
-        cookieAuth: pod.config.authCookie != null,
-      ),
+      WebAppConfigRoute(pod.config.apiServer, cookieAuth: false),
       WebAppConfigRoute.servedAt,
     );
-    // A JS build: without cross-origin isolation, drift's web database uses
-    // a shared worker; with it, drift picks OPFS locks, which hangs.
-    pod.webServer.addRoute(FlutterRoute(webApp, enableWasmHeaders: false));
+    if (site.existsSync()) {
+      pod.webServer.addRoute(FlutterRoute(site, enableWasmHeaders: false));
+    }
   }
 
   return pod;

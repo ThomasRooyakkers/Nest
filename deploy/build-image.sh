@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# Builds the Nest server image, with the web app and the admin portal built
-# in, and the backup image.
+# Builds the Nest server image, with the admin portal built in, and the
+# backup image. The family app is mobile only; the server's web domain serves
+# the static site in nest_server/web/site.
 #
 #   deploy/build-image.sh                 # local images for this machine
 #   deploy/build-image.sh --push          # arm64 + amd64, pushed
-#   deploy/build-image.sh --web           # only the web apps, into nest_server/web
+#   deploy/build-image.sh --web           # only the admin portal, into nest_server/web
 #
 # IMAGE (default ghcr.io/thomasrooyakkers/nest-server), BACKUP_IMAGE (default
 # ghcr.io/thomasrooyakkers/nest-backup) and VERSION (default: the server
@@ -18,18 +19,10 @@ BACKUP_IMAGE="${BACKUP_IMAGE:-ghcr.io/thomasrooyakkers/nest-backup}"
 VERSION="${VERSION:-$(sed -n "s/^const nestServerVersion = '\(.*\)';/\1/p" \
   "$ROOT/nest_server/lib/src/endpoints/health_endpoint.dart")}"
 
-echo "Building the web app"
-# No SERVER_URL: the server serves the web app's config with its own address.
-(cd "$ROOT/nest_flutter" && flutter build web --release)
-rm -rf "$ROOT/nest_server/web/app"
-mkdir -p "$ROOT/nest_server/web"
-cp -R "$ROOT/nest_flutter/build/web" "$ROOT/nest_server/web/app"
-# The server generates this file (see WebAppConfigRoute).
-rm -f "$ROOT/nest_server/web/app/assets/assets/config.json"
-
 echo "Building the admin portal"
 (cd "$ROOT/nest_admin" && flutter build web --release)
-rm -rf "$ROOT/nest_server/web/admin"
+# Clear earlier builds (web/app held the family web app, which is gone).
+rm -rf "$ROOT/nest_server/web/app" "$ROOT/nest_server/web/admin"
 cp -R "$ROOT/nest_admin/build/web" "$ROOT/nest_server/web/admin"
 
 cd "$ROOT"

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-/// Reads the API address from the config of the Nest web app at
-/// [webAddress] (`assets/assets/config.json`, served by the Nest server).
+/// Reads the API address from the config a Nest server serves on its web
+/// address [webAddress] (`assets/assets/config.json`).
 /// Returns `null` when there is none.
 Future<String?> fetchWebAppApiUrlDefault(Uri webAddress) async {
   final client = HttpClient()..connectionTimeout = const Duration(seconds: 10);

@@ -1,13 +1,13 @@
 name: Server image
 
-# Builds the Nest server image (web app and admin portal included) and the
+# Builds the Nest server image (admin portal included) and the
 # backup image for arm64 and amd64 and publishes them to
 # ghcr.io/<owner>/nest-server and ghcr.io/<owner>/nest-backup. Runs for a version tag that
 # matches nestServerVersion, e.g. v0.2.0, or by hand.
 #
 # Each architecture builds on its own native runner (no QEMU emulation, which
-# made the arm64 build take most of ten minutes) with a layer cache; the web
-# apps are built once and shared.
+# made the arm64 build take most of ten minutes) with a layer cache; the
+# admin portal is built once and shared.
 on:
   push:
     tags: ['v*']
@@ -44,7 +44,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build the web app and the admin portal
+      - name: Build the admin portal
         run: deploy/build-image.sh --web
 
       - uses: actions/upload-artifact@v4

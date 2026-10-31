@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'server_address.dart';
 import 'server_compatibility.dart';
-import 'web_config_stub.dart' if (dart.library.io) 'web_config_io.dart';
+import 'web_config.dart';
 
 part 'server_check.g.dart';
 
@@ -43,8 +43,8 @@ typedef FetchWebAppApiUrl = Future<String?> Function(Uri webAddress);
 /// Finds the Nest server behind an address and checks it is compatible.
 ///
 /// The address may be the server's API (`nest-api.example.com`) or its web
-/// app (`nest.example.com`); for the web app, the API address is read from
-/// the config the Nest server serves next to it.
+/// address (`nest.example.com`); for the web address, the API address is
+/// read from the config the Nest server serves there.
 class ServerChecker {
   ServerChecker({PingServer? ping, FetchWebAppApiUrl? fetchWebAppApiUrl})
     : _ping = ping ?? _pingWithClient,

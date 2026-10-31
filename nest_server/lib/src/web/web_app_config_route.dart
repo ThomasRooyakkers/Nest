@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:serverpod/serverpod.dart';
 
-/// Serves the web app's `assets/config.json` with this server's public API
-/// address, so one web app build works on every Nest server. The mobile app
-/// reads it too, to find the API when a user types the web address.
+/// Serves `assets/config.json` with this server's public API address. On the
+/// web domain, the mobile app reads it to find the API when a user types the
+/// web address; on the admin domain ([host]), it lets one admin portal build
+/// work on every Nest server.
 ///
-/// `cookieAuth` tells the web app to keep its login in HttpOnly cookies,
-/// which the server only supports when `authCookie` is configured. The admin
-/// portal gets the same file on its own [host].
+/// `cookieAuth` tells the admin portal to keep its login in HttpOnly cookies,
+/// which the server only supports when `authCookie` is configured.
 class WebAppConfigRoute extends Route {
   WebAppConfigRoute(this.apiServer, {required this.cookieAuth, super.host})
     : super(methods: {Method.get, Method.head});

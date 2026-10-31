@@ -2,6 +2,23 @@
 
 ## Current phase
 
+**Mobile only (2026-10-31, not released):** at Thomas's request the family
+app no longer has a web version; only the admin portal is a web app
+(CLAUDE.md updated). `nest_flutter/web` is gone, with the web-only code
+(login cookies, the web start-up config, drift's web worker, the
+`canChooseServer` switch). The server's web domain (`nest.g3cko.be`) now
+serves a small static site from `nest_server/web/site`: a bilingual page
+pointing to the app, `privacy.html` (moved there; the App Store links to
+it) and `assets/assets/config.json`, which the app still reads when a user
+types the web address instead of the API's (so installed apps keep finding
+the server). The image and the release workflow build only the admin
+portal. `serverpod start` now launches the app as a macOS app. Hosting
+guides, README, `.env.example` and Compose comments updated. No API change.
+Smoke-tested the site route locally (page, privacy, config, favicon); 187
+app tests pass. **Not done:** release and deploy (needs Thomas's OK); after
+that, check `https://nest.g3cko.be/` and `/privacy.html` on the Pi. The
+Pi's `.env` needs no change.
+
 **Colour redesign (2026-10-31, released as 0.12.0):** after a colour audit and
 two nature-inspired passes (d53fc7b, 6981286), Thomas and his wife picked
 "Navy & ivory" from seven side-by-side options on a Claude design canvas:

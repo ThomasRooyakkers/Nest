@@ -2,8 +2,8 @@
 # to one host: the public addresses, allowed web origins and secrets come
 # from environment variables set by the Compose file from deploy/.env:
 #   SERVERPOD_API_SERVER_PUBLIC_HOST   the API domain (NEST_API_DOMAIN)
-#   SERVERPOD_WEB_SERVER_PUBLIC_HOST   the web app domain (NEST_WEB_DOMAIN)
-#   SERVERPOD_ALLOWED_ORIGINS          https://<web app domain>
+#   SERVERPOD_WEB_SERVER_PUBLIC_HOST   the web domain (NEST_WEB_DOMAIN)
+#   SERVERPOD_ALLOWED_ORIGINS          https://<web domain>,https://<admin domain>
 # A proxy in front (Cloudflare Tunnel or the host's own) terminates https.
 
 # Configuration for the main API server.
@@ -20,7 +20,7 @@ insightsServer:
   publicPort: 8081
   publicScheme: http
 
-# Serves the Flutter web app from web/app.
+# Serves the static site (web/site) and the admin portal (web/admin).
 webServer:
   port: 8082
   publicHost: localhost # SERVERPOD_WEB_SERVER_PUBLIC_HOST
@@ -36,12 +36,12 @@ database:
 
 maxRequestSize: 2097152 # The maximum size of requests allowed in bytes (recipe photos up to 1 MB)
 
-# Browsers may only call the API from the web app (SERVERPOD_ALLOWED_ORIGINS);
+# Browsers may only call the API from these origins (SERVERPOD_ALLOWED_ORIGINS);
 # the mobile apps send no Origin header and are not affected.
 
-# The web app keeps its login in HttpOnly cookies instead of storage that
-# scripts can read. Cookies are host-only on the API domain. With the web
-# app and API on the same site (nest.example.com and nest-api.example.com)
+# The admin portal keeps its login in HttpOnly cookies instead of storage
+# that scripts can read. Cookies are host-only on the API domain. With the
+# portal and API on the same site (nest-admin.example.com and nest-api.example.com)
 # the default SameSite=lax works; on different sites set
 # SERVERPOD_AUTH_COOKIE_SAME_SITE=none.
 authCookie:

@@ -1,7 +1,7 @@
 # Builds the server and backup images from this repository instead of pulling it
 # (for development of Nest itself; hosts use the published image):
 #   docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build
-# Run deploy/build-image.sh first, or the image has no web app.
+# Run deploy/build-image.sh first, or the image has no admin portal.
 services:
   nest:
     image: nest-server:local

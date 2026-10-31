@@ -8,10 +8,7 @@ import 'core/server/server_store.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = NestDatabase.defaults();
-  final start = await startConfig(database);
-  final client = await createNestClient(
-    start.server.apiUrl,
-    cookieAuth: start.cookieAuth,
-  );
-  runApp(NestRoot(database: database, server: start.server, client: client));
+  final server = await startServer(database);
+  final client = await createNestClient(server.apiUrl);
+  runApp(NestRoot(database: database, server: server, client: client));
 }

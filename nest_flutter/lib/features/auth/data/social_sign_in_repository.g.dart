@@ -108,7 +108,7 @@ final class SocialSignInOptionsProvider
 }
 
 String _$socialSignInOptionsHash() =>
-    r'75d9457f4398d012be138e21d55ebc30f1212121';
+    r'2e9879fccba6d745ccbdde1927237d82ad9eb000';
 
 @ProviderFor(socialSignInRepository)
 final socialSignInRepositoryProvider = SocialSignInRepositoryProvider._();
