@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Colour redesign (2026-10-31, not released):** after a colour audit and
+**Colour redesign (2026-10-31, released as 0.12.0):** after a colour audit and
 two nature-inspired passes (d53fc7b, 6981286), Thomas and his wife picked
 "Navy & ivory" from seven side-by-side options on a Claude design canvas:
 ivory background, navy To buy tiles and primary buttons with white text,
@@ -12,6 +12,12 @@ the audit: unchecked boxes 3:1+, overdue as red-brown text instead of a
 badge, store dots in the deep store colour, watchlist avatars 24 px, store
 colour names (Blue, Sand, Mist, Lilac, Blush, Linen). CLAUDE.md section 8
 updated.
+Released as 0.12.0 with Thomas's OK: CI and image passed on `c60fe5e`, tag
+`v0.12.0`, deployed by Claude (dump `nest-pre-update-20261031-113401.sql.gz`,
+`.env.bak-*` next to `.env`). Verified: health 0.12.0 / API 10, web app 200
+and shows the new colours, clean start. The iOS app with the new colours is
+only on Thomas's iPhone (installed from Xcode); other phones get it with the
+next TestFlight/App Store build.
 
 **Phase 9 — Dashboard + release: in progress (2026-10-30).** The dashboard
 is built and tested locally (not released yet). Next in phase 9: real
