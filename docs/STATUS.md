@@ -44,6 +44,18 @@ server. Verified over https: health 0.9.0 / API 9 with
 `googleServerClientId` and `appleSignIn: true`, web app 200. **Not verified
 yet:** real Google and Apple sign-ins on a device.
 
+**Linking Google and Apple (2026-10-31), released as 0.10.0:** Thomas's
+Apple sign-in was treated as a new account (Apple's email did not match his
+Nest email), so Settings now has "Sign-in methods": while signed in, Link
+Apple / Link Google attaches that identity to the account (API level 10,
+`googleIdp.link`, `appleIdp.link`, `profile.signInMethods`; an identity of
+another account gives `alreadyLinked`). The sign-in hint also tells existing
+users to link Apple under Settings. Includes the Google JSON start-up fix.
+CI passed on `6371b1f`, tag `v0.10.0`, deployed by Claude with Thomas's OK
+(dump `nest-pre-update-20261031-102354.sql.gz`). Verified: health 0.10.0 /
+API 10 with Google and Apple on, web app 200, clean start. 342 server and
+188 app tests pass. **Not verified yet:** linking on Thomas's iPhone.
+
 **App Store readiness (2026-10-30):** account deletion (server API level 8,
 `profile.deleteMe`; Settings, Delete account, hidden on older servers), a new
 app icon (two overlapping houses, chosen by Thomas), a bilingual privacy page
