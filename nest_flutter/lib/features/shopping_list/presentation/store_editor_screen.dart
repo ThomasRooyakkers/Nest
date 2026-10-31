@@ -184,7 +184,7 @@ class _StoreEditorState extends ConsumerState<_StoreEditor> {
               ChoiceChip(
                 showCheckmark: false,
                 side: BorderSide(
-                  color: _color == color ? colors.accent : colors.border,
+                  color: _color == color ? colors.accentDark : colors.border,
                   width: _color == color ? 2 : 1,
                 ),
                 avatar: Container(

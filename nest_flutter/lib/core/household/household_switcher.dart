@@ -104,7 +104,7 @@ class HouseholdSwitcher extends ConsumerWidget {
                 title: Text(h.household.name, style: textTheme.bodyLarge),
                 selected: h.household.id == active.household.id,
                 trailing: h.household.id == active.household.id
-                    ? Icon(Icons.check, color: colors.accent)
+                    ? Icon(Icons.check, color: colors.accentDark)
                     : null,
                 onTap: () => Navigator.pop(context, h.household.id),
               ),

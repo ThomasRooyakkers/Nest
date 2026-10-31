@@ -70,7 +70,7 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
         child: FloatingActionButton(
           tooltip: l10n.taskNew,
           backgroundColor: NestColors.of(context).accent,
-          foregroundColor: NestColors.of(context).surface,
+          foregroundColor: NestColors.of(context).onAccent,
           elevation: 0,
           shape: const CircleBorder(),
           onPressed: () => showTaskSheet(context, householdId: householdId),

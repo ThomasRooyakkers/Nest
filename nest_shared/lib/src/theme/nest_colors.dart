@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-/// Nest "warm and cozy" colour tokens (CLAUDE.md section 8), based on the
+/// Nest "warm and cozy" colour tokens (CLAUDE.md section 8), taken from the
 /// nature-inspired palette: sage green, dusty rose, golden tan, warm beige
-/// and terracotta brown, deepened where text needs 4.5:1 contrast.
+/// and terracotta. Feature colours are the swatches themselves (or a lighter
+/// shade of them) with dark text, so text keeps 4.5:1.
 ///
 /// Read them in widgets with `NestColors.of(context)`.
 @immutable
@@ -19,6 +20,7 @@ class NestColors extends ThemeExtension<NestColors> {
     required this.ink,
     required this.inkMuted,
     required this.accent,
+    required this.onAccent,
     required this.accentDark,
     required this.accentTint,
     required this.honey,
@@ -35,29 +37,30 @@ class NestColors extends ThemeExtension<NestColors> {
 
   /// The only palette for now; there is no dark theme in v1.
   static const light = NestColors(
-    background: Color(0xFFF7F1E7),
-    surface: Color(0xFFFFFDF9),
-    surfaceAlt: Color(0xFFF1E8DA),
-    chip: Color(0xFFEFE5D5),
-    border: Color(0xFFE9DDCB),
-    borderStrong: Color(0xFFDCCCB4),
-    divider: Color(0xFFF0E7D9),
-    checkboxIdle: Color(0xFF988569),
-    ink: Color(0xFF33281F),
-    inkMuted: Color(0xFF6E5F51),
-    accent: Color(0xFF627256),
-    accentDark: Color(0xFF46533A),
-    accentTint: Color(0xFFE5E9D9),
-    honey: Color(0xFFF2E3C6),
-    honeyInk: Color(0xFF6B5024),
-    apricot: Color(0xFFEFE0D2),
-    apricotInk: Color(0xFF6E4A30),
-    lavender: Color(0xFFEADFE0),
-    lavenderInk: Color(0xFF5E4650),
-    rose: Color(0xFFF3DFD9),
-    roseInk: Color(0xFF84483B),
-    warning: Color(0xFFF7D9CC),
-    warningInk: Color(0xFF9A3B22),
+    background: Color(0xFFF3EBDD),
+    surface: Color(0xFFFCF8F1),
+    surfaceAlt: Color(0xFFECE1CE),
+    chip: Color(0xFFEADFCC),
+    border: Color(0xFFE3D5BE),
+    borderStrong: Color(0xFFD2BFA2),
+    divider: Color(0xFFEEE4D3),
+    checkboxIdle: Color(0xFF9A8466),
+    ink: Color(0xFF3A2D24),
+    inkMuted: Color(0xFF67554A),
+    accent: Color(0xFF98A086),
+    onAccent: Color(0xFF1F2A18),
+    accentDark: Color(0xFF3C4A2E),
+    accentTint: Color(0xFFD9E0CB),
+    honey: Color(0xFFD9BC8E),
+    honeyInk: Color(0xFF3F2C10),
+    apricot: Color(0xFFD9B297),
+    apricotInk: Color(0xFF4E2D18),
+    lavender: Color(0xFFDFCCB1),
+    lavenderInk: Color(0xFF47372A),
+    rose: Color(0xFFD8AEA3),
+    roseInk: Color(0xFF5A2A21),
+    warning: Color(0xFFF4D3C6),
+    warningInk: Color(0xFF8E3017),
   );
 
   /// Screen background (soft linen).
@@ -90,8 +93,13 @@ class NestColors extends ThemeExtension<NestColors> {
   /// Secondary text.
   final Color inkMuted;
 
-  /// Primary actions, checked state, To buy tiles (sage).
+  /// Primary actions, checked state, To buy tiles (sage). Too light for
+  /// white text: put [onAccent] on it, and use [accentDark] for sage
+  /// icons and text on light surfaces.
   final Color accent;
+
+  /// Text and icons on [accent].
+  final Color onAccent;
 
   /// Text on accent tint.
   final Color accentDark;
@@ -107,7 +115,7 @@ class NestColors extends ThemeExtension<NestColors> {
   final Color apricot;
   final Color apricotInk;
 
-  /// Watchlist (dusty mauve).
+  /// Watchlist (warm beige).
   final Color lavender;
   final Color lavenderInk;
 
@@ -135,6 +143,7 @@ class NestColors extends ThemeExtension<NestColors> {
     Color? ink,
     Color? inkMuted,
     Color? accent,
+    Color? onAccent,
     Color? accentDark,
     Color? accentTint,
     Color? honey,
@@ -160,6 +169,7 @@ class NestColors extends ThemeExtension<NestColors> {
       ink: ink ?? this.ink,
       inkMuted: inkMuted ?? this.inkMuted,
       accent: accent ?? this.accent,
+      onAccent: onAccent ?? this.onAccent,
       accentDark: accentDark ?? this.accentDark,
       accentTint: accentTint ?? this.accentTint,
       honey: honey ?? this.honey,
@@ -191,6 +201,7 @@ class NestColors extends ThemeExtension<NestColors> {
       ink: l(ink, other.ink),
       inkMuted: l(inkMuted, other.inkMuted),
       accent: l(accent, other.accent),
+      onAccent: l(onAccent, other.onAccent),
       accentDark: l(accentDark, other.accentDark),
       accentTint: l(accentTint, other.accentTint),
       honey: l(honey, other.honey),

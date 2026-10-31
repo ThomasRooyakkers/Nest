@@ -636,7 +636,7 @@
   "@storeColorApricot": {
     "description": "Store colour."
   },
-  "storeColorLavender": "Mauve",
+  "storeColorLavender": "Beige",
   "@storeColorLavender": {
     "description": "Store colour."
   },
@@ -644,7 +644,7 @@
   "@storeColorRose": {
     "description": "Store colour."
   },
-  "storeColorNeutral": "Beige",
+  "storeColorNeutral": "Linen",
   "@storeColorNeutral": {
     "description": "Store colour."
   },

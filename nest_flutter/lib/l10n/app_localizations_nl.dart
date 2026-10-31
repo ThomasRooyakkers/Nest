@@ -491,13 +491,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get storeColorApricot => 'Terracotta';
 
   @override
-  String get storeColorLavender => 'Mauve';
+  String get storeColorLavender => 'Beige';
 
   @override
   String get storeColorRose => 'Oudroze';
 
   @override
-  String get storeColorNeutral => 'Beige';
+  String get storeColorNeutral => 'Linnen';
 
   @override
   String get itemSpec => 'Details';

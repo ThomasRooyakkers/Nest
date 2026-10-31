@@ -340,7 +340,7 @@ class _WeekStrip extends StatelessWidget {
                                       ? Colors.transparent
                                       : (isToday
                                             ? colors.honeyInk
-                                            : colors.accent),
+                                            : colors.accentDark),
                                 ),
                               ),
                             ],

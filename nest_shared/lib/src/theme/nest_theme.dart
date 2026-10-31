@@ -71,7 +71,7 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
   final colorScheme = ColorScheme(
     brightness: Brightness.light,
     primary: colors.accent,
-    onPrimary: colors.surface,
+    onPrimary: colors.onAccent,
     primaryContainer: colors.accentTint,
     onPrimaryContainer: colors.accentDark,
     secondary: colors.ink,
@@ -128,7 +128,7 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
     splashColor: Colors.transparent,
     highlightColor: colors.ink.withValues(alpha: 0.05),
     hoverColor: colors.ink.withValues(alpha: 0.03),
-    focusColor: colors.accent.withValues(alpha: 0.12),
+    focusColor: colors.accentDark.withValues(alpha: 0.12),
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
@@ -137,7 +137,7 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
       },
     ),
     cupertinoOverrideTheme: CupertinoThemeData(
-      primaryColor: colors.accent,
+      primaryColor: colors.accentDark,
       scaffoldBackgroundColor: colors.background,
       barBackgroundColor: colors.surface,
     ),
@@ -171,7 +171,7 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: colors.accent,
-        foregroundColor: colors.surface,
+        foregroundColor: colors.onAccent,
         disabledBackgroundColor: colors.chip,
         disabledForegroundColor: colors.inkMuted,
         minimumSize: minButtonSize,
@@ -284,9 +284,9 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
       focusedErrorBorder: inputBorder(colors.warningInk),
     ),
     textSelectionTheme: TextSelectionThemeData(
-      cursorColor: colors.accent,
+      cursorColor: colors.accentDark,
       selectionColor: colors.accent.withValues(alpha: 0.25),
-      selectionHandleColor: colors.accent,
+      selectionHandleColor: colors.accentDark,
     ),
     checkboxTheme: CheckboxThemeData(
       side: BorderSide(color: colors.checkboxIdle, width: 2),
@@ -373,7 +373,7 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
       behavior: SnackBarBehavior.floating,
       backgroundColor: colors.ink,
       contentTextStyle: textTheme.bodyLarge?.copyWith(color: colors.surface),
-      actionTextColor: colors.accentTint,
+      actionTextColor: colors.accent,
       elevation: 0,
       insetPadding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       shape: RoundedRectangleBorder(

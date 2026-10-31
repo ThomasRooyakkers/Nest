@@ -82,7 +82,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   ),
                   child: Icon(
                     LucideIcons.house,
-                    color: colors.surface,
+                    color: colors.onAccent,
                     size: 28,
                   ),
                 ),

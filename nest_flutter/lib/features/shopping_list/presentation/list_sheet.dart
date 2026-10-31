@@ -69,7 +69,7 @@ class _ListSheet extends ConsumerWidget {
               ),
               selected: list.id == active?.id,
               trailing: list.id == active?.id
-                  ? Icon(LucideIcons.check, color: colors.accent)
+                  ? Icon(LucideIcons.check, color: colors.accentDark)
                   : null,
               onTap: () {
                 ref

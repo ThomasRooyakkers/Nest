@@ -200,7 +200,7 @@ class _CheckBox extends StatelessWidget {
                 ),
               ),
               child: done
-                  ? Icon(LucideIcons.check, size: 16, color: colors.surface)
+                  ? Icon(LucideIcons.check, size: 16, color: colors.onAccent)
                   : null,
             ),
           ),

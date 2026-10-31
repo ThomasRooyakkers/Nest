@@ -941,7 +941,7 @@ abstract class AppLocalizations {
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Mauve'**
+  /// **'Beige'**
   String get storeColorLavender;
 
   /// Store colour.
@@ -953,7 +953,7 @@ abstract class AppLocalizations {
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Beige'**
+  /// **'Linen'**
   String get storeColorNeutral;
 
   /// Field for an item's spec.

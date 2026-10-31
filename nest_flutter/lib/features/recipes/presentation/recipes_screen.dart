@@ -85,7 +85,7 @@ class _RecipesScreenState extends ConsumerState<RecipesScreen> {
         child: FloatingActionButton(
           tooltip: l10n.recipeNew,
           backgroundColor: colors.accent,
-          foregroundColor: colors.surface,
+          foregroundColor: colors.onAccent,
           elevation: 0,
           shape: const CircleBorder(),
           onPressed: () => context.push(Routes.newRecipe),

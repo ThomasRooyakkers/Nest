@@ -320,7 +320,7 @@ class _SearchResults extends ConsumerWidget {
         child: Icon(
           icon,
           size: 20,
-          color: onList ? colors.surface : colors.accentDark,
+          color: onList ? colors.onAccent : colors.accentDark,
         ),
       ),
       title: Text(title, style: textTheme.bodyLarge),
@@ -332,7 +332,7 @@ class _SearchResults extends ConsumerWidget {
               l10n.shoppingAlreadyToBuy,
               style: textTheme.labelMedium?.copyWith(color: colors.accentDark),
             )
-          : Icon(LucideIcons.plus, color: colors.accent),
+          : Icon(LucideIcons.plus, color: colors.accentDark),
       onTap: onTap,
     );
 
@@ -599,7 +599,7 @@ class _StoreChips extends ConsumerWidget {
             chip(
               label: store.name,
               selected: active?.id == store.id,
-              dot: storeColors(colors, store.color).$2,
+              dot: storeColors(colors, store.color).$1,
               onTap: () => selection.select(store.id),
             ),
           _AddStoreChip(onTap: () => context.push(Routes.newStore)),

@@ -33,8 +33,8 @@ class ShoppingTile extends StatelessWidget {
     final toBuy = item.status == ShoppingItemStatus.toBuy;
 
     final background = toBuy ? colors.accent : colors.surface;
-    final foreground = toBuy ? colors.surface : colors.ink;
-    final iconColor = toBuy ? colors.surface : colors.inkMuted;
+    final foreground = toBuy ? colors.onAccent : colors.ink;
+    final iconColor = toBuy ? colors.onAccent : colors.inkMuted;
 
     final label = [
       name,
@@ -95,7 +95,7 @@ class ShoppingTile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: textTheme.bodySmall?.copyWith(
                           fontSize: 12,
-                          color: toBuy ? colors.surface : colors.inkMuted,
+                          color: toBuy ? colors.onAccent : colors.inkMuted,
                         ),
                       ),
                     ],
@@ -114,7 +114,7 @@ class ShoppingTile extends StatelessWidget {
                           height: 10,
                           margin: const EdgeInsetsDirectional.only(start: 3),
                           decoration: BoxDecoration(
-                            color: storeColors(colors, store.color).$2,
+                            color: storeColors(colors, store.color).$1,
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: toBuy ? colors.surface : colors.border,

@@ -28,7 +28,8 @@ void main() {
     'inkMuted on background': (c.inkMuted, c.background),
     'inkMuted on surface': (c.inkMuted, c.surface),
     'inkMuted on chip': (c.inkMuted, c.chip),
-    'surface on accent': (c.surface, c.accent),
+    'onAccent on accent': (c.onAccent, c.accent),
+    'accentDark on surface': (c.accentDark, c.surface),
     'surface on ink': (c.surface, c.ink),
     'accentDark on accentTint': (c.accentDark, c.accentTint),
     'honeyInk on honey': (c.honeyInk, c.honey),
@@ -36,7 +37,17 @@ void main() {
     'lavenderInk on lavender': (c.lavenderInk, c.lavender),
     'roseInk on rose': (c.roseInk, c.rose),
     'warningInk on warning': (c.warningInk, c.warning),
+    'warningInk on surface': (c.warningInk, c.surface),
+    // Feature inks are also used as text on white cards.
+    'honeyInk on surface': (c.honeyInk, c.surface),
+    'apricotInk on surface': (c.apricotInk, c.surface),
+    'lavenderInk on surface': (c.lavenderInk, c.surface),
+    'roseInk on surface': (c.roseInk, c.surface),
   };
+
+  test('unchecked boxes have a contrast of at least 3:1 on surface', () {
+    expect(contrast(c.checkboxIdle, c.surface), greaterThanOrEqualTo(3));
+  });
 
   for (final MapEntry(key: name, value: (fg, bg)) in pairs.entries) {
     test('$name has a contrast of at least 4.5:1', () {
