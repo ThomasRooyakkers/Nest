@@ -41,3 +41,6 @@ nest_server/web/admin/
 # Database dumps on the Pi
 deploy/backups/
 deploy/rclone/
+
+# App Store screenshots (uploaded to App Store Connect, not kept in Git)
+store-screenshots/

@@ -12,6 +12,9 @@ class NestApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
+      // `--dart-define=SCREENSHOTS=true` hides the debug ribbon for App Store
+      // screenshots (the simulator only runs debug builds).
+      debugShowCheckedModeBanner: !const bool.fromEnvironment('SCREENSHOTS'),
       onGenerateTitle: (context) => NestSharedLocalizations.of(context).appName,
       theme: buildNestTheme(),
       locale: ref.watch(appLocaleProvider),

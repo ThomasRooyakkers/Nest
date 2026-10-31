@@ -2,6 +2,24 @@
 
 ## Current phase
 
+**App Store prep (2026-10-31, code side done):** at Thomas's request.
+iPhone only (`TARGETED_DEVICE_FAMILY = 1`, iPad orientations removed; Thomas's
+choice, so no iPad screenshots). App privacy manifest
+`ios/Runner/PrivacyInfo.xcprivacy`: no tracking; name, email, user ID,
+photos and other user content, linked, for app functionality (must match
+the App Privacy answers in App Store Connect); file timestamp (C617.1) and
+user defaults (CA92.1) reasons for the plugins without a manifest
+(path_provider_foundation, sign_in_with_apple, flutter_web_auth_2) and
+SQLite. Launch screen ivory instead of white. Version stays 1.0.0 (1)
+(nothing uploaded yet; raise the build number for every upload). `flutter
+build ipa` gives a signed App Store IPA in `nest_flutter/build/ios/ipa`
+(27 MB, manifest included). `--dart-define=SCREENSHOTS=true` hides the
+debug ribbon; 6.9" screenshots (iPhone 18 Pro Max, 1320x2868, 9:41 status
+bar) in `store-screenshots/en` and `nl` (gitignored): home, shopping,
+meals, tasks, watchlist, recipe. The Dutch set has Dutch UI but the seed's
+English sample content. With Thomas: App Store Connect record, listing,
+privacy answers, reviewer account, upload (Transporter), TestFlight.
+
 **UI readability audit (2026-10-31, not released):** at Thomas's request,
 checked every white-on-colour spot in the iOS Simulator. The real bug: the
 chip theme set its label colour through a `WidgetStateTextStyle`, which
