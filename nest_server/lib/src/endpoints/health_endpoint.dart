@@ -4,7 +4,7 @@ import '../generated/protocol.dart';
 import '../services/host_settings.dart';
 
 /// Nest server version reported by the health check.
-const nestServerVersion = '0.12.0';
+const nestServerVersion = '0.12.1';
 
 /// API level of this server. Raise it when endpoints or models change in a
 /// way an app may depend on; the app compares it with the level it needs.
