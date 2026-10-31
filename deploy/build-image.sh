@@ -4,6 +4,7 @@
 #
 #   deploy/build-image.sh                 # local images for this machine
 #   deploy/build-image.sh --push          # arm64 + amd64, pushed
+#   deploy/build-image.sh --web           # only the web apps, into nest_server/web
 #
 # IMAGE (default ghcr.io/thomasrooyakkers/nest-server), BACKUP_IMAGE (default
 # ghcr.io/thomasrooyakkers/nest-backup) and VERSION (default: the server
@@ -32,7 +33,10 @@ rm -rf "$ROOT/nest_server/web/admin"
 cp -R "$ROOT/nest_admin/build/web" "$ROOT/nest_server/web/admin"
 
 cd "$ROOT"
-if [[ "${1:-}" == "--push" ]]; then
+if [[ "${1:-}" == "--web" ]]; then
+  # The release workflow builds the images per architecture on its own.
+  exit 0
+elif [[ "${1:-}" == "--push" ]]; then
   echo "Building and pushing $IMAGE:$VERSION for arm64 and amd64"
   docker buildx build --platform linux/arm64,linux/amd64 \
     -f nest_server/Dockerfile --build-arg NEST_VERSION="$VERSION" \

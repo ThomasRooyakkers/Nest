@@ -4,6 +4,10 @@ name: Server image
 # backup image for arm64 and amd64 and publishes them to
 # ghcr.io/<owner>/nest-server and ghcr.io/<owner>/nest-backup. Runs for a version tag that
 # matches nestServerVersion, e.g. v0.2.0, or by hand.
+#
+# Each architecture builds on its own native runner (no QEMU emulation, which
+# made the arm64 build take most of ten minutes) with a layer cache; the web
+# apps are built once and shared.
 on:
   push:
     tags: ['v*']
@@ -14,29 +18,66 @@ permissions:
   packages: write
 
 jobs:
-  image:
+  web:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
       - uses: actions/checkout@v4
 
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.47.8'
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Check the tag matches the server version
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Server version
+        id: version
         run: |
           version=$(sed -n "s/^const nestServerVersion = '\(.*\)';/\1/p" \
             nest_server/lib/src/endpoints/health_endpoint.dart)
-          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if [[ "$GITHUB_REF" == refs/tags/v* && "v$version" != "$GITHUB_REF_NAME" ]]; then
             echo "Tag $GITHUB_REF_NAME does not match nestServerVersion $version"
             exit 1
           fi
 
-      - uses: docker/setup-qemu-action@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.8'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build the web app and the admin portal
+        run: deploy/build-image.sh --web
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web
+          path: nest_server/web
+          retention-days: 1
+
+  image:
+    needs: web
+    strategy:
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: web
+          path: nest_server/web
+
+      - name: Image names
+        id: names
+        # Image names must be lower case; the owner may not be.
+        run: |
+          echo "server=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/nest-server" >> "$GITHUB_OUTPUT"
+          echo "backup=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/nest-backup" >> "$GITHUB_OUTPUT"
+
       - uses: docker/setup-buildx-action@v3
 
       - uses: docker/login-action@v3
@@ -45,9 +86,69 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
-        # Image names must be lower case; the owner may not be.
+      - name: Server image
+        id: server
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: nest_server/Dockerfile
+          platforms: linux/${{ matrix.arch }}
+          build-args: NEST_VERSION=${{ needs.web.outputs.version }}
+          outputs: type=image,name=${{ steps.names.outputs.server }},push-by-digest=true,name-canonical=true,push=true
+          cache-from: type=gha,scope=server-${{ matrix.arch }}
+          cache-to: type=gha,mode=max,scope=server-${{ matrix.arch }}
+
+      - name: Backup image
+        id: backup
+        uses: docker/build-push-action@v6
+        with:
+          context: deploy/backup
+          platforms: linux/${{ matrix.arch }}
+          build-args: NEST_VERSION=${{ needs.web.outputs.version }}
+          outputs: type=image,name=${{ steps.names.outputs.backup }},push-by-digest=true,name-canonical=true,push=true
+          cache-from: type=gha,scope=backup-${{ matrix.arch }}
+          cache-to: type=gha,mode=max,scope=backup-${{ matrix.arch }}
+
+      - name: Keep the digests
         run: |
-          export IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/nest-server"
-          export BACKUP_IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/nest-backup"
-          deploy/build-image.sh --push
+          mkdir -p digests
+          echo "${{ steps.server.outputs.digest }}" > digests/server-${{ matrix.arch }}
+          echo "${{ steps.backup.outputs.digest }}" > digests/backup-${{ matrix.arch }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ matrix.arch }}
+          path: digests
+          retention-days: 1
+
+  publish:
+    needs: [web, image]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: digests-*
+          path: digests
+          merge-multiple: true
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag both architectures as one image
+        env:
+          VERSION: ${{ needs.web.outputs.version }}
+        run: |
+          owner="${GITHUB_REPOSITORY_OWNER,,}"
+          for image in server backup; do
+            name="ghcr.io/$owner/nest-$image"
+            docker buildx imagetools create \
+              -t "$name:$VERSION" -t "$name:latest" \
+              "$name@$(cat digests/$image-amd64)" \
+              "$name@$(cat digests/$image-arm64)"
+            docker buildx imagetools inspect "$name:$VERSION"
+          done
