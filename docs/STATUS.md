@@ -44,6 +44,21 @@ server. Verified over https: health 0.9.0 / API 9 with
 `googleServerClientId` and `appleSignIn: true`, web app 200. **Not verified
 yet:** real Google and Apple sign-ins on a device.
 
+**Released as 0.11.0 (2026-10-31, with Thomas's OK):** at Thomas's request,
+new Google and Apple accounts need no invite code (also on an invite-only
+server; invite-only now applies to email sign-up only): after signing in
+the app asks for a name and to create or join a household; an invite code
+typed on Create account joins its household. Linking may take over an
+identity whose account is in no household. **Faster image builds:** the
+"Server image" workflow builds the web apps once, then each architecture on
+a native runner (`ubuntu-24.04-arm` for arm64, no QEMU) with a GitHub
+Actions layer cache, and publishes one multi-arch tag at the end (6 min on
+the first run with an empty cache, was 11). Release flow now: push and tag
+together, so CI and the image build run side by side; deploy only when both
+are green. CI and image passed on `a3b85bd`; deployed by Claude (dump
+`nest-pre-update-20261031-105016.sql.gz`). Verified: health 0.11.0 / API
+10, Google and Apple on, web app 200, clean start.
+
 **Linking Google and Apple (2026-10-31), released as 0.10.0:** Thomas's
 Apple sign-in was treated as a new account (Apple's email did not match his
 Nest email), so Settings now has "Sign-in methods": while signed in, Link
