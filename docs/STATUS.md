@@ -2,16 +2,16 @@
 
 ## Current phase
 
-**Colour redesign (2026-10-31, not released):** at Thomas's request the
-whole palette is the nature-inspired scheme his wife chose: true sage green
-for To buy tiles and primary buttons (with dark green text, new `onAccent`
-token, as white on sage is only 2.6:1), golden tan for meals, terracotta for
-tasks, dusty rose for recipes, warm beige for the watchlist, warm cream
-background. A first, subtler pass (d53fc7b) was not visibly different on the
-phone. Also: unchecked boxes 3:1+, overdue as red-brown text instead of a
-badge, store dots in the store colour, watchlist avatars 24 px, store colour
-names (Golden tan, Terracotta, Beige, Dusty rose, Linen). Contrast test
-extended. CLAUDE.md section 8 updated.
+**Colour redesign (2026-10-31, not released):** after a colour audit and
+two nature-inspired passes (d53fc7b, 6981286), Thomas and his wife picked
+"Navy & ivory" from seven side-by-side options on a Claude design canvas:
+ivory background, navy To buy tiles and primary buttons with white text,
+sand (meals), misty blue (tasks), lilac (watchlist) and blush (recipes)
+tints with dark text, all at 4.5:1 or more (new `onAccent` token). Also from
+the audit: unchecked boxes 3:1+, overdue as red-brown text instead of a
+badge, store dots in the deep store colour, watchlist avatars 24 px, store
+colour names (Blue, Sand, Mist, Lilac, Blush, Linen). CLAUDE.md section 8
+updated.
 
 **Phase 9 — Dashboard + release: in progress (2026-10-30).** The dashboard
 is built and tested locally (not released yet). Next in phase 9: real

@@ -373,7 +373,7 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
       behavior: SnackBarBehavior.floating,
       backgroundColor: colors.ink,
       contentTextStyle: textTheme.bodyLarge?.copyWith(color: colors.surface),
-      actionTextColor: colors.accent,
+      actionTextColor: colors.accentTint,
       elevation: 0,
       insetPadding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       shape: RoundedRectangleBorder(

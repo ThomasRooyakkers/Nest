@@ -160,27 +160,27 @@ Implement these tokens once in `nest_shared` as a `ThemeData` plus a `NestColors
 
 | Token | Value | Use |
 | --- | --- | --- |
-| background | #F3EBDD | screen background (warm cream) |
-| surface | #FCF8F1 | cards, inputs, tab bar |
-| surfaceAlt | #ECE1CE | admin side menu |
-| chip | #EADFCC | neutral buttons, inactive segments |
-| border | #E3D5BE | card and tab bar borders |
-| borderStrong | #D2BFA2 | input borders |
-| divider | #EEE4D3 | rows inside cards |
-| checkboxIdle | #9A8466 | unchecked boxes, dashed "add" buttons (≥3:1 on surface) |
-| ink | #3A2D24 | primary text, dark buttons |
-| inkMuted | #67554A | secondary text |
-| accent | #98A086 | primary actions, checked state, To buy tiles (sage green); dark onAccent text on it |
-| onAccent | #1F2A18 | text and icons on accent |
-| accentDark | #3C4A2E | text on accent tint; sage icons and text on light surfaces |
-| accentTint | #D9E0CB | active tab, shopping tint |
-| honey / honeyInk | #D9BC8E / #3F2C10 | meals (golden tan) |
-| apricot / apricotInk | #D9B297 / #4E2D18 | tasks (terracotta) |
-| lavender / lavenderInk | #DFCCB1 / #47372A | watchlist (warm beige) |
-| rose / roseInk | #D8AEA3 / #5A2A21 | recipes (dusty rose) |
-| warning / warningInk | #F4D3C6 / #8E3017 | overdue, backup warnings |
+| background | #F6F2EA | screen background (ivory) |
+| surface | #FFFDF9 | cards, inputs, tab bar |
+| surfaceAlt | #EFE9DE | admin side menu |
+| chip | #ECE6DA | neutral buttons, inactive segments |
+| border | #E6DFD2 | card and tab bar borders |
+| borderStrong | #D6CDBD | input borders |
+| divider | #F0EBE2 | rows inside cards |
+| checkboxIdle | #7E8798 | unchecked boxes, dashed "add" buttons (≥3:1) |
+| ink | #1F2A3D | primary text, dark buttons |
+| inkMuted | #586274 | secondary text |
+| accent | #1F3A5F | primary actions, checked state, To buy tiles (navy) |
+| onAccent | #FFFFFF | text and icons on accent |
+| accentDark | #1F3A5F | text on accent tint; accent icons and text on light surfaces |
+| accentTint | #E3E8EF | active tab, shopping tint (pale blue) |
+| honey / honeyInk | #E7DAC6 / #6A4E1C | meals (sand) |
+| apricot / apricotInk | #C9D3E0 / #23395A | tasks (misty blue) |
+| lavender / lavenderInk | #DCDDEB / #3A3F66 | watchlist (lilac) |
+| rose / roseInk | #EFE2D6 / #6A3F2C | recipes (blush) |
+| warning / warningInk | #F6DCD0 / #9A3B22 | overdue, backup warnings |
 
-The palette is the nature-inspired scheme chosen 2026-10-31 (sage green #98A086, dusty rose #A76D5E, golden tan #C4A071, warm beige #DFCCB1, terracotta brown #846044). Feature colours are those swatches (or a lighter shade of them) with dark text on top, never white; every text pair keeps 4.5:1 (checked in `nest_shared/test/nest_colors_test.dart`). Overdue is shown as warningInk text, not a filled badge.
+The palette is "Navy & ivory", chosen 2026-10-31 from side-by-side options (inspired by a navy, ivory and gold marble image). Every text pair keeps 4.5:1 (checked in `nest_shared/test/nest_colors_test.dart`). Overdue is shown as warningInk text, not a filled badge. Token names (honey, apricot, …) are kept from the first palette.
 
 - **Type:** Nunito. Screen titles 28/800 with tight tracking (about −0.6), card titles 22/800, body 15/650, secondary 13–14/600, labels 11–12/800 with slight letter spacing. Pushed screens use a compact centred 17/800 title; tab screens draw their own large title.
 - **Shape:** cards radius 22–28, tiles 22, buttons fully rounded (pill), inputs radius 18, sheets and dialogs 30, small badges radius 8–10.

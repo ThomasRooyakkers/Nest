@@ -624,23 +624,23 @@
       }
     }
   },
-  "storeColorSage": "Sage",
+  "storeColorSage": "Blue",
   "@storeColorSage": {
     "description": "Store colour."
   },
-  "storeColorHoney": "Golden tan",
+  "storeColorHoney": "Sand",
   "@storeColorHoney": {
     "description": "Store colour."
   },
-  "storeColorApricot": "Terracotta",
+  "storeColorApricot": "Mist",
   "@storeColorApricot": {
     "description": "Store colour."
   },
-  "storeColorLavender": "Beige",
+  "storeColorLavender": "Lilac",
   "@storeColorLavender": {
     "description": "Store colour."
   },
-  "storeColorRose": "Dusty rose",
+  "storeColorRose": "Blush",
   "@storeColorRose": {
     "description": "Store colour."
   },

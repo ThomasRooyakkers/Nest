@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// Nest "warm and cozy" colour tokens (CLAUDE.md section 8), taken from the
-/// nature-inspired palette: sage green, dusty rose, golden tan, warm beige
-/// and terracotta. Feature colours are the swatches themselves (or a lighter
-/// shade of them) with dark text, so text keeps 4.5:1.
+/// Nest colour tokens (CLAUDE.md section 8): the "Navy & ivory" palette.
+/// Ivory surfaces, deep navy for actions and To buy tiles, and soft sand,
+/// mist, lilac and blush tints per feature with dark text (4.5:1 or more).
 ///
 /// Read them in widgets with `NestColors.of(context)`.
 @immutable
@@ -37,30 +36,30 @@ class NestColors extends ThemeExtension<NestColors> {
 
   /// The only palette for now; there is no dark theme in v1.
   static const light = NestColors(
-    background: Color(0xFFF3EBDD),
-    surface: Color(0xFFFCF8F1),
-    surfaceAlt: Color(0xFFECE1CE),
-    chip: Color(0xFFEADFCC),
-    border: Color(0xFFE3D5BE),
-    borderStrong: Color(0xFFD2BFA2),
-    divider: Color(0xFFEEE4D3),
-    checkboxIdle: Color(0xFF9A8466),
-    ink: Color(0xFF3A2D24),
-    inkMuted: Color(0xFF67554A),
-    accent: Color(0xFF98A086),
-    onAccent: Color(0xFF1F2A18),
-    accentDark: Color(0xFF3C4A2E),
-    accentTint: Color(0xFFD9E0CB),
-    honey: Color(0xFFD9BC8E),
-    honeyInk: Color(0xFF3F2C10),
-    apricot: Color(0xFFD9B297),
-    apricotInk: Color(0xFF4E2D18),
-    lavender: Color(0xFFDFCCB1),
-    lavenderInk: Color(0xFF47372A),
-    rose: Color(0xFFD8AEA3),
-    roseInk: Color(0xFF5A2A21),
-    warning: Color(0xFFF4D3C6),
-    warningInk: Color(0xFF8E3017),
+    background: Color(0xFFF6F2EA),
+    surface: Color(0xFFFFFDF9),
+    surfaceAlt: Color(0xFFEFE9DE),
+    chip: Color(0xFFECE6DA),
+    border: Color(0xFFE6DFD2),
+    borderStrong: Color(0xFFD6CDBD),
+    divider: Color(0xFFF0EBE2),
+    checkboxIdle: Color(0xFF7E8798),
+    ink: Color(0xFF1F2A3D),
+    inkMuted: Color(0xFF586274),
+    accent: Color(0xFF1F3A5F),
+    onAccent: Color(0xFFFFFFFF),
+    accentDark: Color(0xFF1F3A5F),
+    accentTint: Color(0xFFE3E8EF),
+    honey: Color(0xFFE7DAC6),
+    honeyInk: Color(0xFF6A4E1C),
+    apricot: Color(0xFFC9D3E0),
+    apricotInk: Color(0xFF23395A),
+    lavender: Color(0xFFDCDDEB),
+    lavenderInk: Color(0xFF3A3F66),
+    rose: Color(0xFFEFE2D6),
+    roseInk: Color(0xFF6A3F2C),
+    warning: Color(0xFFF6DCD0),
+    warningInk: Color(0xFF9A3B22),
   );
 
   /// Screen background (soft linen).
@@ -93,9 +92,9 @@ class NestColors extends ThemeExtension<NestColors> {
   /// Secondary text.
   final Color inkMuted;
 
-  /// Primary actions, checked state, To buy tiles (sage). Too light for
-  /// white text: put [onAccent] on it, and use [accentDark] for sage
-  /// icons and text on light surfaces.
+  /// Primary actions, checked state, To buy tiles (navy). Put [onAccent]
+  /// on it, and use [accentDark] for accent icons and text on light
+  /// surfaces.
   final Color accent;
 
   /// Text and icons on [accent].
@@ -107,19 +106,19 @@ class NestColors extends ThemeExtension<NestColors> {
   /// Active tab, shopping tint.
   final Color accentTint;
 
-  /// Meals (golden tan).
+  /// Meals (sand).
   final Color honey;
   final Color honeyInk;
 
-  /// Tasks (terracotta).
+  /// Tasks (misty blue).
   final Color apricot;
   final Color apricotInk;
 
-  /// Watchlist (warm beige).
+  /// Watchlist (lilac).
   final Color lavender;
   final Color lavenderInk;
 
-  /// Recipes (dusty rose).
+  /// Recipes (blush).
   final Color rose;
   final Color roseInk;
 

@@ -923,31 +923,31 @@ abstract class AppLocalizations {
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Sage'**
+  /// **'Blue'**
   String get storeColorSage;
 
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Golden tan'**
+  /// **'Sand'**
   String get storeColorHoney;
 
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Terracotta'**
+  /// **'Mist'**
   String get storeColorApricot;
 
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Beige'**
+  /// **'Lilac'**
   String get storeColorLavender;
 
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Dusty rose'**
+  /// **'Blush'**
   String get storeColorRose;
 
   /// Store colour.
