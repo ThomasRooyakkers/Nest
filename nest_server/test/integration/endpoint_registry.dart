@@ -79,10 +79,12 @@ const unscopedMethods = {
   'emailIdp.hasAccount',
   // Google and Apple sign-in (SocialSignIn's rules).
   'googleIdp.signIn',
+  'googleIdp.link',
   'googleIdp.login',
   'googleIdp.loginWithCode',
   'googleIdp.hasAccount',
   'appleIdp.signIn',
+  'appleIdp.link',
   'appleIdp.login',
   'appleIdp.hasAccount',
   'jwtRefresh.refreshAccessToken',
@@ -99,4 +101,5 @@ const unscopedMethods = {
   'profile.me',
   'profile.updateMe',
   'profile.deleteMe',
+  'profile.signInMethods',
 };

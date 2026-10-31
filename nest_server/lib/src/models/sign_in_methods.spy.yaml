@@ -1,0 +1,10 @@
+### How the signed-in user can sign in: their own account's methods only.
+class: SignInMethods
+
+fields:
+  ### Email and password.
+  email: bool
+  ### A linked Google account.
+  google: bool
+  ### A linked Apple ID.
+  apple: bool

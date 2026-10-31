@@ -220,6 +220,38 @@ class Endpoints extends _is.EndpointDispatch {
                     inviteCode: params['inviteCode'],
                   ),
         ),
+        'link': _is.MethodConnector(
+          name: 'link',
+          params: {
+            'identityToken': _is.ParameterDescription(
+              name: 'identityToken',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'authorizationCode': _is.ParameterDescription(
+              name: 'authorizationCode',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'isNativeApplePlatformSignIn': _is.ParameterDescription(
+              name: 'isNativeApplePlatformSignIn',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['appleIdp'] as _ilq63su8.AppleIdpEndpoint).link(
+                    session,
+                    identityToken: params['identityToken'],
+                    authorizationCode: params['authorizationCode'],
+                    isNativeApplePlatformSignIn:
+                        params['isNativeApplePlatformSignIn'],
+                  ),
+        ),
         'login': _is.MethodConnector(
           name: 'login',
           params: {
@@ -489,6 +521,31 @@ class Endpoints extends _is.EndpointDispatch {
                     idToken: params['idToken'],
                     accessToken: params['accessToken'],
                     inviteCode: params['inviteCode'],
+                  ),
+        ),
+        'link': _is.MethodConnector(
+          name: 'link',
+          params: {
+            'idToken': _is.ParameterDescription(
+              name: 'idToken',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'accessToken': _is.ParameterDescription(
+              name: 'accessToken',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['googleIdp'] as _i71axiz0.GoogleIdpEndpoint).link(
+                    session,
+                    idToken: params['idToken'],
+                    accessToken: params['accessToken'],
                   ),
         ),
         'login': _is.MethodConnector(
@@ -1138,6 +1195,16 @@ class Endpoints extends _is.EndpointDispatch {
                     params['name'],
                     params['locale'],
                   ),
+        ),
+        'signInMethods': _is.MethodConnector(
+          name: 'signInMethods',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['profile'] as _i2cx2pww.ProfileEndpoint)
+                  .signInMethods(session),
         ),
         'deleteMe': _is.MethodConnector(
           name: 'deleteMe',

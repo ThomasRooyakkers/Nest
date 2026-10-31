@@ -1,6 +1,7 @@
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_idp_server/providers/apple.dart';
 
+import '../services/nest_users.dart';
 import '../services/social_sign_in.dart';
 
 /// Sign in with Apple, available when the host configured an Apple key
@@ -31,6 +32,34 @@ class AppleIdpEndpoint extends AppleIdpBaseEndpoint {
     ),
     merge: appleIdp.mergeAuthUsers,
   );
+
+  /// Links an Apple ID to the signed-in account (see [SocialSignIn.link]).
+  Future<void> link(
+    Session session, {
+    required String identityToken,
+    required String authorizationCode,
+    required bool isNativeApplePlatformSignIn,
+  }) async {
+    final user = await NestUsers.require(session);
+    await SocialSignIn.link(
+      session,
+      authUserId: user.authUserId,
+      authenticate: (transaction) async {
+        final result = await appleIdp.utils.authenticate(
+          session,
+          identityToken: identityToken,
+          authorizationCode: authorizationCode,
+          isNativeApplePlatformSignIn: isNativeApplePlatformSignIn,
+          transaction: transaction,
+        );
+        return (
+          authUserId: result.authUserId,
+          newAccount: result.newAccount,
+        );
+      },
+      merge: appleIdp.mergeAuthUsers,
+    );
+  }
 
   /// The auth module's sign-in, under the same rules (without an invite).
   @override

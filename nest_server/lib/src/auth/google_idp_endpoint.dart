@@ -1,6 +1,7 @@
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_idp_server/providers/google.dart';
 
+import '../services/nest_users.dart';
 import '../services/social_sign_in.dart';
 
 /// Google sign-in, available when the host configured a Google client
@@ -25,6 +26,33 @@ class GoogleIdpEndpoint extends GoogleIdpBaseEndpoint {
     ),
     merge: googleIdp.mergeAuthUsers,
   );
+
+  /// Links a Google account to the signed-in account (see
+  /// [SocialSignIn.link]).
+  Future<void> link(
+    Session session, {
+    required String idToken,
+    String? accessToken,
+  }) async {
+    final user = await NestUsers.require(session);
+    await SocialSignIn.link(
+      session,
+      authUserId: user.authUserId,
+      authenticate: (transaction) async {
+        final result = await googleIdp.utils.authenticate(
+          session,
+          idToken: idToken,
+          accessToken: accessToken,
+          transaction: transaction,
+        );
+        return (
+          authUserId: result.authUserId,
+          newAccount: result.newAccount,
+        );
+      },
+      merge: googleIdp.mergeAuthUsers,
+    );
+  }
 
   /// The auth module's sign-in, under the same rules (without an invite).
   @override

@@ -52,6 +52,7 @@ import 'package:nest_client/src/protocol/shopping/shopping_item_status.dart'
 import 'package:nest_client/src/protocol/shopping/shopping_list.dart'
     as _i9yltxrs;
 import 'package:nest_client/src/protocol/shopping/store.dart' as _i4n9gtf6;
+import 'package:nest_client/src/protocol/sign_in_methods.dart' as _ijxp9n8s;
 import 'package:nest_client/src/protocol/tasks/task.dart' as _ipqeu8zh;
 import 'package:nest_client/src/protocol/tasks/task_event.dart' as _i8pjkixi;
 import 'package:nest_client/src/protocol/watchlist/tmdb_title.dart'
@@ -99,6 +100,21 @@ class EndpointAppleIdp extends _iaic.EndpointAppleIdpBase {
       'firstName': firstName,
       'lastName': lastName,
       'inviteCode': inviteCode,
+    },
+  );
+
+  /// Links an Apple ID to the signed-in account (see [SocialSignIn.link]).
+  _ida.Future<void> link({
+    required String identityToken,
+    required String authorizationCode,
+    required bool isNativeApplePlatformSignIn,
+  }) => caller.callServerEndpoint<void>(
+    'appleIdp',
+    'link',
+    {
+      'identityToken': identityToken,
+      'authorizationCode': authorizationCode,
+      'isNativeApplePlatformSignIn': isNativeApplePlatformSignIn,
     },
   );
 
@@ -327,6 +343,20 @@ class EndpointGoogleIdp extends _iaic.EndpointGoogleIdpBase {
       'idToken': idToken,
       'accessToken': accessToken,
       'inviteCode': inviteCode,
+    },
+  );
+
+  /// Links a Google account to the signed-in account (see
+  /// [SocialSignIn.link]).
+  _ida.Future<void> link({
+    required String idToken,
+    String? accessToken,
+  }) => caller.callServerEndpoint<void>(
+    'googleIdp',
+    'link',
+    {
+      'idToken': idToken,
+      'accessToken': accessToken,
     },
   );
 
@@ -769,13 +799,23 @@ class EndpointProfile extends _isc.EndpointRef {
     },
   );
 
+  /// How the signed-in user can sign in, for linking Google and Apple in
+  /// the app.
+  _ida.Future<_ijxp9n8s.SignInMethods> signInMethods() =>
+      caller.callServerEndpoint<_ijxp9n8s.SignInMethods>(
+        'profile',
+        'signInMethods',
+        {},
+      );
+
   /// Deletes the signed-in user's account and signs them out everywhere.
   ///
   /// A household where they are the only member is deleted with all its
   /// data. In a household that has other members, the longest-standing
   /// member becomes owner when the user was its last owner. Tasks assigned
   /// to them go back to anyone and their name disappears from items they
-  /// added (the relations set those to null).
+  /// added (the relations set those to null). A Sign in with Apple link is
+  /// revoked at Apple, as Apple requires.
   _ida.Future<void> deleteMe() => caller.callServerEndpoint<void>(
     'profile',
     'deleteMe',

@@ -198,6 +198,87 @@ void main() {
     });
   });
 
+  withServerpod('Given linking Google or Apple to an account', (
+    sessionBuilder,
+    endpoints,
+  ) {
+    late Session session;
+    late UuidValue me;
+    late List<(UuidValue, UuidValue)> merges;
+
+    setUp(() async {
+      session = sessionBuilder.build();
+      merges = [];
+      final user = await signedInUser(sessionBuilder, name: 'Thomas');
+      me = (await endpoints.profile.me(user)).authUserId;
+    });
+
+    Future<void> link(UuidValue owner, {required bool isNew}) =>
+        SocialSignIn.link(
+          session,
+          authUserId: me,
+          authenticate: (transaction) async =>
+              (authUserId: owner, newAccount: isNew),
+          merge:
+              (
+                session, {
+                required userToKeepId,
+                required userToRemoveId,
+                required transaction,
+              }) async => merges.add((userToKeepId, userToRemoveId)),
+        );
+
+    test('a new identity moves into the account', () async {
+      final fresh = await AuthUser.db.insertRow(
+        session,
+        AuthUser(scopeNames: {}),
+      );
+      await link(fresh.id!, isNew: true);
+
+      expect(merges, [(me, fresh.id!)]);
+      expect(await AuthUser.db.findById(session, fresh.id!), isNull);
+      expect(await AuthUser.db.findById(session, me), isNotNull);
+    });
+
+    test(
+      'an identity already linked to this account changes nothing',
+      () async {
+        await link(me, isNew: false);
+        expect(merges, isEmpty);
+      },
+    );
+
+    test("another account's identity is refused", () async {
+      final other = await AuthUser.db.insertRow(
+        session,
+        AuthUser(scopeNames: {}),
+      );
+      await expectLater(
+        link(other.id!, isNew: false),
+        throwsNest(NestErrorCode.alreadyLinked),
+      );
+      expect(merges, isEmpty);
+      expect(await AuthUser.db.findById(session, other.id!), isNotNull);
+    });
+
+    test('sign-in methods list only the caller\'s own', () async {
+      final user = await signedInUser(sessionBuilder, name: 'Anna');
+      final methods = await endpoints.profile.signInMethods(user);
+      expect(
+        (methods.email, methods.google, methods.apple),
+        (
+          false,
+          false,
+          false,
+        ),
+      );
+      await expectLater(
+        endpoints.profile.signInMethods(sessionBuilder),
+        throwsNest(NestErrorCode.notSignedIn),
+      );
+    });
+  });
+
   withServerpod('Given the health check', (sessionBuilder, endpoints) {
     test('reports no Google or Apple sign-in without keys', () async {
       final ping = await endpoints.health.ping(sessionBuilder);

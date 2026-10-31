@@ -1,5 +1,6 @@
 appleIdp:
   - signIn:
+  - link:
   - login:
   - hasAccount:
 emailIdp:
@@ -13,6 +14,7 @@ emailIdp:
   - hasAccount:
 googleIdp:
   - signIn:
+  - link:
   - login:
   - loginWithCode:
   - hasAccount:
@@ -53,6 +55,7 @@ mealPlan:
 profile:
   - me:
   - updateMe:
+  - signInMethods:
   - deleteMe:
 recipe:
   - recipes:

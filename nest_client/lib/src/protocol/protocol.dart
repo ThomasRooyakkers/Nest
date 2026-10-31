@@ -81,6 +81,7 @@ import 'shopping/shopping_item_status.dart' as _ivkuu3ll;
 import 'shopping/shopping_list.dart' as _i8tkdv3k;
 import 'shopping/store.dart' as _icm155bx;
 import 'shopping/store_color.dart' as _ip61som0;
+import 'sign_in_methods.dart' as _ifdx88jm;
 import 'sign_up_mode.dart' as _i4y3a5ag;
 import 'tasks/task.dart' as _i253is06;
 import 'tasks/task_event.dart' as _iuwcsatz;
@@ -128,6 +129,7 @@ export 'shopping/shopping_item_status.dart';
 export 'shopping/shopping_list.dart';
 export 'shopping/store.dart';
 export 'shopping/store_color.dart';
+export 'sign_in_methods.dart';
 export 'sign_up_mode.dart';
 export 'tasks/task.dart';
 export 'tasks/task_event.dart';
@@ -286,6 +288,9 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == _ip61som0.StoreColor) {
       return _ip61som0.StoreColor.fromJson(data) as T;
+    }
+    if (t == _ifdx88jm.SignInMethods) {
+      return _ifdx88jm.SignInMethods.fromJson(data) as T;
     }
     if (t == _i4y3a5ag.SignUpMode) {
       return _i4y3a5ag.SignUpMode.fromJson(data) as T;
@@ -451,6 +456,10 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == _isc.getType<_ip61som0.StoreColor?>()) {
       return (data != null ? _ip61som0.StoreColor.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ifdx88jm.SignInMethods?>()) {
+      return (data != null ? _ifdx88jm.SignInMethods.fromJson(data) : null)
+          as T;
     }
     if (t == _isc.getType<_i4y3a5ag.SignUpMode?>()) {
       return (data != null ? _i4y3a5ag.SignUpMode.fromJson(data) : null) as T;
@@ -812,6 +821,7 @@ class Protocol extends _isc.SerializationManager {
       _i8tkdv3k.ShoppingList => 'ShoppingList',
       _icm155bx.Store => 'Store',
       _ip61som0.StoreColor => 'StoreColor',
+      _ifdx88jm.SignInMethods => 'SignInMethods',
       _i4y3a5ag.SignUpMode => 'SignUpMode',
       _i253is06.Task => 'Task',
       _iuwcsatz.TaskEvent => 'TaskEvent',
@@ -911,6 +921,8 @@ class Protocol extends _isc.SerializationManager {
         return 'Store';
       case _ip61som0.StoreColor():
         return 'StoreColor';
+      case _ifdx88jm.SignInMethods():
+        return 'SignInMethods';
       case _i4y3a5ag.SignUpMode():
         return 'SignUpMode';
       case _i253is06.Task():
@@ -1064,6 +1076,9 @@ class Protocol extends _isc.SerializationManager {
     }
     if (dataClassName == 'StoreColor') {
       return deserialize<_ip61som0.StoreColor>(data['data']);
+    }
+    if (dataClassName == 'SignInMethods') {
+      return deserialize<_ifdx88jm.SignInMethods>(data['data']);
     }
     if (dataClassName == 'SignUpMode') {
       return deserialize<_i4y3a5ag.SignUpMode>(data['data']);

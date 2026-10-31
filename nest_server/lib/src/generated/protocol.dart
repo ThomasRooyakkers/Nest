@@ -82,6 +82,7 @@ import 'shopping/shopping_item_status.dart' as _ivkuu3ll;
 import 'shopping/shopping_list.dart' as _i8tkdv3k;
 import 'shopping/store.dart' as _icm155bx;
 import 'shopping/store_color.dart' as _ip61som0;
+import 'sign_in_methods.dart' as _ifdx88jm;
 import 'sign_up_invite.dart' as _izkprrmi;
 import 'sign_up_mode.dart' as _i4y3a5ag;
 import 'tasks/task.dart' as _i253is06;
@@ -130,6 +131,7 @@ export 'shopping/shopping_item_status.dart';
 export 'shopping/shopping_list.dart';
 export 'shopping/store.dart';
 export 'shopping/store_color.dart';
+export 'sign_in_methods.dart';
 export 'sign_up_invite.dart';
 export 'sign_up_mode.dart';
 export 'tasks/task.dart';
@@ -1982,6 +1984,9 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _ip61som0.StoreColor) {
       return _ip61som0.StoreColor.fromJson(data) as T;
     }
+    if (t == _ifdx88jm.SignInMethods) {
+      return _ifdx88jm.SignInMethods.fromJson(data) as T;
+    }
     if (t == _izkprrmi.SignUpInvite) {
       return _izkprrmi.SignUpInvite.fromJson(data) as T;
     }
@@ -2149,6 +2154,10 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (t == _is.getType<_ip61som0.StoreColor?>()) {
       return (data != null ? _ip61som0.StoreColor.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ifdx88jm.SignInMethods?>()) {
+      return (data != null ? _ifdx88jm.SignInMethods.fromJson(data) : null)
+          as T;
     }
     if (t == _is.getType<_izkprrmi.SignUpInvite?>()) {
       return (data != null ? _izkprrmi.SignUpInvite.fromJson(data) : null) as T;
@@ -2516,6 +2525,7 @@ class Protocol extends _is.DatabaseSerializationManager {
       _i8tkdv3k.ShoppingList => 'ShoppingList',
       _icm155bx.Store => 'Store',
       _ip61som0.StoreColor => 'StoreColor',
+      _ifdx88jm.SignInMethods => 'SignInMethods',
       _izkprrmi.SignUpInvite => 'SignUpInvite',
       _i4y3a5ag.SignUpMode => 'SignUpMode',
       _i253is06.Task => 'Task',
@@ -2616,6 +2626,8 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'Store';
       case _ip61som0.StoreColor():
         return 'StoreColor';
+      case _ifdx88jm.SignInMethods():
+        return 'SignInMethods';
       case _izkprrmi.SignUpInvite():
         return 'SignUpInvite';
       case _i4y3a5ag.SignUpMode():
@@ -2775,6 +2787,9 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (dataClassName == 'StoreColor') {
       return deserialize<_ip61som0.StoreColor>(data['data']);
+    }
+    if (dataClassName == 'SignInMethods') {
+      return deserialize<_ifdx88jm.SignInMethods>(data['data']);
     }
     if (dataClassName == 'SignUpInvite') {
       return deserialize<_izkprrmi.SignUpInvite>(data['data']);

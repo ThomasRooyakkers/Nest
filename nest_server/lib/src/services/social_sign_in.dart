@@ -62,6 +62,44 @@ abstract final class SocialSignIn {
     });
   }
 
+  /// Links a Google or Apple identity to the signed-in account, so it signs
+  /// into that account from then on, whatever email it carries.
+  /// [authenticate] verifies the identity with the provider (creating a
+  /// one-off account for an identity the server has not seen) and returns
+  /// its owner and whether it is new.
+  ///
+  /// Throws [NestErrorCode.alreadyLinked] when the identity already belongs
+  /// to another account.
+  static Future<void> link(
+    Session session, {
+    required UuidValue authUserId,
+    required Future<({UuidValue authUserId, bool newAccount})> Function(
+      Transaction transaction,
+    )
+    authenticate,
+    required MergeAuthUsers merge,
+  }) {
+    return session.db.transaction((transaction) async {
+      final identity = await authenticate(transaction);
+      _created[session] = null;
+      if (identity.authUserId == authUserId) return;
+      if (!identity.newAccount) {
+        throw NestException(code: NestErrorCode.alreadyLinked);
+      }
+      await merge(
+        session,
+        userToKeepId: authUserId,
+        userToRemoveId: identity.authUserId,
+        transaction: transaction,
+      );
+      await AuthUser.db.deleteWhere(
+        session,
+        where: (t) => t.id.equals(identity.authUserId),
+        transaction: transaction,
+      );
+    });
+  }
+
   /// Called from the providers' "account created" hooks.
   static void recordNewIdentity(
     Session session, {

@@ -27,6 +27,33 @@ class ProfileEndpoint extends Endpoint {
     );
   }
 
+  /// How the signed-in user can sign in, for linking Google and Apple in
+  /// the app.
+  Future<SignInMethods> signInMethods(Session session) async {
+    final user = await NestUsers.require(session);
+    final id = user.authUserId;
+    return SignInMethods(
+      email:
+          await EmailAccount.db.count(
+            session,
+            where: (t) => t.authUserId.equals(id),
+          ) >
+          0,
+      google:
+          await GoogleAccount.db.count(
+            session,
+            where: (t) => t.authUserId.equals(id),
+          ) >
+          0,
+      apple:
+          await AppleAccount.db.count(
+            session,
+            where: (t) => t.authUserId.equals(id),
+          ) >
+          0,
+    );
+  }
+
   /// Deletes the signed-in user's account and signs them out everywhere.
   ///
   /// A household where they are the only member is deleted with all its

@@ -16,3 +16,4 @@ values:
   - featureDisabled
   - inviteRequired
   - filmDataUnavailable
+  - alreadyLinked
