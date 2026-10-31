@@ -2,6 +2,20 @@
 
 ## Current phase
 
+**App Store Connect (2026-10-31):** the app record already existed (store
+name "Hoomly", SKU/bundle `be.g3cko.nest`, Apple ID 6829200295). Claude
+uploaded build 1.0.0 (1) via `xcodebuild -exportArchive` (destination
+upload, Xcode's account) and attached it to version 1.0; filled the EN and
+NL listing (promo text, description, keywords, support/marketing URL
+`https://nest.g3cko.be/`, copyright), review notes, privacy policy URL,
+App Privacy data types (name, email, user ID, photos, other user content;
+app functionality, linked, no tracking; not yet published), categories
+Lifestyle + Productivity, age rating (13+, from cautious answers for film
+posters/titles), manual release. **With Thomas:** upload the screenshots,
+reviewer demo account + sign-in and contact info, content rights, publish
+App Privacy, EU trader status (DSA), store name vs. home-screen name
+("Hoomly" vs "Nest"), then Add for Review and submit.
+
 **App Store prep (2026-10-31, code side done):** at Thomas's request.
 iPhone only (`TARGETED_DEVICE_FAMILY = 1`, iPad orientations removed; Thomas's
 choice, so no iPad screenshots). App privacy manifest
