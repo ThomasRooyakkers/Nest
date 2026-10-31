@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Mobile only (2026-10-31, not released):** at Thomas's request the family
+**Mobile only (2026-10-31, released as 0.12.1):** at Thomas's request the family
 app no longer has a web version; only the admin portal is a web app
 (CLAUDE.md updated). `nest_flutter/web` is gone, with the web-only code
 (login cookies, the web start-up config, drift's web worker, the
@@ -15,9 +15,13 @@ the server). The image and the release workflow build only the admin
 portal. `serverpod start` now launches the app as a macOS app. Hosting
 guides, README, `.env.example` and Compose comments updated. No API change.
 Smoke-tested the site route locally (page, privacy, config, favicon); 187
-app tests pass. **Not done:** release and deploy (needs Thomas's OK); after
-that, check `https://nest.g3cko.be/` and `/privacy.html` on the Pi. The
-Pi's `.env` needs no change.
+app tests pass. CI and the image passed on `ac4dded`, tag `v0.12.1`;
+deployed by Claude with Thomas's OK (`NEST_VERSION=0.12.1`, `.env.bak-*`
+kept, dump `nest-pre-update-20261031-120142.sql.gz`). Verified over https:
+`nest.g3cko.be/` shows the new page, `/privacy.html` 200, `config.json`
+gives `https://nest-api.g3cko.be/`, health 0.12.1 / API 10. The log only
+showed `notSignedIn` from stream reconnects in the first 30 s after the
+restart.
 
 **Colour redesign (2026-10-31, released as 0.12.0):** after a colour audit and
 two nature-inspired passes (d53fc7b, 6981286), Thomas and his wife picked
