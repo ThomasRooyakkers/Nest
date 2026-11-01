@@ -189,6 +189,7 @@ ServerpodConfig toolConfig(ServerpodConfig config) {
     insightsServer: config.insightsServer == null
         ? null
         : freePort(config.insightsServer!),
+    webServer: config.webServer == null ? null : freePort(config.webServer!),
     futureCallExecutionEnabled: false,
   );
 }
