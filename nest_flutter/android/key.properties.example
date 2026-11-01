@@ -1,0 +1,7 @@
+# Copy to key.properties (untracked) to sign release builds with the upload
+# key. storeFile is relative to android/app. Keep the keystore and its
+# password backed up: Google sign-in is registered to its SHA-1.
+storePassword=
+keyPassword=
+keyAlias=upload
+storeFile=../upload-keystore.jks

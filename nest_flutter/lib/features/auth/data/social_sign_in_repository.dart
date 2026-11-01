@@ -12,7 +12,7 @@ part 'social_sign_in_repository.g.dart';
 
 /// The iOS OAuth client of the Nest app in Google Cloud. Not a secret: it
 /// identifies this app to Google. Its reversed form is the URL scheme in
-/// ios/Runner/Info.plist. Empty hides Google sign-in.
+/// ios/Runner/Info.plist. Empty hides Google sign-in on iOS.
 const googleIosClientId =
     '245382798173-7os8jknj73qp9rkns6s14khemovjbtmf.apps.googleusercontent.com';
 
@@ -23,19 +23,21 @@ String googleIosClient(Ref ref) => googleIosClientId;
 /// Which of Google and Apple sign-in to offer.
 typedef SocialSignInOptions = ({String? googleServerClientId, bool apple});
 
-/// Google and Apple sign-in, in the iOS app only and only when the server
-/// supports them (API level 9, configured by the host).
+/// Google sign-in on iOS and Android, Apple sign-in on iOS only, and only
+/// when the server supports them (API level 9, configured by the host).
 @riverpod
 SocialSignInOptions socialSignInOptions(Ref ref) {
-  if (defaultTargetPlatform != TargetPlatform.iOS) {
+  final ios = defaultTargetPlatform == TargetPlatform.iOS;
+  if (kIsWeb || !(ios || defaultTargetPlatform == TargetPlatform.android)) {
     return (googleServerClientId: null, apple: false);
   }
   final ping = ref.watch(serverPingProvider).value;
   return (
-    googleServerClientId: ref.watch(googleIosClientProvider).isEmpty
+    // Android identifies the app by package name and signing key instead.
+    googleServerClientId: ios && ref.watch(googleIosClientProvider).isEmpty
         ? null
         : ping?.googleServerClientId,
-    apple: ping?.appleSignIn ?? false,
+    apple: ios && (ping?.appleSignIn ?? false),
   );
 }
 
@@ -105,7 +107,10 @@ class SocialSignInRepository {
     final google = GoogleSignIn.instance;
     if (!_googleReady) {
       await google.initialize(
-        clientId: googleIosClientId,
+        // Not supported on Android, which uses the signing key's SHA-1.
+        clientId: defaultTargetPlatform == TargetPlatform.iOS
+            ? googleIosClientId
+            : null,
         serverClientId: serverClientId,
       );
       _googleReady = true;

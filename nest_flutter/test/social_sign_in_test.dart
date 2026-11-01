@@ -1,6 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nest_client/nest_client.dart';
+import 'package:nest_flutter/core/backend/server_health_repository.dart';
+import 'package:nest_flutter/features/auth/data/social_sign_in_repository.dart';
 
 import 'support/fakes.dart';
 
@@ -10,8 +14,9 @@ void main() {
     appleSignIn: true,
   );
 
-  /// The tests run on the host; the buttons are for iOS only.
+  /// The tests run on the host; the buttons are for iOS and Android only.
   final ios = TargetPlatformVariant.only(TargetPlatform.iOS);
+  final android = TargetPlatformVariant.only(TargetPlatform.android);
 
   testWidgets('iOS shows Apple and Google when the server offers them', (
     tester,
@@ -38,10 +43,43 @@ void main() {
     expect(find.text('Continue with Google'), findsNothing);
   }, variant: ios);
 
-  testWidgets('no buttons outside iOS', (tester) async {
+  testWidgets('Android shows Google only', (tester) async {
+    final social = FakeSocialSignInRepository();
+    await pumpNestApp(
+      tester,
+      signedIn: false,
+      health: socialServer(),
+      socialSignIn: social,
+    );
+
+    expect(find.text('Continue with Apple'), findsNothing);
+    await tester.tap(find.text('Continue with Google'));
+    await tester.pumpAndSettle();
+    expect(social.calls, [('google:server-client', null)]);
+  }, variant: android);
+
+  test('Android needs no iOS client ID', () async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+    final container = ProviderContainer(
+      overrides: [
+        serverHealthRepositoryProvider.overrideWithValue(socialServer()),
+        googleIosClientProvider.overrideWithValue(''),
+      ],
+    );
+    addTearDown(container.dispose);
+    await container.read(serverPingProvider.future);
+    expect(
+      container.read(socialSignInOptionsProvider).googleServerClientId,
+      'server-client',
+    );
+  });
+
+  testWidgets('no buttons on other platforms', (tester) async {
     await pumpNestApp(tester, signedIn: false, health: socialServer());
     expect(find.text('Continue with Apple'), findsNothing);
-  });
+    expect(find.text('Continue with Google'), findsNothing);
+  }, variant: TargetPlatformVariant.only(TargetPlatform.macOS));
 
   testWidgets('Create account passes the typed invite code', (tester) async {
     final social = FakeSocialSignInRepository();

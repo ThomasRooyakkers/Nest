@@ -943,8 +943,22 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
   `flutter build apk --release` builds `app-release.apk` (72 MB), still signed
   with the debug key. On the emulator it starts on the sign-in screen and
   connects to nest.g3cko.be via "Change server". **Not verified:** signing
-  in, and on a real Android phone. A real upload keystore is needed before
-  Play internal testing (phase 9).
+  in, and on a real Android phone.
+- **Google sign-in on Android (2026-11-01, built, not released).** Release
+  builds are signed with an upload key: `nest_flutter/android/upload-keystore.jks`
+  and `android/key.properties` (both untracked, see `key.properties.example`;
+  without them release builds fall back to the debug key). Upload key SHA-1
+  `BF:53:03:CA:31:D4:4A:58:66:0F:D4:B5:BC:8F:AE:DB:73:49:F9:43`. The app now
+  offers "Continue with Google" (and "Link Google" in Settings) on Android;
+  Apple stays iOS-only (Android would need Apple's web flow). On Android only
+  the server's web client ID goes to Google; the app is recognised by package
+  `be.g3cko.nest` plus the signing key's SHA-1, so no server change. Checked
+  on the emulator: the button appears against nest.g3cko.be. **Still needed:**
+  (1) **Thomas:** back up the keystore and `key.properties` (password
+  manager); (2) **Thomas:** an Android OAuth client in Google Cloud with the
+  package name and the SHA-1 above, and later a second one with Play's app
+  signing key SHA-1 (Play Console → App integrity); (3) a real Google sign-in
+  on the emulator and on a phone.
 
 ## Next
 

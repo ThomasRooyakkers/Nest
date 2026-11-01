@@ -54,14 +54,14 @@ final class GoogleIosClientProvider
 
 String _$googleIosClientHash() => r'fd504c569e637643d7a99d04c4cb69f5c9db3404';
 
-/// Google and Apple sign-in, in the iOS app only and only when the server
-/// supports them (API level 9, configured by the host).
+/// Google sign-in on iOS and Android, Apple sign-in on iOS only, and only
+/// when the server supports them (API level 9, configured by the host).
 
 @ProviderFor(socialSignInOptions)
 final socialSignInOptionsProvider = SocialSignInOptionsProvider._();
 
-/// Google and Apple sign-in, in the iOS app only and only when the server
-/// supports them (API level 9, configured by the host).
+/// Google sign-in on iOS and Android, Apple sign-in on iOS only, and only
+/// when the server supports them (API level 9, configured by the host).
 
 final class SocialSignInOptionsProvider
     extends
@@ -71,8 +71,8 @@ final class SocialSignInOptionsProvider
           SocialSignInOptions
         >
     with $Provider<SocialSignInOptions> {
-  /// Google and Apple sign-in, in the iOS app only and only when the server
-  /// supports them (API level 9, configured by the host).
+  /// Google sign-in on iOS and Android, Apple sign-in on iOS only, and only
+  /// when the server supports them (API level 9, configured by the host).
   SocialSignInOptionsProvider._()
     : super(
         from: null,
@@ -108,7 +108,7 @@ final class SocialSignInOptionsProvider
 }
 
 String _$socialSignInOptionsHash() =>
-    r'2e9879fccba6d745ccbdde1927237d82ad9eb000';
+    r'e48e438c4ae5da5181d8a13972c71238c2c2bbfd';
 
 @ProviderFor(socialSignInRepository)
 final socialSignInRepositoryProvider = SocialSignInRepositoryProvider._();
