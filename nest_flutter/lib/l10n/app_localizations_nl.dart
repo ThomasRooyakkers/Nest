@@ -1279,6 +1279,11 @@ class AppLocalizationsNl extends AppLocalizations {
       'Koppel Apple of Google één keer, dan melden ze je aan bij dit account.';
 
   @override
+  String signInMethodHint(String provider) {
+    return 'Koppel $provider één keer, dan kun je er voortaan mee aanmelden bij dit account.';
+  }
+
+  @override
   String get linkButton => 'Koppelen';
 
   @override

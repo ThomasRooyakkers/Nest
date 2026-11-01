@@ -2282,6 +2282,12 @@ abstract class AppLocalizations {
   /// **'Link Apple or Google once, and they sign you into this account.'**
   String get signInMethodsHint;
 
+  /// Explains linking in settings when only one provider is offered (Google on Android)
+  ///
+  /// In en, this message translates to:
+  /// **'Link {provider} once, and it signs you into this account.'**
+  String signInMethodHint(String provider);
+
   /// Button that links Apple or Google to the account
   ///
   /// In en, this message translates to:

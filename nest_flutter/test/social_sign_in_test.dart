@@ -156,6 +156,17 @@ void main() {
       );
     }, variant: ios);
 
+    testWidgets('Android offers Google only', (tester) async {
+      await pumpNestApp(tester, health: socialServer());
+      await openSettings(tester);
+      expect(
+        find.text('Link Google once, and it signs you into this account.'),
+        findsOneWidget,
+      );
+      expect(find.text('Apple'), findsNothing);
+      expect(find.text('Google'), findsOneWidget);
+    }, variant: android);
+
     testWidgets('hidden on servers before linking existed', (tester) async {
       await pumpNestApp(
         tester,

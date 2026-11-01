@@ -364,6 +364,7 @@
   "continueWithGoogle": "Doorgaan met Google",
   "signInMethodsTitle": "Aanmeldmethoden",
   "signInMethodsHint": "Koppel Apple of Google één keer, dan melden ze je aan bij dit account.",
+  "signInMethodHint": "Koppel {provider} één keer, dan kun je er voortaan mee aanmelden bij dit account.",
   "linkButton": "Koppelen",
   "signInMethodLinkedLabel": "Gekoppeld",
   "signInMethodLinked": "{provider} is nu gekoppeld aan je account.",

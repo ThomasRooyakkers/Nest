@@ -1749,6 +1749,15 @@
   "@signInMethodsHint": {
     "description": "Explains linking in settings"
   },
+  "signInMethodHint": "Link {provider} once, and it signs you into this account.",
+  "@signInMethodHint": {
+    "description": "Explains linking in settings when only one provider is offered (Google on Android)",
+    "placeholders": {
+      "provider": {
+        "type": "String"
+      }
+    }
+  },
   "linkButton": "Link",
   "@linkButton": {
     "description": "Button that links Apple or Google to the account"

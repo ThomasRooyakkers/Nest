@@ -1277,6 +1277,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Link Apple or Google once, and they sign you into this account.';
 
   @override
+  String signInMethodHint(String provider) {
+    return 'Link $provider once, and it signs you into this account.';
+  }
+
+  @override
   String get linkButton => 'Link';
 
   @override

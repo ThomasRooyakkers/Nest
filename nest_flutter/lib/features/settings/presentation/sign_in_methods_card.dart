@@ -85,7 +85,12 @@ class _SignInMethodsCardState extends ConsumerState<SignInMethodsCard> {
           children: [
             Text(l10n.signInMethodsTitle, style: textTheme.titleLarge),
             const SizedBox(height: 4),
-            Text(l10n.signInMethodsHint, style: textTheme.bodyMedium),
+            Text(
+              options.apple && googleClientId != null
+                  ? l10n.signInMethodsHint
+                  : l10n.signInMethodHint(options.apple ? 'Apple' : 'Google'),
+              style: textTheme.bodyMedium,
+            ),
             const SizedBox(height: 8),
             if (options.apple)
               row(
