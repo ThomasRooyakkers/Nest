@@ -236,6 +236,18 @@ To use it, set `NEST_ADMIN_DOMAIN` in `.env` (for example
 it, for example Cloudflare Access. Sign in with the `SUPER_ADMIN_EMAIL`
 account; other accounts are turned away.
 
+The portal only offers email and password. If you forgot the password, or
+you sign in to the app with Google or Apple only, set a password from the
+command line:
+
+```sh
+docker compose exec nest ./bin/server set-admin-password
+```
+
+It asks for the new password twice and gives it to the `SUPER_ADMIN_EMAIL`
+address, adding email sign-in to the super-admin account if it has none.
+The change is written to the audit log.
+
 ## Backups
 
 The `backup` service dumps the database every day at `BACKUP_TIME` (in the

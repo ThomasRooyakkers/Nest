@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:nest_server/server.dart';
 import 'package:nest_server/src/seed/seed.dart';
-import 'package:serverpod/serverpod.dart';
 
 /// Seeds the development database with sample households and users.
 ///
@@ -11,23 +10,7 @@ import 'package:serverpod/serverpod.dart';
 /// The users' password is `seedPassword` in config/passwords.yaml. Runs on
 /// free ports, so a server started with `serverpod start` can keep running.
 Future<void> main(List<String> args) async {
-  ServerConfig freePort(ServerConfig config) => ServerConfig(
-    port: 0,
-    publicScheme: config.publicScheme,
-    publicHost: config.publicHost,
-    publicPort: config.publicPort,
-  );
-
-  final pod = await createServerpod(
-    args,
-    configOverride: (config) => config.copyWith(
-      apiServer: freePort(config.apiServer),
-      insightsServer: config.insightsServer == null
-          ? null
-          : freePort(config.insightsServer!),
-      futureCallExecutionEnabled: false,
-    ),
-  );
+  final pod = await createServerpod(args, configOverride: toolConfig);
 
   final password = pod.getPassword('seedPassword');
   if (password == null || password.length < 8) {

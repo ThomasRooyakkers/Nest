@@ -2,6 +2,19 @@
 
 ## Current phase
 
+**Admin portal password (2026-11-01, built, not released):** Thomas's
+super-admin account signs in with Google/Apple only, so it had no password
+and could not use the admin portal (email + password only). New command
+`./bin/server set-admin-password` (in the image: `docker compose exec nest
+./bin/server set-admin-password`) asks for a password twice and gives it to
+`superAdminEmail`: changes it when that email sign-in exists, otherwise adds
+email sign-in to the single super-admin (refuses with none or several).
+Audit-logged (`admin.setPassword`). Hosting guide EN/NL updated; seed and
+the command share `toolConfig`. 6 new tests, 350 server tests pass. No API
+change. **Next:** release, deploy to the Pi, run it there. Same day: Resend
+switched on for the Pi (container recreated to load `RESEND_API_KEY`;
+domain `mailing.g3cko.be` verified); a real delivery is still untested.
+
 **App Store Connect (2026-10-31):** the app record already existed (store
 name "Hoomly", SKU/bundle `be.g3cko.nest`, Apple ID 6829200295). Claude
 uploaded build 1.0.0 (1) via `xcodebuild -exportArchive` (destination

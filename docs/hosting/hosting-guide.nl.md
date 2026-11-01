@@ -242,6 +242,18 @@ voer `docker compose up -d` uit. Bescherm het adres met een extra aanmelding
 ervoor, bijvoorbeeld Cloudflare Access. Meld aan met het account van
 `SUPER_ADMIN_EMAIL`; andere accounts komen er niet in.
 
+Het portaal kent alleen e-mail en wachtwoord. Ben je het wachtwoord vergeten,
+of meld je je in de app alleen aan met Google of Apple, stel dan een
+wachtwoord in vanaf de opdrachtregel:
+
+```sh
+docker compose exec nest ./bin/server set-admin-password
+```
+
+De opdracht vraagt het nieuwe wachtwoord twee keer en geeft het aan het adres
+van `SUPER_ADMIN_EMAIL`. Heeft het super-admin-account nog geen aanmelding met
+e-mail, dan wordt die toegevoegd. De wijziging komt in het auditlog.
+
 ## Back-ups
 
 De dienst `backup` maakt elke dag om `BACKUP_TIME` (in tijdzone `TZ`) een

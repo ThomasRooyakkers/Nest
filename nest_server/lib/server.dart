@@ -173,3 +173,22 @@ Future<Serverpod> createServerpod(
 
   return pod;
 }
+
+/// Configuration for command-line tools (seed, set-admin-password): free
+/// ports and no future calls, so they run next to a running server.
+ServerpodConfig toolConfig(ServerpodConfig config) {
+  ServerConfig freePort(ServerConfig config) => ServerConfig(
+    port: 0,
+    publicScheme: config.publicScheme,
+    publicHost: config.publicHost,
+    publicPort: config.publicPort,
+  );
+
+  return config.copyWith(
+    apiServer: freePort(config.apiServer),
+    insightsServer: config.insightsServer == null
+        ? null
+        : freePort(config.insightsServer!),
+    futureCallExecutionEnabled: false,
+  );
+}
