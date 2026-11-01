@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Admin portal password (2026-11-01, built, not released):** Thomas's
+**Admin portal password (2026-11-01, released as 0.13.0):** Thomas's
 super-admin account signs in with Google/Apple only, so it had no password
 and could not use the admin portal (email + password only). New command
 `./bin/server set-admin-password` (in the image: `docker compose exec nest
@@ -11,7 +11,14 @@ and could not use the admin portal (email + password only). New command
 email sign-in to the single super-admin (refuses with none or several).
 Audit-logged (`admin.setPassword`). Hosting guide EN/NL updated; seed and
 the command share `toolConfig`. 6 new tests, 350 server tests pass. No API
-change. **Next:** release, deploy to the Pi, run it there. Same day: Resend
+change. CI passed on `0628c1b` (the first run failed: the test built the auth
+module from passwords CI does not have; it now uses fixed test secrets), tag
+`v0.13.0` on `adae5ec`, images published; deployed by Claude with Thomas's OK
+(`NEST_VERSION=0.13.0`, `.env.bak-*` kept, dump
+`nest-pre-update-20261101-110957.sql.gz`). Verified: health 0.13.0 / API 10,
+web 200, the command is in the image (exit 64 on empty input); the log only
+shows `notSignedIn` from reconnects. **Next:** Thomas runs it on the Pi and
+signs in to the admin portal. Same day: Resend
 switched on for the Pi (container recreated to load `RESEND_API_KEY`;
 domain `mailing.g3cko.be` verified); a real delivery is still untested.
 
