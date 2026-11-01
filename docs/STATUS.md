@@ -934,6 +934,18 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
   "Nothing planned", "Nothing to buy", "Nothing due today"). **Not
   verified:** with real data on production, and on a phone.
 
+- **Android APK (2026-11-01).** Toolchain via Homebrew: `openjdk@17`
+  (set with `flutter config --jdk-dir`) and `android-commandlinetools`
+  (SDK at `/opt/homebrew/share/android-commandlinetools`: platform 36,
+  build-tools 36, NDK 28.2, emulator, AVD `nest_pixel` on an android-36
+  arm64 image). Fix: the main manifest lacked the INTERNET permission, so a
+  release build could not reach any server (debug builds add it themselves).
+  `flutter build apk --release` builds `app-release.apk` (72 MB), still signed
+  with the debug key. On the emulator it starts on the sign-in screen and
+  connects to nest.g3cko.be via "Change server". **Not verified:** signing
+  in, and on a real Android phone. A real upload keystore is needed before
+  Play internal testing (phase 9).
+
 ## Next
 
 1. **Thomas:** create the family's accounts at https://nest.g3cko.be (codes in
