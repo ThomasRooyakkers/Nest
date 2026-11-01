@@ -953,12 +953,16 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
   Apple stays iOS-only (Android would need Apple's web flow). On Android only
   the server's web client ID goes to Google; the app is recognised by package
   `be.g3cko.nest` plus the signing key's SHA-1, so no server change. Checked
-  on the emulator: the button appears against nest.g3cko.be. **Still needed:**
-  (1) **Thomas:** back up the keystore and `key.properties` (password
-  manager); (2) **Thomas:** an Android OAuth client in Google Cloud with the
-  package name and the SHA-1 above, and later a second one with Play's app
-  signing key SHA-1 (Play Console → App integrity); (3) a real Google sign-in
-  on the emulator and on a phone.
+  on the emulator: the button appears against nest.g3cko.be. Thomas created
+  the Android OAuth client (upload key SHA-1) and backed up the keystore and
+  `key.properties` in Bitwarden. **Verified 2026-11-01 on the emulator
+  against production:** Thomas signed in with Google and landed in his
+  household; Settings shows Google as linked and no Apple row. **Still
+  needed:** a second Android OAuth client with Play's app signing key SHA-1
+  (Play Console → App integrity) once the app is on Play, and a test on a
+  real phone. The emulator AVD was created with `hw.keyboard=no`; set
+  `hw.keyboard=yes` in `~/.android/avd/<name>.avd/config.ini` to type with
+  the Mac keyboard.
 
 ## Next
 
