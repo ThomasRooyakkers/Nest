@@ -18,10 +18,12 @@ module from passwords CI does not have; it now uses fixed test secrets), tag
 `nest-pre-update-20261101-110957.sql.gz`). Verified: health 0.13.0 / API 10,
 web 200, the command is in the image (exit 64 on empty input); the log only
 shows `notSignedIn` from reconnects. On the Pi it first failed: `toolConfig` moved the API and
-Insights servers to free ports but not the web server (8082, busy).
-Workaround until the next release: `docker compose exec -e
-SERVERPOD_WEB_SERVER_PORT=18099 nest ./bin/server set-admin-password`. Fixed
-in `toolConfig` (checked locally with 8082 taken); not released yet. Same day: Resend
+Insights servers to free ports but not the web server (8082, busy). Fixed
+in **0.13.1** (`fa29d8d`, CI and images passed, deployed by Claude with
+Thomas's OK; dump `nest-pre-update-20261101-112540.sql.gz`, `.env.bak-*`
+kept). Verified: health 0.13.1, web and admin 200, the plain command starts
+and refuses a short password, no errors in the log. **Next:** Thomas runs
+it and signs in to the admin portal. Same day: Resend
 switched on for the Pi (container recreated to load `RESEND_API_KEY`;
 domain `mailing.g3cko.be` verified); a real delivery is still untested.
 
