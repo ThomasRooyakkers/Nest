@@ -17,12 +17,16 @@ void main() {
     const email = 'admin@example.com';
     late Session session;
 
-    // The test server does not initialise the auth module; this is the
-    // production setup minus Google and Apple.
+    // The test server does not initialise the auth module, and CI has no
+    // auth passwords, so it gets fixed test secrets.
     setUpAll(
       () => AuthServices.set(
-        tokenManagerBuilders: [JwtConfigFromPasswords()],
-        identityProviderBuilders: [EmailIdpConfigFromPasswords()],
+        tokenManagerBuilders: [
+          ServerSideSessionsConfig(sessionKeyHashPepper: 'test-session-pepper'),
+        ],
+        identityProviderBuilders: [
+          const EmailIdpConfig(secretHashPepper: 'test-email-pepper'),
+        ],
       ),
     );
 
