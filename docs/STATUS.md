@@ -27,6 +27,32 @@ it and signs in to the admin portal. Same day: Resend
 switched on for the Pi (container recreated to load `RESEND_API_KEY`;
 domain `mailing.g3cko.be` verified); a real delivery is still untested.
 
+**Google Play Console (2026-11-02, in progress):** Thomas's account is a
+*personal* developer account, so Google requires a **closed test with at
+least 12 opted-in testers for 14 days in a row** before he can apply for
+production; a public release is at least two weeks away. Thomas created the
+app (name "Hoomly", package `be.g3cko.nest`, app ID 4973502857776228997,
+free, default language en-GB; he accepted the declarations). Claude filled:
+privacy policy (`https://nest.g3cko.be/privacy.html`), ads (none),
+advertising ID (no; the merged manifest has no `AD_ID` permission),
+government/financial/health (none), store settings (Lifestyle, contact
+email, website `https://nest.g3cko.be/`), store listing text EN + NL
+(draft; text in `docs/app-review/play-store-listing.md`), Data safety
+(draft: name, email, user IDs, photos, search history (ephemeral), other
+user content; collected for app functionality/account management, not
+shared, encrypted in transit; deletion URL = the privacy page). Signed AAB
+1.0.0+1 built (`flutter build appbundle --release`, upload key CN=Nest).
+Play graphics in `store-screenshots/play-graphics` (icon 512, feature
+graphic EN/NL 1024x500) and `play-en`/`play-nl` (1080x1920 phone
+screenshots; iPhone shots padded to 9:16). **With Thomas:** demo account
+password in Sign-in details, IARC terms in Content ratings, upload the
+graphics and the AAB (the built-in browser can't upload files), tester list.
+**Then Claude:** content rating answers, target audience, submit Data
+safety, internal + closed testing releases. **After Play signs the app:**
+second Android OAuth client with Play's app signing SHA-1 (App integrity).
+Consider a dedicated account-deletion page that names "Hoomly" (Play's
+deletion link should name the app shown in the store).
+
 **App Store Connect (2026-10-31):** the app record already existed (store
 name "Hoomly", SKU/bundle `be.g3cko.nest`, Apple ID 6829200295). Claude
 uploaded build 1.0.0 (1) via `xcodebuild -exportArchive` (destination
