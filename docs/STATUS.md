@@ -43,10 +43,22 @@ user content; collected for app functionality/account management, not
 shared, encrypted in transit; deletion URL = the privacy page). Signed AAB
 1.0.0+1 built (`flutter build appbundle --release`, upload key CN=Nest).
 Play graphics in `store-screenshots/play-graphics` (icon 512, feature
-graphic EN/NL 1024x500) and `play-en`/`play-nl` (1080x1920 phone
-screenshots; iPhone shots padded to 9:16). **With Thomas:** demo account
-password in Sign-in details, IARC terms in Content ratings, upload the
-graphics and the AAB (the built-in browser can't upload files), tester list.
+graphic EN/NL 1024x500, same layout as the App Store header but with the
+Android screens) and `play-en`/`play-nl`: real Android screenshots, 1080x1920
+(`adb shell wm size 1080x1920` on AVD `nest_pixel`, profile build with
+`SCREENSHOTS=true` and `SERVER_URL=http://10.0.2.2:8080/`, local seed data,
+demo-mode 9:41 status bar, 24-hour clock), the same six screens as iOS:
+EN as thomas@ in "Home", NL as jan@ with "Test family" briefly renamed
+"Familie Janssens" (renamed back). Tonight's dinner was set to Pumpkin soup
+(Home) and Spaghetti bolognese (Test family) in the local database.
+Two Android bugs found and fixed on the way: the status bar icons were
+white on ivory (now `SystemUiOverlayStyle` with dark icons in `main.dart`
+and `windowLightStatusBar` in `styles.xml`), and Android's back button in
+Settings closed the app (Home now pushes Settings; its back arrow pops).
+Checked on the emulator; 190 app tests pass. AAB rebuilt with both fixes.
+**With Thomas (done 2026-11-02):** Sign-in details, content rating.
+**With Thomas:** upload the graphics and the AAB (the built-in browser can't
+upload files), tester list.
 **Then Claude:** content rating answers, target audience, submit Data
 safety, internal + closed testing releases. **After Play signs the app:**
 second Android OAuth client with Play's app signing SHA-1 (App integrity).
