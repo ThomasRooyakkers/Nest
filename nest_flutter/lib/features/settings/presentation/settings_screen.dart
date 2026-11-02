@@ -30,7 +30,10 @@ class SettingsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.settingsTitle),
-        leading: BackButton(onPressed: () => context.go(Routes.home)),
+        leading: BackButton(
+          onPressed: () =>
+              context.canPop() ? context.pop() : context.go(Routes.home),
+        ),
       ),
       body: SafeArea(
         child: ListView(

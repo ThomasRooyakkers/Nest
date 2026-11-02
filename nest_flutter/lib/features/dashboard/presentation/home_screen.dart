@@ -106,7 +106,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 NestRoundButton(
                   tooltip: l10n.settingsTitle,
                   icon: LucideIcons.settings,
-                  onPressed: () => context.go(Routes.settings),
+                  // Push, not go: Android's back button must return to Home.
+                  onPressed: () => context.push(Routes.settings),
                 ),
               ],
             ),
