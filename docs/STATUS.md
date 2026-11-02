@@ -27,6 +27,19 @@ it and signs in to the admin portal. Same day: Resend
 switched on for the Pi (container recreated to load `RESEND_API_KEY`;
 domain `mailing.g3cko.be` verified); a real delivery is still untested.
 
+**Google Play closed test submitted (2026-11-02):** track "Closed testing -
+Alpha", all 178 countries, tester email list "Testing" (Thomas adds family
+under Users and permissions → Tester groups), feedback to Thomas's Gmail.
+Release "1.0.0 (1) first closed test" (AAB with the status-bar and back
+fixes, 13 MB download) plus the listings and App content: 16 changes sent
+to Google for review. Play app signing key SHA-1
+`AC:7B:AA:0E:17:0E:60:56:38:06:6A:2F:89:EA:0A:5A:3D:7E:80:D5` (SHA-256
+`90:5A:99:E8:…:4B:5B:4F`). **Needed before Play testers use Google
+sign-in:** an Android OAuth client for `be.g3cko.nest` with that SHA-1 in
+the same Google Cloud project as the first one. **Next:** once approved,
+share the opt-in link; after 12 testers × 14 days, apply for production.
+Family who installed the sideloaded APK uninstall it first.
+
 **Google Play paused (2026-11-02, Thomas's choice):** iOS comes first; no
 testing tracks for now. Close family gets the release APK directly
 (`flutter build apk --release`, signed with the upload key, SHA-1
