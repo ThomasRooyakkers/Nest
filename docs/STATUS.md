@@ -36,6 +36,10 @@ app signing key, so family must uninstall the sideloaded APK before
 installing from Play (different signature), and the second Android OAuth
 client (Play SHA-1) is still needed. Store listing graphics and the AAB are
 still to upload.
+Android developer verification (Play Console → Manage account): identity
+comes from the developer account; `be.g3cko.nest` is registered with Play's
+three keys (verified) and, added 2026-11-02, the upload key SHA-256
+`91:1A:7C:89:…:79:10:E0` that signs the family APK (status "In review").
 
 **Google Play Console (2026-11-02, in progress):** Thomas's account is a
 *personal* developer account, so Google requires a **closed test with at
