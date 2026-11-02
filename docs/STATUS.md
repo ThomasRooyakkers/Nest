@@ -27,6 +27,16 @@ it and signs in to the admin portal. Same day: Resend
 switched on for the Pi (container recreated to load `RESEND_API_KEY`;
 domain `mailing.g3cko.be` verified); a real delivery is still untested.
 
+**Google Play paused (2026-11-02, Thomas's choice):** iOS comes first; no
+testing tracks for now. Close family gets the release APK directly
+(`flutter build apk --release`, signed with the upload key, SHA-1
+BF:53:03:CA:…, so Google sign-in works; checked on the emulator against
+nest.g3cko.be). When Play resumes: the Play build is re-signed with Play's
+app signing key, so family must uninstall the sideloaded APK before
+installing from Play (different signature), and the second Android OAuth
+client (Play SHA-1) is still needed. Store listing graphics and the AAB are
+still to upload.
+
 **Google Play Console (2026-11-02, in progress):** Thomas's account is a
 *personal* developer account, so Google requires a **closed test with at
 least 12 opted-in testers for 14 days in a row** before he can apply for
