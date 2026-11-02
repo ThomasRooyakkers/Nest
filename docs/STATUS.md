@@ -34,9 +34,13 @@ Release "1.0.0 (1) first closed test" (AAB with the status-bar and back
 fixes, 13 MB download) plus the listings and App content: 16 changes sent
 to Google for review. Play app signing key SHA-1
 `AC:7B:AA:0E:17:0E:60:56:38:06:6A:2F:89:EA:0A:5A:3D:7E:80:D5` (SHA-256
-`90:5A:99:E8:…:4B:5B:4F`). **Needed before Play testers use Google
-sign-in:** an Android OAuth client for `be.g3cko.nest` with that SHA-1 in
-the same Google Cloud project as the first one. **Next:** once approved,
+`90:5A:99:E8:…:4B:5B:4F`). Google Cloud project "Hoomly" (`nest-513307`):
+Claude added the Android OAuth client "Hoomly Google login Android (Play)"
+(`be.g3cko.nest` + Play SHA-1) next to the upload-key client, and, with
+Thomas's OK, moved the OAuth consent screen from "Testing" (0 test users:
+only the project owner could use Google sign-in) to "In production". Only
+basic sign-in scopes and no logo, so no Google verification is needed.
+Not yet verified with a non-owner account on a phone. **Next:** once approved,
 share the opt-in link; after 12 testers × 14 days, apply for production.
 Family who installed the sideloaded APK uninstall it first.
 
