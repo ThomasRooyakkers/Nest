@@ -2,8 +2,20 @@
 
 ## Current phase
 
-**Admin portal package C, part 2: alert emails (2026-11-04, not released
-yet; Thomas decided 2026-11-04 to allow admin-only alert emails, recorded
+**0.16.0 released and deployed (2026-11-04):** Overview page with metrics
+and admin alert emails (package C, below). CI passed on `05c2179`, tag
+`v0.16.0`, images built; deployed by Claude with Thomas's OK using the
+v0.16.0 deploy kit (`.env.bak-20261104-094424`). Verified: health 0.16.0 /
+API 11, migration applied (`admin_alert`), only `notSignedIn` refusals in
+the log. The first alert check opened nothing, which matches the state:
+last successful backup (target `local`) 2026-11-04 02:00 UTC, disk about
+67 % free, no real server errors. A real alert email has not been seen
+yet; Send test email on the Server page checks the mail path.
+`UPTIME_PING_URL` is not set on the Pi (needs Thomas's healthchecks.io or
+similar account).
+
+**Admin portal package C, part 2: alert emails (2026-11-04, released as
+0.16.0; Thomas decided 2026-11-04 to allow admin-only alert emails, recorded
 in CLAUDE.md section 1 as the one exception to "no notifications"):**
 - `AdminAlerts` checks every 5 minutes (first check a minute after start):
   no successful backup in 26 hours (also "never"), the latest run of a
@@ -30,10 +42,9 @@ in CLAUDE.md section 1 as the one exception to "no notifications"):**
 - **On the Pi after release:** with Resend configured, expect an email if
   any condition already holds. Setting up a healthchecks.io check and
   `UPTIME_PING_URL` is Thomas's choice (it needs an account there).
-- **Next:** release 0.16.0 with Overview and alerts (needs Thomas's OK).
 
-**Admin portal package C, part 1: Overview with metrics (2026-11-04, not
-released yet):**
+**Admin portal package C, part 1: Overview with metrics (2026-11-04,
+released as 0.16.0):**
 - The portal now opens on **Overview**: status cards (server and database,
   real server errors in the last hour with refused calls shown apart, last
   backup, free space, mail) and eight trend charts (processor load,
