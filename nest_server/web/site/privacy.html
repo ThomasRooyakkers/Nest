@@ -44,8 +44,16 @@
         name and preferred language.</li>
       <li>What you and your household enter: shopping lists and items, stores,
         recipes and their photos, meal plans, tasks and watchlist titles.</li>
-      <li>Technical server logs needed to keep the service running, such as
-        error messages and request times.</li>
+      <li>Technical server logs needed to keep the service running: failed
+        and slow requests with the time, the kind of request, how long it
+        took, the error and which account made it. They never contain what
+        your household enters and are deleted after 14 days.</li>
+      <li>Sign-in events, to protect accounts: when someone signs in, creates
+        an account, asks for a password reset or deletes an account. A
+        failed sign-in keeps only a shortened email address (such as
+        t***@example.com). No IP addresses are stored. They are deleted
+        after 30 days, and when you delete your account.</li>
+      <li>Logs and sign-in events are not part of backups.</li>
     </ul>
 
     <h2>What we do not do</h2>
@@ -103,8 +111,17 @@
       <li>Wat jij en je huishouden invoeren: boodschappenlijsten en items,
         winkels, recepten en hun foto's, maaltijdplannen, taken en titels op
         de kijklijst.</li>
-      <li>Technische serverlogs die nodig zijn om de dienst te laten werken,
-        zoals foutmeldingen en tijdstippen van verzoeken.</li>
+      <li>Technische serverlogs die nodig zijn om de dienst te laten werken:
+        mislukte en trage verzoeken met het tijdstip, het soort verzoek, de
+        duur, de fout en welk account het deed. Ze bevatten nooit wat je
+        huishouden invoert en worden na 14 dagen verwijderd.</li>
+      <li>Inloggebeurtenissen, om accounts te beschermen: wanneer iemand
+        inlogt, een account aanmaakt, een nieuw wachtwoord aanvraagt of een
+        account verwijdert. Bij een mislukte poging bewaren we alleen een
+        ingekort e-mailadres (zoals t***@example.com). IP-adressen worden
+        niet bewaard. Ze worden na 30 dagen verwijderd, en wanneer je je
+        account verwijdert.</li>
+      <li>Logs en inloggebeurtenissen zitten niet in back-ups.</li>
     </ul>
 
     <h2>Wat we niet doen</h2>

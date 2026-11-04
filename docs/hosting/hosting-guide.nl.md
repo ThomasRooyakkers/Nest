@@ -57,6 +57,7 @@ Open `.env` in een editor. Elke instelling wordt in het bestand uitgelegd.
 | `SIGN_UP_MODE` | `invite-only` (aanbevolen: nieuwe accounts hebben een uitnodigingscode van een huishouden nodig) of `open` |
 | `NEST_IMAGE`, `NEST_BACKUP_IMAGE`, `NEST_VERSION` | het server- en back-upimage en de versie; laat de waarden uit `.env.example` staan, tenzij je een bepaalde versie wilt |
 | `UPDATE_CHECK` | `on` (standaard): de Server-pagina van het beheerportaal toont of er een nieuwere Nest-versie is, gelezen uit de openbare releaselijst op GitHub, hoogstens om de 6 uur en alleen terwijl die pagina open is; `off`: nooit vragen |
+| `LOG_RETENTION` | hoe lang het logboek van het beheerportaal mislukte en trage aanroepen bewaart, bv. `14d` (standaard) of `30d`; logs zitten nooit in back-ups |
 | `DATABASE_PASSWORD`, `SERVICE_SECRET`, `EMAIL_SECRET_HASH_PEPPER`, `JWT_HMAC_SHA512_PRIVATE_KEY`, `JWT_REFRESH_TOKEN_HASH_PEPPER` | elk een andere willekeurige waarde |
 | `RESEND_API_KEY`, `MAIL_FROM` | optioneel, zie "Mail" hieronder |
 | `TMDB_API_KEY` | optioneel, zie "Filmgegevens" hieronder |
@@ -233,9 +234,29 @@ dat.
 
 ## Beheerportaal
 
-Het beheerportaal toont de huishoudens, gebruikers, back-ups, systeemstatus
-en een auditlog van elke beheeractie. Het toont nooit wat een huishouden in
-Nest bewaart (geen lijstitems, recepten of taaknamen).
+Het beheerportaal toont de huishoudens, gebruikers, back-ups, systeemstatus,
+de instellingen van de server, logs, inloggebeurtenissen en een auditlog van
+elke beheeractie. Het toont nooit wat een huishouden in Nest bewaart (geen
+lijstitems, recepten of taaknamen).
+
+**Huishoudens en gebruikers.** Open een huishouden om de rollen van leden,
+de uitnodigingscode en de onderdelen te beheren, of maak een nieuw
+huishouden met een uitnodigingscode voor een gezin dat nog niet op de server
+staat: wie als eerste met de code lid wordt, wordt eigenaar. Open een
+gebruiker om de inlogmethoden en toestellen te zien, diegene overal uit te
+loggen of uit te schakelen.
+
+**Server.** De instellingen waarmee de server draait (nooit geheimen), een
+testmail naar je eigen adres, een test van de filmgegevens en of er een
+nieuwere versie is (`UPDATE_CHECK`).
+
+**Logboek en Beveiliging.** Het logboek toont mislukte en trage
+serveraanroepen, bewaard volgens `LOG_RETENTION` (standaard 14 dagen);
+Beveiliging toont inlogs, mislukte inlogpogingen, nieuwe accounts en
+wachtwoordherstel, 30 dagen bewaard. Geen van beide bewaart IP-adressen,
+SQL of inhoud van huishoudens; e-mailadressen zijn gemaskeerd en
+aanmeldcodes verborgen. Beide zitten niet in back-ups. Vermeld ze in je
+eigen privacybeleid: dat van Nest (`/privacy.html`) is een voorbeeld.
 
 Zet daarvoor `NEST_ADMIN_DOMAIN` in `.env` (bijvoorbeeld
 `nest-admin.example.com`), stuur het door zoals het webadres (poort 8082) en

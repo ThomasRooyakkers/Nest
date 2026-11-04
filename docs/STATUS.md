@@ -2,7 +2,54 @@
 
 ## Current phase
 
-**Admin portal management, package A (2026-11-04, not released yet):**
+**Admin portal package B: logs and security events (2026-11-04, not
+released yet):**
+- **Finding on the Pi:** Serverpod stores session logs in the database by
+  default in production, with no cleanup unless retention is configured.
+  Since 2026-10-28 the Pi collected 23,536 rows in `serverpod_session_log`
+  (29 MB of the 41 MB database), mostly streaming (realtime) sessions, plus
+  SQL text of slow queries, and all of it went into every backup.
+- **Logging now** (`NestLogging`, applied at start): only failed and slow
+  calls (all calls in development), no SQL text, no per-message streaming
+  logs. `sessionLogs` keeps them 14 days (`retentionPeriod: 14d`, hourly
+  cleanup); hosts change it with `LOG_RETENTION` in `.env`. The first
+  cleanup after deploy removes nothing older than 14 days yet; the
+  streaming noise stops.
+- **Security events** (new table `security_event`, kept 30 days): sign-ins
+  (admin sign-ins marked), failed sign-ins with a masked email and reason,
+  new accounts, password reset requests, password changes, account
+  deletions. No IP addresses. Deleting an account removes its events.
+  Recorded in `EmailIdpEndpoint` and `SocialSignIn.run`.
+- **Backups** (`deploy/backup/backup.sh`) and the pre-update dump
+  (`deploy.sh`) leave out the rows of the log, health-metric and
+  security-event tables (tables kept, data excluded). Needs the 0.15.0
+  backup image.
+- **Portal:** Logs page (errors / slow last 24 h, retention, filters, a
+  detail dialog with error, stack trace and messages) and Security page
+  (sign-ins and failed sign-ins last 24 h, filters, rows open the user).
+  All text is redacted on the server (`LogRedaction`: emails masked,
+  `<codes>` hidden); our own mail error log masks the address too.
+- Privacy page (EN/NL) and hosting guide (EN/NL) describe logs, sign-in
+  events, retention and that backups leave them out. To check when the app
+  stores are next updated: whether the App Store privacy answers should
+  list diagnostics (server logs linked to an account); the Play Data
+  safety draft is unaffected (no IPs, not shared).
+- Tests: 431 server tests (new: redaction, events from real email sign-in,
+  failed sign-in, reset, expiry, account deletion, redacted logs, summary,
+  production log settings) and 18 portal tests pass. Checked in the
+  browser against the local server: a wrong password and a sign-in show up
+  on Security; Logs and its detail dialog work.
+- **Next:** release 0.15.0 and deploy to the Pi (needs Thomas's OK). Then
+  package C (metrics, overview page, alerts), which still needs Thomas's
+  decision on admin email alerts vs. "no notifications in v1".
+
+**0.14.0 released and deployed (2026-11-04):** package A below. CI passed
+on `4b332d5`, tag `v0.14.0`, images built; deployed by Claude with
+Thomas's OK using the v0.14.0 deploy kit (`.env.bak-20261104-090708`, dump
+`nest-pre-update-20261104-090725.sql.gz`). Verified: health 0.14.0 / API
+11, web 200, no errors in the log.
+
+**Admin portal management, package A (2026-11-04, released as 0.14.0):**
 Thomas asked for a portal to properly manage the server, plus logging and
 monitoring; the plan has three packages: A management, B logging, C
 monitoring and alerts. Package A is built:

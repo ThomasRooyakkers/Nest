@@ -55,6 +55,7 @@ Open `.env` in an editor. Every setting is explained in the file.
 | `SIGN_UP_MODE` | `invite-only` (recommended: new accounts need a household invite code) or `open` |
 | `NEST_IMAGE`, `NEST_BACKUP_IMAGE`, `NEST_VERSION` | the server and backup images and the version; keep the values from `.env.example` unless you want a specific version |
 | `UPDATE_CHECK` | `on` (default): the admin portal's Server page shows whether a newer Nest release exists, read from the public release list on GitHub at most every 6 hours and only while that page is open; `off`: never ask |
+| `LOG_RETENTION` | how long the admin portal's Logs page keeps failed and slow calls, e.g. `14d` (default) or `30d`; logs are never in backups |
 | `DATABASE_PASSWORD`, `SERVICE_SECRET`, `EMAIL_SECRET_HASH_PEPPER`, `JWT_HMAC_SHA512_PRIVATE_KEY`, `JWT_REFRESH_TOKEN_HASH_PEPPER` | each a different random value |
 | `RESEND_API_KEY`, `MAIL_FROM` | optional, see "Mail" below |
 | `TMDB_API_KEY` | optional, see "Film data" below |
@@ -227,9 +228,27 @@ app is too old for the server, it says so.
 
 ## Admin portal
 
-The admin portal shows the households, users, backups, system health and an
-audit log of every admin action. It never shows what a household keeps in
-Nest (no list items, recipes or task titles).
+The admin portal shows the households, users, backups, system health, the
+server's settings, logs, sign-in events and an audit log of every admin
+action. It never shows what a household keeps in Nest (no list items,
+recipes or task titles).
+
+**Households and users.** Open a household to manage its members' roles,
+invite code and features, or create a new household with an invite code
+for a family that is not on the server yet: the first person to join with
+the code becomes its owner. Open a user to see their sign-in methods and
+devices, sign them out everywhere, or disable them.
+
+**Server.** The settings the server runs with (never secrets), a test email
+to your own address, a film data test and whether a newer release exists
+(`UPDATE_CHECK`).
+
+**Logs and Security.** Logs lists failed and slow server calls, kept for
+`LOG_RETENTION` (14 days by default); Security lists sign-ins, failed
+sign-ins, new accounts and password resets, kept for 30 days. Neither
+stores IP addresses, SQL text or household content; emails are masked and
+sign-up codes hidden. Both are left out of backups. Mention them in your
+own privacy policy: Nest's (`/privacy.html`) is an example.
 
 To use it, set `NEST_ADMIN_DOMAIN` in `.env` (for example
 `nest-admin.example.com`), route it like the web address (port 8082) and run
