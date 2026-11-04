@@ -69,7 +69,7 @@ class AdminMetricsEndpoint extends Endpoint {
     ];
 
     final hourAgo = to.subtract(const Duration(hours: 1));
-    final lastHour = await _errorCounts(session, hourAgo);
+    final lastHour = await NestMetrics.errorCounts(session, hourAgo);
     return AdminMetrics(
       range: range,
       from: from,
@@ -81,8 +81,6 @@ class AdminMetricsEndpoint extends Endpoint {
     );
   }
 
-  static String get _refused => '"error" ILIKE ANY(@refused::text[])';
-
   /// Unexpected errors and slow calls per bucket, from the session logs
   /// (which are kept for the log retention only).
   static Future<List<AdminMetricSeries>> _logSeries(
@@ -92,7 +90,7 @@ class AdminMetricsEndpoint extends Endpoint {
   ) async {
     final rows = await session.db.unsafeQuery(
       'SELECT (floor(extract(epoch FROM "time") / @size) * @size)::bigint AS b, '
-      'count(*) FILTER (WHERE "error" IS NOT NULL AND NOT $_refused), '
+      'count(*) FILTER (WHERE "error" IS NOT NULL AND NOT ${NestMetrics.refusedSql}), '
       'count(*) FILTER (WHERE "slow") '
       'FROM "serverpod_session_log" WHERE "time" > @from '
       'GROUP BY b ORDER BY b',
@@ -116,23 +114,5 @@ class AdminMetricsEndpoint extends Endpoint {
       AdminMetricSeries(name: 'serverErrors', points: errors),
       AdminMetricSeries(name: 'slowCalls', points: slow),
     ];
-  }
-
-  static Future<({int server, int refused})> _errorCounts(
-    Session session,
-    DateTime since,
-  ) async {
-    final rows = await session.db.unsafeQuery(
-      'SELECT count(*) FILTER (WHERE NOT $_refused), '
-      'count(*) FILTER (WHERE $_refused) '
-      'FROM "serverpod_session_log" '
-      'WHERE "time" > @since AND "error" IS NOT NULL',
-      parameters: QueryParameters.named({
-        'since': since,
-        'refused': NestMetrics.refusedPatterns,
-      }),
-    );
-    final row = rows.first;
-    return (server: row[0] as int, refused: row[1] as int);
   }
 }

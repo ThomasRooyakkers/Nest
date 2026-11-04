@@ -1,0 +1,9 @@
+### What an [AdminAlert] is about.
+enum: AdminAlertKind
+serialized: byName
+values:
+  - backupLate
+  - backupFailed
+  - diskLow
+  - errorBurst
+  - databaseDown

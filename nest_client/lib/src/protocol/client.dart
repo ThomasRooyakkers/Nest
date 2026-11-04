@@ -13,6 +13,8 @@
 import 'dart:async' as _ida;
 import 'dart:typed_data' as _idt;
 import 'package:http/http.dart' as _i85jenna;
+import 'package:nest_client/src/protocol/admin/admin_alerts_overview.dart'
+    as _i9fy7s0x;
 import 'package:nest_client/src/protocol/admin/admin_audit_entry.dart'
     as _iu6tpcav;
 import 'package:nest_client/src/protocol/admin/admin_backups.dart' as _imqa28ij;
@@ -413,6 +415,23 @@ class EndpointJwtRefresh extends _iacc.EndpointRefreshJwtTokens {
         'refreshAccessToken',
         {'refreshToken': refreshToken},
         authenticated: false,
+      );
+}
+
+/// Alerts for the admin portal (see [AdminAlerts]).
+/// {@category Endpoint}
+class EndpointAdminAlerts extends _isc.EndpointRef {
+  EndpointAdminAlerts(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'adminAlerts';
+
+  /// Open alerts and those resolved in the last 30 days, newest first.
+  _ida.Future<_i9fy7s0x.AdminAlertsOverview> overview() =>
+      caller.callServerEndpoint<_i9fy7s0x.AdminAlertsOverview>(
+        'adminAlerts',
+        'overview',
+        {},
       );
 }
 
@@ -1564,6 +1583,7 @@ class Client extends _isc.ServerpodClientShared {
     emailIdp = EndpointEmailIdp(this);
     googleIdp = EndpointGoogleIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
+    adminAlerts = EndpointAdminAlerts(this);
     adminAudit = EndpointAdminAudit(this);
     adminBackups = EndpointAdminBackups(this);
     adminHouseholds = EndpointAdminHouseholds(this);
@@ -1590,6 +1610,8 @@ class Client extends _isc.ServerpodClientShared {
   late final EndpointGoogleIdp googleIdp;
 
   late final EndpointJwtRefresh jwtRefresh;
+
+  late final EndpointAdminAlerts adminAlerts;
 
   late final EndpointAdminAudit adminAudit;
 
@@ -1631,6 +1653,7 @@ class Client extends _isc.ServerpodClientShared {
     'emailIdp': emailIdp,
     'googleIdp': googleIdp,
     'jwtRefresh': jwtRefresh,
+    'adminAlerts': adminAlerts,
     'adminAudit': adminAudit,
     'adminBackups': adminBackups,
     'adminHouseholds': adminHouseholds,

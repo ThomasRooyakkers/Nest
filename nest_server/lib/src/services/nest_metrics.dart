@@ -29,6 +29,29 @@ abstract final class NestMetrics {
     '%RefreshToken%Exception(%',
   ];
 
+  /// SQL condition on `serverpod_session_log`: the error is a refusal.
+  /// Needs the `@refused` parameter set to [refusedPatterns].
+  static const refusedSql = '"error" ILIKE ANY(@refused::text[])';
+
+  /// Real server errors and refused calls logged since [since].
+  static Future<({int server, int refused})> errorCounts(
+    Session session,
+    DateTime since,
+  ) async {
+    final rows = await session.db.unsafeQuery(
+      'SELECT count(*) FILTER (WHERE NOT $refusedSql), '
+      'count(*) FILTER (WHERE $refusedSql) '
+      'FROM "serverpod_session_log" '
+      'WHERE "time" > @since AND "error" IS NOT NULL',
+      parameters: QueryParameters.named({
+        'since': since,
+        'refused': refusedPatterns,
+      }),
+    );
+    final row = rows.first;
+    return (server: row[0] as int, refused: row[1] as int);
+  }
+
   /// Serverpod's `healthCheckHandler`: free disk share and database size.
   static Future<List<sp.ServerHealthMetric>> healthCheck(
     Serverpod pod,

@@ -82,6 +82,7 @@ const adminMethods = {
   'adminLogs.securityEvents',
   'adminLogs.summary',
   'adminMetrics.metrics',
+  'adminAlerts.overview',
 };
 
 /// Methods that are deliberately not household-scoped.

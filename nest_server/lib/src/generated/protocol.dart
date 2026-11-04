@@ -48,6 +48,9 @@ import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
+import 'admin/admin_alert.dart' as _ixjhpv4d;
+import 'admin/admin_alert_kind.dart' as _iehuwih8;
+import 'admin/admin_alerts_overview.dart' as _imf78wrj;
 import 'admin/admin_audit_entry.dart' as _i0hg09us;
 import 'admin/admin_audit_log.dart' as _iha05d3i;
 import 'admin/admin_backups.dart' as _iwl7hvp6;
@@ -116,6 +119,9 @@ import 'watchlist/watch_status.dart' as _itdekt2o;
 import 'watchlist/watch_type.dart' as _irhe6aqe;
 import 'watchlist/watchlist_event.dart' as _i1vaprkc;
 import 'watchlist/watchlist_item.dart' as _i28z76f1;
+export 'admin/admin_alert.dart';
+export 'admin/admin_alert_kind.dart';
+export 'admin/admin_alerts_overview.dart';
 export 'admin/admin_audit_entry.dart';
 export 'admin/admin_audit_log.dart';
 export 'admin/admin_backups.dart';
@@ -193,6 +199,73 @@ class Protocol extends _is.DatabaseSerializationManager {
   static final Protocol _instance = Protocol._().._registerHostProtocols();
 
   static List<_isp.TableDefinition> get targetTableDefinitions => [
+    _isp.TableDefinition(
+      name: 'admin_alert',
+      dartName: 'AdminAlert',
+      schema: 'public',
+      module: 'nest',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'kind',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:AdminAlertKind',
+        ),
+        _isp.ColumnDefinition(
+          name: 'details',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'openedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+          columnDefault: 'now',
+        ),
+        _isp.ColumnDefinition(
+          name: 'lastSentAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'resolvedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'admin_alert_open_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'kind',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'resolvedAt',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
     _isp.TableDefinition(
       name: 'admin_audit_log',
       dartName: 'AdminAuditLog',
@@ -1994,6 +2067,15 @@ class Protocol extends _is.DatabaseSerializationManager {
       }
     }
 
+    if (t == _ixjhpv4d.AdminAlert) {
+      return _ixjhpv4d.AdminAlert.fromJson(data) as T;
+    }
+    if (t == _iehuwih8.AdminAlertKind) {
+      return _iehuwih8.AdminAlertKind.fromJson(data) as T;
+    }
+    if (t == _imf78wrj.AdminAlertsOverview) {
+      return _imf78wrj.AdminAlertsOverview.fromJson(data) as T;
+    }
     if (t == _i0hg09us.AdminAuditEntry) {
       return _i0hg09us.AdminAuditEntry.fromJson(data) as T;
     }
@@ -2197,6 +2279,19 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (t == _i28z76f1.WatchlistItem) {
       return _i28z76f1.WatchlistItem.fromJson(data) as T;
+    }
+    if (t == _is.getType<_ixjhpv4d.AdminAlert?>()) {
+      return (data != null ? _ixjhpv4d.AdminAlert.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_iehuwih8.AdminAlertKind?>()) {
+      return (data != null ? _iehuwih8.AdminAlertKind.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_imf78wrj.AdminAlertsOverview?>()) {
+      return (data != null
+              ? _imf78wrj.AdminAlertsOverview.fromJson(data)
+              : null)
+          as T;
     }
     if (t == _is.getType<_i0hg09us.AdminAuditEntry?>()) {
       return (data != null ? _i0hg09us.AdminAuditEntry.fromJson(data) : null)
@@ -2455,6 +2550,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (t == _is.getType<_i28z76f1.WatchlistItem?>()) {
       return (data != null ? _i28z76f1.WatchlistItem.fromJson(data) : null)
+          as T;
+    }
+    if (t == List<_ixjhpv4d.AdminAlert>) {
+      return (data as List)
+              .map((e) => deserialize<_ixjhpv4d.AdminAlert>(e))
+              .toList()
           as T;
     }
     if (t == List<_iabyer0k.BackupRun>) {
@@ -2794,6 +2895,9 @@ class Protocol extends _is.DatabaseSerializationManager {
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
+      _ixjhpv4d.AdminAlert => 'AdminAlert',
+      _iehuwih8.AdminAlertKind => 'AdminAlertKind',
+      _imf78wrj.AdminAlertsOverview => 'AdminAlertsOverview',
       _i0hg09us.AdminAuditEntry => 'AdminAuditEntry',
       _iha05d3i.AdminAuditLog => 'AdminAuditLog',
       _iwl7hvp6.AdminBackups => 'AdminBackups',
@@ -2876,6 +2980,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
 
     switch (data) {
+      case _ixjhpv4d.AdminAlert():
+        return 'AdminAlert';
+      case _iehuwih8.AdminAlertKind():
+        return 'AdminAlertKind';
+      case _imf78wrj.AdminAlertsOverview():
+        return 'AdminAlertsOverview';
       case _i0hg09us.AdminAuditEntry():
         return 'AdminAuditEntry';
       case _iha05d3i.AdminAuditLog():
@@ -3037,6 +3147,15 @@ class Protocol extends _is.DatabaseSerializationManager {
     var dataClassName = data['className'];
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
+    }
+    if (dataClassName == 'AdminAlert') {
+      return deserialize<_ixjhpv4d.AdminAlert>(data['data']);
+    }
+    if (dataClassName == 'AdminAlertKind') {
+      return deserialize<_iehuwih8.AdminAlertKind>(data['data']);
+    }
+    if (dataClassName == 'AdminAlertsOverview') {
+      return deserialize<_imf78wrj.AdminAlertsOverview>(data['data']);
     }
     if (dataClassName == 'AdminAuditEntry') {
       return deserialize<_i0hg09us.AdminAuditEntry>(data['data']);
@@ -3283,6 +3402,8 @@ class Protocol extends _is.DatabaseSerializationManager {
       }
     }
     switch (t) {
+      case _ixjhpv4d.AdminAlert:
+        return _ixjhpv4d.AdminAlert.t;
       case _iha05d3i.AdminAuditLog:
         return _iha05d3i.AdminAuditLog.t;
       case _iskrofwd.BackupRequest:

@@ -14,6 +14,8 @@
 import 'dart:async' as _ida;
 import 'dart:io' as _idi;
 import 'dart:typed_data' as _idt;
+import 'package:nest_server/src/generated/admin/admin_alerts_overview.dart'
+    as _i8bxacla;
 import 'package:nest_server/src/generated/admin/admin_audit_entry.dart'
     as _isazwzo0;
 import 'package:nest_server/src/generated/admin/admin_backups.dart'
@@ -237,6 +239,8 @@ class TestEndpoints {
 
   late final _JwtRefreshEndpoint jwtRefresh;
 
+  late final _AdminAlertsEndpoint adminAlerts;
+
   late final _AdminAuditEndpoint adminAudit;
 
   late final _AdminBackupsEndpoint adminBackups;
@@ -290,6 +294,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     jwtRefresh = _JwtRefreshEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    adminAlerts = _AdminAlertsEndpoint(
       endpoints,
       serializationManager,
     );
@@ -1013,6 +1021,47 @@ class _JwtRefreshEndpoint {
                   _localCallContext.arguments,
                 )
                 as _ida.Future<_iacs.AuthSuccess>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _AdminAlertsEndpoint {
+  _AdminAlertsEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<_i8bxacla.AdminAlertsOverview> overview(
+    _ist.TestSessionBuilder sessionBuilder,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'adminAlerts',
+            method: 'overview',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'adminAlerts',
+          methodName: 'overview',
+          parameters: _ist.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i8bxacla.AdminAlertsOverview>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

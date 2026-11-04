@@ -1,0 +1,17 @@
+### A server problem the super-admin was emailed about. Open while
+### [resolvedAt] is null; resolved alerts are kept 90 days.
+### Never holds personal data: only the kind and measurements.
+class: AdminAlert
+table: admin_alert
+fields:
+  kind: AdminAlertKind
+  ### Measurement when it opened or last changed, e.g. `8%` or `12 errors`.
+  details: String?
+  openedAt: DateTime, default=now
+  ### When the last email (opening or reminder) went out; null when none
+  ### could be sent.
+  lastSentAt: DateTime?
+  resolvedAt: DateTime?
+indexes:
+  admin_alert_open_idx:
+    fields: kind, resolvedAt

@@ -43,6 +43,7 @@ import '../auth/apple_idp_endpoint.dart' as _ilq63su8;
 import '../auth/email_idp_endpoint.dart' as _iuc1hd5t;
 import '../auth/google_idp_endpoint.dart' as _i71axiz0;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
+import '../endpoints/admin/admin_alerts_endpoint.dart' as _ilzo9g2r;
 import '../endpoints/admin/admin_audit_endpoint.dart' as _isry7q4f;
 import '../endpoints/admin/admin_backups_endpoint.dart' as _ihn2grnq;
 import '../endpoints/admin/admin_households_endpoint.dart' as _iy84ve0g;
@@ -86,6 +87,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'jwtRefresh',
+          null,
+        ),
+      'adminAlerts': _ilzo9g2r.AdminAlertsEndpoint()
+        ..initialize(
+          server,
+          'adminAlerts',
           null,
         ),
       'adminAudit': _isry7q4f.AdminAuditEndpoint()
@@ -658,6 +665,23 @@ class Endpoints extends _is.EndpointDispatch {
                         session,
                         refreshToken: params['refreshToken'],
                       ),
+        ),
+      },
+    );
+    connectors['adminAlerts'] = _is.EndpointConnector(
+      name: 'adminAlerts',
+      endpoint: endpoints['adminAlerts']!,
+      methodConnectors: {
+        'overview': _is.MethodConnector(
+          name: 'overview',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminAlerts'] as _ilzo9g2r.AdminAlertsEndpoint)
+                      .overview(session),
         ),
       },
     );

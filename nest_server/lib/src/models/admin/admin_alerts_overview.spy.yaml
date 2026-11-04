@@ -1,0 +1,11 @@
+### Alerts for the admin portal: open ones and those resolved recently, and
+### whether alert emails can go out.
+class: AdminAlertsOverview
+fields:
+  alerts: List<AdminAlert>
+  enabled: bool
+  ### Where alert emails go (the super-admin email or ALERT_EMAIL).
+  recipient: String?
+  mailConfigured: bool
+  ### Whether an outside uptime check is pinged.
+  uptimePing: bool

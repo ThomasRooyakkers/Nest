@@ -6,6 +6,7 @@ import 'package:serverpod_auth_idp_server/providers/email.dart';
 import 'package:serverpod_auth_idp_server/providers/google.dart';
 
 import 'src/generated/serverpod.dart';
+import 'src/services/admin_alerts.dart';
 import 'src/services/built_in_catalog.dart';
 import 'src/services/host_settings.dart';
 import 'src/services/nest_logging.dart';
@@ -20,6 +21,7 @@ void run(List<String> args) async {
   final pod = await createServerpod(args);
   await pod.start();
   await NestLogging.apply(pod);
+  AdminAlerts.start(pod);
 
   final session = await pod.createSession();
   try {

@@ -20,6 +20,8 @@ googleIdp:
   - hasAccount:
 jwtRefresh:
   - refreshAccessToken:
+adminAlerts:
+  - overview:
 adminAudit:
   - entries:
 adminBackups:
