@@ -1,0 +1,8 @@
+### A message written during a logged call, redacted.
+class: AdminLogMessage
+fields:
+  time: DateTime
+  level: String
+  message: String
+  error: String?
+  stackTrace: String?

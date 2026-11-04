@@ -36,6 +36,8 @@ services:
       SERVERPOD_PASSWORD_superAdminEmail: ${SUPER_ADMIN_EMAIL:-}
       SERVERPOD_PASSWORD_signUpMode: ${SIGN_UP_MODE:-invite-only}
       SERVERPOD_PASSWORD_updateCheck: ${UPDATE_CHECK:-on}
+      # How long the Logs page keeps failed and slow calls.
+      SERVERPOD_SESSION_LOG_RETENTION_PERIOD: ${LOG_RETENTION:-14d}
       # Secrets.
       SERVERPOD_DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       SERVERPOD_SERVICE_SECRET: ${SERVICE_SECRET:?set in .env}

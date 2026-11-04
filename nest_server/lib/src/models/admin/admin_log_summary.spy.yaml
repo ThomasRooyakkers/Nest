@@ -1,0 +1,11 @@
+### Counts for the top of the Logs and Security pages.
+class: AdminLogSummary
+fields:
+  ### Over the last 24 hours.
+  errors24h: int
+  slow24h: int
+  failedSignIns24h: int
+  signIns24h: int
+  ### How long logs and security events are kept, in days (null: forever).
+  logRetentionDays: int?
+  securityRetentionDays: int

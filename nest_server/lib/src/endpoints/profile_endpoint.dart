@@ -5,6 +5,7 @@ import 'package:sign_in_with_apple_server/sign_in_with_apple_server.dart';
 
 import '../generated/protocol.dart';
 import '../services/nest_users.dart';
+import '../services/security_events.dart';
 import 'recipe_endpoint.dart';
 
 /// The signed-in user's own profile. Not household-scoped.
@@ -70,6 +71,7 @@ class ProfileEndpoint extends Endpoint {
       where: (t) => t.authUserId.equals(user.authUserId),
     );
 
+    await SecurityEvents.forgetUser(session, user.id!);
     await session.db.transaction((transaction) async {
       final memberships = await Membership.db.find(
         session,
@@ -147,6 +149,7 @@ class ProfileEndpoint extends Endpoint {
       user.authUserId.uuid,
       RevokedAuthenticationUser(),
     );
+    await SecurityEvents.record(session, SecurityEventType.accountDeleted);
     for (final path in photos) {
       await RecipeEndpoint.deletePhoto(session, path);
     }

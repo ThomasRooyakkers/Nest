@@ -4,13 +4,13 @@ appleIdp:
   - login:
   - hasAccount:
 emailIdp:
-  - startRegistration:
   - login:
-  - verifyRegistrationCode:
+  - startRegistration:
   - finishRegistration:
   - startPasswordReset:
-  - verifyPasswordResetCode:
   - finishPasswordReset:
+  - verifyRegistrationCode:
+  - verifyPasswordResetCode:
   - hasAccount:
 googleIdp:
   - signIn:
@@ -35,6 +35,11 @@ adminHouseholds:
   - createInvite:
   - revokeInvite:
   - setMemberRole:
+adminLogs:
+  - sessions:
+  - session:
+  - securityEvents:
+  - summary:
 adminSystem:
   - health:
   - settings:

@@ -11,6 +11,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _idt;
+import 'package:nest_server/src/generated/admin/security_event_type.dart'
+    as _ibvt7sqe;
 import 'package:nest_server/src/generated/household_feature.dart' as _iez4op0n;
 import 'package:nest_server/src/generated/household_status.dart' as _i544oeia;
 import 'package:nest_server/src/generated/meals/meal_plan_entry.dart'
@@ -42,6 +44,7 @@ import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
 import '../endpoints/admin/admin_audit_endpoint.dart' as _isry7q4f;
 import '../endpoints/admin/admin_backups_endpoint.dart' as _ihn2grnq;
 import '../endpoints/admin/admin_households_endpoint.dart' as _iy84ve0g;
+import '../endpoints/admin/admin_logs_endpoint.dart' as _izofvlmy;
 import '../endpoints/admin/admin_system_endpoint.dart' as _ip4fayzs;
 import '../endpoints/admin/admin_users_endpoint.dart' as _iscnlbye;
 import '../endpoints/health_endpoint.dart' as _ica9y4w0;
@@ -98,6 +101,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'adminHouseholds',
+          null,
+        ),
+      'adminLogs': _izofvlmy.AdminLogsEndpoint()
+        ..initialize(
+          server,
+          'adminLogs',
           null,
         ),
       'adminSystem': _ip4fayzs.AdminSystemEndpoint()
@@ -313,25 +322,6 @@ class Endpoints extends _is.EndpointDispatch {
       name: 'emailIdp',
       endpoint: endpoints['emailIdp']!,
       methodConnectors: {
-        'startRegistration': _is.MethodConnector(
-          name: 'startRegistration',
-          params: {
-            'email': _is.ParameterDescription(
-              name: 'email',
-              type: _is.getType<String>(),
-              nullable: false,
-            ),
-          },
-          call:
-              (
-                _is.Session session,
-                Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _iuc1hd5t.EmailIdpEndpoint)
-                  .startRegistration(
-                    session,
-                    email: params['email'],
-                  ),
-        ),
         'login': _is.MethodConnector(
           name: 'login',
           params: {
@@ -357,16 +347,11 @@ class Endpoints extends _is.EndpointDispatch {
                     password: params['password'],
                   ),
         ),
-        'verifyRegistrationCode': _is.MethodConnector(
-          name: 'verifyRegistrationCode',
+        'startRegistration': _is.MethodConnector(
+          name: 'startRegistration',
           params: {
-            'accountRequestId': _is.ParameterDescription(
-              name: 'accountRequestId',
-              type: _is.getType<_is.UuidValue>(),
-              nullable: false,
-            ),
-            'verificationCode': _is.ParameterDescription(
-              name: 'verificationCode',
+            'email': _is.ParameterDescription(
+              name: 'email',
               type: _is.getType<String>(),
               nullable: false,
             ),
@@ -376,10 +361,9 @@ class Endpoints extends _is.EndpointDispatch {
                 _is.Session session,
                 Map<String, dynamic> params,
               ) async => (endpoints['emailIdp'] as _iuc1hd5t.EmailIdpEndpoint)
-                  .verifyRegistrationCode(
+                  .startRegistration(
                     session,
-                    accountRequestId: params['accountRequestId'],
-                    verificationCode: params['verificationCode'],
+                    email: params['email'],
                   ),
         ),
         'finishRegistration': _is.MethodConnector(
@@ -426,31 +410,6 @@ class Endpoints extends _is.EndpointDispatch {
                     email: params['email'],
                   ),
         ),
-        'verifyPasswordResetCode': _is.MethodConnector(
-          name: 'verifyPasswordResetCode',
-          params: {
-            'passwordResetRequestId': _is.ParameterDescription(
-              name: 'passwordResetRequestId',
-              type: _is.getType<_is.UuidValue>(),
-              nullable: false,
-            ),
-            'verificationCode': _is.ParameterDescription(
-              name: 'verificationCode',
-              type: _is.getType<String>(),
-              nullable: false,
-            ),
-          },
-          call:
-              (
-                _is.Session session,
-                Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _iuc1hd5t.EmailIdpEndpoint)
-                  .verifyPasswordResetCode(
-                    session,
-                    passwordResetRequestId: params['passwordResetRequestId'],
-                    verificationCode: params['verificationCode'],
-                  ),
-        ),
         'finishPasswordReset': _is.MethodConnector(
           name: 'finishPasswordReset',
           params: {
@@ -475,6 +434,56 @@ class Endpoints extends _is.EndpointDispatch {
                     finishPasswordResetToken:
                         params['finishPasswordResetToken'],
                     newPassword: params['newPassword'],
+                  ),
+        ),
+        'verifyRegistrationCode': _is.MethodConnector(
+          name: 'verifyRegistrationCode',
+          params: {
+            'accountRequestId': _is.ParameterDescription(
+              name: 'accountRequestId',
+              type: _is.getType<_is.UuidValue>(),
+              nullable: false,
+            ),
+            'verificationCode': _is.ParameterDescription(
+              name: 'verificationCode',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['emailIdp'] as _iuc1hd5t.EmailIdpEndpoint)
+                  .verifyRegistrationCode(
+                    session,
+                    accountRequestId: params['accountRequestId'],
+                    verificationCode: params['verificationCode'],
+                  ),
+        ),
+        'verifyPasswordResetCode': _is.MethodConnector(
+          name: 'verifyPasswordResetCode',
+          params: {
+            'passwordResetRequestId': _is.ParameterDescription(
+              name: 'passwordResetRequestId',
+              type: _is.getType<_is.UuidValue>(),
+              nullable: false,
+            ),
+            'verificationCode': _is.ParameterDescription(
+              name: 'verificationCode',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['emailIdp'] as _iuc1hd5t.EmailIdpEndpoint)
+                  .verifyPasswordResetCode(
+                    session,
+                    passwordResetRequestId: params['passwordResetRequestId'],
+                    verificationCode: params['verificationCode'],
                   ),
         ),
         'hasAccount': _is.MethodConnector(
@@ -916,6 +925,115 @@ class Endpoints extends _is.EndpointDispatch {
                         params['userId'],
                         params['role'],
                       ),
+        ),
+      },
+    );
+    connectors['adminLogs'] = _is.EndpointConnector(
+      name: 'adminLogs',
+      endpoint: endpoints['adminLogs']!,
+      methodConnectors: {
+        'sessions': _is.MethodConnector(
+          name: 'sessions',
+          params: {
+            'errorsOnly': _is.ParameterDescription(
+              name: 'errorsOnly',
+              type: _is.getType<bool?>(),
+              nullable: true,
+            ),
+            'slowOnly': _is.ParameterDescription(
+              name: 'slowOnly',
+              type: _is.getType<bool?>(),
+              nullable: true,
+            ),
+            'call': _is.ParameterDescription(
+              name: 'call',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+            'beforeId': _is.ParameterDescription(
+              name: 'beforeId',
+              type: _is.getType<int?>(),
+              nullable: true,
+            ),
+            'limit': _is.ParameterDescription(
+              name: 'limit',
+              type: _is.getType<int?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['adminLogs'] as _izofvlmy.AdminLogsEndpoint)
+                  .sessions(
+                    session,
+                    errorsOnly: params['errorsOnly'],
+                    slowOnly: params['slowOnly'],
+                    call: params['call'],
+                    beforeId: params['beforeId'],
+                    limit: params['limit'],
+                  ),
+        ),
+        'session': _is.MethodConnector(
+          name: 'session',
+          params: {
+            'id': _is.ParameterDescription(
+              name: 'id',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['adminLogs'] as _izofvlmy.AdminLogsEndpoint)
+                  .session(
+                    session,
+                    params['id'],
+                  ),
+        ),
+        'securityEvents': _is.MethodConnector(
+          name: 'securityEvents',
+          params: {
+            'type': _is.ParameterDescription(
+              name: 'type',
+              type: _is.getType<_ibvt7sqe.SecurityEventType?>(),
+              nullable: true,
+            ),
+            'beforeId': _is.ParameterDescription(
+              name: 'beforeId',
+              type: _is.getType<int?>(),
+              nullable: true,
+            ),
+            'limit': _is.ParameterDescription(
+              name: 'limit',
+              type: _is.getType<int?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['adminLogs'] as _izofvlmy.AdminLogsEndpoint)
+                  .securityEvents(
+                    session,
+                    type: params['type'],
+                    beforeId: params['beforeId'],
+                    limit: params['limit'],
+                  ),
+        ),
+        'summary': _is.MethodConnector(
+          name: 'summary',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['adminLogs'] as _izofvlmy.AdminLogsEndpoint)
+                  .summary(session),
         ),
       },
     );

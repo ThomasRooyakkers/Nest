@@ -15,6 +15,10 @@ import 'package:nest_client/src/protocol/admin/admin_audit_entry.dart'
     as _iu6tpcav;
 import 'package:nest_client/src/protocol/admin/admin_household_summary.dart'
     as _ik1o4tpa;
+import 'package:nest_client/src/protocol/admin/admin_log_session.dart'
+    as _ia00uqin;
+import 'package:nest_client/src/protocol/admin/admin_security_event.dart'
+    as _imgyvk57;
 import 'package:nest_client/src/protocol/admin/admin_user_summary.dart'
     as _iavs2480;
 import 'package:nest_client/src/protocol/household_feature.dart' as _iejl7hre;
@@ -51,6 +55,11 @@ import 'admin/admin_household_counts.dart' as _iemnk66i;
 import 'admin/admin_household_detail.dart' as _ifu8acxo;
 import 'admin/admin_household_member.dart' as _i4qmiwk8;
 import 'admin/admin_household_summary.dart' as _i1ee57op;
+import 'admin/admin_log_message.dart' as _i4ntnh9u;
+import 'admin/admin_log_session.dart' as _iyyaqnmo;
+import 'admin/admin_log_session_detail.dart' as _ixzo8wi2;
+import 'admin/admin_log_summary.dart' as _iv7hdcmn;
+import 'admin/admin_security_event.dart' as _isq3d78n;
 import 'admin/admin_server_settings.dart' as _i3d9qk19;
 import 'admin/admin_system_health.dart' as _i9cu0zbm;
 import 'admin/admin_update_status.dart' as _iptprp3i;
@@ -60,6 +69,8 @@ import 'admin/admin_user_summary.dart' as _infu3osd;
 import 'admin/backup_request.dart' as _iskrofwd;
 import 'admin/backup_run.dart' as _iabyer0k;
 import 'admin/backup_run_status.dart' as _io9tgzbh;
+import 'admin/security_event.dart' as _ijyxkmer;
+import 'admin/security_event_type.dart' as _ilfcta1d;
 import 'household.dart' as _ijonbu5t;
 import 'household_feature.dart' as _idhxy0am;
 import 'household_invite.dart' as _itc130bt;
@@ -107,6 +118,11 @@ export 'admin/admin_household_counts.dart';
 export 'admin/admin_household_detail.dart';
 export 'admin/admin_household_member.dart';
 export 'admin/admin_household_summary.dart';
+export 'admin/admin_log_message.dart';
+export 'admin/admin_log_session.dart';
+export 'admin/admin_log_session_detail.dart';
+export 'admin/admin_log_summary.dart';
+export 'admin/admin_security_event.dart';
 export 'admin/admin_server_settings.dart';
 export 'admin/admin_system_health.dart';
 export 'admin/admin_update_status.dart';
@@ -116,6 +132,8 @@ export 'admin/admin_user_summary.dart';
 export 'admin/backup_request.dart';
 export 'admin/backup_run.dart';
 export 'admin/backup_run_status.dart';
+export 'admin/security_event.dart';
+export 'admin/security_event_type.dart';
 export 'household.dart';
 export 'household_feature.dart';
 export 'household_invite.dart';
@@ -215,6 +233,21 @@ class Protocol extends _isc.SerializationManager {
     if (t == _i1ee57op.AdminHouseholdSummary) {
       return _i1ee57op.AdminHouseholdSummary.fromJson(data) as T;
     }
+    if (t == _i4ntnh9u.AdminLogMessage) {
+      return _i4ntnh9u.AdminLogMessage.fromJson(data) as T;
+    }
+    if (t == _iyyaqnmo.AdminLogSession) {
+      return _iyyaqnmo.AdminLogSession.fromJson(data) as T;
+    }
+    if (t == _ixzo8wi2.AdminLogSessionDetail) {
+      return _ixzo8wi2.AdminLogSessionDetail.fromJson(data) as T;
+    }
+    if (t == _iv7hdcmn.AdminLogSummary) {
+      return _iv7hdcmn.AdminLogSummary.fromJson(data) as T;
+    }
+    if (t == _isq3d78n.AdminSecurityEvent) {
+      return _isq3d78n.AdminSecurityEvent.fromJson(data) as T;
+    }
     if (t == _i3d9qk19.AdminServerSettings) {
       return _i3d9qk19.AdminServerSettings.fromJson(data) as T;
     }
@@ -241,6 +274,12 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == _io9tgzbh.BackupRunStatus) {
       return _io9tgzbh.BackupRunStatus.fromJson(data) as T;
+    }
+    if (t == _ijyxkmer.SecurityEvent) {
+      return _ijyxkmer.SecurityEvent.fromJson(data) as T;
+    }
+    if (t == _ilfcta1d.SecurityEventType) {
+      return _ilfcta1d.SecurityEventType.fromJson(data) as T;
     }
     if (t == _ijonbu5t.Household) {
       return _ijonbu5t.Household.fromJson(data) as T;
@@ -398,6 +437,28 @@ class Protocol extends _isc.SerializationManager {
               : null)
           as T;
     }
+    if (t == _isc.getType<_i4ntnh9u.AdminLogMessage?>()) {
+      return (data != null ? _i4ntnh9u.AdminLogMessage.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iyyaqnmo.AdminLogSession?>()) {
+      return (data != null ? _iyyaqnmo.AdminLogSession.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ixzo8wi2.AdminLogSessionDetail?>()) {
+      return (data != null
+              ? _ixzo8wi2.AdminLogSessionDetail.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_iv7hdcmn.AdminLogSummary?>()) {
+      return (data != null ? _iv7hdcmn.AdminLogSummary.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_isq3d78n.AdminSecurityEvent?>()) {
+      return (data != null ? _isq3d78n.AdminSecurityEvent.fromJson(data) : null)
+          as T;
+    }
     if (t == _isc.getType<_i3d9qk19.AdminServerSettings?>()) {
       return (data != null
               ? _i3d9qk19.AdminServerSettings.fromJson(data)
@@ -433,6 +494,14 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == _isc.getType<_io9tgzbh.BackupRunStatus?>()) {
       return (data != null ? _io9tgzbh.BackupRunStatus.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ijyxkmer.SecurityEvent?>()) {
+      return (data != null ? _ijyxkmer.SecurityEvent.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ilfcta1d.SecurityEventType?>()) {
+      return (data != null ? _ilfcta1d.SecurityEventType.fromJson(data) : null)
           as T;
     }
     if (t == _isc.getType<_ijonbu5t.Household?>()) {
@@ -595,6 +664,12 @@ class Protocol extends _isc.SerializationManager {
     if (t == List<_idhxy0am.HouseholdFeature>) {
       return (data as List)
               .map((e) => deserialize<_idhxy0am.HouseholdFeature>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_i4ntnh9u.AdminLogMessage>) {
+      return (data as List)
+              .map((e) => deserialize<_i4ntnh9u.AdminLogMessage>(e))
               .toList()
           as T;
     }
@@ -781,6 +856,18 @@ class Protocol extends _isc.SerializationManager {
               .toList()
           as T;
     }
+    if (t == List<_ia00uqin.AdminLogSession>) {
+      return (data as List)
+              .map((e) => deserialize<_ia00uqin.AdminLogSession>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_imgyvk57.AdminSecurityEvent>) {
+      return (data as List)
+              .map((e) => deserialize<_imgyvk57.AdminSecurityEvent>(e))
+              .toList()
+          as T;
+    }
     if (t == List<_iavs2480.AdminUserSummary>) {
       return (data as List)
               .map((e) => deserialize<_iavs2480.AdminUserSummary>(e))
@@ -883,6 +970,11 @@ class Protocol extends _isc.SerializationManager {
       _ifu8acxo.AdminHouseholdDetail => 'AdminHouseholdDetail',
       _i4qmiwk8.AdminHouseholdMember => 'AdminHouseholdMember',
       _i1ee57op.AdminHouseholdSummary => 'AdminHouseholdSummary',
+      _i4ntnh9u.AdminLogMessage => 'AdminLogMessage',
+      _iyyaqnmo.AdminLogSession => 'AdminLogSession',
+      _ixzo8wi2.AdminLogSessionDetail => 'AdminLogSessionDetail',
+      _iv7hdcmn.AdminLogSummary => 'AdminLogSummary',
+      _isq3d78n.AdminSecurityEvent => 'AdminSecurityEvent',
       _i3d9qk19.AdminServerSettings => 'AdminServerSettings',
       _i9cu0zbm.AdminSystemHealth => 'AdminSystemHealth',
       _iptprp3i.AdminUpdateStatus => 'AdminUpdateStatus',
@@ -892,6 +984,8 @@ class Protocol extends _isc.SerializationManager {
       _iskrofwd.BackupRequest => 'BackupRequest',
       _iabyer0k.BackupRun => 'BackupRun',
       _io9tgzbh.BackupRunStatus => 'BackupRunStatus',
+      _ijyxkmer.SecurityEvent => 'SecurityEvent',
+      _ilfcta1d.SecurityEventType => 'SecurityEventType',
       _ijonbu5t.Household => 'Household',
       _idhxy0am.HouseholdFeature => 'HouseholdFeature',
       _itc130bt.HouseholdInvite => 'HouseholdInvite',
@@ -961,6 +1055,16 @@ class Protocol extends _isc.SerializationManager {
         return 'AdminHouseholdMember';
       case _i1ee57op.AdminHouseholdSummary():
         return 'AdminHouseholdSummary';
+      case _i4ntnh9u.AdminLogMessage():
+        return 'AdminLogMessage';
+      case _iyyaqnmo.AdminLogSession():
+        return 'AdminLogSession';
+      case _ixzo8wi2.AdminLogSessionDetail():
+        return 'AdminLogSessionDetail';
+      case _iv7hdcmn.AdminLogSummary():
+        return 'AdminLogSummary';
+      case _isq3d78n.AdminSecurityEvent():
+        return 'AdminSecurityEvent';
       case _i3d9qk19.AdminServerSettings():
         return 'AdminServerSettings';
       case _i9cu0zbm.AdminSystemHealth():
@@ -979,6 +1083,10 @@ class Protocol extends _isc.SerializationManager {
         return 'BackupRun';
       case _io9tgzbh.BackupRunStatus():
         return 'BackupRunStatus';
+      case _ijyxkmer.SecurityEvent():
+        return 'SecurityEvent';
+      case _ilfcta1d.SecurityEventType():
+        return 'SecurityEventType';
       case _ijonbu5t.Household():
         return 'Household';
       case _idhxy0am.HouseholdFeature():
@@ -1103,6 +1211,21 @@ class Protocol extends _isc.SerializationManager {
     if (dataClassName == 'AdminHouseholdSummary') {
       return deserialize<_i1ee57op.AdminHouseholdSummary>(data['data']);
     }
+    if (dataClassName == 'AdminLogMessage') {
+      return deserialize<_i4ntnh9u.AdminLogMessage>(data['data']);
+    }
+    if (dataClassName == 'AdminLogSession') {
+      return deserialize<_iyyaqnmo.AdminLogSession>(data['data']);
+    }
+    if (dataClassName == 'AdminLogSessionDetail') {
+      return deserialize<_ixzo8wi2.AdminLogSessionDetail>(data['data']);
+    }
+    if (dataClassName == 'AdminLogSummary') {
+      return deserialize<_iv7hdcmn.AdminLogSummary>(data['data']);
+    }
+    if (dataClassName == 'AdminSecurityEvent') {
+      return deserialize<_isq3d78n.AdminSecurityEvent>(data['data']);
+    }
     if (dataClassName == 'AdminServerSettings') {
       return deserialize<_i3d9qk19.AdminServerSettings>(data['data']);
     }
@@ -1129,6 +1252,12 @@ class Protocol extends _isc.SerializationManager {
     }
     if (dataClassName == 'BackupRunStatus') {
       return deserialize<_io9tgzbh.BackupRunStatus>(data['data']);
+    }
+    if (dataClassName == 'SecurityEvent') {
+      return deserialize<_ijyxkmer.SecurityEvent>(data['data']);
+    }
+    if (dataClassName == 'SecurityEventType') {
+      return deserialize<_ilfcta1d.SecurityEventType>(data['data']);
     }
     if (dataClassName == 'Household') {
       return deserialize<_ijonbu5t.Household>(data['data']);

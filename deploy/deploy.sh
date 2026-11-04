@@ -19,7 +19,7 @@ echo "Checking the Pi's .env"
 
 echo "Dumping the database"
 # Through the backup container, which owns ./backups.
-"${SSH[@]}" 'cd ~/nest/deploy && docker compose exec -T backup sh -c "f=/backups/nest-pre-update-\$(date +%Y%m%d-%H%M%S).sql.gz; pg_dump -h postgres -U postgres nest | gzip > \$f.tmp && mv \$f.tmp \$f && ls -l \$f"'
+"${SSH[@]}" 'cd ~/nest/deploy && docker compose exec -T backup sh -c "f=/backups/nest-pre-update-\$(date +%Y%m%d-%H%M%S).sql.gz; pg_dump -h postgres -U postgres --exclude-table-data=serverpod_session_log --exclude-table-data=serverpod_log --exclude-table-data=serverpod_query_log --exclude-table-data=serverpod_message_log --exclude-table-data=serverpod_health_metric --exclude-table-data=serverpod_health_connection_info --exclude-table-data=security_event nest | gzip > \$f.tmp && mv \$f.tmp \$f && ls -l \$f"'
 
 echo "Copying the Compose file"
 scp -i "$SSH_KEY" "$ROOT/deploy/docker-compose.yml" "$HOST:nest/deploy/docker-compose.yml"

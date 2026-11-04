@@ -1,0 +1,11 @@
+### Kinds of [SecurityEvent].
+enum: SecurityEventType
+serialized: byName
+values:
+  - signIn
+  - adminSignIn
+  - signInFailed
+  - signUp
+  - passwordResetRequested
+  - passwordChanged
+  - accountDeleted

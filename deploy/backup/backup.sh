@@ -93,10 +93,21 @@ backup_target() { # name repository size
     log "$1: removing old snapshots failed: $(error_of "$WORK/forget.err")"
 }
 
+EXCLUDE_LOG_DATA="--exclude-table-data=serverpod_session_log \
+--exclude-table-data=serverpod_log --exclude-table-data=serverpod_query_log \
+--exclude-table-data=serverpod_message_log \
+--exclude-table-data=serverpod_health_metric \
+--exclude-table-data=serverpod_health_connection_info \
+--exclude-table-data=security_event"
+
 backup_now() {
   mkdir -p "$WORK"
   log "dumping the database"
-  if ! pg_dump --clean --if-exists --no-password -f "$DUMP" 2>"$WORK/dump.err"; then
+  # Logs and sign-in events are kept only briefly (see the hosting guide),
+  # so their rows are left out; the tables themselves are kept.
+  # shellcheck disable=SC2086
+  if ! pg_dump --clean --if-exists --no-password $EXCLUDE_LOG_DATA \
+    -f "$DUMP" 2>"$WORK/dump.err"; then
     for pair in $BACKUP_TARGETS; do
       id=$(start_run "${pair%%=*}")
       finish_run "$id" failed "" "" "pg_dump: $(error_of "$WORK/dump.err")"

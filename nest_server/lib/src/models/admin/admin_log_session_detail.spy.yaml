@@ -1,0 +1,7 @@
+### A logged call with its stack trace and messages, redacted.
+class: AdminLogSessionDetail
+fields:
+  session: AdminLogSession
+  error: String?
+  stackTrace: String?
+  messages: List<AdminLogMessage>

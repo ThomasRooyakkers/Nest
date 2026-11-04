@@ -22,6 +22,14 @@ import 'package:nest_client/src/protocol/admin/admin_household_detail.dart'
     as _igtn91et;
 import 'package:nest_client/src/protocol/admin/admin_household_summary.dart'
     as _ik1o4tpa;
+import 'package:nest_client/src/protocol/admin/admin_log_session.dart'
+    as _ia00uqin;
+import 'package:nest_client/src/protocol/admin/admin_log_session_detail.dart'
+    as _i2u1a47g;
+import 'package:nest_client/src/protocol/admin/admin_log_summary.dart'
+    as _iebc61nc;
+import 'package:nest_client/src/protocol/admin/admin_security_event.dart'
+    as _imgyvk57;
 import 'package:nest_client/src/protocol/admin/admin_server_settings.dart'
     as _i2f9irpd;
 import 'package:nest_client/src/protocol/admin/admin_system_health.dart'
@@ -32,6 +40,8 @@ import 'package:nest_client/src/protocol/admin/admin_user_detail.dart'
     as _ipa82702;
 import 'package:nest_client/src/protocol/admin/admin_user_summary.dart'
     as _iavs2480;
+import 'package:nest_client/src/protocol/admin/security_event_type.dart'
+    as _idkhix7n;
 import 'package:nest_client/src/protocol/household_feature.dart' as _iejl7hre;
 import 'package:nest_client/src/protocol/household_invite.dart' as _iidsgy2i;
 import 'package:nest_client/src/protocol/household_member.dart' as _ihqqoxyh;
@@ -160,12 +170,28 @@ class EndpointAppleIdp extends _iaic.EndpointAppleIdpBase {
 /// By extending [EmailIdpBaseEndpoint], the email identity provider endpoints
 /// are made available on the server and enable the corresponding sign-in widget
 /// on the client.
+///
+/// Sign-ins, failed sign-ins, sign-ups and password resets are recorded as
+/// [SecurityEvent]s for the admin portal.
 /// {@category Endpoint}
 class EndpointEmailIdp extends _iaic.EndpointEmailIdpBase {
   EndpointEmailIdp(_isc.EndpointCaller caller) : super(caller);
 
   @override
   String get name => 'emailIdp';
+
+  @override
+  _ida.Future<_iacc.AuthSuccess> login({
+    required String email,
+    required String password,
+  }) => caller.callServerEndpoint<_iacc.AuthSuccess>(
+    'emailIdp',
+    'login',
+    {
+      'email': email,
+      'password': password,
+    },
+  );
 
   /// On an invite-only server, registration needs a redeemed invite code
   /// (see [SignUpPolicy]).
@@ -177,25 +203,37 @@ class EndpointEmailIdp extends _iaic.EndpointEmailIdpBase {
         {'email': email},
       );
 
-  /// Logs in the user and returns a new session.
-  ///
-  /// Throws an [EmailAccountLoginException] in case of errors, with reason:
-  /// - [EmailAccountLoginExceptionReason.invalidCredentials] if the email or
-  ///   password is incorrect.
-  /// - [EmailAccountLoginExceptionReason.tooManyAttempts] if there have been
-  ///   too many failed login attempts.
-  ///
-  /// Throws an [AuthUserBlockedException] if the auth user is blocked.
   @override
-  _ida.Future<_iacc.AuthSuccess> login({
-    required String email,
+  _ida.Future<_iacc.AuthSuccess> finishRegistration({
+    required String registrationToken,
     required String password,
   }) => caller.callServerEndpoint<_iacc.AuthSuccess>(
     'emailIdp',
-    'login',
+    'finishRegistration',
     {
-      'email': email,
+      'registrationToken': registrationToken,
       'password': password,
+    },
+  );
+
+  @override
+  _ida.Future<_isc.UuidValue> startPasswordReset({required String email}) =>
+      caller.callServerEndpoint<_isc.UuidValue>(
+        'emailIdp',
+        'startPasswordReset',
+        {'email': email},
+      );
+
+  @override
+  _ida.Future<void> finishPasswordReset({
+    required String finishPasswordResetToken,
+    required String newPassword,
+  }) => caller.callServerEndpoint<void>(
+    'emailIdp',
+    'finishPasswordReset',
+    {
+      'finishPasswordResetToken': finishPasswordResetToken,
+      'newPassword': newPassword,
     },
   );
 
@@ -222,54 +260,6 @@ class EndpointEmailIdp extends _iaic.EndpointEmailIdpBase {
     },
   );
 
-  /// Completes a new account registration, creating a new auth user with a
-  /// profile and attaching the given email account to it.
-  ///
-  /// Throws an [EmailAccountRequestException] in case of errors, with reason:
-  /// - [EmailAccountRequestExceptionReason.expired] if the account request has
-  ///   already expired.
-  /// - [EmailAccountRequestExceptionReason.policyViolation] if the password
-  ///   does not comply with the password policy.
-  /// - [EmailAccountRequestExceptionReason.invalid] if the [registrationToken]
-  ///   is invalid.
-  ///
-  /// Throws an [AuthUserBlockedException] if the auth user is blocked.
-  ///
-  /// Returns a session for the newly created user.
-  @override
-  _ida.Future<_iacc.AuthSuccess> finishRegistration({
-    required String registrationToken,
-    required String password,
-  }) => caller.callServerEndpoint<_iacc.AuthSuccess>(
-    'emailIdp',
-    'finishRegistration',
-    {
-      'registrationToken': registrationToken,
-      'password': password,
-    },
-  );
-
-  /// Requests a password reset for [email].
-  ///
-  /// If the email address is registered, an email with reset instructions will
-  /// be send out. If the email is unknown, this method will have no effect.
-  ///
-  /// Always returns a password reset request ID, which can be used to complete
-  /// the reset. If the email is not registered, the returned ID will not be
-  /// valid.
-  ///
-  /// Throws an [EmailAccountPasswordResetException] in case of errors, with reason:
-  /// - [EmailAccountPasswordResetExceptionReason.tooManyAttempts] if the user has
-  ///   made too many attempts trying to request a password reset.
-  ///
-  @override
-  _ida.Future<_isc.UuidValue> startPasswordReset({required String email}) =>
-      caller.callServerEndpoint<_isc.UuidValue>(
-        'emailIdp',
-        'startPasswordReset',
-        {'email': email},
-      );
-
   /// Verifies a password reset code and returns a finishPasswordResetToken
   /// that can be used to finish the password reset.
   ///
@@ -294,33 +284,6 @@ class EndpointEmailIdp extends _iaic.EndpointEmailIdpBase {
     {
       'passwordResetRequestId': passwordResetRequestId,
       'verificationCode': verificationCode,
-    },
-  );
-
-  /// Completes a password reset request by setting a new password.
-  ///
-  /// The [verificationCode] returned from [verifyPasswordResetCode] is used to
-  /// validate the password reset request.
-  ///
-  /// Throws an [EmailAccountPasswordResetException] in case of errors, with reason:
-  /// - [EmailAccountPasswordResetExceptionReason.expired] if the password reset
-  ///   request has already expired.
-  /// - [EmailAccountPasswordResetExceptionReason.policyViolation] if the new
-  ///   password does not comply with the password policy.
-  /// - [EmailAccountPasswordResetExceptionReason.invalid] if no request exists
-  ///   for the given [passwordResetRequestId] or [verificationCode] is invalid.
-  ///
-  /// Throws an [AuthUserBlockedException] if the auth user is blocked.
-  @override
-  _ida.Future<void> finishPasswordReset({
-    required String finishPasswordResetToken,
-    required String newPassword,
-  }) => caller.callServerEndpoint<void>(
-    'emailIdp',
-    'finishPasswordReset',
-    {
-      'finishPasswordResetToken': finishPasswordResetToken,
-      'newPassword': newPassword,
     },
   );
 
@@ -604,6 +567,70 @@ class EndpointAdminHouseholds extends _isc.EndpointRef {
       'role': role,
     },
   );
+}
+
+/// The Logs and Security pages of the admin portal. Reads Serverpod's
+/// session logs (failed and slow calls, see `NestLogging`) and Nest's
+/// security events. All text is redacted (emails masked, codes hidden) on
+/// the server, before it reaches the browser.
+/// {@category Endpoint}
+class EndpointAdminLogs extends _isc.EndpointRef {
+  EndpointAdminLogs(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'adminLogs';
+
+  /// Logged calls, newest first: up to [limit] (1–200, default 50) older
+  /// than [beforeId]. [errorsOnly] and [slowOnly] filter; [call] keeps calls
+  /// whose `endpoint.method` contains it.
+  _ida.Future<List<_ia00uqin.AdminLogSession>> sessions({
+    bool? errorsOnly,
+    bool? slowOnly,
+    String? call,
+    int? beforeId,
+    int? limit,
+  }) => caller.callServerEndpoint<List<_ia00uqin.AdminLogSession>>(
+    'adminLogs',
+    'sessions',
+    {
+      'errorsOnly': errorsOnly,
+      'slowOnly': slowOnly,
+      'call': call,
+      'beforeId': beforeId,
+      'limit': limit,
+    },
+  );
+
+  /// One logged call with its stack trace and messages.
+  _ida.Future<_i2u1a47g.AdminLogSessionDetail> session(int id) =>
+      caller.callServerEndpoint<_i2u1a47g.AdminLogSessionDetail>(
+        'adminLogs',
+        'session',
+        {'id': id},
+      );
+
+  /// Security events, newest first, optionally of one [type].
+  _ida.Future<List<_imgyvk57.AdminSecurityEvent>> securityEvents({
+    _idkhix7n.SecurityEventType? type,
+    int? beforeId,
+    int? limit,
+  }) => caller.callServerEndpoint<List<_imgyvk57.AdminSecurityEvent>>(
+    'adminLogs',
+    'securityEvents',
+    {
+      'type': type,
+      'beforeId': beforeId,
+      'limit': limit,
+    },
+  );
+
+  /// Counts over the last 24 hours and the retention settings.
+  _ida.Future<_iebc61nc.AdminLogSummary> summary() =>
+      caller.callServerEndpoint<_iebc61nc.AdminLogSummary>(
+        'adminLogs',
+        'summary',
+        {},
+      );
 }
 
 /// System health for the admin portal: versions, database, disk, counts,
@@ -1520,6 +1547,7 @@ class Client extends _isc.ServerpodClientShared {
     adminAudit = EndpointAdminAudit(this);
     adminBackups = EndpointAdminBackups(this);
     adminHouseholds = EndpointAdminHouseholds(this);
+    adminLogs = EndpointAdminLogs(this);
     adminSystem = EndpointAdminSystem(this);
     adminUsers = EndpointAdminUsers(this);
     health = EndpointHealth(this);
@@ -1547,6 +1575,8 @@ class Client extends _isc.ServerpodClientShared {
   late final EndpointAdminBackups adminBackups;
 
   late final EndpointAdminHouseholds adminHouseholds;
+
+  late final EndpointAdminLogs adminLogs;
 
   late final EndpointAdminSystem adminSystem;
 
@@ -1581,6 +1611,7 @@ class Client extends _isc.ServerpodClientShared {
     'adminAudit': adminAudit,
     'adminBackups': adminBackups,
     'adminHouseholds': adminHouseholds,
+    'adminLogs': adminLogs,
     'adminSystem': adminSystem,
     'adminUsers': adminUsers,
     'health': health,

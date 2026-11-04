@@ -2,6 +2,7 @@ import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_idp_server/core.dart';
 
 import '../generated/protocol.dart';
+import 'security_events.dart';
 import 'sign_up_policy.dart';
 
 /// Google and Apple sign-in on top of the auth module.
@@ -28,8 +29,9 @@ abstract final class SocialSignIn {
     required String? inviteCode,
     required Future<AuthSuccess> Function(Transaction transaction) login,
     required MergeAuthUsers merge,
-  }) {
-    return session.db.transaction((transaction) async {
+  }) async {
+    var newAccount = false;
+    final success = await session.db.transaction((transaction) async {
       _created[session] = null;
       final success = await login(transaction);
       final created = _created[session];
@@ -45,6 +47,8 @@ abstract final class SocialSignIn {
         inviteCode: inviteCode,
         merge: merge,
       );
+      // Merged into an existing account: a sign-in, not a new account.
+      newAccount = keep == success.authUserId;
       if (keep == success.authUserId) return success;
 
       final user = await AuthServices.instance.authUsers.get(
@@ -60,6 +64,25 @@ abstract final class SocialSignIn {
         transaction: transaction,
       );
     });
+    if (newAccount) {
+      final user = await NestUser.db.findFirstRow(
+        session,
+        where: (t) => t.authUserId.equals(success.authUserId),
+      );
+      await SecurityEvents.record(
+        session,
+        SecurityEventType.signUp,
+        method: method,
+        userId: user?.id,
+      );
+    } else {
+      await SecurityEvents.recordSignIn(
+        session,
+        authUserId: success.authUserId,
+        method: method,
+      );
+    }
+    return success;
   }
 
   /// Links a Google or Apple identity to the signed-in account, so it signs

@@ -8,6 +8,7 @@ import 'package:serverpod_auth_idp_server/providers/google.dart';
 import 'src/generated/serverpod.dart';
 import 'src/services/built_in_catalog.dart';
 import 'src/services/host_settings.dart';
+import 'src/services/nest_logging.dart';
 import 'src/services/sign_up_policy.dart';
 import 'src/services/social_sign_in.dart';
 import 'src/services/verification_mail.dart';
@@ -17,6 +18,7 @@ import 'src/web/web_app_config_route.dart';
 void run(List<String> args) async {
   final pod = await createServerpod(args);
   await pod.start();
+  await NestLogging.apply(pod);
 
   final session = await pod.createSession();
   try {

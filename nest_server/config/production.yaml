@@ -48,6 +48,14 @@ authCookie:
   secure: true
 
 sessionLogs:
+  # Failed and slow calls are kept in the database for the admin portal's
+  # Logs page (what is logged: lib/src/services/nest_logging.dart), and
+  # deleted after retentionPeriod (env SERVERPOD_SESSION_LOG_RETENTION_PERIOD,
+  # set from LOG_RETENTION in deploy/.env). Backups leave them out.
+  persistentEnabled: true
+  cleanupInterval: 1h
+  retentionPeriod: 14d
+  retentionCount: 100000
   # Console logs are what `docker compose logs nest` shows. Until mail is set
   # up (resendApiKey), sign-up and reset codes appear there.
   consoleEnabled: true

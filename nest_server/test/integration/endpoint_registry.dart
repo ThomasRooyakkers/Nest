@@ -77,6 +77,10 @@ const adminMethods = {
   'adminBackups.overview',
   'adminBackups.requestBackup',
   'adminAudit.entries',
+  'adminLogs.sessions',
+  'adminLogs.session',
+  'adminLogs.securityEvents',
+  'adminLogs.summary',
 };
 
 /// Methods that are deliberately not household-scoped.

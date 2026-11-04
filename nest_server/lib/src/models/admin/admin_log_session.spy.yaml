@@ -1,0 +1,17 @@
+### One logged server call (a Serverpod session) for the admin portal's Logs
+### page. Error text is redacted: emails masked, codes hidden.
+class: AdminLogSession
+fields:
+  id: int
+  time: DateTime
+  ### `endpoint.method`, a module call or a background job.
+  call: String
+  durationMs: double?
+  numQueries: int?
+  slow: bool
+  ### First line of the error, redacted and shortened; null when it worked.
+  error: String?
+  userId: int?
+  userName: String?
+  ### Number of log messages written during the call.
+  messageCount: int

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:serverpod/serverpod.dart';
 
 import 'host_settings.dart';
+import 'log_redaction.dart';
 
 /// Sends sign-up and password-reset codes.
 ///
@@ -71,7 +72,7 @@ abstract final class VerificationMail {
     final problem = await deliver(to: email, subject: subject, text: text);
     if (problem != null) {
       session.log(
-        '$label email to $email failed: $problem',
+        '$label email to ${LogRedaction.maskEmail(email)} failed: $problem',
         level: LogLevel.error,
       );
     }

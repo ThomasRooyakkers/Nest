@@ -1,0 +1,21 @@
+### A sign-in related event, for the admin portal's Security page. Kept for
+### 30 days (SecurityEvents.retention) and left out of backups. Never holds
+### IP addresses or full email addresses of failed attempts.
+class: SecurityEvent
+table: security_event
+fields:
+  type: SecurityEventType
+  ### `email`, `google` or `apple` for sign-ins.
+  method: String?
+  ### The Nest user, when known.
+  userId: int?
+  ### Masked email of a failed or anonymous attempt, e.g. `t***@gmail.com`.
+  emailHint: String?
+  ### Why a sign-in failed, e.g. `invalidCredentials`.
+  reason: String?
+  at: DateTime, default=now
+indexes:
+  security_event_at_idx:
+    fields: at
+  security_event_user_idx:
+    fields: userId

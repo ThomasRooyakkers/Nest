@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:nest_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_idp_server/core.dart';
+import 'package:serverpod_auth_idp_server/providers/email.dart';
 import 'package:test/test.dart';
 
 import 'test_tools/serverpod_test_tools.dart';
@@ -47,7 +48,9 @@ void useTestAuthServices() => AuthServices.set(
       refreshTokenHashPepper: 'test-refresh-pepper-0123456789',
     ),
   ],
-  identityProviderBuilders: [],
+  identityProviderBuilders: [
+    const EmailIdpConfig(secretHashPepper: 'test-email-pepper'),
+  ],
 );
 
 /// Gives [user] a signed-in device: a refresh token as the auth module

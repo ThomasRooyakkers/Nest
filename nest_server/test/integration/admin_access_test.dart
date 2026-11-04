@@ -1,5 +1,6 @@
 import 'package:nest_server/src/generated/protocol.dart';
 import 'package:nest_server/src/services/update_check.dart';
+import 'package:serverpod/protocol.dart' as sp;
 import 'package:test/test.dart';
 
 import 'endpoint_registry.dart';
@@ -16,6 +17,7 @@ void main() {
     late TestSessionBuilder admin;
     late int householdId;
     late int userId;
+    late int logId;
 
     setUpAll(() {
       useTestAuthServices();
@@ -35,6 +37,14 @@ void main() {
         'Home',
       )).household.id!;
       userId = (await endpoints.profile.me(user)).id!;
+      logId = (await sp.SessionLogEntry.db.insertRow(
+        sessionBuilder.build(),
+        sp.SessionLogEntry(
+          serverId: 'test',
+          time: DateTime.now().toUtc(),
+          touched: DateTime.now().toUtc(),
+        ),
+      )).id!;
     });
 
     final adminCalls = <String, AdminCall>{
@@ -76,6 +86,10 @@ void main() {
       'adminBackups.requestBackup': (s) =>
           endpoints.adminBackups.requestBackup(s),
       'adminAudit.entries': (s) => endpoints.adminAudit.entries(s),
+      'adminLogs.sessions': (s) => endpoints.adminLogs.sessions(s),
+      'adminLogs.session': (s) => endpoints.adminLogs.session(s, logId),
+      'adminLogs.securityEvents': (s) => endpoints.adminLogs.securityEvents(s),
+      'adminLogs.summary': (s) => endpoints.adminLogs.summary(s),
     };
 
     for (final MapEntry(key: name, value: call) in adminCalls.entries) {

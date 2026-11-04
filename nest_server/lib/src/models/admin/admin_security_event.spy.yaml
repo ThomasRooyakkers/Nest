@@ -1,0 +1,11 @@
+### A security event as the admin portal shows it.
+class: AdminSecurityEvent
+fields:
+  id: int
+  at: DateTime
+  type: SecurityEventType
+  method: String?
+  userId: int?
+  userName: String?
+  emailHint: String?
+  reason: String?
