@@ -10,7 +10,7 @@ Nest is a private, bilingual (English + Dutch) family app for iOS and Android, b
 
 **v1 features:** Dashboard, Shopping List (Bring!-style tiles, multiple lists, manually added stores), Recipes, Meal Planning, Tasks, Watchlist (TMDB), admin portal, and a self-hosting kit (published server image and hosting guide) so others can run their own server.
 
-**Out of scope for v1:** notifications of any kind (push, reminders, daily summary; removed 2026-10-28, may return later), expenses, notes, calendar, general file storage, recipe import from websites, sending a whole week's meal plan to the shopping list, paid subscriptions.
+**Out of scope for v1:** notifications of any kind (push, reminders, daily summary; removed 2026-10-28, may return later; the one exception, decided 2026-11-04, is alert emails about server problems to the server's own super-admin), expenses, notes, calendar, general file storage, recipe import from websites, sending a whole week's meal plan to the shopping list, paid subscriptions.
 
 **Production:** Thomas's server runs on a Raspberry Pi at home with Docker Compose, reachable through a Cloudflare Tunnel at `nest.g3cko.be` (the address users type in the app; serves a short page pointing to the app, the privacy policy and the config the app uses to find the API), `nest-api.g3cko.be` (API) and, later, `nest-admin.g3cko.be` (admin portal, behind Cloudflare Access). Other hosts use the same image and Compose file with their own domain, either behind a Cloudflare Tunnel or their own HTTPS proxy.
 

@@ -58,6 +58,9 @@ Open `.env` in een editor. Elke instelling wordt in het bestand uitgelegd.
 | `NEST_IMAGE`, `NEST_BACKUP_IMAGE`, `NEST_VERSION` | het server- en back-upimage en de versie; laat de waarden uit `.env.example` staan, tenzij je een bepaalde versie wilt |
 | `UPDATE_CHECK` | `on` (standaard): de Server-pagina van het beheerportaal toont of er een nieuwere Nest-versie is, gelezen uit de openbare releaselijst op GitHub, hoogstens om de 6 uur en alleen terwijl die pagina open is; `off`: nooit vragen |
 | `LOG_RETENTION` | hoe lang het logboek van het beheerportaal mislukte en trage aanroepen bewaart, bv. `14d` (standaard) of `30d`; logs zitten nooit in back-ups |
+| `ALERTS` | `on` (standaard): de server controleert elke 5 minuten op een late of mislukte back-up, minder dan 10 % vrije schijfruimte, 10 of meer serverfouten in 15 minuten en een onbereikbare database, en mailt de superbeheerder als een probleem begint, dagelijks zolang het duurt en als het opgelost is (e-mail nodig); `off`: meldingen staan alleen in het beheerportaal |
+| `ALERT_EMAIL` | optioneel: stuur meldingen naar dit adres in plaats van naar `SUPER_ADMIN_EMAIL` |
+| `UPTIME_PING_URL` | optioneel: een URL die de server na elke controle opvraagt, bv. een gratis [healthchecks.io](https://healthchecks.io)-controle, die je mailt als de pings stoppen (bijvoorbeeld als de hele machine uitvalt) |
 | `DATABASE_PASSWORD`, `SERVICE_SECRET`, `EMAIL_SECRET_HASH_PEPPER`, `JWT_HMAC_SHA512_PRIVATE_KEY`, `JWT_REFRESH_TOKEN_HASH_PEPPER` | elk een andere willekeurige waarde |
 | `RESEND_API_KEY`, `MAIL_FROM` | optioneel, zie "Mail" hieronder |
 | `TMDB_API_KEY` | optioneel, zie "Filmgegevens" hieronder |
@@ -234,8 +237,8 @@ dat.
 
 ## Beheerportaal
 
-Het beheerportaal opent op een **Overzicht**: of server, back-ups, schijf en
-e-mail in orde zijn, het aantal echte serverfouten in het laatste uur, en
+Het beheerportaal opent op een **Overzicht**: openstaande meldingen (zie
+`ALERTS`), of server, back-ups, schijf en e-mail in orde zijn, het aantal echte serverfouten in het laatste uur, en
 grafieken van belasting, geheugen, fouten, trage aanroepen, reactietijd van
 de database, verbindingen, vrije schijfruimte en databasegrootte over de
 laatste dag, week of maand. Het toont ook de huishoudens, gebruikers,

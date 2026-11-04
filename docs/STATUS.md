@@ -2,6 +2,36 @@
 
 ## Current phase
 
+**Admin portal package C, part 2: alert emails (2026-11-04, not released
+yet; Thomas decided 2026-11-04 to allow admin-only alert emails, recorded
+in CLAUDE.md section 1 as the one exception to "no notifications"):**
+- `AdminAlerts` checks every 5 minutes (first check a minute after start):
+  no successful backup in 26 hours (also "never"), the latest run of a
+  target failed, less than 10 % free disk, 10+ real server errors in 15
+  minutes (refusals such as `notSignedIn` do not count), and the database
+  being unreachable (kept in memory, since it cannot be stored).
+- A new problem opens an `admin_alert` row and sends one email; a reminder
+  every 24 hours while it lasts; a "resolved" email when it clears.
+  Emails are English + Dutch, carry only the kind and a measurement
+  (stored language-neutral, worded per language), and go to
+  `SUPER_ADMIN_EMAIL` or `ALERT_EMAIL`. `ALERTS=off` keeps alerts in the
+  portal only. Resolved alerts are kept 90 days. New table `admin_alert`
+  (migration `20261104082905546`).
+- `UPTIME_PING_URL`: fetched after every successful check, for an outside
+  dead-man's switch such as healthchecks.io (covers the Pi being down).
+- Portal: open alerts as warning cards at the top of Overview (with the
+  email status and alerts resolved in the last 30 days); the Server page
+  shows whether alert emails and the uptime ping are on.
+- Tests: 448 server tests (new: open, no repeat within 24 h, reminder,
+  resolve, failed target, low disk, error burst vs. refusals, alerts off,
+  database down and back, no personal data in emails) and 23 portal tests
+  pass. Checked in the browser: on the local server the first check opened
+  two real alerts (no backups, Mac disk 4 % free).
+- **On the Pi after release:** with Resend configured, expect an email if
+  any condition already holds. Setting up a healthchecks.io check and
+  `UPTIME_PING_URL` is Thomas's choice (it needs an account there).
+- **Next:** release 0.16.0 with Overview and alerts (needs Thomas's OK).
+
 **Admin portal package C, part 1: Overview with metrics (2026-11-04, not
 released yet):**
 - The portal now opens on **Overview**: status cards (server and database,
@@ -25,12 +55,7 @@ released yet):**
   errors, the health check hook) and 21 portal tests (new: overview cards,
   range chips, chart summary, hover readout, Dutch + large text on a phone)
   pass. Checked in the browser against the local server.
-- **Not built: email alerts.** CLAUDE.md puts notifications of any kind
-  out of scope for v1 (2026-10-28); admin-only alert emails (backup failed
-  or late, disk low, error burst, database down) need Thomas's decision
-  first. An outside uptime check (e.g. healthchecks.io pinging
-  `/health`) would also catch a Pi that is fully down.
-- **Next:** release 0.16.0 (needs Thomas's OK); decide on alerts.
+- Alert emails followed in part 2 (above).
 
 **0.15.0 released and deployed (2026-11-04):** package B below. CI passed
 on `d496aa5`, tag `v0.15.0`, images built; deployed by Claude with

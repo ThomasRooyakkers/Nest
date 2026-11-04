@@ -56,6 +56,9 @@ Open `.env` in an editor. Every setting is explained in the file.
 | `NEST_IMAGE`, `NEST_BACKUP_IMAGE`, `NEST_VERSION` | the server and backup images and the version; keep the values from `.env.example` unless you want a specific version |
 | `UPDATE_CHECK` | `on` (default): the admin portal's Server page shows whether a newer Nest release exists, read from the public release list on GitHub at most every 6 hours and only while that page is open; `off`: never ask |
 | `LOG_RETENTION` | how long the admin portal's Logs page keeps failed and slow calls, e.g. `14d` (default) or `30d`; logs are never in backups |
+| `ALERTS` | `on` (default): every 5 minutes the server checks for a late or failed backup, less than 10 % free disk, 10 or more server errors in 15 minutes and an unreachable database, and emails the super-admin when a problem starts, daily while it lasts and when it is resolved (needs mail); `off`: alerts only show in the admin portal |
+| `ALERT_EMAIL` | optional: send alert emails here instead of to `SUPER_ADMIN_EMAIL` |
+| `UPTIME_PING_URL` | optional: a URL the server fetches after every check, e.g. a free [healthchecks.io](https://healthchecks.io) check, which emails you when the pings stop (for example when the whole machine is down) |
 | `DATABASE_PASSWORD`, `SERVICE_SECRET`, `EMAIL_SECRET_HASH_PEPPER`, `JWT_HMAC_SHA512_PRIVATE_KEY`, `JWT_REFRESH_TOKEN_HASH_PEPPER` | each a different random value |
 | `RESEND_API_KEY`, `MAIL_FROM` | optional, see "Mail" below |
 | `TMDB_API_KEY` | optional, see "Film data" below |
@@ -228,8 +231,8 @@ app is too old for the server, it says so.
 
 ## Admin portal
 
-The admin portal opens on an **Overview**: whether the server, backups,
-disk and mail are all right, the number of real server errors in the last
+The admin portal opens on an **Overview**: open alerts (see `ALERTS`),
+whether the server, backups, disk and mail are all right, the number of real server errors in the last
 hour, and charts of load, memory, errors, slow calls, database response
 time, connections, free disk and database size over the last day, week or
 month. It also shows the households, users, backups, system health, the
