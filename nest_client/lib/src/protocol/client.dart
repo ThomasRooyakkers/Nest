@@ -16,10 +16,20 @@ import 'package:http/http.dart' as _i85jenna;
 import 'package:nest_client/src/protocol/admin/admin_audit_entry.dart'
     as _iu6tpcav;
 import 'package:nest_client/src/protocol/admin/admin_backups.dart' as _imqa28ij;
+import 'package:nest_client/src/protocol/admin/admin_check_result.dart'
+    as _iipkabis;
+import 'package:nest_client/src/protocol/admin/admin_household_detail.dart'
+    as _igtn91et;
 import 'package:nest_client/src/protocol/admin/admin_household_summary.dart'
     as _ik1o4tpa;
+import 'package:nest_client/src/protocol/admin/admin_server_settings.dart'
+    as _i2f9irpd;
 import 'package:nest_client/src/protocol/admin/admin_system_health.dart'
     as _ijlhnrtu;
+import 'package:nest_client/src/protocol/admin/admin_update_status.dart'
+    as _irjt87q3;
+import 'package:nest_client/src/protocol/admin/admin_user_detail.dart'
+    as _ipa82702;
 import 'package:nest_client/src/protocol/admin/admin_user_summary.dart'
     as _iavs2480;
 import 'package:nest_client/src/protocol/household_feature.dart' as _iejl7hre;
@@ -31,6 +41,7 @@ import 'package:nest_client/src/protocol/meals/meal_plan_entry.dart'
 import 'package:nest_client/src/protocol/meals/meal_plan_event.dart'
     as _i5lx2h1m;
 import 'package:nest_client/src/protocol/meals/meal_slot.dart' as _iebxn6ex;
+import 'package:nest_client/src/protocol/membership_role.dart' as _ilauueau;
 import 'package:nest_client/src/protocol/my_household.dart' as _itexq6j2;
 import 'package:nest_client/src/protocol/nest_user.dart' as _i7k4hj0f;
 import 'package:nest_client/src/protocol/recipes/recipe.dart' as _iexyob0t;
@@ -506,6 +517,23 @@ class EndpointAdminHouseholds extends _isc.EndpointRef {
         {},
       );
 
+  /// One household: members, invite, features and how much data it holds.
+  _ida.Future<_igtn91et.AdminHouseholdDetail> detail(int householdId) =>
+      caller.callServerEndpoint<_igtn91et.AdminHouseholdDetail>(
+        'adminHouseholds',
+        'detail',
+        {'householdId': householdId},
+      );
+
+  /// Creates an empty household with all features and an invite code, for
+  /// a new family. The first person to join with the code becomes its owner.
+  _ida.Future<_igtn91et.AdminHouseholdDetail> create(String name) =>
+      caller.callServerEndpoint<_igtn91et.AdminHouseholdDetail>(
+        'adminHouseholds',
+        'create',
+        {'name': name},
+      );
+
   /// Suspends or reactivates a household.
   _ida.Future<_ik1o4tpa.AdminHouseholdSummary> setStatus(
     int householdId,
@@ -516,6 +544,64 @@ class EndpointAdminHouseholds extends _isc.EndpointRef {
     {
       'householdId': householdId,
       'status': status,
+    },
+  );
+
+  /// Renames a household.
+  _ida.Future<_igtn91et.AdminHouseholdDetail> rename(
+    int householdId,
+    String name,
+  ) => caller.callServerEndpoint<_igtn91et.AdminHouseholdDetail>(
+    'adminHouseholds',
+    'rename',
+    {
+      'householdId': householdId,
+      'name': name,
+    },
+  );
+
+  /// Switches features on or off for a household.
+  _ida.Future<_igtn91et.AdminHouseholdDetail> setFeatures(
+    int householdId,
+    List<_iejl7hre.HouseholdFeature> features,
+  ) => caller.callServerEndpoint<_igtn91et.AdminHouseholdDetail>(
+    'adminHouseholds',
+    'setFeatures',
+    {
+      'householdId': householdId,
+      'features': features,
+    },
+  );
+
+  /// Creates a new invite code, replacing any previous one.
+  _ida.Future<_igtn91et.AdminHouseholdDetail> createInvite(int householdId) =>
+      caller.callServerEndpoint<_igtn91et.AdminHouseholdDetail>(
+        'adminHouseholds',
+        'createInvite',
+        {'householdId': householdId},
+      );
+
+  /// Removes the current invite code.
+  _ida.Future<_igtn91et.AdminHouseholdDetail> revokeInvite(int householdId) =>
+      caller.callServerEndpoint<_igtn91et.AdminHouseholdDetail>(
+        'adminHouseholds',
+        'revokeInvite',
+        {'householdId': householdId},
+      );
+
+  /// Makes a member an owner or an owner a member. The last owner of a
+  /// household stays owner.
+  _ida.Future<_igtn91et.AdminHouseholdDetail> setMemberRole(
+    int householdId,
+    int userId,
+    _ilauueau.MembershipRole role,
+  ) => caller.callServerEndpoint<_igtn91et.AdminHouseholdDetail>(
+    'adminHouseholds',
+    'setMemberRole',
+    {
+      'householdId': householdId,
+      'userId': userId,
+      'role': role,
     },
   );
 }
@@ -533,6 +619,40 @@ class EndpointAdminSystem extends _isc.EndpointRef {
       caller.callServerEndpoint<_ijlhnrtu.AdminSystemHealth>(
         'adminSystem',
         'health',
+        {},
+      );
+
+  /// The settings this server runs with. Secrets are never returned, only
+  /// whether they are set.
+  _ida.Future<_i2f9irpd.AdminServerSettings> settings() =>
+      caller.callServerEndpoint<_i2f9irpd.AdminServerSettings>(
+        'adminSystem',
+        'settings',
+        {},
+      );
+
+  /// Sends a test email to the signed-in admin's own address, to check the
+  /// mail settings. Audited.
+  _ida.Future<_iipkabis.AdminCheckResult> sendTestMail() =>
+      caller.callServerEndpoint<_iipkabis.AdminCheckResult>(
+        'adminSystem',
+        'sendTestMail',
+        {},
+      );
+
+  /// Searches the film data once, to check the TMDB key.
+  _ida.Future<_iipkabis.AdminCheckResult> testFilmData() =>
+      caller.callServerEndpoint<_iipkabis.AdminCheckResult>(
+        'adminSystem',
+        'testFilmData',
+        {},
+      );
+
+  /// This server's version against the newest published release.
+  _ida.Future<_irjt87q3.AdminUpdateStatus> updateStatus() =>
+      caller.callServerEndpoint<_irjt87q3.AdminUpdateStatus>(
+        'adminSystem',
+        'updateStatus',
         {},
       );
 }
@@ -553,8 +673,17 @@ class EndpointAdminUsers extends _isc.EndpointRef {
         {},
       );
 
-  /// Disables or re-enables a user. Disabled users can no longer use Nest.
-  /// An admin cannot disable themselves.
+  /// One user: households, sign-in methods and signed-in devices.
+  _ida.Future<_ipa82702.AdminUserDetail> detail(int userId) =>
+      caller.callServerEndpoint<_ipa82702.AdminUserDetail>(
+        'adminUsers',
+        'detail',
+        {'userId': userId},
+      );
+
+  /// Disables or re-enables a user. Disabled users can no longer use Nest,
+  /// and disabling signs them out on every device. An admin cannot disable
+  /// themselves.
   _ida.Future<_iavs2480.AdminUserSummary> setDisabled(
     int userId,
     bool disabled,
@@ -566,6 +695,16 @@ class EndpointAdminUsers extends _isc.EndpointRef {
       'disabled': disabled,
     },
   );
+
+  /// Signs a user out on every device, e.g. after a lost phone. Their
+  /// account keeps working; they sign in again. Not for the admin's own
+  /// account (the portal would sign itself out).
+  _ida.Future<_ipa82702.AdminUserDetail> signOutEverywhere(int userId) =>
+      caller.callServerEndpoint<_ipa82702.AdminUserDetail>(
+        'adminUsers',
+        'signOutEverywhere',
+        {'userId': userId},
+      );
 }
 
 /// Public health check. Not household-scoped and returns no household data.

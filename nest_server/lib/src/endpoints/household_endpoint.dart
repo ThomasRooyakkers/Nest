@@ -2,6 +2,7 @@ import 'package:serverpod/serverpod.dart';
 
 import '../generated/protocol.dart';
 import '../services/household_guard.dart';
+import '../services/household_rules.dart';
 import '../services/invite_codes.dart';
 import '../services/nest_users.dart';
 
@@ -30,7 +31,7 @@ class HouseholdEndpoint extends Endpoint {
   /// Creates a household with the signed-in user as owner.
   Future<MyHousehold> create(Session session, String name) async {
     final user = await NestUsers.require(session);
-    final validName = _validName(name);
+    final validName = HouseholdRules.validName(name);
 
     return session.db.transaction((transaction) async {
       final household = await Household.db.insertRow(
@@ -89,7 +90,7 @@ class HouseholdEndpoint extends Endpoint {
     final household = await Household.db.updateRow(
       session,
       access.household.copyWith(
-        name: _validName(name),
+        name: HouseholdRules.validName(name),
         updatedAt: DateTime.now(),
       ),
     );
@@ -106,10 +107,7 @@ class HouseholdEndpoint extends Endpoint {
     final household = await Household.db.updateRow(
       session,
       access.household.copyWith(
-        // Keep the canonical order and drop duplicates.
-        enabledFeatures: HouseholdFeature.values
-            .where(features.contains)
-            .toList(),
+        enabledFeatures: HouseholdRules.normalizedFeatures(features),
         updatedAt: DateTime.now(),
       ),
     );
@@ -141,25 +139,14 @@ class HouseholdEndpoint extends Endpoint {
   /// Creates a new invite code, replacing any previous one. Owners only.
   Future<HouseholdInvite> createInvite(Session session, int householdId) async {
     final access = await HouseholdGuard.requireOwner(session, householdId);
-    final expiresAt = DateTime.now().toUtc().add(InviteCodes.validFor);
-
-    // Retry on the (unlikely) collision with another household's code.
-    for (var attempt = 0; ; attempt++) {
-      final code = InviteCodes.generate();
-      try {
-        await Household.db.updateRow(
-          session,
-          access.household.copyWith(
-            inviteCode: code,
-            inviteExpiresAt: expiresAt,
-            updatedAt: DateTime.now(),
-          ),
-        );
-        return HouseholdInvite(code: code, expiresAt: expiresAt);
-      } on DatabaseQueryException {
-        if (attempt >= 4) rethrow;
-      }
-    }
+    final household = await HouseholdRules.assignInvite(
+      session,
+      access.household,
+    );
+    return HouseholdInvite(
+      code: household.inviteCode!,
+      expiresAt: household.inviteExpiresAt!,
+    );
   }
 
   /// Removes the current invite code. Owners only.
@@ -189,15 +176,12 @@ class HouseholdEndpoint extends Endpoint {
       throw NestException(code: NestErrorCode.alreadyMember);
     }
 
+    final role = await HouseholdRules.joinRole(session, household.id!);
     await Membership.db.insertRow(
       session,
-      Membership(
-        userId: user.id!,
-        householdId: household.id!,
-        role: MembershipRole.member,
-      ),
+      Membership(userId: user.id!, householdId: household.id!, role: role),
     );
-    return _myHousehold(household, MembershipRole.member);
+    return _myHousehold(household, role);
   }
 
   /// Leaves a household. The last owner cannot leave while others remain.
@@ -239,14 +223,6 @@ class HouseholdEndpoint extends Endpoint {
         );
       }
     });
-  }
-
-  static String _validName(String name) {
-    final trimmed = name.trim();
-    if (trimmed.isEmpty || trimmed.length > 60) {
-      throw NestException(code: NestErrorCode.invalidInput);
-    }
-    return trimmed;
   }
 
   /// Hides the invite code from members who are not owners.

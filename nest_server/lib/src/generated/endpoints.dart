@@ -16,6 +16,7 @@ import 'package:nest_server/src/generated/household_status.dart' as _i544oeia;
 import 'package:nest_server/src/generated/meals/meal_plan_entry.dart'
     as _i33h3ld7;
 import 'package:nest_server/src/generated/meals/meal_slot.dart' as _iliwnvwg;
+import 'package:nest_server/src/generated/membership_role.dart' as _i8f29ssg;
 import 'package:nest_server/src/generated/recipes/recipe.dart' as _iei9bazg;
 import 'package:nest_server/src/generated/shopping/new_shopping_item.dart'
     as _i97lm970;
@@ -718,6 +719,48 @@ class Endpoints extends _is.EndpointDispatch {
                           as _iy84ve0g.AdminHouseholdsEndpoint)
                       .list(session),
         ),
+        'detail': _is.MethodConnector(
+          name: 'detail',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminHouseholds']
+                          as _iy84ve0g.AdminHouseholdsEndpoint)
+                      .detail(
+                        session,
+                        params['householdId'],
+                      ),
+        ),
+        'create': _is.MethodConnector(
+          name: 'create',
+          params: {
+            'name': _is.ParameterDescription(
+              name: 'name',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminHouseholds']
+                          as _iy84ve0g.AdminHouseholdsEndpoint)
+                      .create(
+                        session,
+                        params['name'],
+                      ),
+        ),
         'setStatus': _is.MethodConnector(
           name: 'setStatus',
           params: {
@@ -745,6 +788,135 @@ class Endpoints extends _is.EndpointDispatch {
                         params['status'],
                       ),
         ),
+        'rename': _is.MethodConnector(
+          name: 'rename',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'name': _is.ParameterDescription(
+              name: 'name',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminHouseholds']
+                          as _iy84ve0g.AdminHouseholdsEndpoint)
+                      .rename(
+                        session,
+                        params['householdId'],
+                        params['name'],
+                      ),
+        ),
+        'setFeatures': _is.MethodConnector(
+          name: 'setFeatures',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'features': _is.ParameterDescription(
+              name: 'features',
+              type: _is.getType<List<_iez4op0n.HouseholdFeature>>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminHouseholds']
+                          as _iy84ve0g.AdminHouseholdsEndpoint)
+                      .setFeatures(
+                        session,
+                        params['householdId'],
+                        params['features'],
+                      ),
+        ),
+        'createInvite': _is.MethodConnector(
+          name: 'createInvite',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminHouseholds']
+                          as _iy84ve0g.AdminHouseholdsEndpoint)
+                      .createInvite(
+                        session,
+                        params['householdId'],
+                      ),
+        ),
+        'revokeInvite': _is.MethodConnector(
+          name: 'revokeInvite',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminHouseholds']
+                          as _iy84ve0g.AdminHouseholdsEndpoint)
+                      .revokeInvite(
+                        session,
+                        params['householdId'],
+                      ),
+        ),
+        'setMemberRole': _is.MethodConnector(
+          name: 'setMemberRole',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'userId': _is.ParameterDescription(
+              name: 'userId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'role': _is.ParameterDescription(
+              name: 'role',
+              type: _is.getType<_i8f29ssg.MembershipRole>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminHouseholds']
+                          as _iy84ve0g.AdminHouseholdsEndpoint)
+                      .setMemberRole(
+                        session,
+                        params['householdId'],
+                        params['userId'],
+                        params['role'],
+                      ),
+        ),
       },
     );
     connectors['adminSystem'] = _is.EndpointConnector(
@@ -762,6 +934,50 @@ class Endpoints extends _is.EndpointDispatch {
                   (endpoints['adminSystem'] as _ip4fayzs.AdminSystemEndpoint)
                       .health(session),
         ),
+        'settings': _is.MethodConnector(
+          name: 'settings',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminSystem'] as _ip4fayzs.AdminSystemEndpoint)
+                      .settings(session),
+        ),
+        'sendTestMail': _is.MethodConnector(
+          name: 'sendTestMail',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminSystem'] as _ip4fayzs.AdminSystemEndpoint)
+                      .sendTestMail(session),
+        ),
+        'testFilmData': _is.MethodConnector(
+          name: 'testFilmData',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminSystem'] as _ip4fayzs.AdminSystemEndpoint)
+                      .testFilmData(session),
+        ),
+        'updateStatus': _is.MethodConnector(
+          name: 'updateStatus',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminSystem'] as _ip4fayzs.AdminSystemEndpoint)
+                      .updateStatus(session),
+        ),
       },
     );
     connectors['adminUsers'] = _is.EndpointConnector(
@@ -778,6 +994,26 @@ class Endpoints extends _is.EndpointDispatch {
               ) async =>
                   (endpoints['adminUsers'] as _iscnlbye.AdminUsersEndpoint)
                       .list(session),
+        ),
+        'detail': _is.MethodConnector(
+          name: 'detail',
+          params: {
+            'userId': _is.ParameterDescription(
+              name: 'userId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminUsers'] as _iscnlbye.AdminUsersEndpoint)
+                      .detail(
+                        session,
+                        params['userId'],
+                      ),
         ),
         'setDisabled': _is.MethodConnector(
           name: 'setDisabled',
@@ -803,6 +1039,26 @@ class Endpoints extends _is.EndpointDispatch {
                         session,
                         params['userId'],
                         params['disabled'],
+                      ),
+        ),
+        'signOutEverywhere': _is.MethodConnector(
+          name: 'signOutEverywhere',
+          params: {
+            'userId': _is.ParameterDescription(
+              name: 'userId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminUsers'] as _iscnlbye.AdminUsersEndpoint)
+                      .signOutEverywhere(
+                        session,
+                        params['userId'],
                       ),
         ),
       },

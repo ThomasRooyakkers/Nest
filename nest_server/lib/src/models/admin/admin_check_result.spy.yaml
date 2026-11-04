@@ -1,0 +1,6 @@
+### Outcome of a test the admin started (test email, film data).
+class: AdminCheckResult
+fields:
+  ok: bool
+  ### Short technical detail on failure, e.g. the provider's status code.
+  detail: String?

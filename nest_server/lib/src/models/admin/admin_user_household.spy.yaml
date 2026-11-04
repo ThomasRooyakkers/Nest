@@ -1,0 +1,7 @@
+### A household a user belongs to, as the admin portal sees it.
+class: AdminUserHousehold
+fields:
+  householdId: int
+  name: String
+  role: MembershipRole
+  status: HouseholdStatus

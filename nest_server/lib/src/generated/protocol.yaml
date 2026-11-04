@@ -27,12 +27,25 @@ adminBackups:
   - requestBackup:
 adminHouseholds:
   - list:
+  - detail:
+  - create:
   - setStatus:
+  - rename:
+  - setFeatures:
+  - createInvite:
+  - revokeInvite:
+  - setMemberRole:
 adminSystem:
   - health:
+  - settings:
+  - sendTestMail:
+  - testFilmData:
+  - updateStatus:
 adminUsers:
   - list:
+  - detail:
   - setDisabled:
+  - signOutEverywhere:
 health:
   - ping:
 household:

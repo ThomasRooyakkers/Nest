@@ -1,0 +1,10 @@
+### The running version against the newest published Nest release.
+class: AdminUpdateStatus
+fields:
+  currentVersion: String
+  ### Null when the check is off or the release list could not be read.
+  latestVersion: String?
+  updateAvailable: bool
+  checkedAt: DateTime?
+  ### Why there is no answer: `off` or `unreachable`.
+  problem: String?

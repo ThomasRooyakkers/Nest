@@ -1,0 +1,13 @@
+### One household in the admin portal: metadata, members and counts.
+### Never contains household content (no item names, recipe text, titles).
+class: AdminHouseholdDetail
+fields:
+  summary: AdminHouseholdSummary
+  members: List<AdminHouseholdMember>
+  ### Breakfast and lunch besides dinner, when switched on.
+  mealSlots: List<MealSlot>
+  ### The current invite code, also when it has expired.
+  inviteCode: String?
+  inviteExpiresAt: DateTime?
+  ### How many rows each feature holds; counts only.
+  counts: AdminHouseholdCounts

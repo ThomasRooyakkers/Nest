@@ -3,6 +3,7 @@ import 'package:serverpod_auth_idp_server/providers/email.dart';
 
 import '../generated/protocol.dart';
 import 'host_settings.dart';
+import 'household_rules.dart';
 import 'invite_codes.dart';
 
 /// Who may create an account, and what happens when one is created.
@@ -130,7 +131,11 @@ abstract final class SignUpPolicy {
           Membership(
             userId: user.id!,
             householdId: household.id!,
-            role: MembershipRole.member,
+            role: await HouseholdRules.joinRole(
+              session,
+              household.id!,
+              transaction: transaction,
+            ),
           ),
           transaction: transaction,
         );

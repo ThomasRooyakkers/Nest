@@ -1,4 +1,8 @@
+import 'package:nest_server/src/endpoints/health_endpoint.dart';
 import 'package:nest_server/src/generated/protocol.dart';
+import 'package:nest_server/src/services/tmdb_service.dart';
+import 'package:nest_server/src/services/update_check.dart';
+import 'package:serverpod_auth_idp_server/core.dart';
 import 'package:test/test.dart';
 
 import 'test_helpers.dart';
@@ -14,6 +18,8 @@ void main() {
     late int adminId;
     late int annaId;
     late int householdId;
+
+    setUpAll(useTestAuthServices);
 
     setUp(() async {
       admin = await signedInUser(
@@ -246,6 +252,284 @@ void main() {
           );
         },
       );
+    });
+
+    Future<List<String>> auditActions() async => [
+      for (final e in await endpoints.adminAudit.entries(admin)) e.action,
+    ];
+
+    group('household management', () {
+      test('detail shows members, invite and counts, no content', () async {
+        await endpoints.task.save(
+          anna,
+          householdId,
+          Task(
+            householdId: householdId,
+            title: 'Bins',
+            dueDate: DateTime.utc(2026, 11),
+          ),
+        );
+        final detail = await endpoints.adminHouseholds.detail(
+          admin,
+          householdId,
+        );
+        expect(detail.summary.name, 'Home');
+        expect(detail.members.single.userId, annaId);
+        expect(detail.members.single.role, MembershipRole.owner);
+        expect(detail.counts.tasks, 1);
+        expect(detail.counts.recipes, 0);
+        expect(detail.inviteCode, isNull);
+        expect(detail.toJson().toString(), isNot(contains('Bins')));
+      });
+
+      test('an unknown household is not found', () {
+        expect(
+          endpoints.adminHouseholds.detail(admin, 999999),
+          throwsNest(NestErrorCode.notFound),
+        );
+      });
+
+      test('create makes an empty household with an invite code; the first '
+          'to join becomes its owner, the next a member', () async {
+        final created = await endpoints.adminHouseholds.create(
+          admin,
+          '  Family B  ',
+        );
+        expect(created.summary.name, 'Family B');
+        expect(created.members, isEmpty);
+        expect(created.summary.enabledFeatures, HouseholdFeature.values);
+        expect(created.inviteCode, hasLength(8));
+        expect(created.inviteExpiresAt!.isAfter(DateTime.now()), isTrue);
+
+        final bob = await signedInUser(sessionBuilder, name: 'Bob');
+        final first = await endpoints.household.join(
+          bob,
+          created.inviteCode!,
+        );
+        expect(first.role, MembershipRole.owner);
+        final second = await endpoints.household.join(
+          anna,
+          created.inviteCode!,
+        );
+        expect(second.role, MembershipRole.member);
+        expect(await auditActions(), contains('household.create'));
+      });
+
+      test('create refuses an empty name', () {
+        expect(
+          endpoints.adminHouseholds.create(admin, '  '),
+          throwsNest(NestErrorCode.invalidInput),
+        );
+      });
+
+      test('rename, features and invites are applied and audited', () async {
+        var detail = await endpoints.adminHouseholds.rename(
+          admin,
+          householdId,
+          'Our home',
+        );
+        expect(detail.summary.name, 'Our home');
+
+        detail = await endpoints.adminHouseholds.setFeatures(
+          admin,
+          householdId,
+          [HouseholdFeature.tasks, HouseholdFeature.shopping],
+        );
+        expect(detail.summary.enabledFeatures, [
+          HouseholdFeature.shopping,
+          HouseholdFeature.tasks,
+        ]);
+
+        detail = await endpoints.adminHouseholds.createInvite(
+          admin,
+          householdId,
+        );
+        expect(detail.inviteCode, hasLength(8));
+        detail = await endpoints.adminHouseholds.revokeInvite(
+          admin,
+          householdId,
+        );
+        expect(detail.inviteCode, isNull);
+
+        expect(
+          await auditActions(),
+          containsAll([
+            'household.rename',
+            'household.setFeatures',
+            'household.createInvite',
+            'household.revokeInvite',
+          ]),
+        );
+        final rename = (await endpoints.adminAudit.entries(
+          admin,
+        )).firstWhere((e) => e.action == 'household.rename');
+        expect(rename.details, isNull, reason: 'no household name in the log');
+      });
+
+      test('ownership moves between members; the last owner stays', () async {
+        final bob = await signedInUser(sessionBuilder, name: 'Bob');
+        final bobId = (await endpoints.profile.me(bob)).id!;
+        final code = (await endpoints.adminHouseholds.createInvite(
+          admin,
+          householdId,
+        )).inviteCode!;
+        await endpoints.household.join(bob, code);
+
+        await expectLater(
+          endpoints.adminHouseholds.setMemberRole(
+            admin,
+            householdId,
+            annaId,
+            MembershipRole.member,
+          ),
+          throwsNest(NestErrorCode.lastOwner),
+        );
+
+        await endpoints.adminHouseholds.setMemberRole(
+          admin,
+          householdId,
+          bobId,
+          MembershipRole.owner,
+        );
+        final detail = await endpoints.adminHouseholds.setMemberRole(
+          admin,
+          householdId,
+          annaId,
+          MembershipRole.member,
+        );
+        final roles = {for (final m in detail.members) m.userId: m.role};
+        expect(roles, {
+          bobId: MembershipRole.owner,
+          annaId: MembershipRole.member,
+        });
+        expect(detail.summary.ownerNames, ['Bob']);
+      });
+
+      test('setMemberRole for someone outside the household is not found', () {
+        expect(
+          endpoints.adminHouseholds.setMemberRole(
+            admin,
+            householdId,
+            adminId,
+            MembershipRole.owner,
+          ),
+          throwsNest(NestErrorCode.notFound),
+        );
+      });
+    });
+
+    group('user management', () {
+      test('detail shows households, sign-in methods and devices', () async {
+        final session = sessionBuilder.build();
+        final anne = await NestUser.db.findById(session, annaId);
+        await addRefreshToken(session, anne!.authUserId);
+        await addRefreshToken(session, anne.authUserId);
+
+        final detail = await endpoints.adminUsers.detail(admin, annaId);
+        expect(detail.summary.name, 'Anna');
+        expect(detail.households.single.name, 'Home');
+        expect(detail.households.single.role, MembershipRole.owner);
+        expect(detail.signInMethods.email, isFalse);
+        expect(detail.activeSessions, 2);
+        expect(detail.lastSeenAt, isNotNull);
+      });
+
+      test('sign out everywhere removes every device, audited', () async {
+        final session = sessionBuilder.build();
+        final anne = await NestUser.db.findById(session, annaId);
+        await addRefreshToken(session, anne!.authUserId);
+
+        final detail = await endpoints.adminUsers.signOutEverywhere(
+          admin,
+          annaId,
+        );
+        expect(detail.activeSessions, 0);
+        expect(
+          await RefreshToken.db.count(
+            session,
+            where: (t) => t.authUserId.equals(anne.authUserId),
+          ),
+          0,
+        );
+        expect(await auditActions(), contains('user.signOutEverywhere'));
+      });
+
+      test('disabling also signs the user out everywhere', () async {
+        final session = sessionBuilder.build();
+        final anne = await NestUser.db.findById(session, annaId);
+        await addRefreshToken(session, anne!.authUserId);
+        await endpoints.adminUsers.setDisabled(admin, annaId, true);
+        expect(
+          (await endpoints.adminUsers.detail(admin, annaId)).activeSessions,
+          0,
+        );
+      });
+
+      test('an admin cannot sign themselves out everywhere', () {
+        expect(
+          endpoints.adminUsers.signOutEverywhere(admin, adminId),
+          throwsNest(NestErrorCode.invalidInput),
+        );
+      });
+    });
+
+    group('server settings', () {
+      tearDown(() {
+        TmdbService.override = null;
+        UpdateCheck.fetchOverride = null;
+        UpdateCheck.enabledOverride = null;
+        UpdateCheck.clearCache();
+      });
+
+      test('settings report versions and what is set, no secrets', () async {
+        final settings = await endpoints.adminSystem.settings(admin);
+        expect(settings.version, nestServerVersion);
+        expect(settings.apiVersion, nestApiVersion);
+        expect(settings.mailConfigured, isFalse);
+        expect(settings.filmDataConfigured, isFalse);
+        final json = settings.toJson().toString().toLowerCase();
+        for (final secret in ['apikey', 'secret', 'pepper', 'password']) {
+          expect(json, isNot(contains(secret)));
+        }
+      });
+
+      test('a test email without mail settings says so, audited', () async {
+        final result = await endpoints.adminSystem.sendTestMail(admin);
+        expect(result.ok, isFalse);
+        expect(result.detail, 'notConfigured');
+        expect(await auditActions(), contains('system.testMail'));
+      });
+
+      test('the film data test uses the film data service', () async {
+        final notSet = await endpoints.adminSystem.testFilmData(admin);
+        expect(notSet.ok, isFalse);
+        expect(notSet.detail, 'notConfigured');
+
+        TmdbService.override = FakeTmdbService();
+        expect((await endpoints.adminSystem.testFilmData(admin)).ok, isTrue);
+      });
+
+      test('the update status compares with the newest release', () async {
+        UpdateCheck.fetchOverride = () async => ['v0.1.0', 'v99.0.0', 'x'];
+        final newer = await endpoints.adminSystem.updateStatus(admin);
+        expect(newer.latestVersion, '99.0.0');
+        expect(newer.updateAvailable, isTrue);
+
+        UpdateCheck.clearCache();
+        UpdateCheck.fetchOverride = () async => ['v$nestServerVersion'];
+        final same = await endpoints.adminSystem.updateStatus(admin);
+        expect(same.updateAvailable, isFalse);
+
+        UpdateCheck.clearCache();
+        UpdateCheck.fetchOverride = () async => throw Exception('offline');
+        final offline = await endpoints.adminSystem.updateStatus(admin);
+        expect(offline.problem, 'unreachable');
+
+        UpdateCheck.enabledOverride = false;
+        final off = await endpoints.adminSystem.updateStatus(admin);
+        expect(off.problem, 'off');
+        expect(off.latestVersion, isNull);
+      });
     });
 
     group('system health', () {

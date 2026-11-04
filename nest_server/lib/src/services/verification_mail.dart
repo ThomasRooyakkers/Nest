@@ -68,6 +68,30 @@ abstract final class VerificationMail {
       return;
     }
 
+    final problem = await deliver(to: email, subject: subject, text: text);
+    if (problem != null) {
+      session.log(
+        '$label email to $email failed: $problem',
+        level: LogLevel.error,
+      );
+    }
+  }
+
+  /// Whether emails can be sent: both `resendApiKey` and `mailFrom` are set.
+  static bool get configured =>
+      HostSettings.resendApiKey != null && HostSettings.mailFrom != null;
+
+  /// Sends one plain-text email through Resend. Returns null when Resend
+  /// accepted it, or a short description of the problem. Never throws.
+  static Future<String?> deliver({
+    required String to,
+    required String subject,
+    required String text,
+  }) async {
+    final apiKey = HostSettings.resendApiKey;
+    final from = HostSettings.mailFrom;
+    if (apiKey == null || from == null) return 'not configured';
+
     final client = HttpClient()
       ..connectionTimeout = const Duration(seconds: 10);
     try {
@@ -78,7 +102,7 @@ abstract final class VerificationMail {
       request.write(
         jsonEncode({
           'from': from,
-          'to': [email],
+          'to': [to],
           'subject': subject,
           'text': text,
         }),
@@ -87,19 +111,10 @@ abstract final class VerificationMail {
         const Duration(seconds: 15),
       );
       final body = await response.transform(utf8.decoder).join();
-      if (response.statusCode >= 300) {
-        session.log(
-          '$label email to $email failed: ${response.statusCode} $body',
-          level: LogLevel.error,
-        );
-      }
-    } catch (e, stackTrace) {
-      session.log(
-        '$label email to $email failed.',
-        level: LogLevel.error,
-        exception: e,
-        stackTrace: stackTrace,
-      );
+      if (response.statusCode >= 300) return '${response.statusCode} $body';
+      return null;
+    } catch (e) {
+      return '$e';
     } finally {
       client.close();
     }

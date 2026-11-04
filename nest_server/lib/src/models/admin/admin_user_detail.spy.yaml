@@ -1,0 +1,11 @@
+### One user in the admin portal: their households, sign-in methods and
+### sessions. No household content.
+class: AdminUserDetail
+fields:
+  summary: AdminUserSummary
+  households: List<AdminUserHousehold>
+  signInMethods: SignInMethods
+  ### Devices that are signed in (refresh tokens).
+  activeSessions: int
+  ### Newest token refresh of any device: roughly when they last used Nest.
+  lastSeenAt: DateTime?

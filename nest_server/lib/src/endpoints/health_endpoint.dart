@@ -14,8 +14,9 @@ const nestServerVersion = '0.13.1';
 /// 5: meal planning, meal slots per household. 6: watchlist.
 /// 7: admin portal (users, system health, backups, audit log).
 /// 8: deleting your own account. 9: Google and Apple sign-in.
-/// 10: linking Google and Apple to an account.
-const nestApiVersion = 10;
+/// 10: linking Google and Apple to an account. 11: admin portal management
+/// (household and user detail, server settings).
+const nestApiVersion = 11;
 
 /// Oldest app API level this server still works with. Raise it only when a
 /// change breaks older apps.

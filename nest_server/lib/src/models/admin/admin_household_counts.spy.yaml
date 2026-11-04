@@ -1,0 +1,10 @@
+### Number of rows a household has per feature. No content.
+class: AdminHouseholdCounts
+fields:
+  shoppingLists: int
+  stores: int
+  shoppingItems: int
+  tasks: int
+  recipes: int
+  mealPlanEntries: int
+  watchlistItems: int

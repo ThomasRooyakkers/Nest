@@ -1,0 +1,9 @@
+### A member of a household as the admin portal sees them.
+class: AdminHouseholdMember
+fields:
+  userId: int
+  name: String
+  email: String?
+  role: MembershipRole
+  joinedAt: DateTime
+  disabled: bool

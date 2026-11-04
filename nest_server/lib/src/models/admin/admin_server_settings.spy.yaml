@@ -1,0 +1,21 @@
+### The settings this server runs with, for the admin portal's Server page.
+### Never contains secrets: only whether each one is set.
+class: AdminServerSettings
+fields:
+  version: String
+  apiVersion: int
+  minClientApiVersion: int
+  apiHost: String?
+  webHost: String?
+  adminHost: String?
+  allowedOrigins: List<String>
+  signUpMode: SignUpMode
+  superAdminEmail: String?
+  ### Mail is sent through Resend when both the key and sender are set.
+  mailConfigured: bool
+  mailFrom: String?
+  filmDataConfigured: bool
+  googleSignIn: bool
+  appleSignIn: bool
+  ### False when the host switched the update check off.
+  updateCheckEnabled: bool

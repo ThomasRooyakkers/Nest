@@ -1,4 +1,5 @@
 import 'package:nest_server/src/generated/protocol.dart';
+import 'package:nest_server/src/services/update_check.dart';
 import 'package:test/test.dart';
 
 import 'endpoint_registry.dart';
@@ -14,6 +15,13 @@ void main() {
     late TestSessionBuilder user;
     late TestSessionBuilder admin;
     late int householdId;
+    late int userId;
+
+    setUpAll(() {
+      useTestAuthServices();
+      UpdateCheck.fetchOverride = () async => ['v0.13.1'];
+    });
+    tearDownAll(() => UpdateCheck.fetchOverride = null);
 
     setUp(() async {
       user = await signedInUser(sessionBuilder, name: 'Anna');
@@ -26,6 +34,7 @@ void main() {
         user,
         'Home',
       )).household.id!;
+      userId = (await endpoints.profile.me(user)).id!;
     });
 
     final adminCalls = <String, AdminCall>{
@@ -35,13 +44,34 @@ void main() {
         householdId,
         HouseholdStatus.suspended,
       ),
+      'adminHouseholds.detail': (s) =>
+          endpoints.adminHouseholds.detail(s, householdId),
+      'adminHouseholds.create': (s) =>
+          endpoints.adminHouseholds.create(s, 'New family'),
+      'adminHouseholds.rename': (s) =>
+          endpoints.adminHouseholds.rename(s, householdId, 'Home 2'),
+      'adminHouseholds.setFeatures': (s) => endpoints.adminHouseholds
+          .setFeatures(s, householdId, [HouseholdFeature.shopping]),
+      'adminHouseholds.createInvite': (s) =>
+          endpoints.adminHouseholds.createInvite(s, householdId),
+      'adminHouseholds.revokeInvite': (s) =>
+          endpoints.adminHouseholds.revokeInvite(s, householdId),
+      'adminHouseholds.setMemberRole': (s) => endpoints.adminHouseholds
+          .setMemberRole(s, householdId, userId, MembershipRole.owner),
       'adminUsers.list': (s) => endpoints.adminUsers.list(s),
+      'adminUsers.detail': (s) => endpoints.adminUsers.detail(s, userId),
+      'adminUsers.signOutEverywhere': (s) =>
+          endpoints.adminUsers.signOutEverywhere(s, userId),
       'adminUsers.setDisabled': (s) async => endpoints.adminUsers.setDisabled(
         s,
         (await endpoints.profile.me(user)).id!,
         false,
       ),
       'adminSystem.health': (s) => endpoints.adminSystem.health(s),
+      'adminSystem.settings': (s) => endpoints.adminSystem.settings(s),
+      'adminSystem.sendTestMail': (s) => endpoints.adminSystem.sendTestMail(s),
+      'adminSystem.testFilmData': (s) => endpoints.adminSystem.testFilmData(s),
+      'adminSystem.updateStatus': (s) => endpoints.adminSystem.updateStatus(s),
       'adminBackups.overview': (s) => endpoints.adminBackups.overview(s),
       'adminBackups.requestBackup': (s) =>
           endpoints.adminBackups.requestBackup(s),
