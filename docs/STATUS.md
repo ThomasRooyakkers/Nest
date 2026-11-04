@@ -1222,6 +1222,20 @@ Nunito stay; how they are applied changed, mostly in `nest_shared`:
    (with recipe photos) before the phase 9 gate, and add a second backup target (NFS share and/or OneDrive
    via `~/nest/deploy/rclone/rclone.conf`).
 8. Phase 9 — Dashboard + release (CLAUDE.md section 10).
+9. **Backlog: the app gets stuck with a dead sign-in.** When the server no
+   longer accepts a device's sign-in (refresh token expired or revoked),
+   the app keeps it, never signs out, and `LiveSyncLoop` retries every 30 s
+   forever (found 2026-11-04: Nest left open for four days in the iPhone 18
+   Pro simulator, signed in as the "Apple" test account, sent about 17,000
+   `notSignedIn` refusals a day; stopped by shutting the simulators down).
+   Fix: on `NestException(notSignedIn)` or a 401, call
+   `client.auth.validateAuthentication()` once (it signs out when the
+   sign-in is dead) so the router shows sign-in; also validate on start and
+   on resume; stop `LiveSyncLoop` retries on sign-in errors. Optional on the
+   server: `requireLogin` on endpoints that need a user, so a rejected
+   token gets a 401 and the client refreshes by itself (sign-out tests then
+   expect the unauthenticated error). Needs a new app build to reach
+   devices.
 
 ## Open questions
 
