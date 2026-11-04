@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nest_client/nest_client.dart';
 import 'package:nest_shared/nest_shared.dart';
@@ -23,6 +24,28 @@ class HouseholdsPage extends ConsumerWidget {
 
     return AdminPage(
       title: l10n.navHouseholds,
+      actions: [
+        FilledButton.icon(
+          onPressed: () async {
+            final name = await askText(
+              context,
+              title: l10n.newHouseholdTitle,
+              message: l10n.newHouseholdMessage,
+              label: l10n.householdName,
+              confirmLabel: l10n.create,
+            );
+            if (name == null || !context.mounted) return;
+            await runWithFeedback(context, () async {
+              final id = await ref
+                  .read(householdsProvider.notifier)
+                  .create(name);
+              if (context.mounted) context.go('/households/$id');
+            });
+          },
+          icon: const Icon(LucideIcons.plus, size: 18),
+          label: Text(l10n.newHousehold),
+        ),
+      ],
       onRefresh: () async {
         ref
           ..invalidate(householdsProvider)
@@ -37,6 +60,7 @@ class HouseholdsPage extends ConsumerWidget {
           onRetry: () => ref.invalidate(householdsProvider),
           builder: (households) => AdminTable(
             emptyText: l10n.householdsEmpty,
+            onRowTap: (i) => context.go('/households/${households[i].id}'),
             columns: [
               AdminColumn(l10n.columnName, flex: 3),
               AdminColumn(l10n.columnOwners, flex: 3),

@@ -354,7 +354,7 @@
       }
     }
   },
-  "disableMessage": "This user can no longer use Nest until enabled again. Nothing is deleted.",
+  "disableMessage": "This user is signed out everywhere and can no longer use Nest until enabled again. Nothing is deleted.",
   "@disableMessage": {
     "description": "Confirmation dialog text."
   },
@@ -573,5 +573,437 @@
   "errorUnknown": "Something went wrong.",
   "@errorUnknown": {
     "description": "Unknown error."
+  },
+  "navServer": "Server",
+  "@navServer": {
+    "description": "Side menu: server settings page."
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back button on a detail page."
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Button."
+  },
+  "create": "Create",
+  "@create": {
+    "description": "Button."
+  },
+  "notSet": "Not set",
+  "@notSet": {
+    "description": "A setting without a value."
+  },
+  "settingOn": "On",
+  "@settingOn": {
+    "description": "A switched-on setting."
+  },
+  "settingOff": "Off",
+  "@settingOff": {
+    "description": "A switched-off setting."
+  },
+  "columnCreated": "Created",
+  "@columnCreated": {
+    "description": "Card label: when a household was made."
+  },
+  "columnRole": "Role",
+  "@columnRole": {
+    "description": "Table column."
+  },
+  "columnJoined": "Joined",
+  "@columnJoined": {
+    "description": "Table column: when the member joined."
+  },
+  "roleOwner": "Owner",
+  "@roleOwner": {
+    "description": "Membership role."
+  },
+  "roleMember": "Member",
+  "@roleMember": {
+    "description": "Membership role."
+  },
+  "newHousehold": "New household",
+  "@newHousehold": {
+    "description": "Button on the households page."
+  },
+  "newHouseholdTitle": "New household for a family",
+  "@newHouseholdTitle": {
+    "description": "Dialog title."
+  },
+  "newHouseholdMessage": "The household starts empty with an invite code. The first person to join with the code becomes its owner.",
+  "@newHouseholdMessage": {
+    "description": "Dialog text."
+  },
+  "householdName": "Name",
+  "@householdName": {
+    "description": "Text field label."
+  },
+  "rename": "Rename",
+  "@rename": {
+    "description": "Button."
+  },
+  "renameTitle": "Rename household",
+  "@renameTitle": {
+    "description": "Dialog title."
+  },
+  "sectionInvite": "Invite code",
+  "@sectionInvite": {
+    "description": "Card title."
+  },
+  "sectionFeatures": "Features",
+  "@sectionFeatures": {
+    "description": "Card title: features switched on for a household."
+  },
+  "sectionData": "Data",
+  "@sectionData": {
+    "description": "Card title: counts of stored rows."
+  },
+  "dataNote": "Counts only: the portal never shows what a household stores.",
+  "@dataNote": {
+    "description": "Note under the data counts."
+  },
+  "inviteNone": "No invite code. Make one to let someone join.",
+  "@inviteNone": {
+    "description": "Invite card without a code."
+  },
+  "inviteValidUntil": "Valid until {date}",
+  "@inviteValidUntil": {
+    "description": "Invite code expiry.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "inviteExpiredOn": "Expired on {date}",
+  "@inviteExpiredOn": {
+    "description": "Expired invite code.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "newCode": "New code",
+  "@newCode": {
+    "description": "Button: make a new invite code."
+  },
+  "revokeCode": "Revoke",
+  "@revokeCode": {
+    "description": "Button: remove the invite code."
+  },
+  "copyCode": "Copy code",
+  "@copyCode": {
+    "description": "Button."
+  },
+  "newCodeTitle": "Make a new invite code?",
+  "@newCodeTitle": {
+    "description": "Dialog title."
+  },
+  "newCodeMessage": "The current code stops working.",
+  "@newCodeMessage": {
+    "description": "Dialog text."
+  },
+  "revokeCodeTitle": "Revoke the invite code?",
+  "@revokeCodeTitle": {
+    "description": "Dialog title."
+  },
+  "revokeCodeMessage": "The code stops working right away.",
+  "@revokeCodeMessage": {
+    "description": "Dialog text."
+  },
+  "noMembers": "No members yet. Share the invite code with the family.",
+  "@noMembers": {
+    "description": "Empty members table."
+  },
+  "makeOwner": "Make owner",
+  "@makeOwner": {
+    "description": "Button."
+  },
+  "makeMember": "Make member",
+  "@makeMember": {
+    "description": "Button."
+  },
+  "makeOwnerTitle": "Make {name} an owner?",
+  "@makeOwnerTitle": {
+    "description": "Dialog title.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "makeOwnerMessage": "Owners can rename the household, switch features on and off and invite people.",
+  "@makeOwnerMessage": {
+    "description": "Dialog text."
+  },
+  "makeMemberTitle": "Make {name} a member?",
+  "@makeMemberTitle": {
+    "description": "Dialog title.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "makeMemberMessage": "They can no longer manage the household. A household always keeps at least one owner.",
+  "@makeMemberMessage": {
+    "description": "Dialog text."
+  },
+  "countShoppingLists": "Shopping lists",
+  "@countShoppingLists": {
+    "description": "Data count label."
+  },
+  "countStores": "Stores",
+  "@countStores": {
+    "description": "Data count label."
+  },
+  "countShoppingItems": "Shopping items",
+  "@countShoppingItems": {
+    "description": "Data count label."
+  },
+  "countTasks": "Tasks",
+  "@countTasks": {
+    "description": "Data count label."
+  },
+  "countRecipes": "Recipes",
+  "@countRecipes": {
+    "description": "Data count label."
+  },
+  "countMealPlan": "Planned meals",
+  "@countMealPlan": {
+    "description": "Data count label."
+  },
+  "countWatchlist": "Watchlist titles",
+  "@countWatchlist": {
+    "description": "Data count label."
+  },
+  "signInMethods": "Sign-in methods",
+  "@signInMethods": {
+    "description": "Card label."
+  },
+  "methodEmail": "Email",
+  "@methodEmail": {
+    "description": "Sign-in method: email and password."
+  },
+  "methodGoogle": "Google",
+  "@methodGoogle": {
+    "description": "Sign-in method."
+  },
+  "methodApple": "Apple",
+  "@methodApple": {
+    "description": "Sign-in method."
+  },
+  "methodNone": "None",
+  "@methodNone": {
+    "description": "No sign-in method."
+  },
+  "devices": "Signed-in devices",
+  "@devices": {
+    "description": "Card label."
+  },
+  "lastSeen": "Last seen {when}",
+  "@lastSeen": {
+    "description": "Detail line under the devices count.",
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "lastSeenNever": "Not signed in anywhere",
+  "@lastSeenNever": {
+    "description": "Detail line without devices."
+  },
+  "signOutEverywhere": "Sign out everywhere",
+  "@signOutEverywhere": {
+    "description": "Button."
+  },
+  "signOutEverywhereTitle": "Sign {name} out on every device?",
+  "@signOutEverywhereTitle": {
+    "description": "Dialog title.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "signOutEverywhereMessage": "Their account keeps working; they sign in again on each device.",
+  "@signOutEverywhereMessage": {
+    "description": "Dialog text."
+  },
+  "passwordHint": "A forgotten password is reset by the user with “Forgot password” in the app; the portal never sees or sets passwords.",
+  "@passwordHint": {
+    "description": "Note on the user page."
+  },
+  "sectionVersion": "Version",
+  "@sectionVersion": {
+    "description": "Card title."
+  },
+  "settingVersion": "Server version",
+  "@settingVersion": {
+    "description": "Setting label."
+  },
+  "settingApi": "API level",
+  "@settingApi": {
+    "description": "Setting label."
+  },
+  "apiLevels": "{api} (apps from level {min})",
+  "@apiLevels": {
+    "description": "API level with the oldest supported app level.",
+    "placeholders": {
+      "api": {
+        "type": "int"
+      },
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "settingUpdate": "Updates",
+  "@settingUpdate": {
+    "description": "Setting label."
+  },
+  "updateAvailable": "Version {version} is available",
+  "@updateAvailable": {
+    "description": "Update status.",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "upToDate": "Up to date",
+  "@upToDate": {
+    "description": "Update status."
+  },
+  "updateOff": "Update check is off",
+  "@updateOff": {
+    "description": "Update status."
+  },
+  "updateUnreachable": "Could not check for updates",
+  "@updateUnreachable": {
+    "description": "Update status."
+  },
+  "updateHint": "Update as described in the hosting guide (deploy.sh, or a new NEST_VERSION in .env).",
+  "@updateHint": {
+    "description": "Note under the update status."
+  },
+  "sectionAddresses": "Addresses",
+  "@sectionAddresses": {
+    "description": "Card title."
+  },
+  "settingApiAddress": "API",
+  "@settingApiAddress": {
+    "description": "Setting label."
+  },
+  "settingWebAddress": "Web address",
+  "@settingWebAddress": {
+    "description": "Setting label."
+  },
+  "settingAdminAddress": "Admin portal",
+  "@settingAdminAddress": {
+    "description": "Setting label."
+  },
+  "settingOrigins": "Allowed web origins",
+  "@settingOrigins": {
+    "description": "Setting label."
+  },
+  "sectionAccounts": "Accounts",
+  "@sectionAccounts": {
+    "description": "Card title."
+  },
+  "settingSuperAdmin": "Super-admin email",
+  "@settingSuperAdmin": {
+    "description": "Setting label."
+  },
+  "settingGoogle": "Google sign-in",
+  "@settingGoogle": {
+    "description": "Setting label."
+  },
+  "settingApple": "Sign in with Apple",
+  "@settingApple": {
+    "description": "Setting label."
+  },
+  "sectionServices": "Services",
+  "@sectionServices": {
+    "description": "Card title."
+  },
+  "settingMailFrom": "Mail sender",
+  "@settingMailFrom": {
+    "description": "Setting label."
+  },
+  "sendTestMail": "Send test email",
+  "@sendTestMail": {
+    "description": "Button."
+  },
+  "testFilmData": "Test film data",
+  "@testFilmData": {
+    "description": "Button."
+  },
+  "testMailSent": "Test email sent to your own address. Check your inbox.",
+  "@testMailSent": {
+    "description": "Snack bar."
+  },
+  "testFailed": "Failed: {detail}",
+  "@testFailed": {
+    "description": "Snack bar after a failed test.",
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "testNotConfigured": "Not set up on this server.",
+  "@testNotConfigured": {
+    "description": "Snack bar."
+  },
+  "testNoAddress": "Your account has no email address.",
+  "@testNoAddress": {
+    "description": "Snack bar."
+  },
+  "filmDataOk": "Film data works.",
+  "@filmDataOk": {
+    "description": "Snack bar."
+  },
+  "settingsNote": "These settings come from the server's .env file: change them there and restart the server. Secrets are never shown here.",
+  "@settingsNote": {
+    "description": "Note on the server page."
+  },
+  "auditHouseholdCreated": "Household created",
+  "@auditHouseholdCreated": {
+    "description": "Audit action."
+  },
+  "auditHouseholdRenamed": "Household renamed",
+  "@auditHouseholdRenamed": {
+    "description": "Audit action."
+  },
+  "auditHouseholdFeatures": "Features changed",
+  "@auditHouseholdFeatures": {
+    "description": "Audit action."
+  },
+  "auditInviteCreated": "Invite code made",
+  "@auditInviteCreated": {
+    "description": "Audit action."
+  },
+  "auditInviteRevoked": "Invite code revoked",
+  "@auditInviteRevoked": {
+    "description": "Audit action."
+  },
+  "auditMemberRole": "Member role changed",
+  "@auditMemberRole": {
+    "description": "Audit action."
+  },
+  "auditUserSignedOut": "Signed out everywhere",
+  "@auditUserSignedOut": {
+    "description": "Audit action."
+  },
+  "auditTestMail": "Test email sent",
+  "@auditTestMail": {
+    "description": "Audit action."
+  },
+  "errorLastOwner": "A household always keeps at least one owner.",
+  "@errorLastOwner": {
+    "description": "Error."
   }
 }

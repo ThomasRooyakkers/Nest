@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nest_client/nest_client.dart';
 
 import '../../core/formatting.dart';
@@ -30,6 +31,7 @@ class UsersPage extends ConsumerWidget {
           onRetry: () => ref.invalidate(usersProvider),
           builder: (users) => AdminTable(
             emptyText: l10n.usersEmpty,
+            onRowTap: (i) => context.go('/users/${users[i].id}'),
             columns: [
               AdminColumn(l10n.columnName, flex: 3),
               AdminColumn(l10n.columnEmail, flex: 4),

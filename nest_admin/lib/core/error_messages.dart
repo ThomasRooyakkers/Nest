@@ -10,6 +10,7 @@ String errorMessage(AdminLocalizations l10n, Object error) => switch (error) {
   NestException(code: NestErrorCode.notAdmin) => l10n.errorNotAdmin,
   NestException(code: NestErrorCode.notFound) => l10n.errorNotFound,
   NestException(code: NestErrorCode.invalidInput) => l10n.errorInvalidInput,
+  NestException(code: NestErrorCode.lastOwner) => l10n.errorLastOwner,
   EmailAccountLoginException(
     reason: EmailAccountLoginExceptionReason.invalidCredentials,
   ) =>

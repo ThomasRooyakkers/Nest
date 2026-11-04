@@ -545,7 +545,7 @@ abstract class AdminLocalizations {
   /// Confirmation dialog text.
   ///
   /// In en, this message translates to:
-  /// **'This user can no longer use Nest until enabled again. Nothing is deleted.'**
+  /// **'This user is signed out everywhere and can no longer use Nest until enabled again. Nothing is deleted.'**
   String get disableMessage;
 
   /// Confirmation dialog text.
@@ -805,6 +805,582 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong.'**
   String get errorUnknown;
+
+  /// Side menu: server settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Server'**
+  String get navServer;
+
+  /// Back button on a detail page.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get create;
+
+  /// A setting without a value.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get notSet;
+
+  /// A switched-on setting.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get settingOn;
+
+  /// A switched-off setting.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get settingOff;
+
+  /// Card label: when a household was made.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get columnCreated;
+
+  /// Table column.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get columnRole;
+
+  /// Table column: when the member joined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined'**
+  String get columnJoined;
+
+  /// Membership role.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get roleOwner;
+
+  /// Membership role.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get roleMember;
+
+  /// Button on the households page.
+  ///
+  /// In en, this message translates to:
+  /// **'New household'**
+  String get newHousehold;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'New household for a family'**
+  String get newHouseholdTitle;
+
+  /// Dialog text.
+  ///
+  /// In en, this message translates to:
+  /// **'The household starts empty with an invite code. The first person to join with the code becomes its owner.'**
+  String get newHouseholdMessage;
+
+  /// Text field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get householdName;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get rename;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename household'**
+  String get renameTitle;
+
+  /// Card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code'**
+  String get sectionInvite;
+
+  /// Card title: features switched on for a household.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get sectionFeatures;
+
+  /// Card title: counts of stored rows.
+  ///
+  /// In en, this message translates to:
+  /// **'Data'**
+  String get sectionData;
+
+  /// Note under the data counts.
+  ///
+  /// In en, this message translates to:
+  /// **'Counts only: the portal never shows what a household stores.'**
+  String get dataNote;
+
+  /// Invite card without a code.
+  ///
+  /// In en, this message translates to:
+  /// **'No invite code. Make one to let someone join.'**
+  String get inviteNone;
+
+  /// Invite code expiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid until {date}'**
+  String inviteValidUntil(String date);
+
+  /// Expired invite code.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired on {date}'**
+  String inviteExpiredOn(String date);
+
+  /// Button: make a new invite code.
+  ///
+  /// In en, this message translates to:
+  /// **'New code'**
+  String get newCode;
+
+  /// Button: remove the invite code.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke'**
+  String get revokeCode;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy code'**
+  String get copyCode;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a new invite code?'**
+  String get newCodeTitle;
+
+  /// Dialog text.
+  ///
+  /// In en, this message translates to:
+  /// **'The current code stops working.'**
+  String get newCodeMessage;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke the invite code?'**
+  String get revokeCodeTitle;
+
+  /// Dialog text.
+  ///
+  /// In en, this message translates to:
+  /// **'The code stops working right away.'**
+  String get revokeCodeMessage;
+
+  /// Empty members table.
+  ///
+  /// In en, this message translates to:
+  /// **'No members yet. Share the invite code with the family.'**
+  String get noMembers;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Make owner'**
+  String get makeOwner;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Make member'**
+  String get makeMember;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Make {name} an owner?'**
+  String makeOwnerTitle(String name);
+
+  /// Dialog text.
+  ///
+  /// In en, this message translates to:
+  /// **'Owners can rename the household, switch features on and off and invite people.'**
+  String get makeOwnerMessage;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Make {name} a member?'**
+  String makeMemberTitle(String name);
+
+  /// Dialog text.
+  ///
+  /// In en, this message translates to:
+  /// **'They can no longer manage the household. A household always keeps at least one owner.'**
+  String get makeMemberMessage;
+
+  /// Data count label.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping lists'**
+  String get countShoppingLists;
+
+  /// Data count label.
+  ///
+  /// In en, this message translates to:
+  /// **'Stores'**
+  String get countStores;
+
+  /// Data count label.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping items'**
+  String get countShoppingItems;
+
+  /// Data count label.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get countTasks;
+
+  /// Data count label.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipes'**
+  String get countRecipes;
+
+  /// Data count label.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned meals'**
+  String get countMealPlan;
+
+  /// Data count label.
+  ///
+  /// In en, this message translates to:
+  /// **'Watchlist titles'**
+  String get countWatchlist;
+
+  /// Card label.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in methods'**
+  String get signInMethods;
+
+  /// Sign-in method: email and password.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get methodEmail;
+
+  /// Sign-in method.
+  ///
+  /// In en, this message translates to:
+  /// **'Google'**
+  String get methodGoogle;
+
+  /// Sign-in method.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple'**
+  String get methodApple;
+
+  /// No sign-in method.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get methodNone;
+
+  /// Card label.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed-in devices'**
+  String get devices;
+
+  /// Detail line under the devices count.
+  ///
+  /// In en, this message translates to:
+  /// **'Last seen {when}'**
+  String lastSeen(String when);
+
+  /// Detail line without devices.
+  ///
+  /// In en, this message translates to:
+  /// **'Not signed in anywhere'**
+  String get lastSeenNever;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out everywhere'**
+  String get signOutEverywhere;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign {name} out on every device?'**
+  String signOutEverywhereTitle(String name);
+
+  /// Dialog text.
+  ///
+  /// In en, this message translates to:
+  /// **'Their account keeps working; they sign in again on each device.'**
+  String get signOutEverywhereMessage;
+
+  /// Note on the user page.
+  ///
+  /// In en, this message translates to:
+  /// **'A forgotten password is reset by the user with “Forgot password” in the app; the portal never sees or sets passwords.'**
+  String get passwordHint;
+
+  /// Card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get sectionVersion;
+
+  /// Setting label.
+  ///
+  /// In en, this message translates to:
+  /// **'Server version'**
+  String get settingVersion;
+
+  /// Setting label.
+  ///
+  /// In en, this message translates to:
+  /// **'API level'**
+  String get settingApi;
+
+  /// API level with the oldest supported app level.
+  ///
+  /// In en, this message translates to:
+  /// **'{api} (apps from level {min})'**
+  String apiLevels(int api, int min);
+
+  /// Setting label.
+  ///
+  /// In en, this message translates to:
+  /// **'Updates'**
+  String get settingUpdate;
+
+  /// Update status.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version} is available'**
+  String updateAvailable(String version);
+
+  /// Update status.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to date'**
+  String get upToDate;
+
+  /// Update status.
+  ///
+  /// In en, this message translates to:
+  /// **'Update check is off'**
+  String get updateOff;
+
+  /// Update status.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not check for updates'**
+  String get updateUnreachable;
+
+  /// Note under the update status.
+  ///
+  /// In en, this message translates to:
+  /// **'Update as described in the hosting guide (deploy.sh, or a new NEST_VERSION in .env).'**
+  String get updateHint;
+
+  /// Card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Addresses'**
+  String get sectionAddresses;
+
+  /// Setting label.
+  ///
+  /// In en, this message translates to:
+  /// **'API'**
+  String get settingApiAddress;
+
+  /// Setting label.
+  ///
+  /// In en, this message translates to:
+  /// **'Web address'**
+  String get settingWebAddress;
+
+  /// Setting label.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin portal'**
+  String get settingAdminAddress;
+
+  /// Setting label.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed web origins'**
+  String get settingOrigins;
+
+  /// Card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts'**
+  String get sectionAccounts;
+
+  /// Setting label.
+  ///
+  /// In en, this message translates to:
+  /// **'Super-admin email'**
+  String get settingSuperAdmin;
+
+  /// Setting label.
+  ///
+  /// In en, this message translates to:
+  /// **'Google sign-in'**
+  String get settingGoogle;
+
+  /// Setting label.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Apple'**
+  String get settingApple;
+
+  /// Card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get sectionServices;
+
+  /// Setting label.
+  ///
+  /// In en, this message translates to:
+  /// **'Mail sender'**
+  String get settingMailFrom;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Send test email'**
+  String get sendTestMail;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Test film data'**
+  String get testFilmData;
+
+  /// Snack bar.
+  ///
+  /// In en, this message translates to:
+  /// **'Test email sent to your own address. Check your inbox.'**
+  String get testMailSent;
+
+  /// Snack bar after a failed test.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed: {detail}'**
+  String testFailed(String detail);
+
+  /// Snack bar.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set up on this server.'**
+  String get testNotConfigured;
+
+  /// Snack bar.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has no email address.'**
+  String get testNoAddress;
+
+  /// Snack bar.
+  ///
+  /// In en, this message translates to:
+  /// **'Film data works.'**
+  String get filmDataOk;
+
+  /// Note on the server page.
+  ///
+  /// In en, this message translates to:
+  /// **'These settings come from the server\'s .env file: change them there and restart the server. Secrets are never shown here.'**
+  String get settingsNote;
+
+  /// Audit action.
+  ///
+  /// In en, this message translates to:
+  /// **'Household created'**
+  String get auditHouseholdCreated;
+
+  /// Audit action.
+  ///
+  /// In en, this message translates to:
+  /// **'Household renamed'**
+  String get auditHouseholdRenamed;
+
+  /// Audit action.
+  ///
+  /// In en, this message translates to:
+  /// **'Features changed'**
+  String get auditHouseholdFeatures;
+
+  /// Audit action.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code made'**
+  String get auditInviteCreated;
+
+  /// Audit action.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code revoked'**
+  String get auditInviteRevoked;
+
+  /// Audit action.
+  ///
+  /// In en, this message translates to:
+  /// **'Member role changed'**
+  String get auditMemberRole;
+
+  /// Audit action.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed out everywhere'**
+  String get auditUserSignedOut;
+
+  /// Audit action.
+  ///
+  /// In en, this message translates to:
+  /// **'Test email sent'**
+  String get auditTestMail;
+
+  /// Error.
+  ///
+  /// In en, this message translates to:
+  /// **'A household always keeps at least one owner.'**
+  String get errorLastOwner;
 }
 
 class _AdminLocalizationsDelegate

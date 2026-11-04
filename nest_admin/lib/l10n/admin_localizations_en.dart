@@ -274,7 +274,7 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get disableMessage =>
-      'This user can no longer use Nest until enabled again. Nothing is deleted.';
+      'This user is signed out everywhere and can no longer use Nest until enabled again. Nothing is deleted.';
 
   @override
   String get enableMessage => 'This user can use Nest again.';
@@ -421,4 +421,320 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get errorUnknown => 'Something went wrong.';
+
+  @override
+  String get navServer => 'Server';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get create => 'Create';
+
+  @override
+  String get notSet => 'Not set';
+
+  @override
+  String get settingOn => 'On';
+
+  @override
+  String get settingOff => 'Off';
+
+  @override
+  String get columnCreated => 'Created';
+
+  @override
+  String get columnRole => 'Role';
+
+  @override
+  String get columnJoined => 'Joined';
+
+  @override
+  String get roleOwner => 'Owner';
+
+  @override
+  String get roleMember => 'Member';
+
+  @override
+  String get newHousehold => 'New household';
+
+  @override
+  String get newHouseholdTitle => 'New household for a family';
+
+  @override
+  String get newHouseholdMessage =>
+      'The household starts empty with an invite code. The first person to join with the code becomes its owner.';
+
+  @override
+  String get householdName => 'Name';
+
+  @override
+  String get rename => 'Rename';
+
+  @override
+  String get renameTitle => 'Rename household';
+
+  @override
+  String get sectionInvite => 'Invite code';
+
+  @override
+  String get sectionFeatures => 'Features';
+
+  @override
+  String get sectionData => 'Data';
+
+  @override
+  String get dataNote =>
+      'Counts only: the portal never shows what a household stores.';
+
+  @override
+  String get inviteNone => 'No invite code. Make one to let someone join.';
+
+  @override
+  String inviteValidUntil(String date) {
+    return 'Valid until $date';
+  }
+
+  @override
+  String inviteExpiredOn(String date) {
+    return 'Expired on $date';
+  }
+
+  @override
+  String get newCode => 'New code';
+
+  @override
+  String get revokeCode => 'Revoke';
+
+  @override
+  String get copyCode => 'Copy code';
+
+  @override
+  String get newCodeTitle => 'Make a new invite code?';
+
+  @override
+  String get newCodeMessage => 'The current code stops working.';
+
+  @override
+  String get revokeCodeTitle => 'Revoke the invite code?';
+
+  @override
+  String get revokeCodeMessage => 'The code stops working right away.';
+
+  @override
+  String get noMembers =>
+      'No members yet. Share the invite code with the family.';
+
+  @override
+  String get makeOwner => 'Make owner';
+
+  @override
+  String get makeMember => 'Make member';
+
+  @override
+  String makeOwnerTitle(String name) {
+    return 'Make $name an owner?';
+  }
+
+  @override
+  String get makeOwnerMessage =>
+      'Owners can rename the household, switch features on and off and invite people.';
+
+  @override
+  String makeMemberTitle(String name) {
+    return 'Make $name a member?';
+  }
+
+  @override
+  String get makeMemberMessage =>
+      'They can no longer manage the household. A household always keeps at least one owner.';
+
+  @override
+  String get countShoppingLists => 'Shopping lists';
+
+  @override
+  String get countStores => 'Stores';
+
+  @override
+  String get countShoppingItems => 'Shopping items';
+
+  @override
+  String get countTasks => 'Tasks';
+
+  @override
+  String get countRecipes => 'Recipes';
+
+  @override
+  String get countMealPlan => 'Planned meals';
+
+  @override
+  String get countWatchlist => 'Watchlist titles';
+
+  @override
+  String get signInMethods => 'Sign-in methods';
+
+  @override
+  String get methodEmail => 'Email';
+
+  @override
+  String get methodGoogle => 'Google';
+
+  @override
+  String get methodApple => 'Apple';
+
+  @override
+  String get methodNone => 'None';
+
+  @override
+  String get devices => 'Signed-in devices';
+
+  @override
+  String lastSeen(String when) {
+    return 'Last seen $when';
+  }
+
+  @override
+  String get lastSeenNever => 'Not signed in anywhere';
+
+  @override
+  String get signOutEverywhere => 'Sign out everywhere';
+
+  @override
+  String signOutEverywhereTitle(String name) {
+    return 'Sign $name out on every device?';
+  }
+
+  @override
+  String get signOutEverywhereMessage =>
+      'Their account keeps working; they sign in again on each device.';
+
+  @override
+  String get passwordHint =>
+      'A forgotten password is reset by the user with “Forgot password” in the app; the portal never sees or sets passwords.';
+
+  @override
+  String get sectionVersion => 'Version';
+
+  @override
+  String get settingVersion => 'Server version';
+
+  @override
+  String get settingApi => 'API level';
+
+  @override
+  String apiLevels(int api, int min) {
+    return '$api (apps from level $min)';
+  }
+
+  @override
+  String get settingUpdate => 'Updates';
+
+  @override
+  String updateAvailable(String version) {
+    return 'Version $version is available';
+  }
+
+  @override
+  String get upToDate => 'Up to date';
+
+  @override
+  String get updateOff => 'Update check is off';
+
+  @override
+  String get updateUnreachable => 'Could not check for updates';
+
+  @override
+  String get updateHint =>
+      'Update as described in the hosting guide (deploy.sh, or a new NEST_VERSION in .env).';
+
+  @override
+  String get sectionAddresses => 'Addresses';
+
+  @override
+  String get settingApiAddress => 'API';
+
+  @override
+  String get settingWebAddress => 'Web address';
+
+  @override
+  String get settingAdminAddress => 'Admin portal';
+
+  @override
+  String get settingOrigins => 'Allowed web origins';
+
+  @override
+  String get sectionAccounts => 'Accounts';
+
+  @override
+  String get settingSuperAdmin => 'Super-admin email';
+
+  @override
+  String get settingGoogle => 'Google sign-in';
+
+  @override
+  String get settingApple => 'Sign in with Apple';
+
+  @override
+  String get sectionServices => 'Services';
+
+  @override
+  String get settingMailFrom => 'Mail sender';
+
+  @override
+  String get sendTestMail => 'Send test email';
+
+  @override
+  String get testFilmData => 'Test film data';
+
+  @override
+  String get testMailSent =>
+      'Test email sent to your own address. Check your inbox.';
+
+  @override
+  String testFailed(String detail) {
+    return 'Failed: $detail';
+  }
+
+  @override
+  String get testNotConfigured => 'Not set up on this server.';
+
+  @override
+  String get testNoAddress => 'Your account has no email address.';
+
+  @override
+  String get filmDataOk => 'Film data works.';
+
+  @override
+  String get settingsNote =>
+      'These settings come from the server\'s .env file: change them there and restart the server. Secrets are never shown here.';
+
+  @override
+  String get auditHouseholdCreated => 'Household created';
+
+  @override
+  String get auditHouseholdRenamed => 'Household renamed';
+
+  @override
+  String get auditHouseholdFeatures => 'Features changed';
+
+  @override
+  String get auditInviteCreated => 'Invite code made';
+
+  @override
+  String get auditInviteRevoked => 'Invite code revoked';
+
+  @override
+  String get auditMemberRole => 'Member role changed';
+
+  @override
+  String get auditUserSignedOut => 'Signed out everywhere';
+
+  @override
+  String get auditTestMail => 'Test email sent';
+
+  @override
+  String get errorLastOwner => 'A household always keeps at least one owner.';
 }

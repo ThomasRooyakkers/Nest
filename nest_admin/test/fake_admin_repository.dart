@@ -88,6 +88,195 @@ class FakeAdminRepository implements AdminRepository {
 
   BackupRequest? pending;
 
+  /// Household detail beyond the summary, per household id.
+  late var invites = <int, (String?, DateTime?)>{
+    1: ('K7PM3QXA', now.add(const Duration(days: 5))),
+    2: (null, null),
+  };
+  late var members = <int, List<AdminHouseholdMember>>{
+    1: [
+      AdminHouseholdMember(
+        userId: 1,
+        name: 'Thomas',
+        email: 'thomas@nest.test',
+        role: MembershipRole.owner,
+        joinedAt: DateTime.utc(2026, 10, 1),
+        disabled: false,
+      ),
+      AdminHouseholdMember(
+        userId: 2,
+        name: 'Sarah',
+        email: 'sarah@nest.test',
+        role: MembershipRole.member,
+        joinedAt: DateTime.utc(2026, 10, 3),
+        disabled: false,
+      ),
+    ],
+    2: [],
+  };
+  final signedOut = <int>[];
+  var activeSessions = 2;
+  AdminCheckResult testMailResult = AdminCheckResult(
+    ok: false,
+    detail: 'notConfigured',
+  );
+  String? latestVersion = '0.14.0';
+
+  AdminHouseholdDetail _householdDetail(int id) {
+    final summary = householdList.firstWhere((h) => h.id == id);
+    final (code, expires) = invites[id] ?? (null, null);
+    return AdminHouseholdDetail(
+      summary: summary,
+      members: members[id] ?? [],
+      mealSlots: [],
+      inviteCode: code,
+      inviteExpiresAt: expires,
+      counts: AdminHouseholdCounts(
+        shoppingLists: 2,
+        stores: 3,
+        shoppingItems: 41,
+        tasks: 12,
+        recipes: 7,
+        mealPlanEntries: 9,
+        watchlistItems: 15,
+      ),
+    );
+  }
+
+  void _updateSummary(
+    int id,
+    AdminHouseholdSummary Function(AdminHouseholdSummary) f,
+  ) {
+    householdList = [for (final h in householdList) h.id == id ? f(h) : h];
+  }
+
+  @override
+  Future<AdminHouseholdDetail> householdDetail(int householdId) async =>
+      _householdDetail(householdId);
+
+  @override
+  Future<AdminHouseholdDetail> createHousehold(String name) async {
+    final id =
+        householdList.map((h) => h.id).reduce((a, b) => a > b ? a : b) + 1;
+    householdList = [
+      ...householdList,
+      AdminHouseholdSummary(
+        id: id,
+        name: name,
+        status: HouseholdStatus.active,
+        memberCount: 0,
+        ownerNames: [],
+        enabledFeatures: HouseholdFeature.values,
+        createdAt: now,
+      ),
+    ];
+    invites[id] = ('NEWFAM23', now.add(const Duration(days: 7)));
+    members[id] = [];
+    return _householdDetail(id);
+  }
+
+  @override
+  Future<AdminHouseholdDetail> renameHousehold(
+    int householdId,
+    String name,
+  ) async {
+    _updateSummary(householdId, (h) => h.copyWith(name: name));
+    return _householdDetail(householdId);
+  }
+
+  @override
+  Future<AdminHouseholdDetail> setHouseholdFeatures(
+    int householdId,
+    List<HouseholdFeature> features,
+  ) async {
+    _updateSummary(householdId, (h) => h.copyWith(enabledFeatures: features));
+    return _householdDetail(householdId);
+  }
+
+  @override
+  Future<AdminHouseholdDetail> createHouseholdInvite(int householdId) async {
+    invites[householdId] = ('NEXTC0DE', now.add(const Duration(days: 7)));
+    return _householdDetail(householdId);
+  }
+
+  @override
+  Future<AdminHouseholdDetail> revokeHouseholdInvite(int householdId) async {
+    invites[householdId] = (null, null);
+    return _householdDetail(householdId);
+  }
+
+  @override
+  Future<AdminHouseholdDetail> setMemberRole(
+    int householdId,
+    int userId,
+    MembershipRole role,
+  ) async {
+    members[householdId] = [
+      for (final m in members[householdId]!)
+        m.userId == userId ? m.copyWith(role: role) : m,
+    ];
+    return _householdDetail(householdId);
+  }
+
+  @override
+  Future<AdminUserDetail> userDetail(int userId) async => AdminUserDetail(
+    summary: userList.firstWhere((u) => u.id == userId),
+    households: [
+      AdminUserHousehold(
+        householdId: 1,
+        name: 'Home',
+        role: userId == 1 ? MembershipRole.owner : MembershipRole.member,
+        status: HouseholdStatus.active,
+      ),
+    ],
+    signInMethods: SignInMethods(
+      email: true,
+      google: userId == 2,
+      apple: false,
+    ),
+    activeSessions: activeSessions,
+    lastSeenAt: activeSessions == 0 ? null : now,
+  );
+
+  @override
+  Future<AdminUserDetail> signOutEverywhere(int userId) async {
+    signedOut.add(userId);
+    activeSessions = 0;
+    return userDetail(userId);
+  }
+
+  @override
+  Future<AdminServerSettings> serverSettings() async => AdminServerSettings(
+    version: '0.13.1',
+    apiVersion: 11,
+    minClientApiVersion: 1,
+    apiHost: 'nest-api.example.com',
+    webHost: 'nest.example.com',
+    adminHost: null,
+    allowedOrigins: ['https://nest.example.com'],
+    signUpMode: SignUpMode.inviteOnly,
+    superAdminEmail: 'thomas@nest.test',
+    mailConfigured: false,
+    filmDataConfigured: true,
+    googleSignIn: true,
+    appleSignIn: false,
+    updateCheckEnabled: true,
+  );
+
+  @override
+  Future<AdminCheckResult> sendTestMail() async => testMailResult;
+
+  @override
+  Future<AdminCheckResult> testFilmData() async => AdminCheckResult(ok: true);
+
+  @override
+  Future<AdminUpdateStatus> updateStatus() async => AdminUpdateStatus(
+    currentVersion: '0.13.1',
+    latestVersion: latestVersion,
+    updateAvailable: latestVersion != null && latestVersion != '0.13.1',
+    checkedAt: now,
+  );
+
   @override
   ValueListenable<AuthSuccess?> get authChanges => _auth;
 

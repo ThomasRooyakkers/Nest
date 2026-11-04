@@ -171,7 +171,7 @@ final class HouseholdsProvider
   Households create() => Households();
 }
 
-String _$householdsHash() => r'd3a8a709d5b66aa827bb415e9b4225cdc5a2ce4b';
+String _$householdsHash() => r'7af657fdd1fd9a7c1314d27be549262bedbaa507';
 
 abstract class _$Households
     extends $AsyncNotifier<List<AdminHouseholdSummary>> {
@@ -197,6 +197,215 @@ abstract class _$Households
               Object?
             >;
     return element.handleCreate(ref, build);
+  }
+}
+
+/// One household's detail page. Every change refreshes the list and the
+/// audit log.
+
+@ProviderFor(HouseholdDetail)
+final householdDetailProvider = HouseholdDetailFamily._();
+
+/// One household's detail page. Every change refreshes the list and the
+/// audit log.
+final class HouseholdDetailProvider
+    extends $AsyncNotifierProvider<HouseholdDetail, AdminHouseholdDetail> {
+  /// One household's detail page. Every change refreshes the list and the
+  /// audit log.
+  HouseholdDetailProvider._({
+    required HouseholdDetailFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'householdDetailProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$householdDetailHash();
+
+  @override
+  String toString() {
+    return r'householdDetailProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  HouseholdDetail create() => HouseholdDetail();
+
+  @override
+  bool operator ==(Object other) {
+    return other is HouseholdDetailProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$householdDetailHash() => r'ff0b878ca610062fd2b94ea7284c52e99cedb376';
+
+/// One household's detail page. Every change refreshes the list and the
+/// audit log.
+
+final class HouseholdDetailFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          HouseholdDetail,
+          AsyncValue<AdminHouseholdDetail>,
+          AdminHouseholdDetail,
+          FutureOr<AdminHouseholdDetail>,
+          int
+        > {
+  HouseholdDetailFamily._()
+    : super(
+        retry: null,
+        name: r'householdDetailProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// One household's detail page. Every change refreshes the list and the
+  /// audit log.
+
+  HouseholdDetailProvider call(int householdId) =>
+      HouseholdDetailProvider._(argument: householdId, from: this);
+
+  @override
+  String toString() => r'householdDetailProvider';
+}
+
+/// One household's detail page. Every change refreshes the list and the
+/// audit log.
+
+abstract class _$HouseholdDetail extends $AsyncNotifier<AdminHouseholdDetail> {
+  late final _$args = ref.$arg as int;
+  int get householdId => _$args;
+
+  FutureOr<AdminHouseholdDetail> build(int householdId);
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref =
+        this.ref
+            as $Ref<AsyncValue<AdminHouseholdDetail>, AdminHouseholdDetail>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<AdminHouseholdDetail>,
+                AdminHouseholdDetail
+              >,
+              AsyncValue<AdminHouseholdDetail>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, () => build(_$args));
+  }
+}
+
+/// One user's detail page.
+
+@ProviderFor(UserDetail)
+final userDetailProvider = UserDetailFamily._();
+
+/// One user's detail page.
+final class UserDetailProvider
+    extends $AsyncNotifierProvider<UserDetail, AdminUserDetail> {
+  /// One user's detail page.
+  UserDetailProvider._({
+    required UserDetailFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'userDetailProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$userDetailHash();
+
+  @override
+  String toString() {
+    return r'userDetailProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  UserDetail create() => UserDetail();
+
+  @override
+  bool operator ==(Object other) {
+    return other is UserDetailProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$userDetailHash() => r'66eefc60ac794d73075ef218d60bd84859af3a27';
+
+/// One user's detail page.
+
+final class UserDetailFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          UserDetail,
+          AsyncValue<AdminUserDetail>,
+          AdminUserDetail,
+          FutureOr<AdminUserDetail>,
+          int
+        > {
+  UserDetailFamily._()
+    : super(
+        retry: null,
+        name: r'userDetailProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// One user's detail page.
+
+  UserDetailProvider call(int userId) =>
+      UserDetailProvider._(argument: userId, from: this);
+
+  @override
+  String toString() => r'userDetailProvider';
+}
+
+/// One user's detail page.
+
+abstract class _$UserDetail extends $AsyncNotifier<AdminUserDetail> {
+  late final _$args = ref.$arg as int;
+  int get userId => _$args;
+
+  FutureOr<AdminUserDetail> build(int userId);
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<AdminUserDetail>, AdminUserDetail>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<AdminUserDetail>, AdminUserDetail>,
+              AsyncValue<AdminUserDetail>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, () => build(_$args));
   }
 }
 
@@ -248,6 +457,88 @@ abstract class _$Users extends $AsyncNotifier<List<AdminUserSummary>> {
     return element.handleCreate(ref, build);
   }
 }
+
+@ProviderFor(serverSettings)
+final serverSettingsProvider = ServerSettingsProvider._();
+
+final class ServerSettingsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<AdminServerSettings>,
+          AdminServerSettings,
+          FutureOr<AdminServerSettings>
+        >
+    with
+        $FutureModifier<AdminServerSettings>,
+        $FutureProvider<AdminServerSettings> {
+  ServerSettingsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'serverSettingsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$serverSettingsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<AdminServerSettings> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<AdminServerSettings> create(Ref ref) {
+    return serverSettings(ref);
+  }
+}
+
+String _$serverSettingsHash() => r'c14e89e40c51e8cbbb20a3f617ddc17b8a206cc9';
+
+@ProviderFor(updateStatus)
+final updateStatusProvider = UpdateStatusProvider._();
+
+final class UpdateStatusProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<AdminUpdateStatus>,
+          AdminUpdateStatus,
+          FutureOr<AdminUpdateStatus>
+        >
+    with
+        $FutureModifier<AdminUpdateStatus>,
+        $FutureProvider<AdminUpdateStatus> {
+  UpdateStatusProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updateStatusProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$updateStatusHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<AdminUpdateStatus> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<AdminUpdateStatus> create(Ref ref) {
+    return updateStatus(ref);
+  }
+}
+
+String _$updateStatusHash() => r'cc779faac63e5c42407d8c462ef428ad647a68d4';
 
 @ProviderFor(systemHealth)
 final systemHealthProvider = SystemHealthProvider._();

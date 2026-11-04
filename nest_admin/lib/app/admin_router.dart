@@ -7,7 +7,10 @@ import '../presentation/admin_shell.dart';
 import '../presentation/pages/audit_page.dart';
 import '../presentation/pages/backups_page.dart';
 import '../presentation/pages/health_page.dart';
+import '../presentation/pages/household_detail_page.dart';
 import '../presentation/pages/households_page.dart';
+import '../presentation/pages/server_page.dart';
+import '../presentation/pages/user_detail_page.dart';
 import '../presentation/pages/users_page.dart';
 import '../presentation/sign_in_screen.dart';
 
@@ -38,9 +41,15 @@ GoRouter adminRouter(Ref ref) {
             AdminShell(location: state.matchedLocation, child: child),
         routes: [
           _page('/households', const HouseholdsPage()),
+          _detail(
+            '/households/:id',
+            (id) => HouseholdDetailPage(householdId: id),
+          ),
           _page('/users', const UsersPage()),
+          _detail('/users/:id', (id) => UserDetailPage(userId: id)),
           _page('/backups', const BackupsPage()),
           _page('/health', const HealthPage()),
+          _page('/server', const ServerPage()),
           _page('/audit', const AuditPage()),
         ],
       ),
@@ -51,4 +60,17 @@ GoRouter adminRouter(Ref ref) {
 GoRoute _page(String path, Widget page) => GoRoute(
   path: path,
   pageBuilder: (_, state) => NoTransitionPage(key: state.pageKey, child: page),
+);
+
+/// A detail page whose path ends in a numeric id; other ids go back to the
+/// list.
+GoRoute _detail(String path, Widget Function(int id) page) => GoRoute(
+  path: path,
+  redirect: (_, state) => int.tryParse(state.pathParameters['id'] ?? '') == null
+      ? path.substring(0, path.lastIndexOf('/'))
+      : null,
+  pageBuilder: (_, state) => NoTransitionPage(
+    key: state.pageKey,
+    child: page(int.parse(state.pathParameters['id']!)),
+  ),
 );

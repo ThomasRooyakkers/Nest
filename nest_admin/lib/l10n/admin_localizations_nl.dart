@@ -274,7 +274,7 @@ class AdminLocalizationsNl extends AdminLocalizations {
 
   @override
   String get disableMessage =>
-      'Deze gebruiker kan Nest niet meer gebruiken tot die weer ingeschakeld wordt. Er wordt niets verwijderd.';
+      'Deze gebruiker wordt overal uitgelogd en kan Nest niet meer gebruiken tot die weer ingeschakeld wordt. Er wordt niets verwijderd.';
 
   @override
   String get enableMessage => 'Deze gebruiker kan Nest weer gebruiken.';
@@ -422,4 +422,322 @@ class AdminLocalizationsNl extends AdminLocalizations {
 
   @override
   String get errorUnknown => 'Er ging iets mis.';
+
+  @override
+  String get navServer => 'Server';
+
+  @override
+  String get back => 'Terug';
+
+  @override
+  String get save => 'Opslaan';
+
+  @override
+  String get create => 'Aanmaken';
+
+  @override
+  String get notSet => 'Niet ingesteld';
+
+  @override
+  String get settingOn => 'Aan';
+
+  @override
+  String get settingOff => 'Uit';
+
+  @override
+  String get columnCreated => 'Aangemaakt';
+
+  @override
+  String get columnRole => 'Rol';
+
+  @override
+  String get columnJoined => 'Lid sinds';
+
+  @override
+  String get roleOwner => 'Eigenaar';
+
+  @override
+  String get roleMember => 'Lid';
+
+  @override
+  String get newHousehold => 'Nieuw huishouden';
+
+  @override
+  String get newHouseholdTitle => 'Nieuw huishouden voor een gezin';
+
+  @override
+  String get newHouseholdMessage =>
+      'Het huishouden begint leeg, met een uitnodigingscode. Wie als eerste met de code lid wordt, wordt eigenaar.';
+
+  @override
+  String get householdName => 'Naam';
+
+  @override
+  String get rename => 'Naam wijzigen';
+
+  @override
+  String get renameTitle => 'Naam van het huishouden wijzigen';
+
+  @override
+  String get sectionInvite => 'Uitnodigingscode';
+
+  @override
+  String get sectionFeatures => 'Onderdelen';
+
+  @override
+  String get sectionData => 'Gegevens';
+
+  @override
+  String get dataNote =>
+      'Alleen aantallen: het portaal toont nooit wat een huishouden bewaart.';
+
+  @override
+  String get inviteNone =>
+      'Geen uitnodigingscode. Maak er een om iemand lid te laten worden.';
+
+  @override
+  String inviteValidUntil(String date) {
+    return 'Geldig tot $date';
+  }
+
+  @override
+  String inviteExpiredOn(String date) {
+    return 'Verlopen op $date';
+  }
+
+  @override
+  String get newCode => 'Nieuwe code';
+
+  @override
+  String get revokeCode => 'Intrekken';
+
+  @override
+  String get copyCode => 'Code kopiëren';
+
+  @override
+  String get newCodeTitle => 'Een nieuwe uitnodigingscode maken?';
+
+  @override
+  String get newCodeMessage => 'De huidige code werkt dan niet meer.';
+
+  @override
+  String get revokeCodeTitle => 'De uitnodigingscode intrekken?';
+
+  @override
+  String get revokeCodeMessage => 'De code werkt meteen niet meer.';
+
+  @override
+  String get noMembers =>
+      'Nog geen leden. Deel de uitnodigingscode met het gezin.';
+
+  @override
+  String get makeOwner => 'Eigenaar maken';
+
+  @override
+  String get makeMember => 'Gewoon lid maken';
+
+  @override
+  String makeOwnerTitle(String name) {
+    return '$name eigenaar maken?';
+  }
+
+  @override
+  String get makeOwnerMessage =>
+      'Eigenaars kunnen het huishouden hernoemen, onderdelen aan- en uitzetten en mensen uitnodigen.';
+
+  @override
+  String makeMemberTitle(String name) {
+    return '$name gewoon lid maken?';
+  }
+
+  @override
+  String get makeMemberMessage =>
+      'Diegene kan het huishouden dan niet meer beheren. Een huishouden houdt altijd minstens één eigenaar.';
+
+  @override
+  String get countShoppingLists => 'Boodschappenlijsten';
+
+  @override
+  String get countStores => 'Winkels';
+
+  @override
+  String get countShoppingItems => 'Boodschappen';
+
+  @override
+  String get countTasks => 'Taken';
+
+  @override
+  String get countRecipes => 'Recepten';
+
+  @override
+  String get countMealPlan => 'Geplande maaltijden';
+
+  @override
+  String get countWatchlist => 'Titels op de kijklijst';
+
+  @override
+  String get signInMethods => 'Inlogmethoden';
+
+  @override
+  String get methodEmail => 'E-mail';
+
+  @override
+  String get methodGoogle => 'Google';
+
+  @override
+  String get methodApple => 'Apple';
+
+  @override
+  String get methodNone => 'Geen';
+
+  @override
+  String get devices => 'Ingelogde toestellen';
+
+  @override
+  String lastSeen(String when) {
+    return 'Laatst gezien $when';
+  }
+
+  @override
+  String get lastSeenNever => 'Nergens ingelogd';
+
+  @override
+  String get signOutEverywhere => 'Overal uitloggen';
+
+  @override
+  String signOutEverywhereTitle(String name) {
+    return '$name op elk toestel uitloggen?';
+  }
+
+  @override
+  String get signOutEverywhereMessage =>
+      'Het account blijft werken; diegene logt op elk toestel opnieuw in.';
+
+  @override
+  String get passwordHint =>
+      'Een vergeten wachtwoord herstelt de gebruiker zelf met ‘Wachtwoord vergeten’ in de app; het portaal ziet of kiest nooit wachtwoorden.';
+
+  @override
+  String get sectionVersion => 'Versie';
+
+  @override
+  String get settingVersion => 'Serverversie';
+
+  @override
+  String get settingApi => 'API-niveau';
+
+  @override
+  String apiLevels(int api, int min) {
+    return '$api (apps vanaf niveau $min)';
+  }
+
+  @override
+  String get settingUpdate => 'Updates';
+
+  @override
+  String updateAvailable(String version) {
+    return 'Versie $version is beschikbaar';
+  }
+
+  @override
+  String get upToDate => 'Up-to-date';
+
+  @override
+  String get updateOff => 'Updatecontrole staat uit';
+
+  @override
+  String get updateUnreachable => 'Kon niet op updates controleren';
+
+  @override
+  String get updateHint =>
+      'Bijwerken gaat zoals de hostinggids beschrijft (deploy.sh, of een nieuwe NEST_VERSION in .env).';
+
+  @override
+  String get sectionAddresses => 'Adressen';
+
+  @override
+  String get settingApiAddress => 'API';
+
+  @override
+  String get settingWebAddress => 'Webadres';
+
+  @override
+  String get settingAdminAddress => 'Beheerportaal';
+
+  @override
+  String get settingOrigins => 'Toegestane web-origins';
+
+  @override
+  String get sectionAccounts => 'Accounts';
+
+  @override
+  String get settingSuperAdmin => 'E-mail superbeheerder';
+
+  @override
+  String get settingGoogle => 'Inloggen met Google';
+
+  @override
+  String get settingApple => 'Inloggen met Apple';
+
+  @override
+  String get sectionServices => 'Diensten';
+
+  @override
+  String get settingMailFrom => 'Afzender van mails';
+
+  @override
+  String get sendTestMail => 'Testmail sturen';
+
+  @override
+  String get testFilmData => 'Filmgegevens testen';
+
+  @override
+  String get testMailSent =>
+      'Testmail naar je eigen adres gestuurd. Kijk in je inbox.';
+
+  @override
+  String testFailed(String detail) {
+    return 'Mislukt: $detail';
+  }
+
+  @override
+  String get testNotConfigured => 'Niet ingesteld op deze server.';
+
+  @override
+  String get testNoAddress => 'Je account heeft geen e-mailadres.';
+
+  @override
+  String get filmDataOk => 'Filmgegevens werken.';
+
+  @override
+  String get settingsNote =>
+      'Deze instellingen komen uit het .env-bestand van de server: wijzig ze daar en herstart de server. Geheimen worden hier nooit getoond.';
+
+  @override
+  String get auditHouseholdCreated => 'Huishouden aangemaakt';
+
+  @override
+  String get auditHouseholdRenamed => 'Huishouden hernoemd';
+
+  @override
+  String get auditHouseholdFeatures => 'Onderdelen gewijzigd';
+
+  @override
+  String get auditInviteCreated => 'Uitnodigingscode gemaakt';
+
+  @override
+  String get auditInviteRevoked => 'Uitnodigingscode ingetrokken';
+
+  @override
+  String get auditMemberRole => 'Rol van lid gewijzigd';
+
+  @override
+  String get auditUserSignedOut => 'Overal uitgelogd';
+
+  @override
+  String get auditTestMail => 'Testmail gestuurd';
+
+  @override
+  String get errorLastOwner =>
+      'Een huishouden houdt altijd minstens één eigenaar.';
 }

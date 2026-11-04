@@ -38,7 +38,49 @@ class AdminRepository {
     HouseholdStatus status,
   ) => _client.adminHouseholds.setStatus(householdId, status);
 
+  Future<AdminHouseholdDetail> householdDetail(int householdId) =>
+      _client.adminHouseholds.detail(householdId);
+
+  Future<AdminHouseholdDetail> createHousehold(String name) =>
+      _client.adminHouseholds.create(name);
+
+  Future<AdminHouseholdDetail> renameHousehold(int householdId, String name) =>
+      _client.adminHouseholds.rename(householdId, name);
+
+  Future<AdminHouseholdDetail> setHouseholdFeatures(
+    int householdId,
+    List<HouseholdFeature> features,
+  ) => _client.adminHouseholds.setFeatures(householdId, features);
+
+  Future<AdminHouseholdDetail> createHouseholdInvite(int householdId) =>
+      _client.adminHouseholds.createInvite(householdId);
+
+  Future<AdminHouseholdDetail> revokeHouseholdInvite(int householdId) =>
+      _client.adminHouseholds.revokeInvite(householdId);
+
+  Future<AdminHouseholdDetail> setMemberRole(
+    int householdId,
+    int userId,
+    MembershipRole role,
+  ) => _client.adminHouseholds.setMemberRole(householdId, userId, role);
+
   Future<List<AdminUserSummary>> users() => _client.adminUsers.list();
+
+  Future<AdminUserDetail> userDetail(int userId) =>
+      _client.adminUsers.detail(userId);
+
+  Future<AdminUserDetail> signOutEverywhere(int userId) =>
+      _client.adminUsers.signOutEverywhere(userId);
+
+  Future<AdminServerSettings> serverSettings() =>
+      _client.adminSystem.settings();
+
+  Future<AdminCheckResult> sendTestMail() => _client.adminSystem.sendTestMail();
+
+  Future<AdminCheckResult> testFilmData() => _client.adminSystem.testFilmData();
+
+  Future<AdminUpdateStatus> updateStatus() =>
+      _client.adminSystem.updateStatus();
 
   Future<AdminUserSummary> setUserDisabled(int userId, bool disabled) =>
       _client.adminUsers.setDisabled(userId, disabled);
@@ -83,6 +125,17 @@ class Households extends _$Households {
   Future<List<AdminHouseholdSummary>> build() =>
       ref.watch(adminRepositoryProvider).households();
 
+  /// Creates a household for a new family; returns its id.
+  Future<int> create(String name) async {
+    final created = await ref
+        .read(adminRepositoryProvider)
+        .createHousehold(name);
+    ref
+      ..invalidateSelf()
+      ..invalidate(auditLogProvider);
+    return created.summary.id;
+  }
+
   Future<void> setStatus(int householdId, HouseholdStatus status) async {
     final updated = await ref
         .read(adminRepositoryProvider)
@@ -94,6 +147,66 @@ class Households extends _$Households {
       ]);
     }
     ref.invalidate(auditLogProvider);
+  }
+}
+
+/// One household's detail page. Every change refreshes the list and the
+/// audit log.
+@riverpod
+class HouseholdDetail extends _$HouseholdDetail {
+  @override
+  Future<AdminHouseholdDetail> build(int householdId) =>
+      ref.watch(adminRepositoryProvider).householdDetail(householdId);
+
+  AdminRepository get _repository => ref.read(adminRepositoryProvider);
+
+  Future<void> _apply(Future<AdminHouseholdDetail> change) async {
+    state = AsyncData(await change);
+    ref
+      ..invalidate(householdsProvider)
+      ..invalidate(auditLogProvider);
+  }
+
+  Future<void> rename(String name) =>
+      _apply(_repository.renameHousehold(householdId, name));
+
+  Future<void> setFeatures(List<HouseholdFeature> features) =>
+      _apply(_repository.setHouseholdFeatures(householdId, features));
+
+  Future<void> createInvite() =>
+      _apply(_repository.createHouseholdInvite(householdId));
+
+  Future<void> revokeInvite() =>
+      _apply(_repository.revokeHouseholdInvite(householdId));
+
+  Future<void> setMemberRole(int userId, MembershipRole role) async {
+    await _apply(_repository.setMemberRole(householdId, userId, role));
+    ref.invalidate(userDetailProvider(userId));
+  }
+
+  Future<void> setStatus(HouseholdStatus status) async {
+    await ref.read(householdsProvider.notifier).setStatus(householdId, status);
+    ref.invalidateSelf();
+  }
+}
+
+/// One user's detail page.
+@riverpod
+class UserDetail extends _$UserDetail {
+  @override
+  Future<AdminUserDetail> build(int userId) =>
+      ref.watch(adminRepositoryProvider).userDetail(userId);
+
+  Future<void> signOutEverywhere() async {
+    state = AsyncData(
+      await ref.read(adminRepositoryProvider).signOutEverywhere(userId),
+    );
+    ref.invalidate(auditLogProvider);
+  }
+
+  Future<void> setDisabled(bool disabled) async {
+    await ref.read(usersProvider.notifier).setDisabled(userId, disabled);
+    ref.invalidateSelf();
   }
 }
 
@@ -116,6 +229,14 @@ class Users extends _$Users {
     ref.invalidate(auditLogProvider);
   }
 }
+
+@riverpod
+Future<AdminServerSettings> serverSettings(Ref ref) =>
+    ref.watch(adminRepositoryProvider).serverSettings();
+
+@riverpod
+Future<AdminUpdateStatus> updateStatus(Ref ref) =>
+    ref.watch(adminRepositoryProvider).updateStatus();
 
 @riverpod
 Future<AdminSystemHealth> systemHealth(Ref ref) =>

@@ -20,9 +20,13 @@ class AdminPage extends StatelessWidget {
     required this.children,
     this.actions = const [],
     this.onRefresh,
+    this.onBack,
   });
 
   final String title;
+
+  /// Shows a round back button before the title (detail pages).
+  final VoidCallback? onBack;
   final List<Widget> children;
   final List<Widget> actions;
   final Future<void> Function()? onRefresh;
@@ -31,18 +35,27 @@ class AdminPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AdminLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
+    final wide = isWide(context);
     final list = ListView(
       padding: const EdgeInsets.all(NestSpacing.screen),
       children: [
         Row(
           children: [
+            if (onBack != null) ...[
+              NestRoundButton(
+                icon: LucideIcons.arrowLeft,
+                tooltip: l10n.back,
+                onPressed: onBack,
+              ),
+              const SizedBox(width: NestSpacing.gapSmall),
+            ],
             Expanded(
               child: Semantics(
                 header: true,
                 child: Text(title, style: textTheme.headlineMedium),
               ),
             ),
-            ...actions,
+            if (wide) ...actions,
             if (onRefresh != null) ...[
               const SizedBox(width: NestSpacing.gapSmall),
               NestRoundButton(
@@ -53,6 +66,10 @@ class AdminPage extends StatelessWidget {
             ],
           ],
         ),
+        if (!wide && actions.isNotEmpty) ...[
+          const SizedBox(height: NestSpacing.gapSmall),
+          Wrap(spacing: 8, runSpacing: 8, children: actions),
+        ],
         const SizedBox(height: NestSpacing.gap),
         for (final child in children) ...[
           child,
@@ -252,9 +269,13 @@ class AdminTable extends StatelessWidget {
     required this.columns,
     required this.rows,
     this.emptyText,
+    this.onRowTap,
   });
 
   final List<AdminColumn> columns;
+
+  /// Makes each row open something, e.g. a detail page.
+  final void Function(int index)? onRowTap;
 
   /// One cell per column for each row.
   final List<List<Widget>> rows;
@@ -312,8 +333,8 @@ class AdminTable extends StatelessWidget {
             ),
           for (final (index, row) in rows.indexed) ...[
             if (wide || index > 0) divider,
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
+            _TappableRow(
+              onTap: onRowTap == null ? null : () => onRowTap!(index),
               child: wide
                   ? Row(
                       children: [
@@ -360,6 +381,31 @@ class AdminTable extends StatelessWidget {
             ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+/// A table row; with [onTap], tappable with a quiet highlight.
+class _TappableRow extends StatelessWidget {
+  const _TappableRow({required this.child, this.onTap});
+
+  final Widget child;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final content = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: child,
+    );
+    if (onTap == null) return content;
+    return Semantics(
+      button: true,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(NestRadii.badge),
+        child: content,
       ),
     );
   }
@@ -436,6 +482,134 @@ Future<bool> confirmAction(
     ),
   );
   return confirmed ?? false;
+}
+
+/// Asks for a text, e.g. a name; returns it, or null when cancelled.
+Future<String?> askText(
+  BuildContext context, {
+  required String title,
+  required String label,
+  required String confirmLabel,
+  String? message,
+  String initialValue = '',
+}) => showDialog<String>(
+  context: context,
+  builder: (context) => _TextDialog(
+    title: title,
+    label: label,
+    confirmLabel: confirmLabel,
+    message: message,
+    initialValue: initialValue,
+  ),
+);
+
+class _TextDialog extends StatefulWidget {
+  const _TextDialog({
+    required this.title,
+    required this.label,
+    required this.confirmLabel,
+    required this.message,
+    required this.initialValue,
+  });
+
+  final String title;
+  final String label;
+  final String confirmLabel;
+  final String? message;
+  final String initialValue;
+
+  @override
+  State<_TextDialog> createState() => _TextDialogState();
+}
+
+class _TextDialogState extends State<_TextDialog> {
+  late final _controller = TextEditingController(text: widget.initialValue);
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    final value = _controller.text.trim();
+    if (value.isNotEmpty) Navigator.of(context).pop(value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AdminLocalizations.of(context);
+    return AlertDialog(
+      title: Text(widget.title),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (widget.message != null) ...[
+              Text(widget.message!),
+              const SizedBox(height: NestSpacing.gap),
+            ],
+            TextField(
+              controller: _controller,
+              autofocus: true,
+              maxLength: 60,
+              decoration: InputDecoration(labelText: widget.label),
+              onSubmitted: (_) => _submit(),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l10n.cancel),
+        ),
+        FilledButton(onPressed: _submit, child: Text(widget.confirmLabel)),
+      ],
+    );
+  }
+}
+
+/// Shows a short message in a floating snack bar.
+void showMessage(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+}
+
+/// A titled card section on a detail page.
+class SectionCard extends StatelessWidget {
+  const SectionCard({
+    super.key,
+    required this.title,
+    required this.child,
+    this.actions = const [],
+  });
+
+  final String title;
+  final Widget child;
+  final List<Widget> actions;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return NestCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Semantics(
+            header: true,
+            child: Text(title, style: textTheme.titleLarge),
+          ),
+          const SizedBox(height: NestSpacing.gapSmall),
+          child,
+          if (actions.isNotEmpty) ...[
+            const SizedBox(height: NestSpacing.gap),
+            Wrap(spacing: 8, runSpacing: 8, children: actions),
+          ],
+        ],
+      ),
+    );
+  }
 }
 
 /// Runs [action] and shows a localized snack bar when it fails.

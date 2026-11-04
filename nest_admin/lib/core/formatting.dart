@@ -53,6 +53,11 @@ class AdminFormat {
     HouseholdFeature.watchlist => l10n.featureWatchlist,
   };
 
+  String role(MembershipRole role) => switch (role) {
+    MembershipRole.owner => l10n.roleOwner,
+    MembershipRole.member => l10n.roleMember,
+  };
+
   String language(String locale) => switch (locale) {
     'nl' => 'Nederlands',
     _ => 'English',
@@ -74,6 +79,14 @@ class AdminFormat {
     'user.disable' => l10n.auditUserDisabled,
     'user.enable' => l10n.auditUserEnabled,
     'backup.request' => l10n.auditBackupRequested,
+    'household.create' => l10n.auditHouseholdCreated,
+    'household.rename' => l10n.auditHouseholdRenamed,
+    'household.setFeatures' => l10n.auditHouseholdFeatures,
+    'household.createInvite' => l10n.auditInviteCreated,
+    'household.revokeInvite' => l10n.auditInviteRevoked,
+    'household.setMemberRole' => l10n.auditMemberRole,
+    'user.signOutEverywhere' => l10n.auditUserSignedOut,
+    'system.testMail' => l10n.auditTestMail,
     _ => action,
   };
 }
