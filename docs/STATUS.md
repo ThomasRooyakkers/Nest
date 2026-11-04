@@ -2,6 +2,17 @@
 
 ## Current phase
 
+**Android app name Hoomly (2026-11-04, Thomas's request):** the Android
+home-screen name (`android:label`) is now "Hoomly", like the store
+listings; the iOS home-screen name and in-app branding stay "Nest". New
+family APK `nest_flutter/build/app/outputs/flutter-apk/app-release.apk`
+(1.0.0+1, 72.6 MB, SHA-256 `0bc61fd0…a11f9cad`), signed with the upload key
+(SHA-1 `BF:53:03:CA…F9:43`, checked with apksigner), so it installs over
+the earlier APK. Open: Google sign-in on Thomas's old Android phone shows
+"Something went wrong"; no attempt reached the server, so it fails on the
+phone (likely no Google account on the device or outdated Play services);
+cause not confirmed yet.
+
 **0.16.0 released and deployed (2026-11-04):** Overview page with metrics
 and admin alert emails (package C, below). CI passed on `05c2179`, tag
 `v0.16.0`, images built; deployed by Claude with Thomas's OK using the

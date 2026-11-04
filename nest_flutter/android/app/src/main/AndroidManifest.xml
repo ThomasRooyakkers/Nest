@@ -2,7 +2,7 @@
     <!-- Release builds need this to reach the Nest server. -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="Nest"
+        android:label="Hoomly"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
