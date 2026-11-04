@@ -1,0 +1,5 @@
+### A bucket's start and its average (or count) value.
+class: AdminMetricPoint
+fields:
+  at: DateTime
+  value: double

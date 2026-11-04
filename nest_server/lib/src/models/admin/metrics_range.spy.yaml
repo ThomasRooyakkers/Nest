@@ -1,0 +1,7 @@
+### Time ranges of the Overview page.
+enum: MetricsRange
+serialized: byName
+values:
+  - day
+  - week
+  - month

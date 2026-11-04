@@ -1,0 +1,14 @@
+### Trends for the admin portal's Overview page, one series per measure,
+### averaged per bucket. No household data.
+class: AdminMetrics
+fields:
+  range: MetricsRange
+  from: DateTime
+  to: DateTime
+  bucketMinutes: int
+  series: List<AdminMetricSeries>
+  ### Unexpected server errors in the last hour (not sign-in or access
+  ### refusals, which are normal).
+  serverErrorsLastHour: int
+  ### Refused calls in the last hour (not signed in, wrong password, ...).
+  refusedLastHour: int

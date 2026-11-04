@@ -30,6 +30,8 @@ import 'package:nest_server/src/generated/admin/admin_log_session_detail.dart'
     as _iirkkv4i;
 import 'package:nest_server/src/generated/admin/admin_log_summary.dart'
     as _iy76yd10;
+import 'package:nest_server/src/generated/admin/admin_metrics.dart'
+    as _iqow2mae;
 import 'package:nest_server/src/generated/admin/admin_security_event.dart'
     as _iaiaweev;
 import 'package:nest_server/src/generated/admin/admin_server_settings.dart'
@@ -42,6 +44,8 @@ import 'package:nest_server/src/generated/admin/admin_user_detail.dart'
     as _ixpph65h;
 import 'package:nest_server/src/generated/admin/admin_user_summary.dart'
     as _ik5zjdct;
+import 'package:nest_server/src/generated/admin/metrics_range.dart'
+    as _issgabad;
 import 'package:nest_server/src/generated/admin/security_event_type.dart'
     as _ibvt7sqe;
 import 'package:nest_server/src/generated/household_feature.dart' as _iez4op0n;
@@ -241,6 +245,8 @@ class TestEndpoints {
 
   late final _AdminLogsEndpoint adminLogs;
 
+  late final _AdminMetricsEndpoint adminMetrics;
+
   late final _AdminSystemEndpoint adminSystem;
 
   late final _AdminUsersEndpoint adminUsers;
@@ -300,6 +306,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     adminLogs = _AdminLogsEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    adminMetrics = _AdminMetricsEndpoint(
       endpoints,
       serializationManager,
     );
@@ -1577,6 +1587,48 @@ class _AdminLogsEndpoint {
                   _localCallContext.arguments,
                 )
                 as _ida.Future<_iy76yd10.AdminLogSummary>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _AdminMetricsEndpoint {
+  _AdminMetricsEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<_iqow2mae.AdminMetrics> metrics(
+    _ist.TestSessionBuilder sessionBuilder,
+    _issgabad.MetricsRange range,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'adminMetrics',
+            method: 'metrics',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'adminMetrics',
+          methodName: 'metrics',
+          parameters: _ist.testObjectToJson({'range': range}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_iqow2mae.AdminMetrics>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

@@ -28,6 +28,7 @@ import 'package:nest_client/src/protocol/admin/admin_log_session_detail.dart'
     as _i2u1a47g;
 import 'package:nest_client/src/protocol/admin/admin_log_summary.dart'
     as _iebc61nc;
+import 'package:nest_client/src/protocol/admin/admin_metrics.dart' as _idg4ah8z;
 import 'package:nest_client/src/protocol/admin/admin_security_event.dart'
     as _imgyvk57;
 import 'package:nest_client/src/protocol/admin/admin_server_settings.dart'
@@ -40,6 +41,7 @@ import 'package:nest_client/src/protocol/admin/admin_user_detail.dart'
     as _ipa82702;
 import 'package:nest_client/src/protocol/admin/admin_user_summary.dart'
     as _iavs2480;
+import 'package:nest_client/src/protocol/admin/metrics_range.dart' as _ibnynawp;
 import 'package:nest_client/src/protocol/admin/security_event_type.dart'
     as _idkhix7n;
 import 'package:nest_client/src/protocol/household_feature.dart' as _iejl7hre;
@@ -630,6 +632,24 @@ class EndpointAdminLogs extends _isc.EndpointRef {
         'adminLogs',
         'summary',
         {},
+      );
+}
+
+/// Trends for the Overview page: server load from Serverpod's health checks
+/// and errors and slow calls from the logs. Measures only, no household
+/// data.
+/// {@category Endpoint}
+class EndpointAdminMetrics extends _isc.EndpointRef {
+  EndpointAdminMetrics(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'adminMetrics';
+
+  _ida.Future<_idg4ah8z.AdminMetrics> metrics(_ibnynawp.MetricsRange range) =>
+      caller.callServerEndpoint<_idg4ah8z.AdminMetrics>(
+        'adminMetrics',
+        'metrics',
+        {'range': range},
       );
 }
 
@@ -1548,6 +1568,7 @@ class Client extends _isc.ServerpodClientShared {
     adminBackups = EndpointAdminBackups(this);
     adminHouseholds = EndpointAdminHouseholds(this);
     adminLogs = EndpointAdminLogs(this);
+    adminMetrics = EndpointAdminMetrics(this);
     adminSystem = EndpointAdminSystem(this);
     adminUsers = EndpointAdminUsers(this);
     health = EndpointHealth(this);
@@ -1577,6 +1598,8 @@ class Client extends _isc.ServerpodClientShared {
   late final EndpointAdminHouseholds adminHouseholds;
 
   late final EndpointAdminLogs adminLogs;
+
+  late final EndpointAdminMetrics adminMetrics;
 
   late final EndpointAdminSystem adminSystem;
 
@@ -1612,6 +1635,7 @@ class Client extends _isc.ServerpodClientShared {
     'adminBackups': adminBackups,
     'adminHouseholds': adminHouseholds,
     'adminLogs': adminLogs,
+    'adminMetrics': adminMetrics,
     'adminSystem': adminSystem,
     'adminUsers': adminUsers,
     'health': health,

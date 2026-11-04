@@ -11,6 +11,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _idt;
+import 'package:nest_server/src/generated/admin/metrics_range.dart'
+    as _issgabad;
 import 'package:nest_server/src/generated/admin/security_event_type.dart'
     as _ibvt7sqe;
 import 'package:nest_server/src/generated/household_feature.dart' as _iez4op0n;
@@ -45,6 +47,7 @@ import '../endpoints/admin/admin_audit_endpoint.dart' as _isry7q4f;
 import '../endpoints/admin/admin_backups_endpoint.dart' as _ihn2grnq;
 import '../endpoints/admin/admin_households_endpoint.dart' as _iy84ve0g;
 import '../endpoints/admin/admin_logs_endpoint.dart' as _izofvlmy;
+import '../endpoints/admin/admin_metrics_endpoint.dart' as _i05ggqjm;
 import '../endpoints/admin/admin_system_endpoint.dart' as _ip4fayzs;
 import '../endpoints/admin/admin_users_endpoint.dart' as _iscnlbye;
 import '../endpoints/health_endpoint.dart' as _ica9y4w0;
@@ -107,6 +110,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'adminLogs',
+          null,
+        ),
+      'adminMetrics': _i05ggqjm.AdminMetricsEndpoint()
+        ..initialize(
+          server,
+          'adminMetrics',
           null,
         ),
       'adminSystem': _ip4fayzs.AdminSystemEndpoint()
@@ -1034,6 +1043,32 @@ class Endpoints extends _is.EndpointDispatch {
                 Map<String, dynamic> params,
               ) async => (endpoints['adminLogs'] as _izofvlmy.AdminLogsEndpoint)
                   .summary(session),
+        ),
+      },
+    );
+    connectors['adminMetrics'] = _is.EndpointConnector(
+      name: 'adminMetrics',
+      endpoint: endpoints['adminMetrics']!,
+      methodConnectors: {
+        'metrics': _is.MethodConnector(
+          name: 'metrics',
+          params: {
+            'range': _is.ParameterDescription(
+              name: 'range',
+              type: _is.getType<_issgabad.MetricsRange>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminMetrics'] as _i05ggqjm.AdminMetricsEndpoint)
+                      .metrics(
+                        session,
+                        params['range'],
+                      ),
         ),
       },
     );

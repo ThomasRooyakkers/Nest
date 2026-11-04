@@ -59,6 +59,9 @@ import 'admin/admin_log_message.dart' as _i4ntnh9u;
 import 'admin/admin_log_session.dart' as _iyyaqnmo;
 import 'admin/admin_log_session_detail.dart' as _ixzo8wi2;
 import 'admin/admin_log_summary.dart' as _iv7hdcmn;
+import 'admin/admin_metric_point.dart' as _ifczr9hk;
+import 'admin/admin_metric_series.dart' as _iz1k9427;
+import 'admin/admin_metrics.dart' as _i8533ftt;
 import 'admin/admin_security_event.dart' as _isq3d78n;
 import 'admin/admin_server_settings.dart' as _i3d9qk19;
 import 'admin/admin_system_health.dart' as _i9cu0zbm;
@@ -69,6 +72,7 @@ import 'admin/admin_user_summary.dart' as _infu3osd;
 import 'admin/backup_request.dart' as _iskrofwd;
 import 'admin/backup_run.dart' as _iabyer0k;
 import 'admin/backup_run_status.dart' as _io9tgzbh;
+import 'admin/metrics_range.dart' as _iyriq3os;
 import 'admin/security_event.dart' as _ijyxkmer;
 import 'admin/security_event_type.dart' as _ilfcta1d;
 import 'household.dart' as _ijonbu5t;
@@ -122,6 +126,9 @@ export 'admin/admin_log_message.dart';
 export 'admin/admin_log_session.dart';
 export 'admin/admin_log_session_detail.dart';
 export 'admin/admin_log_summary.dart';
+export 'admin/admin_metric_point.dart';
+export 'admin/admin_metric_series.dart';
+export 'admin/admin_metrics.dart';
 export 'admin/admin_security_event.dart';
 export 'admin/admin_server_settings.dart';
 export 'admin/admin_system_health.dart';
@@ -132,6 +139,7 @@ export 'admin/admin_user_summary.dart';
 export 'admin/backup_request.dart';
 export 'admin/backup_run.dart';
 export 'admin/backup_run_status.dart';
+export 'admin/metrics_range.dart';
 export 'admin/security_event.dart';
 export 'admin/security_event_type.dart';
 export 'household.dart';
@@ -245,6 +253,15 @@ class Protocol extends _isc.SerializationManager {
     if (t == _iv7hdcmn.AdminLogSummary) {
       return _iv7hdcmn.AdminLogSummary.fromJson(data) as T;
     }
+    if (t == _ifczr9hk.AdminMetricPoint) {
+      return _ifczr9hk.AdminMetricPoint.fromJson(data) as T;
+    }
+    if (t == _iz1k9427.AdminMetricSeries) {
+      return _iz1k9427.AdminMetricSeries.fromJson(data) as T;
+    }
+    if (t == _i8533ftt.AdminMetrics) {
+      return _i8533ftt.AdminMetrics.fromJson(data) as T;
+    }
     if (t == _isq3d78n.AdminSecurityEvent) {
       return _isq3d78n.AdminSecurityEvent.fromJson(data) as T;
     }
@@ -274,6 +291,9 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == _io9tgzbh.BackupRunStatus) {
       return _io9tgzbh.BackupRunStatus.fromJson(data) as T;
+    }
+    if (t == _iyriq3os.MetricsRange) {
+      return _iyriq3os.MetricsRange.fromJson(data) as T;
     }
     if (t == _ijyxkmer.SecurityEvent) {
       return _ijyxkmer.SecurityEvent.fromJson(data) as T;
@@ -455,6 +475,17 @@ class Protocol extends _isc.SerializationManager {
       return (data != null ? _iv7hdcmn.AdminLogSummary.fromJson(data) : null)
           as T;
     }
+    if (t == _isc.getType<_ifczr9hk.AdminMetricPoint?>()) {
+      return (data != null ? _ifczr9hk.AdminMetricPoint.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iz1k9427.AdminMetricSeries?>()) {
+      return (data != null ? _iz1k9427.AdminMetricSeries.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i8533ftt.AdminMetrics?>()) {
+      return (data != null ? _i8533ftt.AdminMetrics.fromJson(data) : null) as T;
+    }
     if (t == _isc.getType<_isq3d78n.AdminSecurityEvent?>()) {
       return (data != null ? _isq3d78n.AdminSecurityEvent.fromJson(data) : null)
           as T;
@@ -495,6 +526,9 @@ class Protocol extends _isc.SerializationManager {
     if (t == _isc.getType<_io9tgzbh.BackupRunStatus?>()) {
       return (data != null ? _io9tgzbh.BackupRunStatus.fromJson(data) : null)
           as T;
+    }
+    if (t == _isc.getType<_iyriq3os.MetricsRange?>()) {
+      return (data != null ? _iyriq3os.MetricsRange.fromJson(data) : null) as T;
     }
     if (t == _isc.getType<_ijyxkmer.SecurityEvent?>()) {
       return (data != null ? _ijyxkmer.SecurityEvent.fromJson(data) : null)
@@ -670,6 +704,18 @@ class Protocol extends _isc.SerializationManager {
     if (t == List<_i4ntnh9u.AdminLogMessage>) {
       return (data as List)
               .map((e) => deserialize<_i4ntnh9u.AdminLogMessage>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_ifczr9hk.AdminMetricPoint>) {
+      return (data as List)
+              .map((e) => deserialize<_ifczr9hk.AdminMetricPoint>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_iz1k9427.AdminMetricSeries>) {
+      return (data as List)
+              .map((e) => deserialize<_iz1k9427.AdminMetricSeries>(e))
               .toList()
           as T;
     }
@@ -974,6 +1020,9 @@ class Protocol extends _isc.SerializationManager {
       _iyyaqnmo.AdminLogSession => 'AdminLogSession',
       _ixzo8wi2.AdminLogSessionDetail => 'AdminLogSessionDetail',
       _iv7hdcmn.AdminLogSummary => 'AdminLogSummary',
+      _ifczr9hk.AdminMetricPoint => 'AdminMetricPoint',
+      _iz1k9427.AdminMetricSeries => 'AdminMetricSeries',
+      _i8533ftt.AdminMetrics => 'AdminMetrics',
       _isq3d78n.AdminSecurityEvent => 'AdminSecurityEvent',
       _i3d9qk19.AdminServerSettings => 'AdminServerSettings',
       _i9cu0zbm.AdminSystemHealth => 'AdminSystemHealth',
@@ -984,6 +1033,7 @@ class Protocol extends _isc.SerializationManager {
       _iskrofwd.BackupRequest => 'BackupRequest',
       _iabyer0k.BackupRun => 'BackupRun',
       _io9tgzbh.BackupRunStatus => 'BackupRunStatus',
+      _iyriq3os.MetricsRange => 'MetricsRange',
       _ijyxkmer.SecurityEvent => 'SecurityEvent',
       _ilfcta1d.SecurityEventType => 'SecurityEventType',
       _ijonbu5t.Household => 'Household',
@@ -1063,6 +1113,12 @@ class Protocol extends _isc.SerializationManager {
         return 'AdminLogSessionDetail';
       case _iv7hdcmn.AdminLogSummary():
         return 'AdminLogSummary';
+      case _ifczr9hk.AdminMetricPoint():
+        return 'AdminMetricPoint';
+      case _iz1k9427.AdminMetricSeries():
+        return 'AdminMetricSeries';
+      case _i8533ftt.AdminMetrics():
+        return 'AdminMetrics';
       case _isq3d78n.AdminSecurityEvent():
         return 'AdminSecurityEvent';
       case _i3d9qk19.AdminServerSettings():
@@ -1083,6 +1139,8 @@ class Protocol extends _isc.SerializationManager {
         return 'BackupRun';
       case _io9tgzbh.BackupRunStatus():
         return 'BackupRunStatus';
+      case _iyriq3os.MetricsRange():
+        return 'MetricsRange';
       case _ijyxkmer.SecurityEvent():
         return 'SecurityEvent';
       case _ilfcta1d.SecurityEventType():
@@ -1223,6 +1281,15 @@ class Protocol extends _isc.SerializationManager {
     if (dataClassName == 'AdminLogSummary') {
       return deserialize<_iv7hdcmn.AdminLogSummary>(data['data']);
     }
+    if (dataClassName == 'AdminMetricPoint') {
+      return deserialize<_ifczr9hk.AdminMetricPoint>(data['data']);
+    }
+    if (dataClassName == 'AdminMetricSeries') {
+      return deserialize<_iz1k9427.AdminMetricSeries>(data['data']);
+    }
+    if (dataClassName == 'AdminMetrics') {
+      return deserialize<_i8533ftt.AdminMetrics>(data['data']);
+    }
     if (dataClassName == 'AdminSecurityEvent') {
       return deserialize<_isq3d78n.AdminSecurityEvent>(data['data']);
     }
@@ -1252,6 +1319,9 @@ class Protocol extends _isc.SerializationManager {
     }
     if (dataClassName == 'BackupRunStatus') {
       return deserialize<_io9tgzbh.BackupRunStatus>(data['data']);
+    }
+    if (dataClassName == 'MetricsRange') {
+      return deserialize<_iyriq3os.MetricsRange>(data['data']);
     }
     if (dataClassName == 'SecurityEvent') {
       return deserialize<_ijyxkmer.SecurityEvent>(data['data']);

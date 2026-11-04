@@ -1,0 +1,7 @@
+### One measure over time. Names: `cpu` and `memory` (0–1), `databaseMs`,
+### `connections`, `diskFree` (0–1), `databaseSize` (bytes), `serverErrors`
+### and `slowCalls` (per bucket).
+class: AdminMetricSeries
+fields:
+  name: String
+  points: List<AdminMetricPoint>

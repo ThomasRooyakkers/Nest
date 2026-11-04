@@ -9,6 +9,7 @@ import 'src/generated/serverpod.dart';
 import 'src/services/built_in_catalog.dart';
 import 'src/services/host_settings.dart';
 import 'src/services/nest_logging.dart';
+import 'src/services/nest_metrics.dart';
 import 'src/services/sign_up_policy.dart';
 import 'src/services/social_sign_in.dart';
 import 'src/services/verification_mail.dart';
@@ -37,7 +38,11 @@ Future<Serverpod> createServerpod(
   List<String> args, {
   ServerpodConfig Function(ServerpodConfig)? configOverride,
 }) async {
-  final pod = Serverpod(args, configOverride: configOverride);
+  final pod = Serverpod(
+    args,
+    configOverride: configOverride,
+    healthCheckHandler: NestMetrics.healthCheck,
+  );
   if (HostSettings.googleClientSecret != null &&
       HostSettings.googleClient == null) {
     stderr.writeln(

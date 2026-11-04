@@ -40,6 +40,8 @@ adminLogs:
   - session:
   - securityEvents:
   - summary:
+adminMetrics:
+  - metrics:
 adminSystem:
   - health:
   - settings:

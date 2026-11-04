@@ -90,6 +90,8 @@ void main() {
       'adminLogs.session': (s) => endpoints.adminLogs.session(s, logId),
       'adminLogs.securityEvents': (s) => endpoints.adminLogs.securityEvents(s),
       'adminLogs.summary': (s) => endpoints.adminLogs.summary(s),
+      'adminMetrics.metrics': (s) =>
+          endpoints.adminMetrics.metrics(s, MetricsRange.day),
     };
 
     for (final MapEntry(key: name, value: call) in adminCalls.entries) {
