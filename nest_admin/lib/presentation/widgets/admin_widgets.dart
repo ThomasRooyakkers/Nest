@@ -576,6 +576,39 @@ void showMessage(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
 }
 
+/// A row of choice chips; exactly one is selected.
+class FilterChips<T> extends StatelessWidget {
+  const FilterChips({
+    super.key,
+    required this.selected,
+    required this.options,
+    required this.onSelected,
+  });
+
+  final T selected;
+
+  /// Value → label, in display order.
+  final Map<T, String> options;
+  final void Function(T value) onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        for (final MapEntry(key: value, value: label) in options.entries)
+          ChoiceChip(
+            label: Text(label),
+            selected: value == selected,
+            showCheckmark: false,
+            onSelected: (_) => onSelected(value),
+          ),
+      ],
+    );
+  }
+}
+
 /// A titled card section on a detail page.
 class SectionCard extends StatelessWidget {
   const SectionCard({

@@ -52,4 +52,4 @@ final class AdminRouterProvider
   }
 }
 
-String _$adminRouterHash() => r'8d71d82d9e6aa820edbc35bf9993824758ccb0a5';
+String _$adminRouterHash() => r'a82eb06bd25a2eb6a261f8f99a6748a1da6d0c56';

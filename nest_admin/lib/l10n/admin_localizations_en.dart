@@ -737,4 +737,152 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get errorLastOwner => 'A household always keeps at least one owner.';
+
+  @override
+  String get navLogs => 'Logs';
+
+  @override
+  String get navSecurity => 'Security';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterErrors => 'Errors';
+
+  @override
+  String get filterSlow => 'Slow';
+
+  @override
+  String get columnCall => 'Call';
+
+  @override
+  String get columnDuration => 'Duration';
+
+  @override
+  String get columnUser => 'User';
+
+  @override
+  String get columnResult => 'Result';
+
+  @override
+  String get resultOk => 'OK';
+
+  @override
+  String get resultSlow => 'Slow';
+
+  @override
+  String get resultError => 'Error';
+
+  @override
+  String get logsEmpty => 'No failed or slow calls. Good news.';
+
+  @override
+  String get summaryErrors => 'Errors (24 h)';
+
+  @override
+  String get summarySlow => 'Slow calls (24 h)';
+
+  @override
+  String get summaryRetention => 'Kept for';
+
+  @override
+  String get retentionForever => 'Forever';
+
+  @override
+  String get logsNote =>
+      'Only failed and slow calls are kept, without SQL or household content. Emails and codes are hidden.';
+
+  @override
+  String milliseconds(String ms) {
+    return '$ms ms';
+  }
+
+  @override
+  String queryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count queries',
+      one: '1 query',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get logDetailTitle => 'Call details';
+
+  @override
+  String get logError => 'Error';
+
+  @override
+  String get logStackTrace => 'Stack trace';
+
+  @override
+  String get logMessages => 'Messages';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get summarySignIns => 'Sign-ins (24 h)';
+
+  @override
+  String get summaryFailedSignIns => 'Failed sign-ins (24 h)';
+
+  @override
+  String get filterSignIns => 'Sign-ins';
+
+  @override
+  String get filterFailed => 'Failed';
+
+  @override
+  String get filterSignUps => 'New accounts';
+
+  @override
+  String get filterResets => 'Password resets';
+
+  @override
+  String get eventSignIn => 'Signed in';
+
+  @override
+  String get eventAdminSignIn => 'Admin signed in';
+
+  @override
+  String get eventSignInFailed => 'Sign-in failed';
+
+  @override
+  String get eventSignUp => 'Account created';
+
+  @override
+  String get eventPasswordResetRequested => 'Password reset requested';
+
+  @override
+  String get eventPasswordChanged => 'Password changed';
+
+  @override
+  String get eventAccountDeleted => 'Account deleted';
+
+  @override
+  String get columnEvent => 'Event';
+
+  @override
+  String get columnWho => 'Who';
+
+  @override
+  String get columnMethod => 'Method';
+
+  @override
+  String get reasonInvalidCredentials => 'Wrong email or password';
+
+  @override
+  String get reasonTooManyAttempts => 'Too many attempts';
+
+  @override
+  String get securityEmpty => 'No sign-in events yet.';
+
+  @override
+  String securityNote(int days) {
+    return 'Sign-in events are kept $days days, without IP addresses. A failed attempt shows only a masked email.';
+  }
 }

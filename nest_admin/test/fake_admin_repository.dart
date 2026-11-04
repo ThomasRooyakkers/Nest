@@ -122,6 +122,49 @@ class FakeAdminRepository implements AdminRepository {
   );
   String? latestVersion = '0.14.0';
 
+  late var logRows = [
+    AdminLogSession(
+      id: 2,
+      time: now.subtract(const Duration(minutes: 5)),
+      call: 'shopping.addItem',
+      durationMs: 1820,
+      numQueries: 6,
+      slow: true,
+      userId: 2,
+      userName: 'Sarah',
+      messageCount: 0,
+    ),
+    AdminLogSession(
+      id: 1,
+      time: now.subtract(const Duration(hours: 1)),
+      call: 'emailIdp.login',
+      durationMs: 45,
+      numQueries: 2,
+      slow: false,
+      error: 'Mail to s***@nest.test failed: 422',
+      messageCount: 1,
+    ),
+  ];
+
+  late var events = [
+    AdminSecurityEvent(
+      id: 3,
+      at: now.subtract(const Duration(minutes: 2)),
+      type: SecurityEventType.signInFailed,
+      method: 'email',
+      emailHint: 'x***@example.com',
+      reason: 'invalidCredentials',
+    ),
+    AdminSecurityEvent(
+      id: 2,
+      at: now.subtract(const Duration(minutes: 10)),
+      type: SecurityEventType.signIn,
+      method: 'google',
+      userId: 2,
+      userName: 'Sarah',
+    ),
+  ];
+
   AdminHouseholdDetail _householdDetail(int id) {
     final summary = householdList.firstWhere((h) => h.id == id);
     final (code, expires) = invites[id] ?? (null, null);
@@ -370,4 +413,56 @@ class FakeAdminRepository implements AdminRepository {
     for (final e in audit)
       if (beforeId == null || e.id < beforeId) e,
   ].take(limit ?? 50).toList();
+
+  @override
+  Future<List<AdminLogSession>> logSessions({
+    bool? errorsOnly,
+    bool? slowOnly,
+    String? call,
+    int? beforeId,
+    int? limit,
+  }) async => [
+    for (final r in logRows)
+      if ((errorsOnly != true || r.error != null) &&
+          (slowOnly != true || r.slow))
+        r,
+  ];
+
+  @override
+  Future<AdminLogSessionDetail> logSession(int id) async =>
+      AdminLogSessionDetail(
+        session: logRows.firstWhere((r) => r.id == id),
+        error: id == 1 ? 'Mail to s***@nest.test failed: 422' : null,
+        stackTrace: id == 1
+            ? '#0 VerificationMail.deliver (mail.dart:90)'
+            : null,
+        messages: [
+          if (id == 1)
+            AdminLogMessage(
+              time: now,
+              level: 'warning',
+              message: 'Registration code for s***@nest.test: <code>',
+            ),
+        ],
+      );
+
+  @override
+  Future<List<AdminSecurityEvent>> securityEvents({
+    SecurityEventType? type,
+    int? beforeId,
+    int? limit,
+  }) async => [
+    for (final e in events)
+      if (type == null || e.type == type) e,
+  ];
+
+  @override
+  Future<AdminLogSummary> logSummary() async => AdminLogSummary(
+    errors24h: 1,
+    slow24h: 1,
+    failedSignIns24h: 1,
+    signIns24h: 1,
+    logRetentionDays: 14,
+    securityRetentionDays: 30,
+  );
 }

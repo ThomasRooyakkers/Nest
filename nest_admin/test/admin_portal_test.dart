@@ -341,4 +341,69 @@ void main() {
       '/households',
     );
   });
+
+  testWidgets('logs: errors filter, and details with redacted text', (
+    tester,
+  ) async {
+    final container = await pumpPortal(tester, FakeAdminRepository());
+    await go(container, tester, '/logs');
+
+    expect(find.text('14 days'), findsOneWidget);
+    expect(find.text('shopping.addItem'), findsOneWidget);
+    expect(find.text('1,820 ms'), findsOneWidget);
+
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Errors'));
+    await tester.pumpAndSettle();
+    expect(find.text('shopping.addItem'), findsNothing);
+
+    await tester.tap(find.text('emailIdp.login'));
+    await tester.pumpAndSettle();
+    expect(find.text('Call details'), findsOneWidget);
+    expect(
+      find.textContaining('Registration code for s***@nest.test: <code>'),
+      findsOneWidget,
+    );
+    await tester.tap(find.text('Close'));
+    await tester.pumpAndSettle();
+    expect(find.text('Call details'), findsNothing);
+  });
+
+  testWidgets('security: masked failed attempt and the sign-in filter', (
+    tester,
+  ) async {
+    final container = await pumpPortal(tester, FakeAdminRepository());
+    await go(container, tester, '/security');
+
+    expect(find.text('x***@example.com'), findsOneWidget);
+    expect(find.text('Wrong email or password'), findsOneWidget);
+
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Sign-ins'));
+    await tester.pumpAndSettle();
+    expect(find.text('x***@example.com'), findsNothing);
+    expect(find.text('Sarah'), findsOneWidget);
+
+    await tester.tap(find.text('Sarah'));
+    await tester.pumpAndSettle();
+    expect(
+      container.read(adminRouterProvider).state.matchedLocation,
+      '/users/2',
+    );
+  });
+
+  testWidgets('logs and security fit a phone in Dutch with large text', (
+    tester,
+  ) async {
+    final container = await pumpPortal(
+      tester,
+      FakeAdminRepository(),
+      locale: const Locale('nl'),
+      size: const Size(390, 844),
+      textScale: 1.6,
+    );
+    for (final path in ['/logs', '/security']) {
+      await go(container, tester, path);
+      expect(tester.takeException(), isNull, reason: path);
+    }
+    expect(find.textContaining('30 dagen bewaard'), findsOneWidget);
+  });
 }

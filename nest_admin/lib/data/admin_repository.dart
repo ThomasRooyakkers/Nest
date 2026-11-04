@@ -93,6 +93,35 @@ class AdminRepository {
 
   Future<List<AdminAuditEntry>> auditEntries({int? beforeId, int? limit}) =>
       _client.adminAudit.entries(beforeId: beforeId, limit: limit);
+
+  Future<List<AdminLogSession>> logSessions({
+    bool? errorsOnly,
+    bool? slowOnly,
+    String? call,
+    int? beforeId,
+    int? limit,
+  }) => _client.adminLogs.sessions(
+    errorsOnly: errorsOnly,
+    slowOnly: slowOnly,
+    call: call,
+    beforeId: beforeId,
+    limit: limit,
+  );
+
+  Future<AdminLogSessionDetail> logSession(int id) =>
+      _client.adminLogs.session(id);
+
+  Future<List<AdminSecurityEvent>> securityEvents({
+    SecurityEventType? type,
+    int? beforeId,
+    int? limit,
+  }) => _client.adminLogs.securityEvents(
+    type: type,
+    beforeId: beforeId,
+    limit: limit,
+  );
+
+  Future<AdminLogSummary> logSummary() => _client.adminLogs.summary();
 }
 
 @Riverpod(keepAlive: true)
@@ -276,6 +305,107 @@ class AuditLog extends _$AuditLog {
         .auditEntries(beforeId: current.entries.last.id, limit: pageSize);
     state = AsyncData((
       entries: [...current.entries, ...next],
+      hasMore: next.length == pageSize,
+    ));
+  }
+}
+
+/// Which logged calls the Logs page shows.
+enum LogFilter { all, errors, slow }
+
+@riverpod
+class LogFilterChoice extends _$LogFilterChoice {
+  @override
+  LogFilter build() => LogFilter.all;
+
+  void set(LogFilter filter) => state = filter;
+}
+
+/// A page of a newest-first list with "Load more".
+typedef PagedState<T> = ({List<T> items, bool hasMore});
+
+/// Logged calls for the current [LogFilter], newest first.
+@riverpod
+class LogSessions extends _$LogSessions {
+  static const pageSize = 50;
+
+  Future<List<AdminLogSession>> _page(int? beforeId) {
+    final filter = ref.read(logFilterChoiceProvider);
+    return ref
+        .read(adminRepositoryProvider)
+        .logSessions(
+          errorsOnly: filter == LogFilter.errors ? true : null,
+          slowOnly: filter == LogFilter.slow ? true : null,
+          beforeId: beforeId,
+          limit: pageSize,
+        );
+  }
+
+  @override
+  Future<PagedState<AdminLogSession>> build() async {
+    ref
+      ..watch(logFilterChoiceProvider)
+      ..watch(adminRepositoryProvider);
+    final items = await _page(null);
+    return (items: items, hasMore: items.length == pageSize);
+  }
+
+  Future<void> loadMore() async {
+    final current = state.value;
+    if (current == null || !current.hasMore || current.items.isEmpty) return;
+    final next = await _page(current.items.last.id);
+    state = AsyncData((
+      items: [...current.items, ...next],
+      hasMore: next.length == pageSize,
+    ));
+  }
+}
+
+@riverpod
+Future<AdminLogSessionDetail> logSessionDetail(Ref ref, int id) =>
+    ref.watch(adminRepositoryProvider).logSession(id);
+
+@riverpod
+Future<AdminLogSummary> logSummary(Ref ref) =>
+    ref.watch(adminRepositoryProvider).logSummary();
+
+/// Which security events the Security page shows; null for all.
+@riverpod
+class SecurityFilterChoice extends _$SecurityFilterChoice {
+  @override
+  SecurityEventType? build() => null;
+
+  void set(SecurityEventType? type) => state = type;
+}
+
+/// Security events for the current filter, newest first.
+@riverpod
+class SecurityLog extends _$SecurityLog {
+  static const pageSize = 50;
+
+  Future<List<AdminSecurityEvent>> _page(int? beforeId) => ref
+      .read(adminRepositoryProvider)
+      .securityEvents(
+        type: ref.read(securityFilterChoiceProvider),
+        beforeId: beforeId,
+        limit: pageSize,
+      );
+
+  @override
+  Future<PagedState<AdminSecurityEvent>> build() async {
+    ref
+      ..watch(securityFilterChoiceProvider)
+      ..watch(adminRepositoryProvider);
+    final items = await _page(null);
+    return (items: items, hasMore: items.length == pageSize);
+  }
+
+  Future<void> loadMore() async {
+    final current = state.value;
+    if (current == null || !current.hasMore || current.items.isEmpty) return;
+    final next = await _page(current.items.last.id);
+    state = AsyncData((
+      items: [...current.items, ...next],
       hasMore: next.length == pageSize,
     ));
   }

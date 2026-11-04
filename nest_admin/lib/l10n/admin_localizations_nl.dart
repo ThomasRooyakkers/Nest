@@ -740,4 +740,152 @@ class AdminLocalizationsNl extends AdminLocalizations {
   @override
   String get errorLastOwner =>
       'Een huishouden houdt altijd minstens één eigenaar.';
+
+  @override
+  String get navLogs => 'Logboek';
+
+  @override
+  String get navSecurity => 'Beveiliging';
+
+  @override
+  String get filterAll => 'Alles';
+
+  @override
+  String get filterErrors => 'Fouten';
+
+  @override
+  String get filterSlow => 'Traag';
+
+  @override
+  String get columnCall => 'Aanroep';
+
+  @override
+  String get columnDuration => 'Duur';
+
+  @override
+  String get columnUser => 'Gebruiker';
+
+  @override
+  String get columnResult => 'Resultaat';
+
+  @override
+  String get resultOk => 'OK';
+
+  @override
+  String get resultSlow => 'Traag';
+
+  @override
+  String get resultError => 'Fout';
+
+  @override
+  String get logsEmpty => 'Geen mislukte of trage aanroepen. Goed nieuws.';
+
+  @override
+  String get summaryErrors => 'Fouten (24 u)';
+
+  @override
+  String get summarySlow => 'Trage aanroepen (24 u)';
+
+  @override
+  String get summaryRetention => 'Bewaard';
+
+  @override
+  String get retentionForever => 'Voor altijd';
+
+  @override
+  String get logsNote =>
+      'Alleen mislukte en trage aanroepen worden bewaard, zonder SQL of inhoud van huishoudens. E-mailadressen en codes zijn verborgen.';
+
+  @override
+  String milliseconds(String ms) {
+    return '$ms ms';
+  }
+
+  @override
+  String queryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count query\'s',
+      one: '1 query',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get logDetailTitle => 'Details van de aanroep';
+
+  @override
+  String get logError => 'Fout';
+
+  @override
+  String get logStackTrace => 'Stacktrace';
+
+  @override
+  String get logMessages => 'Berichten';
+
+  @override
+  String get close => 'Sluiten';
+
+  @override
+  String get summarySignIns => 'Inlogs (24 u)';
+
+  @override
+  String get summaryFailedSignIns => 'Mislukte inlogpogingen (24 u)';
+
+  @override
+  String get filterSignIns => 'Inlogs';
+
+  @override
+  String get filterFailed => 'Mislukt';
+
+  @override
+  String get filterSignUps => 'Nieuwe accounts';
+
+  @override
+  String get filterResets => 'Wachtwoordherstel';
+
+  @override
+  String get eventSignIn => 'Ingelogd';
+
+  @override
+  String get eventAdminSignIn => 'Beheerder ingelogd';
+
+  @override
+  String get eventSignInFailed => 'Inloggen mislukt';
+
+  @override
+  String get eventSignUp => 'Account aangemaakt';
+
+  @override
+  String get eventPasswordResetRequested => 'Wachtwoordherstel aangevraagd';
+
+  @override
+  String get eventPasswordChanged => 'Wachtwoord gewijzigd';
+
+  @override
+  String get eventAccountDeleted => 'Account verwijderd';
+
+  @override
+  String get columnEvent => 'Gebeurtenis';
+
+  @override
+  String get columnWho => 'Wie';
+
+  @override
+  String get columnMethod => 'Methode';
+
+  @override
+  String get reasonInvalidCredentials => 'Verkeerd e-mailadres of wachtwoord';
+
+  @override
+  String get reasonTooManyAttempts => 'Te veel pogingen';
+
+  @override
+  String get securityEmpty => 'Nog geen inloggebeurtenissen.';
+
+  @override
+  String securityNote(int days) {
+    return 'Inloggebeurtenissen worden $days dagen bewaard, zonder IP-adressen. Bij een mislukte poging staat alleen een gemaskeerd e-mailadres.';
+  }
 }

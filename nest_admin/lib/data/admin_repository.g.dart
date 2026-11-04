@@ -668,3 +668,349 @@ abstract class _$AuditLog extends $AsyncNotifier<AuditLogState> {
     return element.handleCreate(ref, build);
   }
 }
+
+@ProviderFor(LogFilterChoice)
+final logFilterChoiceProvider = LogFilterChoiceProvider._();
+
+final class LogFilterChoiceProvider
+    extends $NotifierProvider<LogFilterChoice, LogFilter> {
+  LogFilterChoiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'logFilterChoiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$logFilterChoiceHash();
+
+  @$internal
+  @override
+  LogFilterChoice create() => LogFilterChoice();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(LogFilter value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<LogFilter>(value),
+    );
+  }
+}
+
+String _$logFilterChoiceHash() => r'328d453d847e6635de43e9e12ee35ec2a1b97fa2';
+
+abstract class _$LogFilterChoice extends $Notifier<LogFilter> {
+  LogFilter build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<LogFilter, LogFilter>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<LogFilter, LogFilter>,
+              LogFilter,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
+/// Logged calls for the current [LogFilter], newest first.
+
+@ProviderFor(LogSessions)
+final logSessionsProvider = LogSessionsProvider._();
+
+/// Logged calls for the current [LogFilter], newest first.
+final class LogSessionsProvider
+    extends $AsyncNotifierProvider<LogSessions, PagedState<AdminLogSession>> {
+  /// Logged calls for the current [LogFilter], newest first.
+  LogSessionsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'logSessionsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$logSessionsHash();
+
+  @$internal
+  @override
+  LogSessions create() => LogSessions();
+}
+
+String _$logSessionsHash() => r'c16372e8345f434aaeaa773227839d7c34791c5f';
+
+/// Logged calls for the current [LogFilter], newest first.
+
+abstract class _$LogSessions
+    extends $AsyncNotifier<PagedState<AdminLogSession>> {
+  FutureOr<PagedState<AdminLogSession>> build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<PagedState<AdminLogSession>>,
+              PagedState<AdminLogSession>
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<PagedState<AdminLogSession>>,
+                PagedState<AdminLogSession>
+              >,
+              AsyncValue<PagedState<AdminLogSession>>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
+@ProviderFor(logSessionDetail)
+final logSessionDetailProvider = LogSessionDetailFamily._();
+
+final class LogSessionDetailProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<AdminLogSessionDetail>,
+          AdminLogSessionDetail,
+          FutureOr<AdminLogSessionDetail>
+        >
+    with
+        $FutureModifier<AdminLogSessionDetail>,
+        $FutureProvider<AdminLogSessionDetail> {
+  LogSessionDetailProvider._({
+    required LogSessionDetailFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'logSessionDetailProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$logSessionDetailHash();
+
+  @override
+  String toString() {
+    return r'logSessionDetailProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<AdminLogSessionDetail> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<AdminLogSessionDetail> create(Ref ref) {
+    final argument = this.argument as int;
+    return logSessionDetail(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is LogSessionDetailProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$logSessionDetailHash() => r'3e0325da9fed714f1d1b005e49e6b6832a76289f';
+
+final class LogSessionDetailFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<AdminLogSessionDetail>, int> {
+  LogSessionDetailFamily._()
+    : super(
+        retry: null,
+        name: r'logSessionDetailProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  LogSessionDetailProvider call(int id) =>
+      LogSessionDetailProvider._(argument: id, from: this);
+
+  @override
+  String toString() => r'logSessionDetailProvider';
+}
+
+@ProviderFor(logSummary)
+final logSummaryProvider = LogSummaryProvider._();
+
+final class LogSummaryProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<AdminLogSummary>,
+          AdminLogSummary,
+          FutureOr<AdminLogSummary>
+        >
+    with $FutureModifier<AdminLogSummary>, $FutureProvider<AdminLogSummary> {
+  LogSummaryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'logSummaryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$logSummaryHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<AdminLogSummary> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<AdminLogSummary> create(Ref ref) {
+    return logSummary(ref);
+  }
+}
+
+String _$logSummaryHash() => r'86d7a8558bd75014e5ca29f0e717130e37bbdb22';
+
+/// Which security events the Security page shows; null for all.
+
+@ProviderFor(SecurityFilterChoice)
+final securityFilterChoiceProvider = SecurityFilterChoiceProvider._();
+
+/// Which security events the Security page shows; null for all.
+final class SecurityFilterChoiceProvider
+    extends $NotifierProvider<SecurityFilterChoice, SecurityEventType?> {
+  /// Which security events the Security page shows; null for all.
+  SecurityFilterChoiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'securityFilterChoiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$securityFilterChoiceHash();
+
+  @$internal
+  @override
+  SecurityFilterChoice create() => SecurityFilterChoice();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SecurityEventType? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SecurityEventType?>(value),
+    );
+  }
+}
+
+String _$securityFilterChoiceHash() =>
+    r'0861f73cba472960a23ec91637bae2c2c7262567';
+
+/// Which security events the Security page shows; null for all.
+
+abstract class _$SecurityFilterChoice extends $Notifier<SecurityEventType?> {
+  SecurityEventType? build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<SecurityEventType?, SecurityEventType?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<SecurityEventType?, SecurityEventType?>,
+              SecurityEventType?,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
+/// Security events for the current filter, newest first.
+
+@ProviderFor(SecurityLog)
+final securityLogProvider = SecurityLogProvider._();
+
+/// Security events for the current filter, newest first.
+final class SecurityLogProvider
+    extends
+        $AsyncNotifierProvider<SecurityLog, PagedState<AdminSecurityEvent>> {
+  /// Security events for the current filter, newest first.
+  SecurityLogProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'securityLogProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$securityLogHash();
+
+  @$internal
+  @override
+  SecurityLog create() => SecurityLog();
+}
+
+String _$securityLogHash() => r'51085ecc86b2cddcc4241cfe1137a627a751ce75';
+
+/// Security events for the current filter, newest first.
+
+abstract class _$SecurityLog
+    extends $AsyncNotifier<PagedState<AdminSecurityEvent>> {
+  FutureOr<PagedState<AdminSecurityEvent>> build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<PagedState<AdminSecurityEvent>>,
+              PagedState<AdminSecurityEvent>
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<PagedState<AdminSecurityEvent>>,
+                PagedState<AdminSecurityEvent>
+              >,
+              AsyncValue<PagedState<AdminSecurityEvent>>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}

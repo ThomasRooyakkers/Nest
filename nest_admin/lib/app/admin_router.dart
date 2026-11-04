@@ -9,6 +9,8 @@ import '../presentation/pages/backups_page.dart';
 import '../presentation/pages/health_page.dart';
 import '../presentation/pages/household_detail_page.dart';
 import '../presentation/pages/households_page.dart';
+import '../presentation/pages/logs_page.dart';
+import '../presentation/pages/security_page.dart';
 import '../presentation/pages/server_page.dart';
 import '../presentation/pages/user_detail_page.dart';
 import '../presentation/pages/users_page.dart';
@@ -50,6 +52,8 @@ GoRouter adminRouter(Ref ref) {
           _page('/backups', const BackupsPage()),
           _page('/health', const HealthPage()),
           _page('/server', const ServerPage()),
+          _page('/logs', const LogsPage()),
+          _page('/security', const SecurityPage()),
           _page('/audit', const AuditPage()),
         ],
       ),

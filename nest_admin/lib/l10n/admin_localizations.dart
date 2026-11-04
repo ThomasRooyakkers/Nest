@@ -1381,6 +1381,276 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'A household always keeps at least one owner.'**
   String get errorLastOwner;
+
+  /// Side menu: server logs page.
+  ///
+  /// In en, this message translates to:
+  /// **'Logs'**
+  String get navLogs;
+
+  /// Side menu: sign-in events page.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get navSecurity;
+
+  /// Filter chip.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// Filter chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Errors'**
+  String get filterErrors;
+
+  /// Filter chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Slow'**
+  String get filterSlow;
+
+  /// Table column: endpoint and method.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get columnCall;
+
+  /// Table column.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get columnDuration;
+
+  /// Table column.
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get columnUser;
+
+  /// Table column.
+  ///
+  /// In en, this message translates to:
+  /// **'Result'**
+  String get columnResult;
+
+  /// Call result.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get resultOk;
+
+  /// Call result.
+  ///
+  /// In en, this message translates to:
+  /// **'Slow'**
+  String get resultSlow;
+
+  /// Call result.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get resultError;
+
+  /// Empty logs table.
+  ///
+  /// In en, this message translates to:
+  /// **'No failed or slow calls. Good news.'**
+  String get logsEmpty;
+
+  /// Card label.
+  ///
+  /// In en, this message translates to:
+  /// **'Errors (24 h)'**
+  String get summaryErrors;
+
+  /// Card label.
+  ///
+  /// In en, this message translates to:
+  /// **'Slow calls (24 h)'**
+  String get summarySlow;
+
+  /// Card label: how long logs are kept.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept for'**
+  String get summaryRetention;
+
+  /// Logs are never deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Forever'**
+  String get retentionForever;
+
+  /// Note on the logs page.
+  ///
+  /// In en, this message translates to:
+  /// **'Only failed and slow calls are kept, without SQL or household content. Emails and codes are hidden.'**
+  String get logsNote;
+
+  /// A duration in milliseconds.
+  ///
+  /// In en, this message translates to:
+  /// **'{ms} ms'**
+  String milliseconds(String ms);
+
+  /// Database queries of a call.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 query} other{{count} queries}}'**
+  String queryCount(int count);
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Call details'**
+  String get logDetailTitle;
+
+  /// Section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get logError;
+
+  /// Section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Stack trace'**
+  String get logStackTrace;
+
+  /// Section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages'**
+  String get logMessages;
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// Card label.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-ins (24 h)'**
+  String get summarySignIns;
+
+  /// Card label.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed sign-ins (24 h)'**
+  String get summaryFailedSignIns;
+
+  /// Filter chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-ins'**
+  String get filterSignIns;
+
+  /// Filter chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get filterFailed;
+
+  /// Filter chip.
+  ///
+  /// In en, this message translates to:
+  /// **'New accounts'**
+  String get filterSignUps;
+
+  /// Filter chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Password resets'**
+  String get filterResets;
+
+  /// Security event.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in'**
+  String get eventSignIn;
+
+  /// Security event.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin signed in'**
+  String get eventAdminSignIn;
+
+  /// Security event.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in failed'**
+  String get eventSignInFailed;
+
+  /// Security event.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created'**
+  String get eventSignUp;
+
+  /// Security event.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset requested'**
+  String get eventPasswordResetRequested;
+
+  /// Security event.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed'**
+  String get eventPasswordChanged;
+
+  /// Security event.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted'**
+  String get eventAccountDeleted;
+
+  /// Table column.
+  ///
+  /// In en, this message translates to:
+  /// **'Event'**
+  String get columnEvent;
+
+  /// Table column.
+  ///
+  /// In en, this message translates to:
+  /// **'Who'**
+  String get columnWho;
+
+  /// Table column: sign-in method.
+  ///
+  /// In en, this message translates to:
+  /// **'Method'**
+  String get columnMethod;
+
+  /// Why a sign-in failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong email or password'**
+  String get reasonInvalidCredentials;
+
+  /// Why a sign-in failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts'**
+  String get reasonTooManyAttempts;
+
+  /// Empty table.
+  ///
+  /// In en, this message translates to:
+  /// **'No sign-in events yet.'**
+  String get securityEmpty;
+
+  /// Note on the security page.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in events are kept {days} days, without IP addresses. A failed attempt shows only a masked email.'**
+  String securityNote(int days);
 }
 
 class _AdminLocalizationsDelegate

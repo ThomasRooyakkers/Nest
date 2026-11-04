@@ -17,6 +17,8 @@ List<AdminDestination> adminDestinations(AdminLocalizations l10n) => [
   (path: '/backups', icon: LucideIcons.databaseBackup, label: l10n.navBackups),
   (path: '/health', icon: LucideIcons.activity, label: l10n.navHealth),
   (path: '/server', icon: LucideIcons.server, label: l10n.navServer),
+  (path: '/logs', icon: LucideIcons.logs, label: l10n.navLogs),
+  (path: '/security', icon: LucideIcons.shieldCheck, label: l10n.navSecurity),
   (path: '/audit', icon: LucideIcons.scrollText, label: l10n.navAudit),
 ];
 

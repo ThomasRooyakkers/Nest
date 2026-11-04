@@ -58,6 +58,37 @@ class AdminFormat {
     MembershipRole.member => l10n.roleMember,
   };
 
+  /// Milliseconds without decimals, e.g. `1,500 ms`.
+  String millis(double? value) => value == null
+      ? '–'
+      : l10n.milliseconds(NumberFormat('#,##0', _locale).format(value));
+
+  String securityEvent(SecurityEventType type) => switch (type) {
+    SecurityEventType.signIn => l10n.eventSignIn,
+    SecurityEventType.adminSignIn => l10n.eventAdminSignIn,
+    SecurityEventType.signInFailed => l10n.eventSignInFailed,
+    SecurityEventType.signUp => l10n.eventSignUp,
+    SecurityEventType.passwordResetRequested =>
+      l10n.eventPasswordResetRequested,
+    SecurityEventType.passwordChanged => l10n.eventPasswordChanged,
+    SecurityEventType.accountDeleted => l10n.eventAccountDeleted,
+  };
+
+  /// Why a sign-in failed, or the server's reason when unknown.
+  String? signInFailure(String? reason) => switch (reason) {
+    null => null,
+    'invalidCredentials' => l10n.reasonInvalidCredentials,
+    'tooManyAttempts' => l10n.reasonTooManyAttempts,
+    _ => reason,
+  };
+
+  String signInMethod(String? method) => switch (method) {
+    'email' => l10n.methodEmail,
+    'google' => l10n.methodGoogle,
+    'apple' => l10n.methodApple,
+    _ => method ?? '–',
+  };
+
   String language(String locale) => switch (locale) {
     'nl' => 'Nederlands',
     _ => 'English',

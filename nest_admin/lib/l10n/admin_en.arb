@@ -1005,5 +1005,200 @@
   "errorLastOwner": "A household always keeps at least one owner.",
   "@errorLastOwner": {
     "description": "Error."
+  },
+  "navLogs": "Logs",
+  "@navLogs": {
+    "description": "Side menu: server logs page."
+  },
+  "navSecurity": "Security",
+  "@navSecurity": {
+    "description": "Side menu: sign-in events page."
+  },
+  "filterAll": "All",
+  "@filterAll": {
+    "description": "Filter chip."
+  },
+  "filterErrors": "Errors",
+  "@filterErrors": {
+    "description": "Filter chip."
+  },
+  "filterSlow": "Slow",
+  "@filterSlow": {
+    "description": "Filter chip."
+  },
+  "columnCall": "Call",
+  "@columnCall": {
+    "description": "Table column: endpoint and method."
+  },
+  "columnDuration": "Duration",
+  "@columnDuration": {
+    "description": "Table column."
+  },
+  "columnUser": "User",
+  "@columnUser": {
+    "description": "Table column."
+  },
+  "columnResult": "Result",
+  "@columnResult": {
+    "description": "Table column."
+  },
+  "resultOk": "OK",
+  "@resultOk": {
+    "description": "Call result."
+  },
+  "resultSlow": "Slow",
+  "@resultSlow": {
+    "description": "Call result."
+  },
+  "resultError": "Error",
+  "@resultError": {
+    "description": "Call result."
+  },
+  "logsEmpty": "No failed or slow calls. Good news.",
+  "@logsEmpty": {
+    "description": "Empty logs table."
+  },
+  "summaryErrors": "Errors (24 h)",
+  "@summaryErrors": {
+    "description": "Card label."
+  },
+  "summarySlow": "Slow calls (24 h)",
+  "@summarySlow": {
+    "description": "Card label."
+  },
+  "summaryRetention": "Kept for",
+  "@summaryRetention": {
+    "description": "Card label: how long logs are kept."
+  },
+  "retentionForever": "Forever",
+  "@retentionForever": {
+    "description": "Logs are never deleted."
+  },
+  "logsNote": "Only failed and slow calls are kept, without SQL or household content. Emails and codes are hidden.",
+  "@logsNote": {
+    "description": "Note on the logs page."
+  },
+  "milliseconds": "{ms} ms",
+  "@milliseconds": {
+    "description": "A duration in milliseconds.",
+    "placeholders": {
+      "ms": {
+        "type": "String"
+      }
+    }
+  },
+  "queryCount": "{count, plural, =1{1 query} other{{count} queries}}",
+  "@queryCount": {
+    "description": "Database queries of a call.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "logDetailTitle": "Call details",
+  "@logDetailTitle": {
+    "description": "Dialog title."
+  },
+  "logError": "Error",
+  "@logError": {
+    "description": "Section title."
+  },
+  "logStackTrace": "Stack trace",
+  "@logStackTrace": {
+    "description": "Section title."
+  },
+  "logMessages": "Messages",
+  "@logMessages": {
+    "description": "Section title."
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Button."
+  },
+  "summarySignIns": "Sign-ins (24 h)",
+  "@summarySignIns": {
+    "description": "Card label."
+  },
+  "summaryFailedSignIns": "Failed sign-ins (24 h)",
+  "@summaryFailedSignIns": {
+    "description": "Card label."
+  },
+  "filterSignIns": "Sign-ins",
+  "@filterSignIns": {
+    "description": "Filter chip."
+  },
+  "filterFailed": "Failed",
+  "@filterFailed": {
+    "description": "Filter chip."
+  },
+  "filterSignUps": "New accounts",
+  "@filterSignUps": {
+    "description": "Filter chip."
+  },
+  "filterResets": "Password resets",
+  "@filterResets": {
+    "description": "Filter chip."
+  },
+  "eventSignIn": "Signed in",
+  "@eventSignIn": {
+    "description": "Security event."
+  },
+  "eventAdminSignIn": "Admin signed in",
+  "@eventAdminSignIn": {
+    "description": "Security event."
+  },
+  "eventSignInFailed": "Sign-in failed",
+  "@eventSignInFailed": {
+    "description": "Security event."
+  },
+  "eventSignUp": "Account created",
+  "@eventSignUp": {
+    "description": "Security event."
+  },
+  "eventPasswordResetRequested": "Password reset requested",
+  "@eventPasswordResetRequested": {
+    "description": "Security event."
+  },
+  "eventPasswordChanged": "Password changed",
+  "@eventPasswordChanged": {
+    "description": "Security event."
+  },
+  "eventAccountDeleted": "Account deleted",
+  "@eventAccountDeleted": {
+    "description": "Security event."
+  },
+  "columnEvent": "Event",
+  "@columnEvent": {
+    "description": "Table column."
+  },
+  "columnWho": "Who",
+  "@columnWho": {
+    "description": "Table column."
+  },
+  "columnMethod": "Method",
+  "@columnMethod": {
+    "description": "Table column: sign-in method."
+  },
+  "reasonInvalidCredentials": "Wrong email or password",
+  "@reasonInvalidCredentials": {
+    "description": "Why a sign-in failed."
+  },
+  "reasonTooManyAttempts": "Too many attempts",
+  "@reasonTooManyAttempts": {
+    "description": "Why a sign-in failed."
+  },
+  "securityEmpty": "No sign-in events yet.",
+  "@securityEmpty": {
+    "description": "Empty table."
+  },
+  "securityNote": "Sign-in events are kept {days} days, without IP addresses. A failed attempt shows only a masked email.",
+  "@securityNote": {
+    "description": "Note on the security page.",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
   }
 }
