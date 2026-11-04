@@ -234,9 +234,13 @@ dat.
 
 ## Beheerportaal
 
-Het beheerportaal toont de huishoudens, gebruikers, back-ups, systeemstatus,
-de instellingen van de server, logs, inloggebeurtenissen en een auditlog van
-elke beheeractie. Het toont nooit wat een huishouden in Nest bewaart (geen
+Het beheerportaal opent op een **Overzicht**: of server, back-ups, schijf en
+e-mail in orde zijn, het aantal echte serverfouten in het laatste uur, en
+grafieken van belasting, geheugen, fouten, trage aanroepen, reactietijd van
+de database, verbindingen, vrije schijfruimte en databasegrootte over de
+laatste dag, week of maand. Het toont ook de huishoudens, gebruikers,
+back-ups, systeemstatus, de instellingen van de server, logs,
+inloggebeurtenissen en een auditlog van elke beheeractie. Het toont nooit wat een huishouden in Nest bewaart (geen
 lijstitems, recepten of taaknamen).
 
 **Huishoudens en gebruikers.** Open een huishouden om de rollen van leden,

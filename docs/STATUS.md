@@ -2,8 +2,47 @@
 
 ## Current phase
 
-**Admin portal package B: logs and security events (2026-11-04, not
+**Admin portal package C, part 1: Overview with metrics (2026-11-04, not
 released yet):**
+- The portal now opens on **Overview**: status cards (server and database,
+  real server errors in the last hour with refused calls shown apart, last
+  backup, free space, mail) and eight trend charts (processor load,
+  memory, server errors, slow calls, database response time, open
+  connections, free disk share, database size) for 24 hours, 7 or 30 days.
+- Data: Serverpod's own health checks (every minute, rolled up per hour
+  after 48 h and per day after 31 days) plus two Nest measures added
+  through its `healthCheckHandler` (`NestMetrics`: free disk share,
+  database size). Errors and slow calls per bucket come from the session
+  logs, so they reach back as far as `LOG_RETENTION`. "Refused" calls
+  (`NestException`, wrong password, expired tokens) are counted apart from
+  real errors (`NestMetrics.refusedPatterns`). No new table, no migration.
+- Charts are drawn with a `CustomPainter` (`TrendChart`), so no new
+  dependency: one series each in the accent colour, recessive grid, hover
+  and touch readout, a screen reader summary per chart.
+- System health stays in the menu for the per-target backup rows and
+  counts; the Server page has the configuration.
+- Tests: 438 server tests (new: bucketing and averaging, refused vs. real
+  errors, the health check hook) and 21 portal tests (new: overview cards,
+  range chips, chart summary, hover readout, Dutch + large text on a phone)
+  pass. Checked in the browser against the local server.
+- **Not built: email alerts.** CLAUDE.md puts notifications of any kind
+  out of scope for v1 (2026-10-28); admin-only alert emails (backup failed
+  or late, disk low, error burst, database down) need Thomas's decision
+  first. An outside uptime check (e.g. healthchecks.io pinging
+  `/health`) would also catch a Pi that is fully down.
+- **Next:** release 0.16.0 (needs Thomas's OK); decide on alerts.
+
+**0.15.0 released and deployed (2026-11-04):** package B below. CI passed
+on `d496aa5`, tag `v0.15.0`, images built; deployed by Claude with
+Thomas's OK using the v0.15.0 deploy kit (`.env.bak-20261104-092347`, dump
+`nest-pre-update-20261104-092350.sql.gz`, 71 KB instead of 816 KB now
+that log rows are left out). Verified: health 0.15.0 / API 11, privacy
+page 200, migration applied, only `notSignedIn` refusals in the log. The
+23,536 old session-log rows stay until they are 14 days old (cleanup by
+retention, so gone by 2026-11-18); deleting them sooner needs Thomas's OK.
+
+**Admin portal package B: logs and security events (2026-11-04,
+released as 0.15.0):**
 - **Finding on the Pi:** Serverpod stores session logs in the database by
   default in production, with no cleanup unless retention is configured.
   Since 2026-10-28 the Pi collected 23,536 rows in `serverpod_session_log`

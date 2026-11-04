@@ -228,7 +228,11 @@ app is too old for the server, it says so.
 
 ## Admin portal
 
-The admin portal shows the households, users, backups, system health, the
+The admin portal opens on an **Overview**: whether the server, backups,
+disk and mail are all right, the number of real server errors in the last
+hour, and charts of load, memory, errors, slow calls, database response
+time, connections, free disk and database size over the last day, week or
+month. It also shows the households, users, backups, system health, the
 server's settings, logs, sign-in events and an audit log of every admin
 action. It never shows what a household keeps in Nest (no list items,
 recipes or task titles).
