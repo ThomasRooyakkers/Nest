@@ -1200,5 +1200,97 @@
         "type": "int"
       }
     }
+  },
+  "navOverview": "Overview",
+  "@navOverview": {
+    "description": "Side menu: start page with status and trends."
+  },
+  "range24h": "24 hours",
+  "@range24h": {
+    "description": "Time range chip."
+  },
+  "range7d": "7 days",
+  "@range7d": {
+    "description": "Time range chip."
+  },
+  "range30d": "30 days",
+  "@range30d": {
+    "description": "Time range chip."
+  },
+  "chartCpu": "Processor load",
+  "@chartCpu": {
+    "description": "Chart title."
+  },
+  "chartMemory": "Memory in use",
+  "@chartMemory": {
+    "description": "Chart title."
+  },
+  "chartDatabase": "Database response time",
+  "@chartDatabase": {
+    "description": "Chart title."
+  },
+  "chartConnections": "Open connections",
+  "@chartConnections": {
+    "description": "Chart title."
+  },
+  "chartServerErrors": "Server errors",
+  "@chartServerErrors": {
+    "description": "Chart title."
+  },
+  "chartSlowCalls": "Slow calls",
+  "@chartSlowCalls": {
+    "description": "Chart title."
+  },
+  "chartDiskFree": "Free disk space",
+  "@chartDiskFree": {
+    "description": "Chart title."
+  },
+  "chartDatabaseSize": "Database size",
+  "@chartDatabaseSize": {
+    "description": "Chart title."
+  },
+  "chartNoData": "No data for this period yet.",
+  "@chartNoData": {
+    "description": "Empty chart."
+  },
+  "chartSummary": "{title}: latest {latest}, highest {highest}",
+  "@chartSummary": {
+    "description": "Screen reader summary of a chart.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "latest": {
+        "type": "String"
+      },
+      "highest": {
+        "type": "String"
+      }
+    }
+  },
+  "chartsNote": "Load and disk are measured every minute. Errors and slow calls come from the logs, so they go back as far as the logs are kept.",
+  "@chartsNote": {
+    "description": "Note above the charts."
+  },
+  "statusErrors": "Errors (last hour)",
+  "@statusErrors": {
+    "description": "Card label."
+  },
+  "refusedCalls": "{count, plural, =0{No refused calls} =1{1 refused call (normal)} other{{count} refused calls (normal)}}",
+  "@refusedCalls": {
+    "description": "Detail under the error count: calls refused because someone was not signed in and the like.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mailNotSetUp": "Not set up",
+  "@mailNotSetUp": {
+    "description": "Mail card value."
+  },
+  "mailCodesInLog": "Sign-up codes go to the server log",
+  "@mailCodesInLog": {
+    "description": "Mail card detail."
   }
 }

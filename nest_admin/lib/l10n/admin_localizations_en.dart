@@ -885,4 +885,73 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String securityNote(int days) {
     return 'Sign-in events are kept $days days, without IP addresses. A failed attempt shows only a masked email.';
   }
+
+  @override
+  String get navOverview => 'Overview';
+
+  @override
+  String get range24h => '24 hours';
+
+  @override
+  String get range7d => '7 days';
+
+  @override
+  String get range30d => '30 days';
+
+  @override
+  String get chartCpu => 'Processor load';
+
+  @override
+  String get chartMemory => 'Memory in use';
+
+  @override
+  String get chartDatabase => 'Database response time';
+
+  @override
+  String get chartConnections => 'Open connections';
+
+  @override
+  String get chartServerErrors => 'Server errors';
+
+  @override
+  String get chartSlowCalls => 'Slow calls';
+
+  @override
+  String get chartDiskFree => 'Free disk space';
+
+  @override
+  String get chartDatabaseSize => 'Database size';
+
+  @override
+  String get chartNoData => 'No data for this period yet.';
+
+  @override
+  String chartSummary(String title, String latest, String highest) {
+    return '$title: latest $latest, highest $highest';
+  }
+
+  @override
+  String get chartsNote =>
+      'Load and disk are measured every minute. Errors and slow calls come from the logs, so they go back as far as the logs are kept.';
+
+  @override
+  String get statusErrors => 'Errors (last hour)';
+
+  @override
+  String refusedCalls(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count refused calls (normal)',
+      one: '1 refused call (normal)',
+      zero: 'No refused calls',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mailNotSetUp => 'Not set up';
+
+  @override
+  String get mailCodesInLog => 'Sign-up codes go to the server log';
 }

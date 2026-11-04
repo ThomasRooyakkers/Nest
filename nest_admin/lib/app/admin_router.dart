@@ -10,6 +10,7 @@ import '../presentation/pages/health_page.dart';
 import '../presentation/pages/household_detail_page.dart';
 import '../presentation/pages/households_page.dart';
 import '../presentation/pages/logs_page.dart';
+import '../presentation/pages/overview_page.dart';
 import '../presentation/pages/security_page.dart';
 import '../presentation/pages/server_page.dart';
 import '../presentation/pages/user_detail_page.dart';
@@ -27,21 +28,22 @@ GoRouter adminRouter(Ref ref) {
     ..onDispose(signedIn.dispose);
 
   return GoRouter(
-    initialLocation: '/households',
+    initialLocation: '/overview',
     refreshListenable: signedIn,
     redirect: (context, state) {
       final atSignIn = state.matchedLocation == '/sign-in';
       if (!signedIn.value) return atSignIn ? null : '/sign-in';
-      if (atSignIn) return '/households';
+      if (atSignIn) return '/overview';
       return null;
     },
     routes: [
-      GoRoute(path: '/', redirect: (_, _) => '/households'),
+      GoRoute(path: '/', redirect: (_, _) => '/overview'),
       GoRoute(path: '/sign-in', builder: (_, _) => const SignInScreen()),
       ShellRoute(
         builder: (context, state, child) =>
             AdminShell(location: state.matchedLocation, child: child),
         routes: [
+          _page('/overview', const OverviewPage()),
           _page('/households', const HouseholdsPage()),
           _detail(
             '/households/:id',

@@ -1014,3 +1014,100 @@ abstract class _$SecurityLog
     return element.handleCreate(ref, build);
   }
 }
+
+@ProviderFor(MetricsRangeChoice)
+final metricsRangeChoiceProvider = MetricsRangeChoiceProvider._();
+
+final class MetricsRangeChoiceProvider
+    extends $NotifierProvider<MetricsRangeChoice, MetricsRange> {
+  MetricsRangeChoiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'metricsRangeChoiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$metricsRangeChoiceHash();
+
+  @$internal
+  @override
+  MetricsRangeChoice create() => MetricsRangeChoice();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(MetricsRange value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<MetricsRange>(value),
+    );
+  }
+}
+
+String _$metricsRangeChoiceHash() =>
+    r'bdaf8cef29f1c019fe7bb3704b5f0f5440275eaf';
+
+abstract class _$MetricsRangeChoice extends $Notifier<MetricsRange> {
+  MetricsRange build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<MetricsRange, MetricsRange>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<MetricsRange, MetricsRange>,
+              MetricsRange,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
+/// Trends for the Overview page in the chosen range.
+
+@ProviderFor(metrics)
+final metricsProvider = MetricsProvider._();
+
+/// Trends for the Overview page in the chosen range.
+
+final class MetricsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<AdminMetrics>,
+          AdminMetrics,
+          FutureOr<AdminMetrics>
+        >
+    with $FutureModifier<AdminMetrics>, $FutureProvider<AdminMetrics> {
+  /// Trends for the Overview page in the chosen range.
+  MetricsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'metricsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$metricsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<AdminMetrics> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<AdminMetrics> create(Ref ref) {
+    return metrics(ref);
+  }
+}
+
+String _$metricsHash() => r'94d7cdb79e471422f69db2f308b00d87adf37294';

@@ -12,6 +12,7 @@ import 'widgets/admin_widgets.dart';
 typedef AdminDestination = ({String path, IconData icon, String label});
 
 List<AdminDestination> adminDestinations(AdminLocalizations l10n) => [
+  (path: '/overview', icon: LucideIcons.gauge, label: l10n.navOverview),
   (path: '/households', icon: LucideIcons.house, label: l10n.navHouseholds),
   (path: '/users', icon: LucideIcons.users, label: l10n.navUsers),
   (path: '/backups', icon: LucideIcons.databaseBackup, label: l10n.navBackups),

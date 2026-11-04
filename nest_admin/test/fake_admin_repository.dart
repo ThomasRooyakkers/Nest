@@ -465,4 +465,46 @@ class FakeAdminRepository implements AdminRepository {
     logRetentionDays: 14,
     securityRetentionDays: 30,
   );
+
+  /// Range of the last metrics request.
+  MetricsRange? metricsRange;
+
+  @override
+  Future<AdminMetrics> metrics(MetricsRange range) async {
+    metricsRange = range;
+    final from = now.subtract(const Duration(days: 1));
+    List<AdminMetricPoint> wave(double base, double step) => [
+      for (var i = 0; i < 96; i++)
+        AdminMetricPoint(
+          at: from.add(Duration(minutes: 15 * i)),
+          value: base + step * (i % 8),
+        ),
+    ];
+    return AdminMetrics(
+      range: range,
+      from: from,
+      to: now,
+      bucketMinutes: 15,
+      series: [
+        AdminMetricSeries(name: 'cpu', points: wave(0.05, 0.02)),
+        AdminMetricSeries(name: 'memory', points: wave(0.4, 0.01)),
+        AdminMetricSeries(name: 'databaseMs', points: wave(2, 0.5)),
+        AdminMetricSeries(name: 'connections', points: wave(1, 1)),
+        AdminMetricSeries(
+          name: 'serverErrors',
+          points: [
+            AdminMetricPoint(
+              at: now.subtract(const Duration(hours: 3)),
+              value: 2,
+            ),
+          ],
+        ),
+        AdminMetricSeries(name: 'slowCalls', points: []),
+        AdminMetricSeries(name: 'diskFree', points: wave(0.4, 0)),
+        AdminMetricSeries(name: 'databaseSize', points: wave(42e6, 0)),
+      ],
+      serverErrorsLastHour: 0,
+      refusedLastHour: 3,
+    );
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -5,6 +6,7 @@ import 'package:nest_admin/app/admin_app.dart';
 import 'package:nest_admin/app/admin_router.dart';
 import 'package:nest_admin/data/admin_repository.dart';
 import 'package:nest_admin/presentation/pages/backups_page.dart';
+import 'package:nest_admin/presentation/widgets/trend_chart.dart';
 import 'package:nest_client/nest_client.dart';
 
 import 'fake_admin_repository.dart';
@@ -58,8 +60,8 @@ void main() {
     await tester.tap(find.widgetWithText(FilledButton, 'Sign in'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Home'), findsOneWidget);
-    expect(find.text('Test family'), findsOneWidget);
+    expect(find.text('Overview'), findsWidgets);
+    expect(find.text('Processor load'), findsOneWidget);
   });
 
   testWidgets('a wrong password shows a translated error', (tester) async {
@@ -81,7 +83,8 @@ void main() {
 
   testWidgets('households: summary cards, table and suspend', (tester) async {
     final repository = FakeAdminRepository();
-    await pumpPortal(tester, repository);
+    final container = await pumpPortal(tester, repository);
+    await go(container, tester, '/households');
 
     expect(find.text('LAST BACKUP'), findsOneWidget);
     expect(find.text('Backups are up to date'), findsOneWidget);
@@ -198,6 +201,7 @@ void main() {
   ) async {
     final repository = FakeAdminRepository();
     final container = await pumpPortal(tester, repository);
+    await go(container, tester, '/households');
 
     await tester.tap(find.text('New household'));
     await tester.pumpAndSettle();
@@ -222,6 +226,7 @@ void main() {
   ) async {
     final repository = FakeAdminRepository();
     final container = await pumpPortal(tester, repository);
+    await go(container, tester, '/households');
     await tester.tap(find.text('Test family'));
     await tester.pumpAndSettle();
     expect(find.text('Test family'), findsOneWidget);
@@ -405,5 +410,70 @@ void main() {
       expect(tester.takeException(), isNull, reason: path);
     }
     expect(find.textContaining('30 dagen bewaard'), findsOneWidget);
+  });
+
+  testWidgets('overview: status cards, charts and the time range', (
+    tester,
+  ) async {
+    final repository = FakeAdminRepository();
+    await pumpPortal(tester, repository);
+
+    expect(find.text('ERRORS (LAST HOUR)'), findsOneWidget);
+    expect(find.text('3 refused calls (normal)'), findsOneWidget);
+    expect(find.text('Processor load'), findsOneWidget);
+    final semantics = tester.ensureSemantics();
+    await tester.pump();
+    expect(
+      find.bySemanticsLabel(RegExp('^Processor load: latest')),
+      findsOneWidget,
+    );
+    semantics.dispose();
+    expect(repository.metricsRange, MetricsRange.day);
+
+    await tester.tap(find.widgetWithText(ChoiceChip, '7 days'));
+    await tester.pumpAndSettle();
+    expect(repository.metricsRange, MetricsRange.week);
+  });
+
+  testWidgets('overview fits a phone in Dutch with large text', (tester) async {
+    await pumpPortal(
+      tester,
+      FakeAdminRepository(),
+      locale: const Locale('nl'),
+      size: const Size(390, 844),
+      textScale: 1.6,
+    );
+    expect(tester.takeException(), isNull);
+    expect(find.text('Overzicht'), findsWidgets);
+  });
+
+  testWidgets('hovering a chart shows the value at that time', (tester) async {
+    await pumpPortal(tester, FakeAdminRepository());
+    final chart = find
+        .byType(CustomPaint)
+        .evaluate()
+        .firstWhere(
+          (e) =>
+              e.findAncestorWidgetOfExactType<TrendChart>()?.title ==
+              'Processor load',
+        );
+    final box = chart.renderObject! as RenderBox;
+    final left = box.localToGlobal(Offset(1, box.size.height / 2));
+    final title = find.text('Processor load');
+    final card = find.ancestor(of: title, matching: find.byType(TrendChart));
+    String readout() => tester
+        .widgetList<Text>(
+          find.descendant(of: card, matching: find.byType(Text)),
+        )
+        .map((t) => t.data)
+        .elementAt(1)!;
+
+    expect(readout(), '19%'); // the latest bucket: 0.05 + 0.02 * 7
+    final mouse = await tester.createGesture(kind: PointerDeviceKind.mouse);
+    await mouse.addPointer(location: Offset.zero);
+    addTearDown(mouse.removePointer);
+    await mouse.moveTo(left);
+    await tester.pump();
+    expect(readout(), '5%'); // the first bucket
   });
 }

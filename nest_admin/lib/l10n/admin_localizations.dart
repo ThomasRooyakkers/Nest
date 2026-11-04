@@ -1651,6 +1651,120 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Sign-in events are kept {days} days, without IP addresses. A failed attempt shows only a masked email.'**
   String securityNote(int days);
+
+  /// Side menu: start page with status and trends.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get navOverview;
+
+  /// Time range chip.
+  ///
+  /// In en, this message translates to:
+  /// **'24 hours'**
+  String get range24h;
+
+  /// Time range chip.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days'**
+  String get range7d;
+
+  /// Time range chip.
+  ///
+  /// In en, this message translates to:
+  /// **'30 days'**
+  String get range30d;
+
+  /// Chart title.
+  ///
+  /// In en, this message translates to:
+  /// **'Processor load'**
+  String get chartCpu;
+
+  /// Chart title.
+  ///
+  /// In en, this message translates to:
+  /// **'Memory in use'**
+  String get chartMemory;
+
+  /// Chart title.
+  ///
+  /// In en, this message translates to:
+  /// **'Database response time'**
+  String get chartDatabase;
+
+  /// Chart title.
+  ///
+  /// In en, this message translates to:
+  /// **'Open connections'**
+  String get chartConnections;
+
+  /// Chart title.
+  ///
+  /// In en, this message translates to:
+  /// **'Server errors'**
+  String get chartServerErrors;
+
+  /// Chart title.
+  ///
+  /// In en, this message translates to:
+  /// **'Slow calls'**
+  String get chartSlowCalls;
+
+  /// Chart title.
+  ///
+  /// In en, this message translates to:
+  /// **'Free disk space'**
+  String get chartDiskFree;
+
+  /// Chart title.
+  ///
+  /// In en, this message translates to:
+  /// **'Database size'**
+  String get chartDatabaseSize;
+
+  /// Empty chart.
+  ///
+  /// In en, this message translates to:
+  /// **'No data for this period yet.'**
+  String get chartNoData;
+
+  /// Screen reader summary of a chart.
+  ///
+  /// In en, this message translates to:
+  /// **'{title}: latest {latest}, highest {highest}'**
+  String chartSummary(String title, String latest, String highest);
+
+  /// Note above the charts.
+  ///
+  /// In en, this message translates to:
+  /// **'Load and disk are measured every minute. Errors and slow calls come from the logs, so they go back as far as the logs are kept.'**
+  String get chartsNote;
+
+  /// Card label.
+  ///
+  /// In en, this message translates to:
+  /// **'Errors (last hour)'**
+  String get statusErrors;
+
+  /// Detail under the error count: calls refused because someone was not signed in and the like.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No refused calls} =1{1 refused call (normal)} other{{count} refused calls (normal)}}'**
+  String refusedCalls(int count);
+
+  /// Mail card value.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set up'**
+  String get mailNotSetUp;
+
+  /// Mail card detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-up codes go to the server log'**
+  String get mailCodesInLog;
 }
 
 class _AdminLocalizationsDelegate

@@ -888,4 +888,73 @@ class AdminLocalizationsNl extends AdminLocalizations {
   String securityNote(int days) {
     return 'Inloggebeurtenissen worden $days dagen bewaard, zonder IP-adressen. Bij een mislukte poging staat alleen een gemaskeerd e-mailadres.';
   }
+
+  @override
+  String get navOverview => 'Overzicht';
+
+  @override
+  String get range24h => '24 uur';
+
+  @override
+  String get range7d => '7 dagen';
+
+  @override
+  String get range30d => '30 dagen';
+
+  @override
+  String get chartCpu => 'Processorbelasting';
+
+  @override
+  String get chartMemory => 'Geheugengebruik';
+
+  @override
+  String get chartDatabase => 'Reactietijd database';
+
+  @override
+  String get chartConnections => 'Open verbindingen';
+
+  @override
+  String get chartServerErrors => 'Serverfouten';
+
+  @override
+  String get chartSlowCalls => 'Trage aanroepen';
+
+  @override
+  String get chartDiskFree => 'Vrije schijfruimte';
+
+  @override
+  String get chartDatabaseSize => 'Databasegrootte';
+
+  @override
+  String get chartNoData => 'Nog geen gegevens voor deze periode.';
+
+  @override
+  String chartSummary(String title, String latest, String highest) {
+    return '$title: laatste $latest, hoogste $highest';
+  }
+
+  @override
+  String get chartsNote =>
+      'Belasting en schijf worden elke minuut gemeten. Fouten en trage aanroepen komen uit het logboek en gaan dus zo ver terug als het logboek bewaard wordt.';
+
+  @override
+  String get statusErrors => 'Fouten (laatste uur)';
+
+  @override
+  String refusedCalls(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count geweigerde aanroepen (normaal)',
+      one: '1 geweigerde aanroep (normaal)',
+      zero: 'Geen geweigerde aanroepen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mailNotSetUp => 'Niet ingesteld';
+
+  @override
+  String get mailCodesInLog => 'Aanmeldcodes gaan naar het serverlog';
 }

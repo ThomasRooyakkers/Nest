@@ -122,6 +122,9 @@ class AdminRepository {
   );
 
   Future<AdminLogSummary> logSummary() => _client.adminLogs.summary();
+
+  Future<AdminMetrics> metrics(MetricsRange range) =>
+      _client.adminMetrics.metrics(range);
 }
 
 @Riverpod(keepAlive: true)
@@ -410,3 +413,17 @@ class SecurityLog extends _$SecurityLog {
     ));
   }
 }
+
+@riverpod
+class MetricsRangeChoice extends _$MetricsRangeChoice {
+  @override
+  MetricsRange build() => MetricsRange.day;
+
+  void set(MetricsRange range) => state = range;
+}
+
+/// Trends for the Overview page in the chosen range.
+@riverpod
+Future<AdminMetrics> metrics(Ref ref) => ref
+    .watch(adminRepositoryProvider)
+    .metrics(ref.watch(metricsRangeChoiceProvider));
