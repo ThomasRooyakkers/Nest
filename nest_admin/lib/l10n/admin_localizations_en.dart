@@ -954,4 +954,77 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get mailCodesInLog => 'Sign-up codes go to the server log';
+
+  @override
+  String get alertBackupLate => 'No backup in over a day';
+
+  @override
+  String get alertBackupFailed => 'A backup failed';
+
+  @override
+  String get alertDiskLow => 'Disk space is running out';
+
+  @override
+  String get alertErrorBurst => 'Many server errors';
+
+  @override
+  String get alertDatabaseDown => 'The database could not be reached';
+
+  @override
+  String alertSince(String when) {
+    return 'Since $when';
+  }
+
+  @override
+  String alertResolvedAt(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String get sectionAlerts => 'Alerts';
+
+  @override
+  String get alertsRecent => 'Resolved in the last 30 days';
+
+  @override
+  String alertsEmailTo(String email) {
+    return 'Alert emails go to $email.';
+  }
+
+  @override
+  String get alertsEmailOff =>
+      'Alert emails are off (ALERTS=off); alerts only show here.';
+
+  @override
+  String get alertsNoMail =>
+      'Alert emails need mail to be set up; until then alerts only show here.';
+
+  @override
+  String get alertsNoRecipient =>
+      'No super-admin email is set, so alert emails cannot be sent.';
+
+  @override
+  String get settingAlerts => 'Alert emails';
+
+  @override
+  String get settingUptime => 'Outside uptime check';
+
+  @override
+  String get alertNeverBackedUp => 'There has never been a successful backup';
+
+  @override
+  String alertLastBackup(String when) {
+    return 'Last successful backup: $when';
+  }
+
+  @override
+  String alertErrorCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count errors in 15 minutes',
+      one: '1 error in 15 minutes',
+    );
+    return '$_temp0';
+  }
 }

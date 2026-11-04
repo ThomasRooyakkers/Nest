@@ -34,6 +34,8 @@ abstract class AdminServerSettings
     required this.googleSignIn,
     required this.appleSignIn,
     required this.updateCheckEnabled,
+    required this.alertsEnabled,
+    required this.uptimePing,
   });
 
   factory AdminServerSettings({
@@ -52,6 +54,8 @@ abstract class AdminServerSettings
     required bool googleSignIn,
     required bool appleSignIn,
     required bool updateCheckEnabled,
+    required bool alertsEnabled,
+    required bool uptimePing,
   }) = _AdminServerSettingsImpl;
 
   factory AdminServerSettings.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -84,6 +88,12 @@ abstract class AdminServerSettings
       ),
       updateCheckEnabled: _is.BoolJsonExtension.fromJson(
         jsonSerialization['updateCheckEnabled'],
+      ),
+      alertsEnabled: _is.BoolJsonExtension.fromJson(
+        jsonSerialization['alertsEnabled'],
+      ),
+      uptimePing: _is.BoolJsonExtension.fromJson(
+        jsonSerialization['uptimePing'],
       ),
     );
   }
@@ -120,6 +130,11 @@ abstract class AdminServerSettings
   /// False when the host switched the update check off.
   bool updateCheckEnabled;
 
+  /// Alert emails on (`ALERTS`), and whether an uptime check is pinged.
+  bool alertsEnabled;
+
+  bool uptimePing;
+
   /// Returns a shallow copy of this [AdminServerSettings]
   /// with some or all fields replaced by the given arguments.
   @_is.useResult
@@ -139,6 +154,8 @@ abstract class AdminServerSettings
     bool? googleSignIn,
     bool? appleSignIn,
     bool? updateCheckEnabled,
+    bool? alertsEnabled,
+    bool? uptimePing,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -159,6 +176,8 @@ abstract class AdminServerSettings
       'googleSignIn': googleSignIn,
       'appleSignIn': appleSignIn,
       'updateCheckEnabled': updateCheckEnabled,
+      'alertsEnabled': alertsEnabled,
+      'uptimePing': uptimePing,
     };
   }
 
@@ -181,6 +200,8 @@ abstract class AdminServerSettings
       'googleSignIn': googleSignIn,
       'appleSignIn': appleSignIn,
       'updateCheckEnabled': updateCheckEnabled,
+      'alertsEnabled': alertsEnabled,
+      'uptimePing': uptimePing,
     };
   }
 
@@ -209,6 +230,8 @@ class _AdminServerSettingsImpl extends AdminServerSettings {
     required bool googleSignIn,
     required bool appleSignIn,
     required bool updateCheckEnabled,
+    required bool alertsEnabled,
+    required bool uptimePing,
   }) : super._(
          version: version,
          apiVersion: apiVersion,
@@ -225,6 +248,8 @@ class _AdminServerSettingsImpl extends AdminServerSettings {
          googleSignIn: googleSignIn,
          appleSignIn: appleSignIn,
          updateCheckEnabled: updateCheckEnabled,
+         alertsEnabled: alertsEnabled,
+         uptimePing: uptimePing,
        );
 
   /// Returns a shallow copy of this [AdminServerSettings]
@@ -247,6 +272,8 @@ class _AdminServerSettingsImpl extends AdminServerSettings {
     bool? googleSignIn,
     bool? appleSignIn,
     bool? updateCheckEnabled,
+    bool? alertsEnabled,
+    bool? uptimePing,
   }) {
     return AdminServerSettings(
       version: version ?? this.version,
@@ -267,6 +294,8 @@ class _AdminServerSettingsImpl extends AdminServerSettings {
       googleSignIn: googleSignIn ?? this.googleSignIn,
       appleSignIn: appleSignIn ?? this.appleSignIn,
       updateCheckEnabled: updateCheckEnabled ?? this.updateCheckEnabled,
+      alertsEnabled: alertsEnabled ?? this.alertsEnabled,
+      uptimePing: uptimePing ?? this.uptimePing,
     );
   }
 }

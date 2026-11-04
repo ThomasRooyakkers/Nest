@@ -9,6 +9,7 @@ import '../../core/formatting.dart';
 import '../../data/admin_repository.dart';
 import '../../l10n/admin_localizations.dart';
 import '../widgets/admin_widgets.dart';
+import '../widgets/alerts_section.dart';
 import '../widgets/trend_chart.dart';
 import 'health_page.dart';
 
@@ -32,10 +33,12 @@ class OverviewPage extends ConsumerWidget {
       onRefresh: () async {
         ref
           ..invalidate(systemHealthProvider)
+          ..invalidate(alertsProvider)
           ..invalidate(metricsProvider);
         await ref.read(metricsProvider.future);
       },
       children: [
+        const AlertsSection(),
         AsyncContent(
           value: health,
           onRetry: () => ref.invalidate(systemHealthProvider),

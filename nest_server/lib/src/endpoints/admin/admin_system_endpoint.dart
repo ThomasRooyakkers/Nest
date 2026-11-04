@@ -2,6 +2,7 @@ import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_idp_server/providers/email.dart';
 
 import '../../generated/protocol.dart';
+import '../../services/admin_alerts.dart';
 import '../../services/admin_guard.dart';
 import '../../services/disk_space.dart';
 import '../../services/host_settings.dart';
@@ -87,6 +88,8 @@ class AdminSystemEndpoint extends Endpoint {
       googleSignIn: HostSettings.googleServerClientId != null,
       appleSignIn: HostSettings.appleSignInEnabled,
       updateCheckEnabled: UpdateCheck.enabled,
+      alertsEnabled: AdminAlerts.enabled,
+      uptimePing: AdminAlerts.uptimePingUrl != null,
     );
   }
 

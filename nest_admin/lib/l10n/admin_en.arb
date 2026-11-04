@@ -1292,5 +1292,105 @@
   "mailCodesInLog": "Sign-up codes go to the server log",
   "@mailCodesInLog": {
     "description": "Mail card detail."
+  },
+  "alertBackupLate": "No backup in over a day",
+  "@alertBackupLate": {
+    "description": "Alert title."
+  },
+  "alertBackupFailed": "A backup failed",
+  "@alertBackupFailed": {
+    "description": "Alert title."
+  },
+  "alertDiskLow": "Disk space is running out",
+  "@alertDiskLow": {
+    "description": "Alert title."
+  },
+  "alertErrorBurst": "Many server errors",
+  "@alertErrorBurst": {
+    "description": "Alert title."
+  },
+  "alertDatabaseDown": "The database could not be reached",
+  "@alertDatabaseDown": {
+    "description": "Alert title."
+  },
+  "alertSince": "Since {when}",
+  "@alertSince": {
+    "description": "When an open alert started.",
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "alertResolvedAt": "{from} – {to}",
+  "@alertResolvedAt": {
+    "description": "Period of a resolved alert.",
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "sectionAlerts": "Alerts",
+  "@sectionAlerts": {
+    "description": "Section title."
+  },
+  "alertsRecent": "Resolved in the last 30 days",
+  "@alertsRecent": {
+    "description": "Subtitle above resolved alerts."
+  },
+  "alertsEmailTo": "Alert emails go to {email}.",
+  "@alertsEmailTo": {
+    "description": "Alert email status.",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "alertsEmailOff": "Alert emails are off (ALERTS=off); alerts only show here.",
+  "@alertsEmailOff": {
+    "description": "Alert email status."
+  },
+  "alertsNoMail": "Alert emails need mail to be set up; until then alerts only show here.",
+  "@alertsNoMail": {
+    "description": "Alert email status."
+  },
+  "alertsNoRecipient": "No super-admin email is set, so alert emails cannot be sent.",
+  "@alertsNoRecipient": {
+    "description": "Alert email status."
+  },
+  "settingAlerts": "Alert emails",
+  "@settingAlerts": {
+    "description": "Setting label."
+  },
+  "settingUptime": "Outside uptime check",
+  "@settingUptime": {
+    "description": "Setting label."
+  },
+  "alertNeverBackedUp": "There has never been a successful backup",
+  "@alertNeverBackedUp": {
+    "description": "Alert detail."
+  },
+  "alertLastBackup": "Last successful backup: {when}",
+  "@alertLastBackup": {
+    "description": "Alert detail.",
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "alertErrorCount": "{count, plural, =1{1 error in 15 minutes} other{{count} errors in 15 minutes}}",
+  "@alertErrorCount": {
+    "description": "Alert detail.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

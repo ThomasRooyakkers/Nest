@@ -89,6 +89,34 @@ class AdminFormat {
     _ => method ?? '–',
   };
 
+  String alertTitle(AdminAlertKind kind) => switch (kind) {
+    AdminAlertKind.backupLate => l10n.alertBackupLate,
+    AdminAlertKind.backupFailed => l10n.alertBackupFailed,
+    AdminAlertKind.diskLow => l10n.alertDiskLow,
+    AdminAlertKind.errorBurst => l10n.alertErrorBurst,
+    AdminAlertKind.databaseDown => l10n.alertDatabaseDown,
+  };
+
+  /// The measurement of an alert in the viewer's language.
+  String? alertDetail(AdminAlertKind kind, String? details) {
+    if (details == null || details.isEmpty) {
+      return kind == AdminAlertKind.backupLate ? l10n.alertNeverBackedUp : null;
+    }
+    return switch (kind) {
+      AdminAlertKind.backupLate => switch (DateTime.tryParse(details)) {
+        final at? => l10n.alertLastBackup(dateTime(at)),
+        null => null,
+      },
+      AdminAlertKind.backupFailed => details,
+      AdminAlertKind.diskLow => l10n.diskFree(details),
+      AdminAlertKind.errorBurst => switch (int.tryParse(details)) {
+        final n? => l10n.alertErrorCount(n),
+        null => null,
+      },
+      AdminAlertKind.databaseDown => null,
+    };
+  }
+
   String language(String locale) => switch (locale) {
     'nl' => 'Nederlands',
     _ => 'English',

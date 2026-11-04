@@ -1765,6 +1765,114 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'Sign-up codes go to the server log'**
   String get mailCodesInLog;
+
+  /// Alert title.
+  ///
+  /// In en, this message translates to:
+  /// **'No backup in over a day'**
+  String get alertBackupLate;
+
+  /// Alert title.
+  ///
+  /// In en, this message translates to:
+  /// **'A backup failed'**
+  String get alertBackupFailed;
+
+  /// Alert title.
+  ///
+  /// In en, this message translates to:
+  /// **'Disk space is running out'**
+  String get alertDiskLow;
+
+  /// Alert title.
+  ///
+  /// In en, this message translates to:
+  /// **'Many server errors'**
+  String get alertErrorBurst;
+
+  /// Alert title.
+  ///
+  /// In en, this message translates to:
+  /// **'The database could not be reached'**
+  String get alertDatabaseDown;
+
+  /// When an open alert started.
+  ///
+  /// In en, this message translates to:
+  /// **'Since {when}'**
+  String alertSince(String when);
+
+  /// Period of a resolved alert.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} – {to}'**
+  String alertResolvedAt(String from, String to);
+
+  /// Section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts'**
+  String get sectionAlerts;
+
+  /// Subtitle above resolved alerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved in the last 30 days'**
+  String get alertsRecent;
+
+  /// Alert email status.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert emails go to {email}.'**
+  String alertsEmailTo(String email);
+
+  /// Alert email status.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert emails are off (ALERTS=off); alerts only show here.'**
+  String get alertsEmailOff;
+
+  /// Alert email status.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert emails need mail to be set up; until then alerts only show here.'**
+  String get alertsNoMail;
+
+  /// Alert email status.
+  ///
+  /// In en, this message translates to:
+  /// **'No super-admin email is set, so alert emails cannot be sent.'**
+  String get alertsNoRecipient;
+
+  /// Setting label.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert emails'**
+  String get settingAlerts;
+
+  /// Setting label.
+  ///
+  /// In en, this message translates to:
+  /// **'Outside uptime check'**
+  String get settingUptime;
+
+  /// Alert detail.
+  ///
+  /// In en, this message translates to:
+  /// **'There has never been a successful backup'**
+  String get alertNeverBackedUp;
+
+  /// Alert detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Last successful backup: {when}'**
+  String alertLastBackup(String when);
+
+  /// Alert detail.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 error in 15 minutes} other{{count} errors in 15 minutes}}'**
+  String alertErrorCount(int count);
 }
 
 class _AdminLocalizationsDelegate

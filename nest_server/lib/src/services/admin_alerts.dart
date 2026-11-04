@@ -66,6 +66,8 @@ abstract final class AdminAlerts {
   /// Starts checking every [interval]. Called once at server start.
   static void start(Serverpod pod) {
     _timer?.cancel();
+    // A first check soon after start, then every interval.
+    Timer(const Duration(minutes: 1), () => runOnce(pod));
     _timer = Timer.periodic(interval, (_) => runOnce(pod));
   }
 
@@ -99,10 +101,11 @@ abstract final class AdminAlerts {
     );
     final lastSuccessAt = lastSuccess?.finishedAt ?? lastSuccess?.startedAt;
     if (lastSuccessAt == null) {
-      problems[AdminAlertKind.backupLate] = 'never';
+      problems[AdminAlertKind.backupLate] = '';
     } else if (now.difference(lastSuccessAt) > backupLateAfter) {
-      problems[AdminAlertKind.backupLate] =
-          'last ${lastSuccessAt.toIso8601String()}';
+      problems[AdminAlertKind.backupLate] = lastSuccessAt
+          .toUtc()
+          .toIso8601String();
     }
 
     final recent = await BackupRun.db.find(
@@ -126,7 +129,7 @@ abstract final class AdminAlerts {
     if (disk != null && disk.totalBytes > 0) {
       final ratio = disk.freeBytes / disk.totalBytes;
       if (ratio < NestMetrics.diskLowRatio) {
-        problems[AdminAlertKind.diskLow] = '${(ratio * 100).round()}% free';
+        problems[AdminAlertKind.diskLow] = '${(ratio * 100).round()}%';
       }
     }
 
@@ -135,8 +138,7 @@ abstract final class AdminAlerts {
       now.subtract(errorBurstWindow),
     );
     if (errors.server >= errorBurstCount) {
-      problems[AdminAlertKind.errorBurst] =
-          '${errors.server} errors in ${errorBurstWindow.inMinutes} min';
+      problems[AdminAlertKind.errorBurst] = '${errors.server}';
     }
     return problems;
   }
@@ -175,12 +177,12 @@ abstract final class AdminAlerts {
           session,
           AdminAlert(
             kind: kind,
-            details: details,
+            details: details.isEmpty ? null : details,
             openedAt: now,
             lastSentAt: sent ? now : null,
           ),
         );
-        session.log('Alert: ${kind.name} ($details)', level: LogLevel.warning);
+        session.log('Alert: ${kind.name} $details', level: LogLevel.warning);
       } else {
         final last = existing.lastSentAt;
         final due = last == null || now.difference(last) >= remindEvery;
@@ -188,7 +190,7 @@ abstract final class AdminAlerts {
         await AdminAlert.db.updateRow(
           session,
           existing.copyWith(
-            details: details,
+            details: details.isEmpty ? null : details,
             lastSentAt: sent ? now : existing.lastSentAt,
           ),
         );
@@ -302,14 +304,14 @@ abstract final class AdminAlerts {
     final portal = HostSettings.adminDomain == null
         ? null
         : 'https://${HostSettings.adminDomain}/';
-    final measured = details == null ? '' : ' ($details)';
+    final (detailEn, detailNl) = _detail(kind, details);
     return [
       if (resolved) ...[
-        'Resolved: $en$measured.',
-        'Opgelost: $nl$measured.',
+        'Resolved: $en.',
+        'Opgelost: $nl.',
       ] else ...[
-        '$en$measured.',
-        '$nl$measured.',
+        '$en.$detailEn',
+        '$nl.$detailNl',
       ],
       '',
       if (portal != null) ...[
@@ -321,6 +323,34 @@ abstract final class AdminAlerts {
       'Je krijgt deze mail als superbeheerder van deze Nest-server. Zet '
           'meldingen uit met ALERTS=off in .env.',
     ].join('\n');
+  }
+
+  /// The measurement in a sentence per language, with a leading space.
+  static (String, String) _detail(AdminAlertKind kind, String? details) {
+    if (details == null || details.isEmpty) {
+      return kind == AdminAlertKind.backupLate
+          ? (
+              ' There has never been a successful backup.',
+              ' Er is nog nooit een back-up gelukt.',
+            )
+          : ('', '');
+    }
+    return switch (kind) {
+      AdminAlertKind.backupLate => (
+        ' Last successful backup: $details (UTC).',
+        ' Laatste geslaagde back-up: $details (UTC).',
+      ),
+      AdminAlertKind.backupFailed => (
+        ' Target: $details.',
+        ' Doel: $details.',
+      ),
+      AdminAlertKind.diskLow => (' $details free.', ' $details vrij.'),
+      AdminAlertKind.errorBurst => (
+        ' $details errors in ${errorBurstWindow.inMinutes} minutes.',
+        ' $details fouten in ${errorBurstWindow.inMinutes} minuten.',
+      ),
+      AdminAlertKind.databaseDown => ('', ''),
+    };
   }
 
   static Future<void> _pingUptime() async {

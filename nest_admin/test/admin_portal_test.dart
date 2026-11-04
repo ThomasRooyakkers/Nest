@@ -476,4 +476,20 @@ void main() {
     await tester.pump();
     expect(readout(), '5%'); // the first bucket
   });
+
+  testWidgets('overview shows open alerts and recent resolved ones', (
+    tester,
+  ) async {
+    await pumpPortal(tester, FakeAdminRepository());
+    expect(find.text('Disk space is running out'), findsOneWidget);
+    expect(find.textContaining('6% free'), findsOneWidget);
+    expect(find.text('Alert emails go to thomas@nest.test.'), findsOneWidget);
+    expect(find.text('A backup failed'), findsOneWidget);
+  });
+
+  testWidgets('alerts in Dutch', (tester) async {
+    await pumpPortal(tester, FakeAdminRepository(), locale: const Locale('nl'));
+    expect(find.text('De schijfruimte raakt op'), findsOneWidget);
+    expect(find.textContaining('6% vrij'), findsOneWidget);
+  });
 }

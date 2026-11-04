@@ -1111,3 +1111,44 @@ final class MetricsProvider
 }
 
 String _$metricsHash() => r'94d7cdb79e471422f69db2f308b00d87adf37294';
+
+@ProviderFor(alerts)
+final alertsProvider = AlertsProvider._();
+
+final class AlertsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<AdminAlertsOverview>,
+          AdminAlertsOverview,
+          FutureOr<AdminAlertsOverview>
+        >
+    with
+        $FutureModifier<AdminAlertsOverview>,
+        $FutureProvider<AdminAlertsOverview> {
+  AlertsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'alertsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$alertsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<AdminAlertsOverview> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<AdminAlertsOverview> create(Ref ref) {
+    return alerts(ref);
+  }
+}
+
+String _$alertsHash() => r'bc9d208abd2ba925fab2b37162aa3173e874f216';

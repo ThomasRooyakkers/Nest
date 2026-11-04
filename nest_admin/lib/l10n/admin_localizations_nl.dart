@@ -957,4 +957,77 @@ class AdminLocalizationsNl extends AdminLocalizations {
 
   @override
   String get mailCodesInLog => 'Aanmeldcodes gaan naar het serverlog';
+
+  @override
+  String get alertBackupLate => 'Al meer dan een dag geen back-up';
+
+  @override
+  String get alertBackupFailed => 'Een back-up is mislukt';
+
+  @override
+  String get alertDiskLow => 'De schijfruimte raakt op';
+
+  @override
+  String get alertErrorBurst => 'Veel serverfouten';
+
+  @override
+  String get alertDatabaseDown => 'De database was niet bereikbaar';
+
+  @override
+  String alertSince(String when) {
+    return 'Sinds $when';
+  }
+
+  @override
+  String alertResolvedAt(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String get sectionAlerts => 'Meldingen';
+
+  @override
+  String get alertsRecent => 'Opgelost in de laatste 30 dagen';
+
+  @override
+  String alertsEmailTo(String email) {
+    return 'Meldingen gaan per e-mail naar $email.';
+  }
+
+  @override
+  String get alertsEmailOff =>
+      'Meldingen per e-mail staan uit (ALERTS=off); ze staan alleen hier.';
+
+  @override
+  String get alertsNoMail =>
+      'Meldingen per e-mail hebben e-mail nodig; tot dat ingesteld is, staan ze alleen hier.';
+
+  @override
+  String get alertsNoRecipient =>
+      'Er is geen e-mail van een superbeheerder ingesteld, dus meldingen kunnen niet verstuurd worden.';
+
+  @override
+  String get settingAlerts => 'Meldingen per e-mail';
+
+  @override
+  String get settingUptime => 'Externe uptimecontrole';
+
+  @override
+  String get alertNeverBackedUp => 'Er is nog nooit een back-up gelukt';
+
+  @override
+  String alertLastBackup(String when) {
+    return 'Laatste geslaagde back-up: $when';
+  }
+
+  @override
+  String alertErrorCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count fouten in 15 minuten',
+      one: '1 fout in 15 minuten',
+    );
+    return '$_temp0';
+  }
 }

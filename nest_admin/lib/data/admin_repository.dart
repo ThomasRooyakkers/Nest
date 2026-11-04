@@ -123,6 +123,8 @@ class AdminRepository {
 
   Future<AdminLogSummary> logSummary() => _client.adminLogs.summary();
 
+  Future<AdminAlertsOverview> alerts() => _client.adminAlerts.overview();
+
   Future<AdminMetrics> metrics(MetricsRange range) =>
       _client.adminMetrics.metrics(range);
 }
@@ -427,3 +429,7 @@ class MetricsRangeChoice extends _$MetricsRangeChoice {
 Future<AdminMetrics> metrics(Ref ref) => ref
     .watch(adminRepositoryProvider)
     .metrics(ref.watch(metricsRangeChoiceProvider));
+
+@riverpod
+Future<AdminAlertsOverview> alerts(Ref ref) =>
+    ref.watch(adminRepositoryProvider).alerts();

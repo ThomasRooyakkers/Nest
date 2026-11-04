@@ -62,6 +62,7 @@ void main() {
         expect(sent.single.to, 'admin@example.com');
         expect(sent.single.subject, contains('No backup in over a day'));
         expect(sent.single.text, contains('Al meer dan een dag geen back-up'));
+        expect(sent.single.text, contains('nog nooit een back-up gelukt'));
 
         // Five minutes later: still open, no second email.
         await AdminAlerts.check(
@@ -110,7 +111,7 @@ void main() {
       final alerts = {for (final a in await open()) a.kind: a.details};
       expect(alerts, {
         AdminAlertKind.backupFailed: 'onedrive',
-        AdminAlertKind.diskLow: '6% free',
+        AdminAlertKind.diskLow: '6%',
       });
       expect(sent, hasLength(2));
     });
@@ -148,7 +149,7 @@ void main() {
         await AdminAlerts.check(session);
         final alert = (await open()).single;
         expect(alert.kind, AdminAlertKind.errorBurst);
-        expect(alert.details, '10 errors in 15 min');
+        expect(alert.details, '10');
       },
     );
 

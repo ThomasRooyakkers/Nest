@@ -304,6 +304,8 @@ class FakeAdminRepository implements AdminRepository {
     googleSignIn: true,
     appleSignIn: false,
     updateCheckEnabled: true,
+    alertsEnabled: true,
+    uptimePing: false,
   );
 
   @override
@@ -507,4 +509,30 @@ class FakeAdminRepository implements AdminRepository {
       refusedLastHour: 3,
     );
   }
+
+  late var alertList = <AdminAlert>[
+    AdminAlert(
+      id: 2,
+      kind: AdminAlertKind.diskLow,
+      details: '6%',
+      openedAt: now.subtract(const Duration(hours: 1)),
+      lastSentAt: now.subtract(const Duration(hours: 1)),
+    ),
+    AdminAlert(
+      id: 1,
+      kind: AdminAlertKind.backupFailed,
+      details: 'onedrive',
+      openedAt: now.subtract(const Duration(days: 2)),
+      resolvedAt: now.subtract(const Duration(days: 1)),
+    ),
+  ];
+
+  @override
+  Future<AdminAlertsOverview> alerts() async => AdminAlertsOverview(
+    alerts: alertList,
+    enabled: true,
+    recipient: 'thomas@nest.test',
+    mailConfigured: true,
+    uptimePing: false,
+  );
 }

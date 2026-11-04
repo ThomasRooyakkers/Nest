@@ -151,6 +151,8 @@ class _Content extends ConsumerWidget {
                   : StatusBadge(l10n.healthMailLog),
             ),
             (l10n.settingMailFrom, value(settings.mailFrom)),
+            (l10n.settingAlerts, onOff(settings.alertsEnabled)),
+            (l10n.settingUptime, onOff(settings.uptimePing)),
             (
               l10n.healthFilmData,
               settings.filmDataConfigured

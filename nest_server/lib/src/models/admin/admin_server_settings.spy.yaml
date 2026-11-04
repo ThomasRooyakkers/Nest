@@ -19,3 +19,6 @@ fields:
   appleSignIn: bool
   ### False when the host switched the update check off.
   updateCheckEnabled: bool
+  ### Alert emails on (`ALERTS`), and whether an uptime check is pinged.
+  alertsEnabled: bool
+  uptimePing: bool
