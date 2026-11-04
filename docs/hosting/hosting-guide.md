@@ -54,6 +54,7 @@ Open `.env` in an editor. Every setting is explained in the file.
 | `SUPER_ADMIN_EMAIL` | your own email address: that account becomes the server's super-admin |
 | `SIGN_UP_MODE` | `invite-only` (recommended: new accounts need a household invite code) or `open` |
 | `NEST_IMAGE`, `NEST_BACKUP_IMAGE`, `NEST_VERSION` | the server and backup images and the version; keep the values from `.env.example` unless you want a specific version |
+| `UPDATE_CHECK` | `on` (default): the admin portal's Server page shows whether a newer Nest release exists, read from the public release list on GitHub at most every 6 hours and only while that page is open; `off`: never ask |
 | `DATABASE_PASSWORD`, `SERVICE_SECRET`, `EMAIL_SECRET_HASH_PEPPER`, `JWT_HMAC_SHA512_PRIVATE_KEY`, `JWT_REFRESH_TOKEN_HASH_PEPPER` | each a different random value |
 | `RESEND_API_KEY`, `MAIL_FROM` | optional, see "Mail" below |
 | `TMDB_API_KEY` | optional, see "Film data" below |

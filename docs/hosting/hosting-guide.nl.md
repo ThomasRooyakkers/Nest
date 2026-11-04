@@ -56,6 +56,7 @@ Open `.env` in een editor. Elke instelling wordt in het bestand uitgelegd.
 | `SUPER_ADMIN_EMAIL` | je eigen e-mailadres: dat account wordt superbeheerder van de server |
 | `SIGN_UP_MODE` | `invite-only` (aanbevolen: nieuwe accounts hebben een uitnodigingscode van een huishouden nodig) of `open` |
 | `NEST_IMAGE`, `NEST_BACKUP_IMAGE`, `NEST_VERSION` | het server- en back-upimage en de versie; laat de waarden uit `.env.example` staan, tenzij je een bepaalde versie wilt |
+| `UPDATE_CHECK` | `on` (standaard): de Server-pagina van het beheerportaal toont of er een nieuwere Nest-versie is, gelezen uit de openbare releaselijst op GitHub, hoogstens om de 6 uur en alleen terwijl die pagina open is; `off`: nooit vragen |
 | `DATABASE_PASSWORD`, `SERVICE_SECRET`, `EMAIL_SECRET_HASH_PEPPER`, `JWT_HMAC_SHA512_PRIVATE_KEY`, `JWT_REFRESH_TOKEN_HASH_PEPPER` | elk een andere willekeurige waarde |
 | `RESEND_API_KEY`, `MAIL_FROM` | optioneel, zie "Mail" hieronder |
 | `TMDB_API_KEY` | optioneel, zie "Filmgegevens" hieronder |

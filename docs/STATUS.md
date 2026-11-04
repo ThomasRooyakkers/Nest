@@ -2,6 +2,50 @@
 
 ## Current phase
 
+**Admin portal management, package A (2026-11-04, not released yet):**
+Thomas asked for a portal to properly manage the server, plus logging and
+monitoring; the plan has three packages: A management, B logging, C
+monitoring and alerts. Package A is built:
+- **Households:** click a row for its detail page: status, members (name,
+  email, role, joined) with Make owner / Make member (the last owner stays
+  owner), invite code with New code / Copy / Revoke (expired codes marked),
+  feature switches, and data counts per feature (counts only). Rename and
+  Suspend/Reactivate there too. **New household** creates an empty household
+  with all features and an invite code for a new family; the first person
+  to join with it becomes its owner (`HouseholdRules.joinRole`, also in the
+  invite sign-up path), later ones members.
+- **Users:** click a row for status, sign-in methods (email/Google/Apple),
+  signed-in devices (refresh tokens used in the last 14 days) and last seen,
+  households with role, **Sign out everywhere**, Disable/Enable. Disabling
+  now also signs the user out everywhere.
+- **Server page** (new menu item): the settings the server runs with
+  (version, API level, addresses, allowed origins, sign-up mode, super-admin
+  email, Google/Apple, mail sender, mail and film data set or not; never
+  secrets), **Send test email** (to the admin's own address), **Test film
+  data**, and an update status against the newest `vX.Y.Z` tag of the public
+  GitHub repo (cached 6 h, only while the page is open; `UPDATE_CHECK=off`
+  in `.env` switches it off, `updateCheckUrl` can point elsewhere).
+- Every new action is audit-logged without household names (rename keeps
+  only the id). New endpoints are in `endpoint_registry.dart` and the admin
+  access test. API level 11 (admin only; apps are unaffected).
+- Dropped from the proposal: **admin-sent password reset**. The auth
+  module's reset needs the request id the app keeps, so a code started from
+  the portal could not be used; the user page says to use "Forgot password"
+  in the app instead.
+- Tests: 406 server tests and 15 portal widget tests pass (new: detail
+  pages, create household, roles, invites, sign out everywhere, settings
+  without secrets, test mail, update check, Dutch + large text on a phone).
+  Checked in the browser against the local server with seed data (detail
+  pages, New code, Server page with a real update check, user page); no
+  console or server errors.
+- **Next:** release as 0.14.0 and deploy to the Pi (needs Thomas's OK);
+  try Send test email there (the first real Resend delivery). Then package
+  B (database logs with retention, logs page, security events) and C
+  (metrics, overview page, alerts); open decisions for those: admin email
+  alerts vs. "no notifications in v1", deleting households from the portal,
+  log retention (proposed 14 days logs, 30 days metrics; logs kept out of
+  backups).
+
 **Admin portal password (2026-11-01, released as 0.13.0):** Thomas's
 super-admin account signs in with Google/Apple only, so it had no password
 and could not use the admin portal (email + password only). New command

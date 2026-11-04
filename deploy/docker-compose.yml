@@ -35,6 +35,7 @@ services:
       SERVERPOD_PASSWORD_adminDomain: ${NEST_ADMIN_DOMAIN:-}
       SERVERPOD_PASSWORD_superAdminEmail: ${SUPER_ADMIN_EMAIL:-}
       SERVERPOD_PASSWORD_signUpMode: ${SIGN_UP_MODE:-invite-only}
+      SERVERPOD_PASSWORD_updateCheck: ${UPDATE_CHECK:-on}
       # Secrets.
       SERVERPOD_DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       SERVERPOD_SERVICE_SECRET: ${SERVICE_SECRET:?set in .env}
