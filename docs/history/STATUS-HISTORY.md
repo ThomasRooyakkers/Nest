@@ -7,6 +7,36 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**0.17.0 released and deployed (2026-11-07):** grocery icons and item
+matcher (NEST-24), default store and brighter store colours (below).
+Server tests (461) and app tests (210) passed locally (the `gh` CLI is not
+installed here, so CI results were not read); tag `v0.17.0`, images for
+arm64 and amd64 published; deployed by Claude with Thomas's OK
+(`.env.bak-20261107-112848`, dump `nest-pre-update-20261107-112851`).
+Verified: health 0.17.0 / API 12, migration `20261107101532526` applied
+(`store.isDefault`), 152 built-in catalog items, 2 of the 6 existing own
+items got an icon from the matcher. The new app build was installed on
+Thomas's iPhone and on Iris's iPhone (Developer Mode turned on, device
+registered for signing).
+
+**Default store and brighter store colours (2026-11-07, commit
+`a8582c0`, release 1.1):**
+- Default store: `Store.isDefault` (API level 12, app `appApiVersion` 12),
+  at most one per household (the server clears the others). Switch
+  "Default store" in the store editor (only on servers with API 12), star
+  on its chip. While "All stores" is shown, new items without stores get
+  the default store: search adds, Recently used items put back, and recipe
+  ingredients. A picked store chip wins; items that already have stores
+  keep them. Applied by the app (works offline); older apps ignore it.
+- Store colours: six bright, distinct colours (blue, green, yellow, orange,
+  red, purple) instead of the pale feature tints; the selected store chip
+  is filled with its colour, others have a light tint; dots are 14 px with
+  a white ring. The `StoreColor` names are unchanged (sage=blue,
+  apricot=green, honey=yellow, neutral=orange, rose=red,
+  lavender=purple), because older apps cannot read a new value; grey is no
+  longer offered. Recorded in `docs/spec/design-system.md` and
+  `docs/spec/features.md`. Contrast test for the store colours.
+
 **Grocery icons and store on add (2026-11-07, NEST-24 + NEST-25, release
 1.1, commits `adfd70d`, `efd4e43`):**
 - Own icons (NEST-24): 26 grocery icons Lucide lacks (tomato, potato,

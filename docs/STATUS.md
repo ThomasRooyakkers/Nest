@@ -10,7 +10,7 @@ The backlog is in Jira (`docs/JIRA.md`).
 
 - **Phase 9 (Dashboard + release) in progress.** Phases 0–8 are done and
   released. The dashboard is built; Google and Apple sign-in are live.
-- **Server:** 0.16.0 (API level 11) on Thomas's Pi at `nest.g3cko.be` /
+- **Server:** 0.17.0 (API level 12) on Thomas's Pi at `nest.g3cko.be` /
   `nest-api.g3cko.be`. Includes the admin portal packages A (management),
   B (logs, security events) and C (Overview metrics, admin alert emails).
   Resend is on for the Pi; a real alert email has not been seen yet.
@@ -56,8 +56,10 @@ Details for every item: `docs/history/STATUS-HISTORY.md`.
    bar gap and + tooltip fixes, recipe Edit/Delete buttons (NEST-35/36/37/33,
    checked on the emulator; a phone check is still open). Own grocery
    icons, 25 new catalog items and icons for typed items (NEST-24); items
-   added with a store selected go to that store (NEST-25). All need a new
-   app build (and NEST-24 a new server image) to reach devices.
+   added with a store selected go to that store (NEST-25); a default store
+   per household and brighter store colours. Server 0.17.0 is deployed;
+   the new app build is on Thomas's and Iris's iPhones (other devices need
+   a new build).
 
 ## Open questions
 
