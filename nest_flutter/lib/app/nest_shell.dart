@@ -89,20 +89,38 @@ class NestShell extends ConsumerWidget {
       WidgetsBinding.instance.addPostFrameCallback((_) => shell.goBranch(0));
     }
 
-    return Scaffold(
-      extendBody: true,
-      body: shell,
-      bottomNavigationBar: _TabBar(
-        tabs: tabs,
-        current: shell.currentIndex,
-        onSelect: (branch) => shell.goBranch(
-          branch,
-          // Tapping the open tab again returns to its first screen.
-          initialLocation: branch == shell.currentIndex,
+    // Android back on another tab goes to Home first; on Home it leaves the
+    // app. Screens opened within a tab still go back one step first.
+    return PopScope(
+      canPop: shell.currentIndex == 0,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) shell.goBranch(0);
+      },
+      child: Scaffold(
+        extendBody: true,
+        body: shell,
+        bottomNavigationBar: _TabBar(
+          tabs: tabs,
+          current: shell.currentIndex,
+          onSelect: (branch) => shell.goBranch(
+            branch,
+            // Tapping the open tab again returns to its first screen.
+            initialLocation: branch == shell.currentIndex,
+          ),
         ),
       ),
     );
   }
+}
+
+/// Space below the floating tab bar. On iOS the bar sits a little into the
+/// home indicator area. On Android the system navigation bar (buttons or a
+/// gesture handle) is kept clear, with the designed 20 px gap above it.
+@visibleForTesting
+double tabBarBottomGap(BuildContext context) {
+  final inset = MediaQuery.viewPaddingOf(context).bottom;
+  if (Theme.of(context).platform == TargetPlatform.android) return inset + 20;
+  return inset > 20 ? inset - 6 : 20;
 }
 
 class _TabBar extends StatelessWidget {
@@ -120,16 +138,10 @@ class _TabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final colors = NestColors.of(context);
-    final bottomInset = MediaQuery.viewPaddingOf(context).bottom;
     final radius = BorderRadius.circular(NestRadii.tabBar);
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(
-        16,
-        0,
-        16,
-        bottomInset > 20 ? bottomInset - 6 : 20,
-      ),
+      padding: EdgeInsets.fromLTRB(16, 0, 16, tabBarBottomGap(context)),
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: radius,

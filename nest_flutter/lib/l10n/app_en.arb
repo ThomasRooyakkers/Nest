@@ -1094,10 +1094,6 @@
       }
     }
   },
-  "recipeMoreActions": "More actions",
-  "@recipeMoreActions": {
-    "description": "Tooltip of the recipe screen's menu button."
-  },
   "recipeNotFound": "This recipe is no longer there.",
   "@recipeNotFound": {
     "description": "Recipe screen for a deleted recipe."

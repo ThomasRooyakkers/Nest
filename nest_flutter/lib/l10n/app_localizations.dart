@@ -1502,12 +1502,6 @@ abstract class AppLocalizations {
   /// **'Delete “{title}”?'**
   String recipeDeleteConfirm(String title);
 
-  /// Tooltip of the recipe screen's menu button.
-  ///
-  /// In en, this message translates to:
-  /// **'More actions'**
-  String get recipeMoreActions;
-
   /// Recipe screen for a deleted recipe.
   ///
   /// In en, this message translates to:

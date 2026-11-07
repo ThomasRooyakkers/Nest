@@ -1,4 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nest_flutter/app/app_gate.dart';
 import 'package:nest_flutter/app/router.dart';
@@ -66,6 +68,43 @@ void main() {
       }
       expect(container.read(routerProvider).state.uri.toString(), '/shopping');
       expect(find.byType(ShoppingScreen), findsOneWidget);
+    });
+  });
+
+  group('Android back', () {
+    testWidgets('goes from another tab to Home, then leaves the app', (
+      tester,
+    ) async {
+      final container = await pumpNestApp(tester);
+      final router = container.read(routerProvider);
+      // The shopping screen keeps animating while it connects.
+      Future<void> settle() => tester.pump(const Duration(seconds: 1));
+      String location() => router.state.uri.toString();
+
+      router.go('/shopping');
+      await settle();
+      expect(await router.routerDelegate.popRoute(), isTrue);
+      await settle();
+      expect(location(), '/');
+
+      // On Home, back is not handled, so Android closes the app.
+      expect(await router.routerDelegate.popRoute(), isFalse);
+      expect(location(), '/');
+    });
+
+    testWidgets('a pushed screen goes back one step first', (tester) async {
+      final container = await pumpNestApp(tester);
+      final router = container.read(routerProvider);
+      // The shopping screen keeps animating while it connects.
+      Future<void> settle() => tester.pump(const Duration(seconds: 1));
+
+      router.go('/shopping');
+      await settle();
+      unawaited(router.push('/settings'));
+      await settle();
+      expect(await router.routerDelegate.popRoute(), isTrue);
+      await settle();
+      expect(router.state.uri.toString(), '/shopping');
     });
   });
 }

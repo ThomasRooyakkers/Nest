@@ -149,7 +149,7 @@ void main() {
 
   testWidgets('a new recipe is created with the + button', (tester) async {
     await openRecipes(tester);
-    await tester.tap(find.byTooltip('New recipe'));
+    await tester.tap(find.bySemanticsLabel('New recipe'));
     await tester.pumpAndSettle();
 
     await tester.enterText(
@@ -181,9 +181,7 @@ void main() {
   testWidgets('leaving the form with changes asks first', (tester) async {
     await openRecipes(tester);
     await openRecipe(tester, 'Pumpkin soup');
-    await tester.tap(find.byTooltip('More actions'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Edit recipe'));
+    await tester.tap(find.byTooltip('Edit recipe'));
     await tester.pumpAndSettle();
     expect(find.widgetWithText(TextField, 'Pumpkin'), findsOneWidget);
 
@@ -227,9 +225,15 @@ void main() {
   testWidgets('deleting a recipe returns to the library', (tester) async {
     await openRecipes(tester);
     await openRecipe(tester, 'Pumpkin soup');
-    await tester.tap(find.byTooltip('More actions'));
+    await tester.tap(find.byTooltip('Delete recipe'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Delete recipe'));
+    // Cancelling keeps the recipe.
+    expect(find.textContaining('Pumpkin soup'), findsNWidgets(2));
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(server.recipes, hasLength(2));
+
+    await tester.tap(find.byTooltip('Delete recipe'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Delete'));
     await tester.pumpAndSettle();
@@ -257,9 +261,7 @@ void main() {
     expect(find.text('Ingrediënten'), findsOneWidget);
     expect(tester.takeException(), isNull);
 
-    await tester.tap(find.byTooltip('Meer acties'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Recept bewerken'));
+    await tester.tap(find.byTooltip('Recept bewerken'));
     await tester.pumpAndSettle();
     // Scroll past the ingredient and step fields.
     await tester.scrollUntilVisible(

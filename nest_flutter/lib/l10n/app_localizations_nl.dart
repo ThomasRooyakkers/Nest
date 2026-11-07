@@ -812,9 +812,6 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get recipeMoreActions => 'Meer acties';
-
-  @override
   String get recipeNotFound => 'Dit recept bestaat niet meer.';
 
   @override

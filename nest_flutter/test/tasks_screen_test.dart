@@ -125,7 +125,7 @@ void main() {
 
   testWidgets('a new task is created with the + button', (tester) async {
     await openTasks(tester);
-    await tester.tap(find.byTooltip('New task'));
+    await tester.tap(find.bySemanticsLabel('New task'));
     await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextField).first, 'Vacuum upstairs');
     await tester.tap(find.text('Sarah'));
@@ -221,7 +221,7 @@ void main() {
     expect(find.textContaining('Te laat · '), findsOneWidget);
     expect(tester.takeException(), isNull);
 
-    await tester.tap(find.byTooltip('Nieuwe taak'));
+    await tester.tap(find.bySemanticsLabel('Nieuwe taak'));
     await tester.pumpAndSettle();
     expect(find.text('Wat moet er gebeuren?'), findsOneWidget);
     expect(tester.takeException(), isNull);

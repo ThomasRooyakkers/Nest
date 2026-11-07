@@ -112,20 +112,18 @@ class _RecipeScreenState extends ConsumerState<RecipeScreen> {
       appBar: AppBar(
         actions: [
           FavoriteButton(householdId: householdId, recipe: recipe),
-          PopupMenuButton<void Function()>(
-            tooltip: l10n.recipeMoreActions,
-            icon: const Icon(LucideIcons.ellipsisVertical),
-            onSelected: (action) => action(),
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                value: () => context.push(Routes.editRecipe(recipe.id!)),
-                child: Text(l10n.recipeEdit),
-              ),
-              PopupMenuItem(
-                value: () => _delete(householdId, recipe),
-                child: Text(l10n.recipeDelete),
-              ),
-            ],
+          IconButton(
+            tooltip: l10n.recipeEdit,
+            style: IconButton.styleFrom(backgroundColor: colors.surface),
+            icon: Icon(LucideIcons.pencil, color: colors.inkMuted),
+            onPressed: () => context.push(Routes.editRecipe(recipe.id!)),
+          ),
+          // Asks before deleting.
+          IconButton(
+            tooltip: l10n.recipeDelete,
+            style: IconButton.styleFrom(backgroundColor: colors.surface),
+            icon: Icon(LucideIcons.trash2, color: colors.inkMuted),
+            onPressed: () => _delete(householdId, recipe),
           ),
           const SizedBox(width: 8),
         ],

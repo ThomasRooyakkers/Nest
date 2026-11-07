@@ -6,6 +6,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nest_client/nest_client.dart';
 import 'package:nest_shared/nest_shared.dart';
 
+import '../../../app/shell_add_button.dart';
 import '../../../core/backend/live_sync.dart';
 import '../../../core/household/household_repository.dart';
 import '../../../l10n/app_localizations.dart';
@@ -65,17 +66,10 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
     return Scaffold(
       // The shell's tab bar floats over the body (its height is in the
       // bottom padding), which the button's default position ignores.
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
-        child: FloatingActionButton(
-          tooltip: l10n.taskNew,
-          backgroundColor: NestColors.of(context).accent,
-          foregroundColor: NestColors.of(context).onAccent,
-          elevation: 0,
-          shape: const CircleBorder(),
-          onPressed: () => showTaskSheet(context, householdId: householdId),
-          child: const Icon(LucideIcons.plus),
-        ),
+      floatingActionButton: ShellAddButton(
+        tabBarSpace: MediaQuery.paddingOf(context).bottom,
+        label: l10n.taskNew,
+        onPressed: () => showTaskSheet(context, householdId: householdId),
       ),
       body: SafeArea(
         bottom: false,

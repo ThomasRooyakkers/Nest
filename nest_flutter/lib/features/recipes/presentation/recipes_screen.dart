@@ -5,6 +5,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nest_client/nest_client.dart';
 import 'package:nest_shared/nest_shared.dart';
 
+import '../../../app/shell_add_button.dart';
 import '../../../app/router.dart';
 import '../../../core/backend/live_sync.dart';
 import '../../../core/household/household_repository.dart';
@@ -79,18 +80,10 @@ class _RecipesScreenState extends ConsumerState<RecipesScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.featureRecipes)),
-      floatingActionButton: Padding(
-        // The shell's tab bar floats over the body.
-        padding: EdgeInsets.only(bottom: bottom),
-        child: FloatingActionButton(
-          tooltip: l10n.recipeNew,
-          backgroundColor: colors.accent,
-          foregroundColor: colors.onAccent,
-          elevation: 0,
-          shape: const CircleBorder(),
-          onPressed: () => context.push(Routes.newRecipe),
-          child: const Icon(LucideIcons.plus),
-        ),
+      floatingActionButton: ShellAddButton(
+        tabBarSpace: bottom,
+        label: l10n.recipeNew,
+        onPressed: () => context.push(Routes.newRecipe),
       ),
       body: RefreshIndicator(
         onRefresh: () => ref

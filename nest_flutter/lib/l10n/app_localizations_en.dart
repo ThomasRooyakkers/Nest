@@ -809,9 +809,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get recipeMoreActions => 'More actions';
-
-  @override
   String get recipeNotFound => 'This recipe is no longer there.';
 
   @override
