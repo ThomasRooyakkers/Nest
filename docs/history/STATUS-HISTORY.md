@@ -38,9 +38,10 @@ work is finished; search this file rather than reading it whole.
   searching, because the chips (and the auto-dispose selection) were gone.
 - Tests: matcher unit tests, shopping endpoint tests (own item icon,
   backfill, icon change reaching list items), app widget and repository
-  tests; 205 app tests pass, server tests pass except the unrelated
-  `admin_alerts_test` "ten real server errors" case, which fails on `main`
-  too since 2026-11-07 (a fixed backup date in the test is now "late").
+  tests; 205 app and 460 server tests pass. Also fixed: the
+  `admin_alerts_test` "ten real server errors" case failed since
+  2026-11-07 because it seeded the backup at a fixed date but checked
+  against the real clock; it now uses the real clock for both.
   Icons checked as rendered by Flutter in a throwaway golden test; **not
   yet seen on a device** (needs a new server image and app build).
 

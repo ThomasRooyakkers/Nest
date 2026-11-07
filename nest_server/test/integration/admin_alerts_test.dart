@@ -119,8 +119,10 @@ void main() {
     test(
       'ten real server errors in 15 minutes open an alert; refusals do not',
       () async {
-        await backup(BackupRunStatus.succeeded, now, 'local');
+        // Log entries are counted against the real clock, so the backup
+        // must be recent by the real clock too.
         final recent = DateTime.now().toUtc();
+        await backup(BackupRunStatus.succeeded, recent, 'local');
         for (var i = 0; i < 12; i++) {
           await sp.SessionLogEntry.db.insertRow(
             session,
