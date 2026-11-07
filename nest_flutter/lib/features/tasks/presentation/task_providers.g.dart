@@ -67,7 +67,7 @@ final class TaskSyncProvider
   }
 }
 
-String _$taskSyncHash() => r'59c78622af1506c45aac97f6a45a6dd41ef139d3';
+String _$taskSyncHash() => r'1172dbd2e4cff95841bb6ea1c33c01c056786c0c';
 
 /// Keeps a household's tasks in sync while the tasks screen is open: loads
 /// them, then applies live changes. Reconnects after the connection drops,

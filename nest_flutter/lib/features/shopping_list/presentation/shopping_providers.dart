@@ -4,6 +4,7 @@ import 'package:nest_client/nest_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/backend/live_sync.dart';
+import '../../auth/data/auth_repository.dart';
 import '../../../core/database/nest_database.dart';
 import '../data/shopping_repository.dart';
 
@@ -27,6 +28,7 @@ class ShoppingSync extends _$ShoppingSync {
       apply: repository.applyEvent,
       refresh: () => repository.refresh(householdId),
       onState: (next) => state = next,
+      checkSignIn: ref.read(signInCheckProvider),
     );
     ref.onDispose(_loop.dispose);
     Future.microtask(_loop.start);

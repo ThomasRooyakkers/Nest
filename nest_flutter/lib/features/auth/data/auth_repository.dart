@@ -3,6 +3,7 @@ import 'package:nest_client/nest_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
+import '../../../core/backend/live_sync.dart';
 import '../../../core/backend/nest_client.dart';
 import '../../../core/database/nest_database.dart';
 import 'social_sign_in_repository.dart';
@@ -45,6 +46,32 @@ class AuthRepository {
   /// sees nothing of this one.
   Future<void> signOut() async {
     await _client.auth.signOutDevice();
+    await _forgetLocalData();
+  }
+
+  Future<bool>? _checking;
+
+  /// Asks the server whether this device's sign-in still holds (see
+  /// [SignInCheck]). A dead sign-in (refresh token expired or revoked) is
+  /// signed out and its cached data removed, so the app shows sign-in.
+  /// Calls made while a check runs share it.
+  Future<bool> checkSignIn() =>
+      _checking ??= _checkSignIn().whenComplete(() => _checking = null);
+
+  Future<bool> _checkSignIn() async {
+    if (!isSignedIn) return false;
+    try {
+      await _client.auth.validateAuthentication();
+    } on Exception {
+      // Offline, timed out or a server error: keep the sign-in for now.
+      return true;
+    }
+    if (isSignedIn) return true;
+    await _forgetLocalData();
+    return false;
+  }
+
+  Future<void> _forgetLocalData() async {
     await SocialSignInRepository.signOutGoogle();
     await _db.clearAll();
   }
@@ -55,6 +82,11 @@ AuthRepository authRepository(Ref ref) => AuthRepository(
   ref.watch(nestClientProvider),
   ref.watch(nestDatabaseProvider),
 );
+
+/// Checks the sign-in with the server; overridden in tests.
+@Riverpod(keepAlive: true)
+SignInCheck signInCheck(Ref ref) =>
+    ref.watch(authRepositoryProvider).checkSignIn;
 
 /// Whether a user is signed in. Follows sign-in and sign-out.
 @Riverpod(keepAlive: true)

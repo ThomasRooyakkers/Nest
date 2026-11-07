@@ -2,6 +2,7 @@ import 'package:nest_client/nest_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/backend/live_sync.dart';
+import '../../auth/data/auth_repository.dart';
 import '../../../core/household/household_repository.dart';
 import '../../../core/server/server_compatibility.dart';
 import '../../../core/backend/server_health_repository.dart';
@@ -27,6 +28,7 @@ class MealPlanSync extends _$MealPlanSync {
       refresh: () =>
           repository.refresh(householdId, weekStart, addWeeks(weekStart, 1)),
       onState: (next) => state = next,
+      checkSignIn: ref.read(signInCheckProvider),
     );
     ref.onDispose(_loop.dispose);
     Future.microtask(_loop.start);

@@ -64,7 +64,7 @@ final class WatchlistSyncProvider
   }
 }
 
-String _$watchlistSyncHash() => r'2260bdfd1f1be80c695963734fb061496075b775';
+String _$watchlistSyncHash() => r'629b64ec440733bb881798d263fb3e6a275af14b';
 
 /// Keeps a household's watchlist in sync while it is shown: loads it, then
 /// applies live changes. Reconnects after the connection drops.

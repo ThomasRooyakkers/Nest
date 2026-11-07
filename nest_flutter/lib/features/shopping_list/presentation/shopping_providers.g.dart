@@ -67,7 +67,7 @@ final class ShoppingSyncProvider
   }
 }
 
-String _$shoppingSyncHash() => r'23a54937444dc170e17c05a5663db89bb192a38d';
+String _$shoppingSyncHash() => r'5f0e7955167f54549592d550678f85725ffdc595';
 
 /// Keeps a household's shopping cache in sync while the shopping screen is
 /// open: loads everything, then applies live changes. Reconnects after the

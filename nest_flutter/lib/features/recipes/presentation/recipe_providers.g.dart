@@ -67,7 +67,7 @@ final class RecipeSyncProvider
   }
 }
 
-String _$recipeSyncHash() => r'014137043e6ae56878efbd731683d885340ac925';
+String _$recipeSyncHash() => r'4bb6587053f4c8bbd4d72fd76007d6d63ad5ba73';
 
 /// Keeps a household's recipes in sync while a recipe screen is open:
 /// loads them, then applies live changes. Reconnects after the connection

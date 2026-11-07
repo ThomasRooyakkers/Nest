@@ -7,6 +7,21 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Dead sign-in no longer loops (2026-11-07, NEST-38, release 1.1):** when
+the server refuses a device's sign-in (`notSignedIn` or a 401), the live
+sync (`LiveSyncLoop`) now asks `AuthRepository.checkSignIn()`, which calls
+`client.auth.validateAuthentication()`. A dead sign-in (refresh token
+expired or revoked) is signed out there, the cached data is cleared (as on
+a normal sign-out), the router shows sign-in and the loop stops for good.
+A sign-in that still holds, or a check that cannot reach the server,
+retries as before (2–30 s). Concurrent checks from the five feature loops
+share one call. The app also checks on resume (`NestApp`, via
+`AppLifecycleListener`); on start `client.auth.initialize()` already
+validates. New tests in `nest_flutter/test/live_sync_test.dart`; all 195
+app tests pass. The optional server change (`requireLogin` so a rejected
+token gets a 401) was not made. Not yet checked against a real server with
+a revoked sign-in; reaches devices with the next app build.
+
 **Android app name Hoomly (2026-11-04, Thomas's request):** the Android
 home-screen name (`android:label`) is now "Hoomly", like the store
 listings; the iOS home-screen name and in-app branding stay "Nest". New

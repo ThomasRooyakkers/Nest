@@ -67,7 +67,7 @@ final class MealPlanSyncProvider
   }
 }
 
-String _$mealPlanSyncHash() => r'e047178d81ecae80066c59ad5feb684501a49e72';
+String _$mealPlanSyncHash() => r'77fedc29b0d2fd8c285eb36596c0c5fa40f48325';
 
 /// Keeps one week of a household's meal plan in sync while it is shown:
 /// loads it, then applies live changes. Reconnects after the connection

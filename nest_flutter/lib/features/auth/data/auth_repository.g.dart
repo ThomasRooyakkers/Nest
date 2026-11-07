@@ -50,6 +50,52 @@ final class AuthRepositoryProvider
 
 String _$authRepositoryHash() => r'97ee9d2f8302dbf6b9f2b4a995e087c253f68365';
 
+/// Checks the sign-in with the server; overridden in tests.
+
+@ProviderFor(signInCheck)
+final signInCheckProvider = SignInCheckProvider._();
+
+/// Checks the sign-in with the server; overridden in tests.
+
+final class SignInCheckProvider
+    extends $FunctionalProvider<SignInCheck, SignInCheck, SignInCheck>
+    with $Provider<SignInCheck> {
+  /// Checks the sign-in with the server; overridden in tests.
+  SignInCheckProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'signInCheckProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$signInCheckHash();
+
+  @$internal
+  @override
+  $ProviderElement<SignInCheck> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  SignInCheck create(Ref ref) {
+    return signInCheck(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SignInCheck value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SignInCheck>(value),
+    );
+  }
+}
+
+String _$signInCheckHash() => r'a828207f4895a9cd0fbfa61f80ef09c3f3080045';
+
 /// Whether a user is signed in. Follows sign-in and sign-out.
 
 @ProviderFor(SignedIn)
