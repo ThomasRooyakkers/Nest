@@ -1,6 +1,6 @@
 # Jira — how Nest work is tracked
 
-Project **Nest** (key `NEST`) on https://ingeniumworks.atlassian.net/browse/NEST
+Project **Hoomly** (key `NEST`, board "Hoomly board") on https://ingeniumworks.atlassian.net/browse/NEST
 — a company-managed Kanban project. Jira holds the backlog and the work
 in flight; `docs/history/STATUS-HISTORY.md` stays the record of what was built and why.
 
