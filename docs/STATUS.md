@@ -54,8 +54,10 @@ Details for every item: `docs/history/STATUS-HISTORY.md`.
 9. **1.1 in progress** (Jira release 1.1). Done: the app signs out on a
    dead sign-in instead of retrying forever (NEST-38); Android back, tab
    bar gap and + tooltip fixes, recipe Edit/Delete buttons (NEST-35/36/37/33,
-   checked on the emulator; a phone check is still open). All need a new
-   app build to reach devices.
+   checked on the emulator; a phone check is still open). Own grocery
+   icons, 25 new catalog items and icons for typed items (NEST-24); items
+   added with a store selected go to that store (NEST-25). All need a new
+   app build (and NEST-24 a new server image) to reach devices.
 
 ## Open questions
 

@@ -7,6 +7,43 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Grocery icons and store on add (2026-11-07, NEST-24 + NEST-25, release
+1.1, commits `adfd70d`, `efd4e43`):**
+- Own icons (NEST-24): 26 grocery icons Lucide lacks (tomato, potato,
+  onion, garlic, bell pepper, cucumber, mushroom, broccoli, avocado,
+  strawberry, pear, kiwi, cheese, bread loaf, pasta, rice, jar, oil bottle,
+  sauce bottle, butter, yoghurt, sausage, tea, salt shaker, toilet roll,
+  sponge), drawn in Lucide's style as SVGs in `tools/grocery_icons/svg/` and
+  built into `nest_flutter/assets/fonts/NestGroceryIcons.ttf` (same metrics
+  as Lucide) plus `grocery_icons.dart` by `tools/grocery_icons/build.py`
+  (dev-only Python tools: picosvg, fontTools, skia-pathops, pinned in
+  `requirements.txt`; codepoints fixed in `codepoints.json`). Preview:
+  `node tools/grocery_icons/serve_preview.mjs`. No new app dependency.
+- Catalog: 25 new built-in items (EN + NL, e.g. cherry tomatoes, feta,
+  noodles, canned tuna, burgers, vitamins) and better icons for 48 existing
+  ones, also using unused Lucide glyphs (can, soda can, wine bottle, cake
+  slice, cupcake, doughnut, burger, pill bottle, paper bag, bird).
+  Catalog sync now also updates the icon and category copied onto items
+  already on a list.
+- Typed items: `ItemMatcher` (server) picks the icon and category of a
+  built-in item from the name's words, EN + NL: the match that ends last
+  wins, Dutch compounds match on their ending ("trostomaten", "volkoren-
+  brood"), longer wins at the same place ("pindakaas" = peanut butter).
+  Own items without an icon are backfilled at server start. Older apps
+  show the category icon for icon keys they do not know.
+- Store on add (NEST-25): with a store chip selected, items added from the
+  search (catalog or own) get that store; a Recently used item for any
+  store put back gets it too (offline: a status and an update change are
+  queued). Fixed on the way: the picked store reset to All stores while
+  searching, because the chips (and the auto-dispose selection) were gone.
+- Tests: matcher unit tests, shopping endpoint tests (own item icon,
+  backfill, icon change reaching list items), app widget and repository
+  tests; 205 app tests pass, server tests pass except the unrelated
+  `admin_alerts_test` "ten real server errors" case, which fails on `main`
+  too since 2026-11-07 (a fixed backup date in the test is now "late").
+  Icons checked as rendered by Flutter in a throwaway golden test; **not
+  yet seen on a device** (needs a new server image and app build).
+
 **Google "shared data" mail on every iOS sign-in (2026-11-07, NEST-23):**
 - Cause: the mail is Google's "You shared some Google Account data with
   Nest by G3cko". On iOS Google sends it after every *interactive* Google
