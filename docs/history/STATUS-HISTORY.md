@@ -7,6 +7,33 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**1.1 app stories NEST-34, 40, 41, 32 (2026-11-07, commits `9dc0945`,
+`77648b3`, `825abbb`, `46bc71f`, not released yet):**
+- NEST-34: a Recipes button (book icon) in the meal plan header opens the
+  recipe library inside the Meals tab (`/meals/recipes`, sharing the route
+  tree with `/recipes` under Home), so recipe, edit and cook pages keep
+  the Meals tab and Back returns to the same week.
+- NEST-40: the meal sheet has one box instead of "Recipe / Something
+  else". Typing suggests up to five recipes whose title matches every word
+  (case- and accent-insensitive, `mealRecipeSuggestions`, works offline);
+  picking one links the recipe (servings from the recipe), otherwise the
+  text is saved as a free-text meal. A picked recipe has a "Use as plain
+  text" button that turns it back into editable text. No server change.
+- NEST-41: "Swap with another day" in the meal sheet. New
+  `mealPlan.swap(householdId, entryId, toDate)` (API level 13,
+  `appApiVersion` 13): the two rows keep their days and trade recipe,
+  text, servings and note in one transaction (the unique day/slot index
+  rules out moving dates); an empty day just gets the meal moved. In the
+  isolation test (own household and cross-household). On servers below
+  API 13 the app loads the target day and trades contents with two saves.
+- NEST-32: a quick horizontal swipe on Tasks, Shopping (All stores and
+  each store) and Watchlist moves to the next or previous chip
+  (`SwipePages`, 300 px/s minimum, flipped for right-to-left). The chip
+  row still scrolls on its own; these are tab roots, so iOS swipe-back is
+  unaffected.
+- Server tests (468) and app tests (227) pass. Needs a server release
+  (0.18.0) for the swap endpoint and a phone check of all four.
+
 **0.17.0 released and deployed (2026-11-07):** grocery icons and item
 matcher (NEST-24), default store and brighter store colours (below).
 Server tests (461) and app tests (210) passed locally (the `gh` CLI is not

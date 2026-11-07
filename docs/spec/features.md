@@ -11,7 +11,7 @@ already agreed are in `docs/DEVIATIONS.md`.
 
 **Recipes.** Create/edit with title, photo, servings, prep and cook time, tags, structured ingredients and numbered steps. Servings stepper that rescales amounts. Favourite toggle. Search and filter by tag and favourites. Cooking mode (large text, screen stays awake). "Add to list" adds the recipe's ingredients to the shopping list, skipping items already on it.
 
-**Meal Planning.** Week strip of seven days with previous/next week buttons, one card per day showing dinner, "+ Plan dinner" on empty days. A day is filled from the recipe library or free text. Servings and a "prep ahead" note per meal. Breakfast and lunch slots can be switched on per household (off by default). There is deliberately no "add the week's ingredients to the list" feature.
+**Meal Planning.** Week strip of seven days with previous/next week buttons, one card per day showing dinner, "+ Plan dinner" on empty days. A day is filled from one box: typing suggests recipes from the library (title match, ignoring case and accents); picking one plans that recipe, otherwise the text is the meal. A meal can be swapped with another day's (or moved to an empty day). The header opens the recipe library. Servings and a "prep ahead" note per meal. Breakfast and lunch slots can be switched on per household (off by default). There is deliberately no "add the week's ingredients to the list" feature.
 
 **Tasks.** Filter chips: Mine, Everyone, Overdue, Done. Each task: check-off, title, due label (overdue highlighted), recurrence indicator, assignee avatar. Floating "+" button for a new task. Recurring tasks create their next occurrence on completion.
 

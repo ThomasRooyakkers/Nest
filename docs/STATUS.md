@@ -60,6 +60,11 @@ Details for every item: `docs/history/STATUS-HISTORY.md`.
    per household and brighter store colours. Server 0.17.0 is deployed;
    the new app build is on Thomas's and Iris's iPhones (other devices need
    a new build).
+   Also built (not released): Recipes button in the meal plan header
+   (NEST-34), one box to plan a meal with recipe suggestions (NEST-40),
+   swapping meals between days (NEST-41, server API level 13, needs a
+   server release 0.18.0), and swiping between task filters, stores and
+   watchlist tabs (NEST-32). All four need a phone check.
 
 ## Open questions
 
