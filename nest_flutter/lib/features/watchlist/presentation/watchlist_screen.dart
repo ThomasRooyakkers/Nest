@@ -8,6 +8,7 @@ import 'package:nest_shared/nest_shared.dart';
 import '../../../app/router.dart';
 import '../../../core/backend/live_sync.dart';
 import '../../../core/household/household_repository.dart';
+import '../../../core/widgets/swipe_pages.dart';
 import '../../../l10n/app_localizations.dart';
 import '../data/watchlist_repository.dart';
 import '../domain/watchlist_logic.dart';
@@ -48,53 +49,58 @@ class WatchlistScreen extends ConsumerWidget {
               .read(watchlistRepositoryProvider)
               .refresh(householdId)
               .catchError((_) {}),
-          child: ListView(
-            padding: EdgeInsets.fromLTRB(
-              side,
-              NestSpacing.screen,
-              side,
-              // Room for the floating tab bar.
-              NestSpacing.screen + MediaQuery.paddingOf(context).bottom,
-            ),
-            children: [
-              Text(l10n.featureWatchlist, style: textTheme.headlineMedium),
-              const SizedBox(height: NestSpacing.gap),
-              _SearchButton(
-                onTap: syncState == LiveSyncState.offline
-                    ? null
-                    : () => context.push(Routes.watchSearch),
+          child: SwipePages(
+            pages: WatchStatus.values,
+            current: status,
+            onChanged: ref.read(selectedWatchStatusProvider.notifier).select,
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(
+                side,
+                NestSpacing.screen,
+                side,
+                // Room for the floating tab bar.
+                NestSpacing.screen + MediaQuery.paddingOf(context).bottom,
               ),
-              const SizedBox(height: NestSpacing.gapSmall),
-              _StatusChips(
-                selected: status,
-                counts: statusCounts(items ?? const []),
-              ),
-              if (syncState == LiveSyncState.offline) ...[
-                const SizedBox(height: NestSpacing.gapSmall),
-                NestNotice(l10n.watchOffline, tone: NestNoticeTone.info),
-              ],
-              if (status == WatchStatus.want &&
-                  shown != null &&
-                  shown.isNotEmpty) ...[
-                const SizedBox(height: NestSpacing.gapSmall),
-                _PickButton(
-                  onTap: () => showTonightPick(
-                    context,
-                    householdId: householdId,
-                    items: items!,
-                  ),
+              children: [
+                Text(l10n.featureWatchlist, style: textTheme.headlineMedium),
+                const SizedBox(height: NestSpacing.gap),
+                _SearchButton(
+                  onTap: syncState == LiveSyncState.offline
+                      ? null
+                      : () => context.push(Routes.watchSearch),
                 ),
+                const SizedBox(height: NestSpacing.gapSmall),
+                _StatusChips(
+                  selected: status,
+                  counts: statusCounts(items ?? const []),
+                ),
+                if (syncState == LiveSyncState.offline) ...[
+                  const SizedBox(height: NestSpacing.gapSmall),
+                  NestNotice(l10n.watchOffline, tone: NestNoticeTone.info),
+                ],
+                if (status == WatchStatus.want &&
+                    shown != null &&
+                    shown.isNotEmpty) ...[
+                  const SizedBox(height: NestSpacing.gapSmall),
+                  _PickButton(
+                    onTap: () => showTonightPick(
+                      context,
+                      householdId: householdId,
+                      items: items!,
+                    ),
+                  ),
+                ],
+                const SizedBox(height: NestSpacing.gap),
+                if (shown == null)
+                  const Center(child: CircularProgressIndicator.adaptive())
+                else if (shown.isEmpty)
+                  _EmptyCard(status: status)
+                else
+                  _PosterGrid(householdId: householdId, items: shown),
+                const SizedBox(height: NestSpacing.gap),
+                const TmdbAttribution(),
               ],
-              const SizedBox(height: NestSpacing.gap),
-              if (shown == null)
-                const Center(child: CircularProgressIndicator.adaptive())
-              else if (shown.isEmpty)
-                _EmptyCard(status: status)
-              else
-                _PosterGrid(householdId: householdId, items: shown),
-              const SizedBox(height: NestSpacing.gap),
-              const TmdbAttribution(),
-            ],
+            ),
           ),
         ),
       ),

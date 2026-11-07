@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nest_client/nest_client.dart';
+import 'package:nest_flutter/features/shopping_list/presentation/shopping_providers.dart';
 import 'package:nest_flutter/features/shopping_list/presentation/shopping_tile.dart';
 
 import 'support/fake_shopping_server.dart';
@@ -179,6 +180,34 @@ void main() {
     expect(find.text('Rolls'), findsNothing);
     expect(find.text('1 item is for another store'), findsOneWidget);
     expect(find.text('Milk'), findsOneWidget, reason: 'any store');
+  });
+
+  testWidgets('swiping moves between All stores and the stores', (
+    tester,
+  ) async {
+    server.items.add(
+      ShoppingItem(
+        id: 3,
+        householdId: 1,
+        listId: list.id!,
+        name: 'Rolls',
+        category: ShoppingCategory.bakery,
+        iconKey: '',
+        storeIds: [market.id! + 1],
+        status: ShoppingItemStatus.toBuy,
+      ),
+    );
+    final container = await openShopping(tester);
+    await tester.fling(find.text('Rolls'), const Offset(-300, 0), 1000);
+    await tester.pumpAndSettle();
+    expect(find.text('Rolls'), findsNothing);
+    expect(find.text('1 item is for another store'), findsOneWidget);
+
+    expect(container.read(selectedStoreIdProvider(1)), market.id);
+    await tester.fling(find.text('Milk'), const Offset(300, 0), 1000);
+    await tester.pumpAndSettle();
+    expect(container.read(selectedStoreIdProvider(1)), isNull);
+    expect(find.text('Rolls'), findsOneWidget);
   });
 
   testWidgets('with a store selected, added items are for that store', (

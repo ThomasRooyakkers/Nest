@@ -9,6 +9,7 @@ import 'package:nest_shared/nest_shared.dart';
 import '../../../app/shell_add_button.dart';
 import '../../../core/backend/live_sync.dart';
 import '../../../core/household/household_repository.dart';
+import '../../../core/widgets/swipe_pages.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../settings/data/profile_repository.dart';
 import '../data/task_repository.dart';
@@ -78,43 +79,48 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
               .read(taskRepositoryProvider)
               .refresh(householdId)
               .catchError((_) {}),
-          child: ListView(
-            padding: EdgeInsets.fromLTRB(
-              side,
-              NestSpacing.screen,
-              side,
-              // Room for the "+" button above the tab bar.
-              NestSpacing.screen + 72 + MediaQuery.paddingOf(context).bottom,
-            ),
-            children: [
-              Text(l10n.featureTasks, style: textTheme.headlineMedium),
-              const SizedBox(height: NestSpacing.gap),
-              _FilterChips(
-                selected: filter,
-                overdueCount: tasks == null
-                    ? 0
-                    : filterTasks(
-                        tasks,
-                        TaskFilter.overdue,
-                        userId: userId,
-                        now: now,
-                      ).length,
+          child: SwipePages(
+            pages: TaskFilter.values,
+            current: filter,
+            onChanged: ref.read(selectedTaskFilterProvider.notifier).select,
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(
+                side,
+                NestSpacing.screen,
+                side,
+                // Room for the "+" button above the tab bar.
+                NestSpacing.screen + 72 + MediaQuery.paddingOf(context).bottom,
               ),
-              if (syncState == LiveSyncState.offline) ...[
-                const SizedBox(height: NestSpacing.gapSmall),
-                _OfflineNotice(householdId: householdId),
-              ],
-              const SizedBox(height: NestSpacing.gap),
-              if (tasks == null)
-                const Center(child: CircularProgressIndicator.adaptive())
-              else
-                _TaskList(
-                  householdId: householdId,
-                  filter: filter,
-                  tasks: filterTasks(tasks, filter, userId: userId, now: now),
-                  now: now,
+              children: [
+                Text(l10n.featureTasks, style: textTheme.headlineMedium),
+                const SizedBox(height: NestSpacing.gap),
+                _FilterChips(
+                  selected: filter,
+                  overdueCount: tasks == null
+                      ? 0
+                      : filterTasks(
+                          tasks,
+                          TaskFilter.overdue,
+                          userId: userId,
+                          now: now,
+                        ).length,
                 ),
-            ],
+                if (syncState == LiveSyncState.offline) ...[
+                  const SizedBox(height: NestSpacing.gapSmall),
+                  _OfflineNotice(householdId: householdId),
+                ],
+                const SizedBox(height: NestSpacing.gap),
+                if (tasks == null)
+                  const Center(child: CircularProgressIndicator.adaptive())
+                else
+                  _TaskList(
+                    householdId: householdId,
+                    filter: filter,
+                    tasks: filterTasks(tasks, filter, userId: userId, now: now),
+                    now: now,
+                  ),
+              ],
+            ),
           ),
         ),
       ),

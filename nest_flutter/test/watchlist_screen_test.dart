@@ -93,6 +93,33 @@ void main() {
     );
   });
 
+  testWidgets('swiping moves between the status tabs', (tester) async {
+    await openWatchlist(tester);
+    expect(find.text('Paddington 2'), findsOneWidget);
+    await tester.fling(
+      find.text('Watchlist').first,
+      const Offset(-300, 0),
+      1000,
+    );
+    await tester.pumpAndSettle();
+    await tester.fling(
+      find.text('Watchlist').first,
+      const Offset(-300, 0),
+      1000,
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Spirited Away'), findsOneWidget);
+    expect(find.text('Paddington 2'), findsNothing);
+    // Past the last tab nothing changes.
+    await tester.fling(
+      find.text('Watchlist').first,
+      const Offset(-300, 0),
+      1000,
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Spirited Away'), findsOneWidget);
+  });
+
   testWidgets('a title is found and added', (tester) async {
     await openWatchlist(tester);
     await tapText(tester, 'Find a film or series');

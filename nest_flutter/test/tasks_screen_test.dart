@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nest_client/nest_client.dart';
+import 'package:nest_flutter/features/tasks/domain/task_logic.dart';
+import 'package:nest_flutter/features/tasks/presentation/task_providers.dart';
 
 import 'support/fake_task_server.dart';
 import 'support/fakes.dart';
@@ -101,6 +103,23 @@ void main() {
     expect(find.text('Buy a present'), findsOneWidget);
     expect(find.text('Done by Sarah'), findsOneWidget);
     expect(find.text('Water the plants'), findsNothing);
+  });
+
+  testWidgets('swiping moves between the filters', (tester) async {
+    final container = await openTasks(tester);
+    await chip(tester, 'Mine');
+    await tester.fling(
+      find.text('Take out the bins'),
+      const Offset(-300, 0),
+      1000,
+    );
+    await tester.pumpAndSettle();
+    expect(container.read(selectedTaskFilterProvider), TaskFilter.everyone);
+    expect(find.text('Water the plants'), findsWidgets);
+
+    await tester.fling(find.text('Tasks').first, const Offset(300, 0), 1000);
+    await tester.pumpAndSettle();
+    expect(container.read(selectedTaskFilterProvider), TaskFilter.mine);
   });
 
   testWidgets('checking off a recurring task adds the next one', (

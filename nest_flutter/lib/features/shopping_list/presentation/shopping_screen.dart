@@ -7,6 +7,7 @@ import 'package:nest_shared/nest_shared.dart';
 
 import '../../../app/router.dart';
 import '../../../core/household/household_repository.dart';
+import '../../../core/widgets/swipe_pages.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../settings/data/profile_repository.dart';
 import '../data/shopping_repository.dart';
@@ -54,7 +55,9 @@ class _ShoppingScreenState extends ConsumerState<ShoppingScreen> {
     final list = ref.watch(activeShoppingListProvider(householdId));
     // Keeps the picked store while search results replace the store chips,
     // so items added from the search go to that store.
-    ref.watch(activeStoreProvider(householdId));
+    final selectedStore = ref.watch(activeStoreProvider(householdId))?.id;
+    final stores =
+        ref.watch(shoppingStoresProvider(householdId)).value ?? const [];
     final query = _search.text.trim();
     // Phone-like width on tablets and the web, so tiles stay tile-sized.
     final width = MediaQuery.sizeOf(context).width;
@@ -70,37 +73,46 @@ class _ShoppingScreenState extends ConsumerState<ShoppingScreen> {
               .read(shoppingRepositoryProvider)
               .refresh(householdId)
               .catchError((_) {}),
-          child: ListView(
-            padding: EdgeInsets.fromLTRB(
-              side,
-              NestSpacing.screen,
-              side,
-              NestSpacing.screen + MediaQuery.paddingOf(context).bottom,
-            ),
-            children: [
-              _Header(householdId: householdId, list: list),
-              const SizedBox(height: NestSpacing.gap),
-              _SearchField(controller: _search, focusNode: _searchFocus),
-              if (syncState == ShoppingSyncState.offline) ...[
-                const SizedBox(height: NestSpacing.gapSmall),
-                _OfflineNotice(householdId: householdId),
+          // Swiping moves between All stores and each store, like the chips.
+          child: SwipePages<int?>(
+            enabled: list != null && query.isEmpty,
+            pages: [null, for (final store in stores) store.id],
+            current: selectedStore,
+            onChanged: ref
+                .read(selectedStoreIdProvider(householdId).notifier)
+                .select,
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(
+                side,
+                NestSpacing.screen,
+                side,
+                NestSpacing.screen + MediaQuery.paddingOf(context).bottom,
+              ),
+              children: [
+                _Header(householdId: householdId, list: list),
+                const SizedBox(height: NestSpacing.gap),
+                _SearchField(controller: _search, focusNode: _searchFocus),
+                if (syncState == ShoppingSyncState.offline) ...[
+                  const SizedBox(height: NestSpacing.gapSmall),
+                  _OfflineNotice(householdId: householdId),
+                ],
+                const SizedBox(height: NestSpacing.gap),
+                if (list == null)
+                  const Center(child: CircularProgressIndicator.adaptive())
+                else if (query.isNotEmpty)
+                  _SearchResults(
+                    householdId: householdId,
+                    list: list,
+                    query: query,
+                    onAdded: () {
+                      _search.clear();
+                      _searchFocus.requestFocus();
+                    },
+                  )
+                else
+                  _Board(householdId: householdId, list: list),
               ],
-              const SizedBox(height: NestSpacing.gap),
-              if (list == null)
-                const Center(child: CircularProgressIndicator.adaptive())
-              else if (query.isNotEmpty)
-                _SearchResults(
-                  householdId: householdId,
-                  list: list,
-                  query: query,
-                  onAdded: () {
-                    _search.clear();
-                    _searchFocus.requestFocus();
-                  },
-                )
-              else
-                _Board(householdId: householdId, list: list),
-            ],
+            ),
           ),
         ),
       ),
