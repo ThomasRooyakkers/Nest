@@ -44,12 +44,14 @@ signs in). Assignee is optional; the label is what counts.
 
 ## Releases (Versions)
 
-Server and app are versioned separately, so their Jira releases carry a
-prefix:
+Releases are simple product versions: `1.0`, `1.1`, `2.0`, … One release
+covers everything that ships together (apps, server, admin portal);
+server image tags (`vX.Y.Z`) and store build numbers are noted in the
+release description or a comment, not as separate Jira versions.
 
-- `Server x.y.z` — the server image (server, admin portal, static site),
-  matching the `vX.Y.Z` Git tag.
-- `App x.y.z` — a store release of the family app (iOS and Android).
+- `1.0` — first release (iOS submitted to Apple, awaiting approval).
+- `1.1` — first update after 1.0.
+- `2.0` — next major release.
 
 Set **Fix version** when an item is planned for a release. When a
 release ships, mark the version released in Jira with its date.
