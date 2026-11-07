@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nest_client/nest_client.dart';
 
+import 'package:nest_flutter/app/router.dart';
+
 import 'support/fake_meal_plan_server.dart';
 import 'support/fake_recipe_server.dart';
 import 'support/fakes.dart';
@@ -186,6 +188,33 @@ void main() {
     // 1 kg for 4 servings, scaled to 6.
     expect(find.textContaining('1½'), findsOneWidget);
     expect(find.textContaining('6 servings'), findsOneWidget);
+  });
+
+  testWidgets('the recipe library opens from the header and comes back', (
+    tester,
+  ) async {
+    final container = await openMeals(tester);
+    await tester.tap(find.byTooltip('Next week'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Recipes'));
+    await tester.pumpAndSettle();
+    expect(container.read(routerProvider).state.uri.path, '/meals/recipes');
+    expect(find.text('Pancakes'), findsOneWidget);
+
+    await tester.tap(find.text('Pumpkin soup'));
+    await tester.pumpAndSettle();
+    expect(
+      container.read(routerProvider).state.uri.path,
+      '/meals/recipes/${soup.id}',
+    );
+    expect(find.text('Simmer and blend.'), findsOneWidget);
+
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    expect(find.text('Next week'), findsOneWidget);
+    expect(find.text('Curry'), findsOneWidget);
   });
 
   testWidgets('a meal is moved to another day and removed', (tester) async {

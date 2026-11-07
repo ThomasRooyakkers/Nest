@@ -118,6 +118,15 @@ class _MealPlanScreenState extends ConsumerState<MealPlanScreen> {
                           style: textTheme.headlineMedium,
                         ),
                       ),
+                      if (recipesOn) ...[
+                        NestRoundButton(
+                          tooltip: l10n.mealRecipesButton,
+                          icon: LucideIcons.bookOpen,
+                          onPressed: () => context.push(Routes.mealRecipes),
+                        ),
+                        if (household.role == MembershipRole.owner)
+                          const SizedBox(width: 8),
+                      ],
                       if (household.role == MembershipRole.owner)
                         NestRoundButton(
                           tooltip: l10n.mealSlotsButton,

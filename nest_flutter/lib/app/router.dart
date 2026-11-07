@@ -32,14 +32,25 @@ abstract final class Routes {
   static const home = '/';
   static const recipes = '/recipes';
   static const newRecipe = '/recipes/new';
-  static String recipe(int recipeId) => '/recipes/$recipeId';
-  static String editRecipe(int recipeId) => '/recipes/$recipeId/edit';
-  static String cookRecipe(int recipeId) => '/recipes/$recipeId/cook';
+  static String recipe(int recipeId, {String base = recipes}) =>
+      '$base/$recipeId';
+  static String editRecipe(int recipeId, {String base = recipes}) =>
+      '$base/$recipeId/edit';
+  static String cookRecipe(int recipeId, {String base = recipes}) =>
+      '$base/$recipeId/cook';
   static const shopping = '/shopping';
   static const newStore = '/shopping/stores/new';
   static String editStore(int storeId) => '/shopping/stores/$storeId';
   static const meals = '/meals';
-  static String mealRecipe(int recipeId) => '/meals/recipes/$recipeId';
+  static const mealRecipes = '/meals/recipes';
+  static String mealRecipe(int recipeId) => '$mealRecipes/$recipeId';
+
+  /// The recipe library's path in the tab [location] is in: the meal plan
+  /// has its own copy, so opening recipes there keeps the Meals tab.
+  static String recipesIn(String location) =>
+      location == meals || location.startsWith('$meals/')
+      ? mealRecipes
+      : recipes;
   static const tasks = '/tasks';
   static const watch = '/watch';
   static const watchSearch = '/watch/search';
@@ -47,6 +58,15 @@ abstract final class Routes {
   static const addHousehold = '/settings/add-household';
   static const server = '/server';
   static const about = '/about';
+}
+
+/// The recipe library's path for the tab [context] is shown in.
+String recipesBaseOf(BuildContext context) {
+  try {
+    return Routes.recipesIn(GoRouterState.of(context).uri.path);
+  } on GoError {
+    return Routes.recipes;
+  }
 }
 
 /// Where the gate sends the user, or `null` if any route is allowed.
@@ -101,6 +121,44 @@ String? _safeFrom(String? from) =>
 /// The recipe id in a recipe route; -1 (no such recipe) when malformed.
 int _recipeId(GoRouterState state) =>
     int.tryParse(state.pathParameters['recipeId']!) ?? -1;
+
+/// The recipe library and its pages, under Home (`/recipes`) and under the
+/// meal plan (`/meals/recipes`). Editing and cooking cover the tab bar.
+/// A recipe page takes optional servings as `extra` (a planned meal's).
+GoRoute _recipeLibrary(GlobalKey<NavigatorState> rootNavigator) => GoRoute(
+  path: 'recipes',
+  builder: (context, state) => const RecipesScreen(),
+  routes: [
+    GoRoute(
+      path: 'new',
+      parentNavigatorKey: rootNavigator,
+      builder: (context, state) => const RecipeEditScreen(),
+    ),
+    GoRoute(
+      path: ':recipeId',
+      builder: (context, state) => RecipeScreen(
+        recipeId: _recipeId(state),
+        initialServings: state.extra as int?,
+      ),
+      routes: [
+        GoRoute(
+          path: 'edit',
+          parentNavigatorKey: rootNavigator,
+          builder: (context, state) =>
+              RecipeEditScreen(recipeId: _recipeId(state)),
+        ),
+        GoRoute(
+          path: 'cook',
+          parentNavigatorKey: rootNavigator,
+          builder: (context, state) => CookingScreen(
+            recipeId: _recipeId(state),
+            servings: state.extra as int?,
+          ),
+        ),
+      ],
+    ),
+  ],
+);
 
 @Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {
@@ -158,41 +216,8 @@ GoRouter router(Ref ref) {
                 path: Routes.home,
                 builder: (context, state) => const HomeScreen(),
                 routes: [
-                  // Recipes open from the home screen (and the meal plan);
-                  // editing and cooking cover the tab bar.
-                  GoRoute(
-                    path: 'recipes',
-                    builder: (context, state) => const RecipesScreen(),
-                    routes: [
-                      GoRoute(
-                        path: 'new',
-                        parentNavigatorKey: rootNavigator,
-                        builder: (context, state) => const RecipeEditScreen(),
-                      ),
-                      GoRoute(
-                        path: ':recipeId',
-                        builder: (context, state) => RecipeScreen(
-                          recipeId: _recipeId(state),
-                        ),
-                        routes: [
-                          GoRoute(
-                            path: 'edit',
-                            parentNavigatorKey: rootNavigator,
-                            builder: (context, state) =>
-                                RecipeEditScreen(recipeId: _recipeId(state)),
-                          ),
-                          GoRoute(
-                            path: 'cook',
-                            parentNavigatorKey: rootNavigator,
-                            builder: (context, state) => CookingScreen(
-                              recipeId: _recipeId(state),
-                              servings: state.extra as int?,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  // Recipes open from the home screen.
+                  _recipeLibrary(rootNavigator),
                 ],
               ),
             ],
@@ -225,14 +250,9 @@ GoRouter router(Ref ref) {
                 path: Routes.meals,
                 builder: (context, state) => const MealPlanScreen(),
                 routes: [
-                  // A planned meal's recipe, at the meal's servings.
-                  GoRoute(
-                    path: 'recipes/:recipeId',
-                    builder: (context, state) => RecipeScreen(
-                      recipeId: _recipeId(state),
-                      initialServings: state.extra as int?,
-                    ),
-                  ),
+                  // The recipe library, opened from the meal plan header;
+                  // a planned meal's recipe opens here at its servings.
+                  _recipeLibrary(rootNavigator),
                 ],
               ),
             ],

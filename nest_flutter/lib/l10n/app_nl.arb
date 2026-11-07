@@ -315,6 +315,7 @@
   "mealDayLabel": "Dag",
   "mealServingsLabel": "Porties",
   "mealRemove": "Uit het weekmenu halen",
+  "mealRecipesButton": "Recepten",
   "mealSlotsButton": "Te plannen maaltijden",
   "mealSlotsHint": "Avondeten plan je altijd. Zet ontbijt en lunch aan om die ook te plannen.",
   "mealDayMeal": "{day}: {meal}",

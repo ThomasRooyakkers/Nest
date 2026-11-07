@@ -1484,6 +1484,10 @@
   "@mealRemove": {
     "description": "Button in the meal sheet."
   },
+  "mealRecipesButton": "Recipes",
+  "@mealRecipesButton": {
+    "description": "Tooltip and label of the meal plan header button that opens the recipe library."
+  },
   "mealSlotsButton": "Meals to plan",
   "@mealSlotsButton": {
     "description": "Tooltip and title of the meal slots setting (owners)."

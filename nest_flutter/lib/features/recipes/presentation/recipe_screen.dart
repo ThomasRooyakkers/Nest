@@ -116,7 +116,9 @@ class _RecipeScreenState extends ConsumerState<RecipeScreen> {
             tooltip: l10n.recipeEdit,
             style: IconButton.styleFrom(backgroundColor: colors.surface),
             icon: Icon(LucideIcons.pencil, color: colors.inkMuted),
-            onPressed: () => context.push(Routes.editRecipe(recipe.id!)),
+            onPressed: () => context.push(
+              Routes.editRecipe(recipe.id!, base: recipesBaseOf(context)),
+            ),
           ),
           // Asks before deleting.
           IconButton(
@@ -288,7 +290,7 @@ class _RecipeScreenState extends ConsumerState<RecipeScreen> {
               icon: const Icon(LucideIcons.chefHat, size: 20),
               label: Text(l10n.recipeStartCooking),
               onPressed: () => context.push(
-                Routes.cookRecipe(recipe.id!),
+                Routes.cookRecipe(recipe.id!, base: recipesBaseOf(context)),
                 extra: servings,
               ),
             ),

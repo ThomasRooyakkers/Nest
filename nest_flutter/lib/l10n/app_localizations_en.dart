@@ -1096,6 +1096,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mealRemove => 'Remove from the plan';
 
   @override
+  String get mealRecipesButton => 'Recipes';
+
+  @override
   String get mealSlotsButton => 'Meals to plan';
 
   @override

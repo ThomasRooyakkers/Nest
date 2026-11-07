@@ -1988,6 +1988,12 @@ abstract class AppLocalizations {
   /// **'Remove from the plan'**
   String get mealRemove;
 
+  /// Tooltip and label of the meal plan header button that opens the recipe library.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipes'**
+  String get mealRecipesButton;
+
   /// Tooltip and title of the meal slots setting (owners).
   ///
   /// In en, this message translates to:

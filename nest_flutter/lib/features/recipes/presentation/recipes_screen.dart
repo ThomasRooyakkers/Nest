@@ -83,7 +83,7 @@ class _RecipesScreenState extends ConsumerState<RecipesScreen> {
       floatingActionButton: ShellAddButton(
         tabBarSpace: bottom,
         label: l10n.recipeNew,
-        onPressed: () => context.push(Routes.newRecipe),
+        onPressed: () => context.push('${recipesBaseOf(context)}/new'),
       ),
       body: RefreshIndicator(
         onRefresh: () => ref
@@ -202,7 +202,9 @@ class _RecipeCard extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => context.push(Routes.recipe(recipe.id!)),
+        onTap: () => context.push(
+          Routes.recipe(recipe.id!, base: recipesBaseOf(context)),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(

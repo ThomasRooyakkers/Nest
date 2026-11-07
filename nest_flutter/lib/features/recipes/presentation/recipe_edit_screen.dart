@@ -288,7 +288,9 @@ class _RecipeEditScreenState extends ConsumerState<RecipeEditScreen> {
     if (!mounted) return;
     _dirty = false;
     if (original == null) {
-      context.go(Routes.recipe(saved.id!));
+      context.go(
+        Routes.recipe(saved.id!, base: recipesBaseOf(context)),
+      );
     } else {
       context.pop();
     }

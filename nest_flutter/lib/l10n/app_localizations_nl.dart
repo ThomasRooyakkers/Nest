@@ -1098,6 +1098,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get mealRemove => 'Uit het weekmenu halen';
 
   @override
+  String get mealRecipesButton => 'Recepten';
+
+  @override
   String get mealSlotsButton => 'Te plannen maaltijden';
 
   @override
