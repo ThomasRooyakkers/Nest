@@ -7,6 +7,17 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Smoother swipe between pages (2026-11-07, commit `4af8f8e`, NEST-32):**
+the page content (not the title or chips) now follows the finger, fades
+and slides out, and the next page slides in from the other side
+(`SwipeContent`, 110 ms out, 260 ms in). A slow drag past a quarter of
+the width also switches; at the first and last page the content gives a
+little (at most 12% of the width) and springs back. Tapping a chip slides
+the content the same way, and the selected chip scrolls into view in its
+row (`KeepVisibleWhenSelected`, only the chip row scrolls). With reduced
+motion the page just changes. 232 app tests pass. Installed on Thomas's
+iPhone with `devicectl` (an in-place update, so the sign-in is kept).
+
 **0.18.0 released and deployed (2026-11-07):** `mealPlan.swap` (API 13,
 NEST-41) plus the app stories NEST-32, 34, 40 below. Tag `v0.18.0`, images
 for nest-server and nest-backup published; deployed by Claude with Thomas's
