@@ -1097,6 +1097,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String get mealServingsLabel => 'Porties';
 
   @override
+  String get mealSwap => 'Wisselen met een andere dag';
+
+  @override
+  String get mealSwapPick => 'Wisselen met welke dag?';
+
+  @override
   String get mealRemove => 'Uit het weekmenu halen';
 
   @override

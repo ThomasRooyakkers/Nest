@@ -948,6 +948,24 @@ class EndpointMealPlan extends _isc.EndpointRef {
     },
   );
 
+  /// Swaps the meal [entryId] with the meal of the same slot on [toDate]:
+  /// the two days exchange their meals (recipe or text, servings and note).
+  /// When nothing is planned on [toDate], the meal moves there. Returns
+  /// every entry that changed. Since API level 13.
+  _ida.Future<_i5lx2h1m.MealPlanEvent> swap(
+    int householdId,
+    int entryId,
+    DateTime toDate,
+  ) => caller.callServerEndpoint<_i5lx2h1m.MealPlanEvent>(
+    'mealPlan',
+    'swap',
+    {
+      'householdId': householdId,
+      'entryId': entryId,
+      'toDate': toDate,
+    },
+  );
+
   /// Removes a planned meal.
   _ida.Future<void> remove(
     int householdId,

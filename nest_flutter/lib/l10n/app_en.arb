@@ -1484,6 +1484,14 @@
   "@mealServingsLabel": {
     "description": "Section of the meal sheet."
   },
+  "mealSwap": "Swap with another day",
+  "@mealSwap": {
+    "description": "Button in the meal sheet: exchange this meal with another day's (or move it to an empty day)."
+  },
+  "mealSwapPick": "Swap with which day?",
+  "@mealSwapPick": {
+    "description": "Title of the date picker for swapping a meal."
+  },
   "mealRemove": "Remove from the plan",
   "@mealRemove": {
     "description": "Button in the meal sheet."

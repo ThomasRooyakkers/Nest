@@ -223,6 +223,88 @@ void main() {
       expect(event.entries!.single.freeText, 'Pasta');
     });
 
+    test('two planned days swap their meals', () async {
+      final soupMeal = (await save(
+        date: monday,
+        recipeId: soup.id,
+        servings: 6,
+        note: 'Roast the pumpkin',
+      )).entries!.single;
+      await save(
+        date: monday.add(const Duration(days: 1)),
+        freeText: 'Pasta',
+        as: bram,
+      );
+      final received = endpoints.mealPlan.watch(bram, householdId).first;
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+
+      final event = await endpoints.mealPlan.swap(
+        bram,
+        householdId,
+        soupMeal.id!,
+        DateTime.utc(2026, 10, 27, 19),
+      );
+      expect(event.entries, hasLength(2));
+      expect(
+        (await received.timeout(const Duration(seconds: 5))).entries,
+        hasLength(2),
+      );
+      final days = {for (final e in await week()) e.date.day: e};
+      expect(days[26]!.freeText, 'Pasta');
+      expect(days[26]!.recipeId, isNull);
+      expect(days[26]!.servings, isNull);
+      expect(days[26]!.prepAheadNote, '');
+      expect(days[27]!.recipeId, soup.id);
+      expect(days[27]!.freeText, 'Pumpkin soup');
+      expect(days[27]!.servings, 6);
+      expect(days[27]!.prepAheadNote, 'Roast the pumpkin');
+    });
+
+    test('swapping with an empty day moves the meal, across weeks', () async {
+      final sunday = DateTime.utc(2026, 11, 1);
+      final meal = (await save(
+        date: sunday,
+        freeText: 'Curry',
+      )).entries!.single;
+      await endpoints.mealPlan.swap(anna, householdId, meal.id!, nextMonday);
+      expect(await week(), isEmpty);
+      final next = await endpoints.mealPlan.entries(
+        bram,
+        householdId,
+        nextMonday,
+        nextMonday.add(const Duration(days: 7)),
+      );
+      expect(next.single.freeText, 'Curry');
+      expect(next.single.date, nextMonday);
+    });
+
+    test('swapping stays within the slot', () async {
+      await endpoints.household.setMealSlots(anna, householdId, [
+        MealSlot.lunch,
+      ]);
+      final lunch = (await save(
+        date: monday,
+        slot: MealSlot.lunch,
+        freeText: 'Sandwiches',
+      )).entries!.single;
+      final tuesday = monday.add(const Duration(days: 1));
+      await save(date: tuesday, freeText: 'Pasta');
+      await endpoints.mealPlan.swap(anna, householdId, lunch.id!, tuesday);
+      final meals = await week();
+      final tuesdayLunch = meals.singleWhere(
+        (e) => e.date == tuesday && e.slot == MealSlot.lunch,
+      );
+      expect(tuesdayLunch.freeText, 'Sandwiches');
+      final tuesdayDinner = meals.singleWhere(
+        (e) => e.date == tuesday && e.slot == MealSlot.dinner,
+      );
+      expect(tuesdayDinner.freeText, 'Pasta');
+      await expectLater(
+        endpoints.mealPlan.swap(anna, householdId, 999999, tuesday),
+        throwsNest(NestErrorCode.notFound),
+      );
+    });
+
     test('the meal plan needs the feature', () async {
       await endpoints.household.setFeatures(anna, householdId, [
         HouseholdFeature.recipes,

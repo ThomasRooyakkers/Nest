@@ -43,6 +43,7 @@ const householdScopedMethods = {
   'mealPlan.entries',
   'mealPlan.save',
   'mealPlan.remove',
+  'mealPlan.swap',
   'mealPlan.watch',
   'watchlist.items',
   'watchlist.search',

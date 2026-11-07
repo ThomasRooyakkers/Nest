@@ -96,6 +96,45 @@ class MealPlanRepository {
     return event.entries!.single;
   }
 
+  /// Swaps [entry] with the meal in its slot on [toDate], or moves it
+  /// there when that day has none. Servers below `mealSwapApiVersion` have no
+  /// swap: the two meals then exchange contents with two saves.
+  Future<void> swap(
+    int householdId,
+    MealPlanEntry entry,
+    DateTime toDate, {
+    required bool serverHasSwap,
+  }) async {
+    final date = DateTime.utc(toDate.year, toDate.month, toDate.day);
+    if (_sameDay(entry.date, date)) return;
+    if (serverHasSwap) {
+      await applyEvent(
+        await _client.mealPlan.swap(householdId, entry.id!, date),
+      );
+      return;
+    }
+    // Older server: saving onto a planned day would replace that meal, so
+    // the two keep their days and trade what is planned instead.
+    final other = (await _client.mealPlan.entries(
+      householdId,
+      date,
+      date.add(const Duration(days: 1)),
+    )).where((e) => e.slot == entry.slot).firstOrNull;
+    if (other == null) {
+      await save(householdId, entry.copyWith(date: date));
+      return;
+    }
+    MealPlanEntry withMealOf(MealPlanEntry row, MealPlanEntry from) =>
+        row.copyWith(
+          recipeId: from.recipeId,
+          freeText: from.freeText,
+          servings: from.servings,
+          prepAheadNote: from.prepAheadNote,
+        );
+    await save(householdId, withMealOf(entry, other));
+    await save(householdId, withMealOf(other, entry));
+  }
+
   Future<void> remove(int householdId, MealPlanEntry entry) async {
     await _client.mealPlan.remove(householdId, entry.id!);
     await applyEvent(

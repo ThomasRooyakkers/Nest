@@ -1541,6 +1541,37 @@ class Endpoints extends _is.EndpointDispatch {
                     params['entry'],
                   ),
         ),
+        'swap': _is.MethodConnector(
+          name: 'swap',
+          params: {
+            'householdId': _is.ParameterDescription(
+              name: 'householdId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'entryId': _is.ParameterDescription(
+              name: 'entryId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'toDate': _is.ParameterDescription(
+              name: 'toDate',
+              type: _is.getType<DateTime>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['mealPlan'] as _ioif1jmi.MealPlanEndpoint).swap(
+                    session,
+                    params['householdId'],
+                    params['entryId'],
+                    params['toDate'],
+                  ),
+        ),
         'remove': _is.MethodConnector(
           name: 'remove',
           params: {

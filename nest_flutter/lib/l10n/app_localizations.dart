@@ -1946,7 +1946,7 @@ abstract class AppLocalizations {
   /// **'E.g. take the chicken out of the freezer'**
   String get mealPrepAheadHint;
 
-  /// Choice in the meal sheet: a recipe from the library.
+  /// Label above the recipe picked for a meal in the meal sheet.
   ///
   /// In en, this message translates to:
   /// **'Recipe'**
@@ -1987,6 +1987,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Servings'**
   String get mealServingsLabel;
+
+  /// Button in the meal sheet: exchange this meal with another day's (or move it to an empty day).
+  ///
+  /// In en, this message translates to:
+  /// **'Swap with another day'**
+  String get mealSwap;
+
+  /// Title of the date picker for swapping a meal.
+  ///
+  /// In en, this message translates to:
+  /// **'Swap with which day?'**
+  String get mealSwapPick;
 
   /// Button in the meal sheet.
   ///

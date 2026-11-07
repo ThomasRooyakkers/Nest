@@ -5,6 +5,8 @@ import 'package:nest_client/nest_client.dart';
 import 'package:nest_shared/nest_shared.dart';
 
 import '../../../core/backend/error_messages.dart';
+import '../../../core/backend/server_health_repository.dart';
+import '../../../core/server/server_compatibility.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../recipes/presentation/recipe_providers.dart';
 import '../../recipes/presentation/recipe_screen.dart';
@@ -134,6 +136,48 @@ class _MealSheetState extends ConsumerState<_MealSheet> {
                     servings: fields.servings,
                     prepAheadNote: fields.prepAheadNote,
                   ),
+          );
+      if (mounted) Navigator.pop(context);
+    } on Exception catch (e) {
+      if (mounted) {
+        setState(() {
+          _saving = false;
+          _error = errorMessage(l10n, e);
+        });
+      }
+    }
+  }
+
+  /// Asks for a day and swaps the planned meal with that day's meal (or
+  /// moves it there when nothing is planned).
+  Future<void> _swap() async {
+    final l10n = AppLocalizations.of(context);
+    final entry = widget.entry!;
+    final today = localDay(ref.read(clockProvider)());
+    final picked = await showDatePicker(
+      context: context,
+      helpText: l10n.mealSwapPick,
+      initialDate: DateTime(
+        entry.date.year,
+        entry.date.month,
+        entry.date.day + 1,
+      ),
+      firstDate: DateTime(today.year - 1),
+      lastDate: DateTime(today.year + 2),
+    );
+    if (picked == null || !mounted) return;
+    setState(() {
+      _saving = true;
+      _error = null;
+    });
+    try {
+      await ref
+          .read(mealPlanRepositoryProvider)
+          .swap(
+            widget.householdId,
+            entry,
+            DateTime.utc(picked.year, picked.month, picked.day),
+            serverHasSwap: ref.read(serverSupportsProvider(mealSwapApiVersion)),
           );
       if (mounted) Navigator.pop(context);
     } on Exception catch (e) {
@@ -295,6 +339,11 @@ class _MealSheetState extends ConsumerState<_MealSheet> {
             ),
             if (widget.entry != null) ...[
               const SizedBox(height: 8),
+              TextButton.icon(
+                icon: const Icon(LucideIcons.arrowLeftRight, size: 18),
+                label: Text(l10n.mealSwap),
+                onPressed: _saving ? null : _swap,
+              ),
               TextButton.icon(
                 icon: const Icon(LucideIcons.trash2, size: 18),
                 style: TextButton.styleFrom(foregroundColor: colors.warningInk),

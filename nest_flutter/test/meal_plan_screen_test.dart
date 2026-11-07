@@ -299,6 +299,63 @@ void main() {
     expect(find.text('Pizza night'), findsNothing);
   });
 
+  Future<void> swapWith(WidgetTester tester, String meal, String day) async {
+    await tapText(tester, meal);
+    await tester.tap(find.text('Swap with another day'));
+    await tester.pumpAndSettle();
+    expect(find.text('Swap with which day?'), findsOneWidget);
+    await tester.tap(
+      find.descendant(
+        of: find.byType(DatePickerDialog),
+        matching: find.text(day),
+      ),
+    );
+    await tester.tap(find.text('OK'));
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('two days swap their meals', (tester) async {
+    await openMeals(tester);
+    // Pumpkin soup on Wednesday 28th, Pizza night on Thursday 29th.
+    await swapWith(tester, 'Pizza night', '28');
+    expect(server.calls, contains('swap'));
+    MealPlanEntry on(int offset) =>
+        server.entries.firstWhere((e) => e.date == day(offset));
+    expect(on(0).freeText, 'Pizza night');
+    expect(on(0).recipeId, isNull);
+    expect(on(1).recipeId, soup.id);
+    expect(on(1).prepAheadNote, 'Roast the pumpkin');
+    expect(
+      find.bySemanticsLabel('Wednesday, October 28: Pizza night'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('swapping with an empty day moves the meal', (tester) async {
+    await openMeals(tester);
+    await swapWith(tester, 'Pizza night', '31');
+    expect(
+      server.entries.firstWhere((e) => e.freeText == 'Pizza night').date,
+      day(3),
+    );
+    expect(server.entries.where((e) => e.date == day(1)), isEmpty);
+  });
+
+  testWidgets('older servers swap with two saves', (tester) async {
+    await openMeals(tester, health: FakeHealthRepository(apiVersion: 12));
+    await swapWith(tester, 'Pizza night', '28');
+    expect(server.calls, isNot(contains('swap')));
+    expect(server.entries, hasLength(3));
+    expect(
+      server.entries.firstWhere((e) => e.date == day(0)).freeText,
+      'Pizza night',
+    );
+    expect(
+      server.entries.firstWhere((e) => e.date == day(1)).recipeId,
+      soup.id,
+    );
+  });
+
   testWidgets('a meal planned by someone else appears live', (tester) async {
     await openMeals(tester);
     server.addByOther(day(3), 'Fish and chips');
@@ -375,5 +432,16 @@ void main() {
     await tapText(tester, 'Avondeten plannen');
     expect(tester.takeException(), isNull);
     expect(find.text('Typ een maaltijd of zoek een recept'), findsOneWidget);
+  });
+
+  testWidgets('a planned meal in Dutch with large text fits', (tester) async {
+    await openMeals(tester, locale: const Locale('nl'), textScale: 2);
+    await tapText(tester, 'Pumpkin soup');
+    expect(tester.takeException(), isNull);
+    expect(find.byTooltip('Als gewone tekst gebruiken'), findsOneWidget);
+    expect(
+      find.text('Wisselen met een andere dag', skipOffstage: false),
+      findsOneWidget,
+    );
   });
 }

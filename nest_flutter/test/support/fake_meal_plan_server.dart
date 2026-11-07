@@ -115,6 +115,32 @@ class FakeMealPlanServer {
         );
         _post(event);
         return event;
+      case 'swap':
+        final entry = entries.firstWhere((e) => e.id == args['entryId']);
+        final to = args['toDate'] as DateTime;
+        final date = DateTime.utc(to.year, to.month, to.day);
+        final other = entries
+            .where((e) => e.slot == entry.slot && _sameDay(e.date, date))
+            .firstOrNull;
+        final List<MealPlanEntry> changed;
+        if (other == null) {
+          changed = [entry.copyWith(date: date)];
+        } else {
+          MealPlanEntry withMealOf(MealPlanEntry row, MealPlanEntry from) =>
+              row.copyWith(
+                recipeId: from.recipeId,
+                freeText: from.freeText,
+                servings: from.servings,
+                prepAheadNote: from.prepAheadNote,
+              );
+          changed = [withMealOf(entry, other), withMealOf(other, entry)];
+        }
+        for (final e in changed) {
+          entries[entries.indexWhere((x) => x.id == e.id)] = e;
+        }
+        final event = MealPlanEvent(householdId: householdId, entries: changed);
+        _post(event);
+        return event;
       case 'remove':
         final id = args['entryId'] as int;
         entries.removeWhere((e) => e.id == id);

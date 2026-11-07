@@ -1095,6 +1095,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mealServingsLabel => 'Servings';
 
   @override
+  String get mealSwap => 'Swap with another day';
+
+  @override
+  String get mealSwapPick => 'Swap with which day?';
+
+  @override
   String get mealRemove => 'Remove from the plan';
 
   @override

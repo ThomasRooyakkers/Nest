@@ -315,6 +315,8 @@
   "mealTextLabel": "Wat staat er op het menu?",
   "mealDayLabel": "Dag",
   "mealServingsLabel": "Porties",
+  "mealSwap": "Wisselen met een andere dag",
+  "mealSwapPick": "Wisselen met welke dag?",
   "mealRemove": "Uit het weekmenu halen",
   "mealRecipesButton": "Recepten",
   "mealSlotsButton": "Te plannen maaltijden",

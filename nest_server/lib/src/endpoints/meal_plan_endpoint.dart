@@ -141,6 +141,67 @@ class MealPlanEndpoint extends Endpoint {
     return event;
   }
 
+  /// Swaps the meal [entryId] with the meal of the same slot on [toDate]:
+  /// the two days exchange their meals (recipe or text, servings and note).
+  /// When nothing is planned on [toDate], the meal moves there. Returns
+  /// every entry that changed. Since API level 13.
+  Future<MealPlanEvent> swap(
+    Session session,
+    int householdId,
+    int entryId,
+    DateTime toDate,
+  ) async {
+    final access = await _guard(session, householdId);
+    final date = TaskRecurrenceRules.dateOnly(toDate);
+    final event = await session.db.transaction((transaction) async {
+      final entry = await _entry(session, access, entryId, transaction);
+      if (entry.date == date) {
+        return MealPlanEvent(householdId: access.householdId, entries: []);
+      }
+      final other = await MealPlanEntry.db.findFirstRow(
+        session,
+        where: (t) =>
+            t.householdId.equals(access.householdId) &
+            t.date.equals(date) &
+            t.slot.equals(entry.slot),
+        transaction: transaction,
+      );
+      final now = DateTime.now();
+      if (other == null) {
+        final moved = await MealPlanEntry.db.updateRow(
+          session,
+          entry.copyWith(date: date, updatedAt: now),
+          transaction: transaction,
+        );
+        return MealPlanEvent(
+          householdId: access.householdId,
+          entries: [moved],
+        );
+      }
+      // Each row keeps its day (one meal per day and slot) and takes the
+      // other's meal.
+      MealPlanEntry withMealOf(MealPlanEntry row, MealPlanEntry from) =>
+          row.copyWith(
+            recipeId: from.recipeId,
+            freeText: from.freeText,
+            servings: from.servings,
+            prepAheadNote: from.prepAheadNote,
+            createdById: from.createdById,
+            updatedAt: now,
+          );
+      final updated = await MealPlanEntry.db.update(
+        session,
+        [withMealOf(entry, other), withMealOf(other, entry)],
+        transaction: transaction,
+      );
+      return MealPlanEvent(householdId: access.householdId, entries: updated);
+    });
+    if (event.entries!.isNotEmpty) {
+      await session.messages.postMessage(_channel(access.householdId), event);
+    }
+    return event;
+  }
+
   /// Removes a planned meal.
   Future<void> remove(Session session, int householdId, int entryId) async {
     final access = await _guard(session, householdId);

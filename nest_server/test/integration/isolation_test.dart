@@ -112,6 +112,12 @@ void main() {
         mealB.copyWith(freeText: 'Taken over', recipeId: null),
       ),
       'mealPlan.remove': (s, id) => endpoints.mealPlan.remove(s, id, mealB.id!),
+      'mealPlan.swap': (s, id) => endpoints.mealPlan.swap(
+        s,
+        id,
+        mealB.id!,
+        today.add(const Duration(days: 1)),
+      ),
       'mealPlan.watch': (s, id) => endpoints.mealPlan.watch(s, id).first,
       'watchlist.items': (s, id) => endpoints.watchlist.items(s, id),
       'watchlist.search': (s, id) => endpoints.watchlist.search(s, id, 'up'),
@@ -230,6 +236,12 @@ void main() {
         MealPlanEntry(householdId: a, date: today, recipeId: recipeB.id),
       ),
       'mealPlan.remove': (s, a) => endpoints.mealPlan.remove(s, a, mealB.id!),
+      'mealPlan.swap': (s, a) => endpoints.mealPlan.swap(
+        s,
+        a,
+        mealB.id!,
+        today.add(const Duration(days: 1)),
+      ),
       'watchlist.setStatus': (s, a) => endpoints.watchlist.setStatus(
         s,
         a,
