@@ -181,6 +181,62 @@ void main() {
     expect(find.text('Milk'), findsOneWidget, reason: 'any store');
   });
 
+  testWidgets('with a store selected, added items are for that store', (
+    tester,
+  ) async {
+    server.items.add(
+      ShoppingItem(
+        id: 3,
+        householdId: 1,
+        listId: list.id!,
+        name: 'Eggs',
+        category: ShoppingCategory.dairyEggs,
+        iconKey: 'egg',
+        storeIds: [],
+        status: ShoppingItemStatus.recent,
+      ),
+    );
+    await openShopping(tester);
+    await tester.tap(find.text('Market'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'Melo');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Melon'));
+    await tester.pumpAndSettle();
+    expect(tileStatus(tester, 'Melon'), ShoppingItemStatus.toBuy);
+    expect(server.items.last.storeIds, [market.id]);
+
+    await tester.enterText(find.byType(TextField), 'Secret stuff');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Add “Secret stuff”'));
+    await tester.pumpAndSettle();
+    expect(tileStatus(tester, 'Secret stuff'), ShoppingItemStatus.toBuy);
+    expect(server.items.last.storeIds, [market.id]);
+
+    await tester.tap(tile('Eggs'));
+    await tester.pumpAndSettle();
+    expect(tileStatus(tester, 'Eggs'), ShoppingItemStatus.toBuy);
+    final eggs = server.items.firstWhere((i) => i.id == 3);
+    expect(eggs.status, ShoppingItemStatus.toBuy);
+    expect(eggs.storeIds, [market.id]);
+  });
+
+  testWidgets('with All stores, added items stay for any store', (
+    tester,
+  ) async {
+    await openShopping(tester);
+    await tester.enterText(find.byType(TextField), 'Melo');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Melon'));
+    await tester.pumpAndSettle();
+    expect(server.items.last.storeIds, isEmpty);
+
+    await tester.tap(tile('Bread'));
+    await tester.pumpAndSettle();
+    expect(server.items.firstWhere((i) => i.id == 2).storeIds, [999]);
+  });
+
   testWidgets('changes made by others appear live', (tester) async {
     await openShopping(tester);
     final melon = server.catalog.firstWhere((c) => c.nameEn == 'Melon');

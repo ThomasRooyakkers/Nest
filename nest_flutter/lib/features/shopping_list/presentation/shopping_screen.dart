@@ -52,6 +52,9 @@ class _ShoppingScreenState extends ConsumerState<ShoppingScreen> {
     final householdId = household.household.id!;
     final syncState = ref.watch(shoppingSyncProvider(householdId));
     final list = ref.watch(activeShoppingListProvider(householdId));
+    // Keeps the picked store while search results replace the store chips,
+    // so items added from the search go to that store.
+    ref.watch(activeStoreProvider(householdId));
     final query = _search.text.trim();
     // Phone-like width on tablets and the web, so tiles stay tile-sized.
     final width = MediaQuery.sizeOf(context).width;
@@ -249,22 +252,27 @@ class _OfflineNotice extends ConsumerWidget {
   }
 }
 
-/// Adds an item to the active list as the signed-in user.
+/// Adds an item to the active list as the signed-in user. With a store
+/// selected, the item is for that store.
 Future<void> _addItem(
   WidgetRef ref, {
   required int householdId,
   required ShoppingList list,
   CatalogItem? catalogItem,
   required String name,
-}) => ref
-    .read(shoppingRepositoryProvider)
-    .addItem(
-      householdId,
-      listId: list.id!,
-      catalogItem: catalogItem,
-      name: name,
-      addedById: ref.read(currentUserProvider).value?.id,
-    );
+}) {
+  final store = ref.read(activeStoreProvider(householdId));
+  return ref
+      .read(shoppingRepositoryProvider)
+      .addItem(
+        householdId,
+        listId: list.id!,
+        catalogItem: catalogItem,
+        name: name,
+        storeIds: [?store?.id],
+        addedById: ref.read(currentUserProvider).value?.id,
+      );
+}
 
 class _SearchResults extends ConsumerWidget {
   const _SearchResults({
@@ -432,13 +440,18 @@ class _Board extends ConsumerWidget {
         for (final s in stores)
           if (item.storeIds.contains(s.id)) s,
       ],
-      onTap: () => repository.setStatus(
-        householdId,
-        item,
-        item.status == ShoppingItemStatus.toBuy
-            ? ShoppingItemStatus.recent
-            : ShoppingItemStatus.toBuy,
-      ),
+      onTap: () => item.status == ShoppingItemStatus.toBuy
+          ? repository.setStatus(householdId, item, ShoppingItemStatus.recent)
+          : repository.setStatus(
+              householdId,
+              item,
+              ShoppingItemStatus.toBuy,
+              // Put back while a store is selected: for that store, unless
+              // it already has stores (then it is shown here already).
+              storeIds: store != null && item.storeIds.isEmpty
+                  ? [store.id!]
+                  : null,
+            ),
       onLongPress: () => showItemSheet(
         context,
         householdId: householdId,

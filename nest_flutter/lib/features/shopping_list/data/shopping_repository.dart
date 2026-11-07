@@ -324,19 +324,26 @@ class ShoppingRepository {
     });
   }
 
-  /// Moves an item between "to buy" and "recently used".
+  /// Moves an item between "to buy" and "recently used". With [storeIds]
+  /// the item's stores change too (an item put back while a store is
+  /// selected goes to that store).
   Future<void> setStatus(
     int householdId,
     ShoppingItem shown,
-    ShoppingItemStatus status,
-  ) async {
+    ShoppingItemStatus status, {
+    List<int>? storeIds,
+  }) async {
     final item = await _current(householdId, shown);
     if (item == null) return;
     await _db.upsertRows(
       ShoppingKinds.item,
       householdId,
       cacheRows([
-        item.copyWith(status: status, statusChangedAt: DateTime.now()),
+        item.copyWith(
+          status: status,
+          statusChangedAt: DateTime.now(),
+          storeIds: storeIds ?? item.storeIds,
+        ),
       ]),
     );
     await _queue(householdId, {
@@ -344,6 +351,14 @@ class ShoppingRepository {
       'itemId': item.id,
       'status': status.name,
     });
+    if (storeIds != null) {
+      await _queue(householdId, {
+        'op': 'update',
+        'itemId': item.id,
+        'spec': item.spec,
+        'storeIds': storeIds,
+      });
+    }
   }
 
   /// Changes an item's spec and stores.

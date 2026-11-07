@@ -274,6 +274,9 @@ class FakeShoppingServer {
             existing.copyWith(
               status: ShoppingItemStatus.toBuy,
               spec: newItem.spec.isEmpty ? existing.spec : newItem.spec,
+              storeIds: newItem.storeIds.isEmpty
+                  ? existing.storeIds
+                  : newItem.storeIds,
             ),
           );
         }

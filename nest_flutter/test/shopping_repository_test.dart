@@ -104,6 +104,44 @@ void main() {
     expect(server.items.single.status, ShoppingItemStatus.recent);
   });
 
+  test('offline, an item put back for a store syncs both changes', () async {
+    final store = server.addStore('Market', []);
+    server.items.add(
+      ShoppingItem(
+        id: 50,
+        householdId: householdId,
+        listId: list.id!,
+        catalogItemId: milk.id,
+        name: 'Milk',
+        category: milk.category,
+        iconKey: milk.iconKey,
+        storeIds: [],
+        status: ShoppingItemStatus.recent,
+      ),
+    );
+    await repository.refresh(householdId);
+    final shown = (await cachedItems()).single;
+
+    server.online = false;
+    await repository.setStatus(
+      householdId,
+      shown,
+      ShoppingItemStatus.toBuy,
+      storeIds: [store.id!],
+    );
+    final cached = (await cachedItems()).single;
+    expect(cached.status, ShoppingItemStatus.toBuy);
+    expect(cached.storeIds, [store.id]);
+    expect(await pending(), 2);
+
+    server.online = true;
+    await repository.flush(householdId);
+    final sent = server.items.single;
+    expect(sent.status, ShoppingItemStatus.toBuy);
+    expect(sent.storeIds, [store.id]);
+    expect(await pending(), 0);
+  });
+
   test('refresh keeps the cache while changes are queued', () async {
     server.online = false;
     await repository.addItem(
