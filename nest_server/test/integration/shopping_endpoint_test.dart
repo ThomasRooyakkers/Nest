@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:nest_server/src/generated/protocol.dart';
 import 'package:nest_server/src/services/built_in_catalog.dart';
+import 'package:nest_server/src/services/item_matcher.dart';
 import 'package:test/test.dart';
 
 import 'test_helpers.dart';
@@ -91,11 +92,11 @@ void main() {
     });
 
     test('an unknown name becomes an own catalog item, reused later', () async {
-      final first = await add('Secret sauce');
+      final first = await add('Secret stuff');
       expect(first.category, ShoppingCategory.other);
       final catalog = await endpoints.shopping.catalog(bram, householdId);
       final own = catalog.where((c) => c.householdId == householdId);
-      expect(own.map((c) => c.nameEn), ['Secret sauce']);
+      expect(own.map((c) => c.nameEn), ['Secret stuff']);
 
       await endpoints.shopping.setItemStatus(
         anna,
@@ -103,9 +104,59 @@ void main() {
         first.id!,
         ShoppingItemStatus.recent,
       );
-      final again = await add('secret SAUCE', as: bram);
+      final again = await add('secret STUFF', as: bram);
       expect(again.id, first.id);
       expect(again.status, ShoppingItemStatus.toBuy);
+    });
+
+    test('an own item gets the icon and category its words point to', () async {
+      final item = await add('Trostomaten');
+      expect(item.catalogItemId, isNot((await builtIn('tomatoes')).id));
+      expect(item.iconKey, 'tomato');
+      expect(item.category, ShoppingCategory.fruitVegetables);
+    });
+
+    test('own items from before the matcher get an icon at start-up', () async {
+      final session = sessionBuilder.build();
+      final own = await CatalogItem.db.insertRow(
+        session,
+        CatalogItem(
+          householdId: householdId,
+          nameEn: 'Volkorenbrood',
+          nameNl: 'Volkorenbrood',
+          iconKey: '',
+          category: ShoppingCategory.other,
+        ),
+      );
+      final unknown = await add('Secret stuff');
+      final item = await add('', catalogItemId: own.id);
+      expect(item.iconKey, '');
+
+      await ItemMatcher.backfill(session);
+      final items = await endpoints.shopping.items(anna, householdId);
+      final bread = items.firstWhere((i) => i.id == item.id);
+      expect(bread.iconKey, 'breadLoaf');
+      expect(bread.category, ShoppingCategory.bakery);
+      final still = items.firstWhere((i) => i.id == unknown.id);
+      expect((still.iconKey, still.category), ('', ShoppingCategory.other));
+    });
+
+    test('a new built-in icon reaches items already on a list', () async {
+      final session = sessionBuilder.build();
+      final tomatoes = await builtIn('tomatoes');
+      final item = await add('', catalogItemId: tomatoes.id);
+      await CatalogItem.db.updateRow(
+        session,
+        tomatoes.copyWith(iconKey: 'cherry'),
+      );
+      await ShoppingItem.db.updateRow(
+        session,
+        item.copyWith(iconKey: 'cherry'),
+      );
+
+      await BuiltInCatalog.sync(session);
+      final items = await endpoints.shopping.items(anna, householdId);
+      expect(items.firstWhere((i) => i.id == item.id).iconKey, 'tomato');
     });
 
     test('like wildcards in a name are taken literally', () async {

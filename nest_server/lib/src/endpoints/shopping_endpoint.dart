@@ -2,6 +2,7 @@ import 'package:serverpod/serverpod.dart';
 
 import '../generated/protocol.dart';
 import '../services/household_guard.dart';
+import '../services/item_matcher.dart';
 
 /// Shopping lists, stores, the catalog and the items on the lists.
 ///
@@ -537,15 +538,17 @@ class ShoppingEndpoint extends Endpoint {
         orElse: () => matches.first,
       );
     }
+    // Icon and category of a built-in item the name's words point to;
+    // otherwise empty, and the app shows the category icon.
+    final guess = ItemMatcher.match(name);
     return CatalogItem.db.insertRow(
       session,
       CatalogItem(
         householdId: access.householdId,
         nameEn: name,
         nameNl: name,
-        // Empty: the app shows the category icon.
-        iconKey: '',
-        category: ShoppingCategory.other,
+        iconKey: guess?.iconKey ?? '',
+        category: guess?.category ?? ShoppingCategory.other,
       ),
       transaction: transaction,
     );

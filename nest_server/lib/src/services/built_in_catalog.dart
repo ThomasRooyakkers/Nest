@@ -16,8 +16,9 @@ class BuiltInItem {
   final String nameEn;
   final String nameNl;
 
-  /// Lucide icon name (camelCase, as in the app's `LucideIcons`). Items
-  /// without a fitting glyph use their category's icon in the app.
+  /// Icon name: a Lucide name (camelCase, as in the app's `LucideIcons`) or
+  /// one of Nest's own grocery icons (`tools/grocery_icons/svg/`). Apps that
+  /// do not know a name show the category's icon.
   final String iconKey;
   final ShoppingCategory category;
 }
@@ -43,78 +44,142 @@ const builtInItems = [
   // Fruit and vegetables.
   BuiltInItem('apples', 'Apples', 'Appels', 'apple', _fruitVeg),
   BuiltInItem('bananas', 'Bananas', 'Bananen', 'banana', _fruitVeg),
-  BuiltInItem('pears', 'Pears', 'Peren', 'apple', _fruitVeg),
+  BuiltInItem('pears', 'Pears', 'Peren', 'pear', _fruitVeg),
   BuiltInItem('oranges', 'Oranges', 'Sinaasappels', 'citrus', _fruitVeg),
   BuiltInItem('lemons', 'Lemons', 'Citroenen', 'citrus', _fruitVeg),
   BuiltInItem('grapes', 'Grapes', 'Druiven', 'grape', _fruitVeg),
-  BuiltInItem('strawberries', 'Strawberries', 'Aardbeien', 'cherry', _fruitVeg),
+  BuiltInItem(
+    'strawberries',
+    'Strawberries',
+    'Aardbeien',
+    'strawberry',
+    _fruitVeg,
+  ),
   BuiltInItem('cherries', 'Cherries', 'Kersen', 'cherry', _fruitVeg),
-  BuiltInItem('kiwis', 'Kiwis', "Kiwi's", 'citrus', _fruitVeg),
-  BuiltInItem('avocados', 'Avocados', "Avocado's", 'leafyGreen', _fruitVeg),
-  BuiltInItem('tomatoes', 'Tomatoes', 'Tomaten', 'cherry', _fruitVeg),
-  BuiltInItem('cucumber', 'Cucumber', 'Komkommer', 'leafyGreen', _fruitVeg),
+  BuiltInItem('kiwis', 'Kiwis', "Kiwi's", 'kiwi', _fruitVeg),
+  BuiltInItem('avocados', 'Avocados', "Avocado's", 'avocado', _fruitVeg),
+  BuiltInItem('tomatoes', 'Tomatoes', 'Tomaten', 'tomato', _fruitVeg),
+  BuiltInItem('cucumber', 'Cucumber', 'Komkommer', 'cucumber', _fruitVeg),
   BuiltInItem('lettuce', 'Lettuce', 'Sla', 'leafyGreen', _fruitVeg),
   BuiltInItem('spinach', 'Spinach', 'Spinazie', 'leafyGreen', _fruitVeg),
   BuiltInItem('carrots', 'Carrots', 'Wortelen', 'carrot', _fruitVeg),
-  BuiltInItem('potatoes', 'Potatoes', 'Aardappelen', 'bean', _fruitVeg),
-  BuiltInItem('onions', 'Onions', 'Uien', 'sprout', _fruitVeg),
-  BuiltInItem('garlic', 'Garlic', 'Look', 'sprout', _fruitVeg),
+  BuiltInItem('potatoes', 'Potatoes', 'Aardappelen', 'potato', _fruitVeg),
+  BuiltInItem('onions', 'Onions', 'Uien', 'onion', _fruitVeg),
+  BuiltInItem('garlic', 'Garlic', 'Look', 'garlic', _fruitVeg),
   BuiltInItem(
     'bell_peppers',
     'Bell peppers',
     'Paprika',
-    'leafyGreen',
+    'bellPepper',
     _fruitVeg,
   ),
-  BuiltInItem('courgette', 'Courgette', 'Courgette', 'leafyGreen', _fruitVeg),
-  BuiltInItem('broccoli', 'Broccoli', 'Broccoli', 'treeDeciduous', _fruitVeg),
-  BuiltInItem('mushrooms', 'Mushrooms', 'Champignons', 'leaf', _fruitVeg),
+  BuiltInItem('courgette', 'Courgette', 'Courgette', 'cucumber', _fruitVeg),
+  BuiltInItem('broccoli', 'Broccoli', 'Broccoli', 'broccoli', _fruitVeg),
+  BuiltInItem('mushrooms', 'Mushrooms', 'Champignons', 'mushroom', _fruitVeg),
   BuiltInItem('leek', 'Leek', 'Prei', 'leafyGreen', _fruitVeg),
   BuiltInItem('green_beans', 'Green beans', 'Sperziebonen', 'bean', _fruitVeg),
   BuiltInItem('herbs', 'Fresh herbs', 'Verse kruiden', 'leaf', _fruitVeg),
   BuiltInItem('salad_mix', 'Salad mix', 'Slamix', 'salad', _fruitVeg),
+  BuiltInItem(
+    'cherry_tomatoes',
+    'Cherry tomatoes',
+    'Kerstomaten',
+    'tomato',
+    _fruitVeg,
+  ),
+  BuiltInItem(
+    'sweet_potatoes',
+    'Sweet potatoes',
+    'Zoete aardappelen',
+    'potato',
+    _fruitVeg,
+  ),
+  BuiltInItem(
+    'spring_onions',
+    'Spring onions',
+    'Lente-uitjes',
+    'onion',
+    _fruitVeg,
+  ),
+  BuiltInItem('limes', 'Limes', 'Limoenen', 'citrus', _fruitVeg),
+  BuiltInItem(
+    'blueberries',
+    'Blueberries',
+    'Blauwe bessen',
+    'grape',
+    _fruitVeg,
+  ),
+  BuiltInItem(
+    'raspberries',
+    'Raspberries',
+    'Frambozen',
+    'strawberry',
+    _fruitVeg,
+  ),
 
   // Bakery.
-  BuiltInItem('bread', 'Bread', 'Brood', 'wheat', _bakery),
-  BuiltInItem('baguette', 'Baguette', 'Stokbrood', 'wheat', _bakery),
+  BuiltInItem('bread', 'Bread', 'Brood', 'breadLoaf', _bakery),
+  BuiltInItem('baguette', 'Baguette', 'Stokbrood', 'breadLoaf', _bakery),
   BuiltInItem('rolls', 'Bread rolls', 'Pistolets', 'croissant', _bakery),
   BuiltInItem('croissants', 'Croissants', 'Croissants', 'croissant', _bakery),
   BuiltInItem('wraps', 'Wraps', 'Wraps', 'sandwich', _bakery),
-  BuiltInItem('cake', 'Cake', 'Taart', 'cake', _bakery),
+  BuiltInItem('cake', 'Cake', 'Taart', 'cakeSlice', _bakery),
+  BuiltInItem('muffins', 'Muffins', 'Muffins', 'cupcake', _bakery),
+  BuiltInItem('doughnuts', 'Doughnuts', 'Donuts', 'donut', _bakery),
+  BuiltInItem('pastries', 'Pastries', 'Koffiekoeken', 'croissant', _bakery),
+  BuiltInItem(
+    'burger_buns',
+    'Burger buns',
+    'Hamburgerbroodjes',
+    'hamburger',
+    _bakery,
+  ),
 
   // Dairy and eggs.
   BuiltInItem('milk', 'Milk', 'Melk', 'milk', _dairy),
   BuiltInItem('eggs', 'Eggs', 'Eieren', 'egg', _dairy),
-  BuiltInItem('butter', 'Butter', 'Boter', 'milk', _dairy),
-  BuiltInItem('yoghurt', 'Yoghurt', 'Yoghurt', 'milk', _dairy),
+  BuiltInItem('butter', 'Butter', 'Boter', 'butter', _dairy),
+  BuiltInItem('yoghurt', 'Yoghurt', 'Yoghurt', 'yoghurt', _dairy),
   BuiltInItem('cream', 'Cream', 'Room', 'milk', _dairy),
   BuiltInItem('oat_milk', 'Oat milk', 'Havermelk', 'milkOff', _dairy),
-  BuiltInItem('quark', 'Quark', 'Platte kaas', 'milk', _dairy),
+  BuiltInItem('quark', 'Quark', 'Platte kaas', 'yoghurt', _dairy),
+  BuiltInItem('pudding', 'Pudding', 'Pudding', 'dessert', _dairy),
+  BuiltInItem('chocolate_milk', 'Chocolate milk', 'Chocomelk', 'milk', _dairy),
 
   // Meat and fish.
   BuiltInItem('chicken', 'Chicken', 'Kip', 'drumstick', _meatFish),
   BuiltInItem('minced_meat', 'Minced meat', 'Gehakt', 'beef', _meatFish),
   BuiltInItem('steak', 'Steak', 'Steak', 'beef', _meatFish),
-  BuiltInItem('sausages', 'Sausages', 'Worsten', 'beef', _meatFish),
+  BuiltInItem('sausages', 'Sausages', 'Worsten', 'sausage', _meatFish),
   BuiltInItem('bacon', 'Bacon', 'Spek', 'ham', _meatFish),
   BuiltInItem('salmon', 'Salmon', 'Zalm', 'fish', _meatFish),
   BuiltInItem('white_fish', 'White fish', 'Witvis', 'fish', _meatFish),
   BuiltInItem('shrimp', 'Shrimp', 'Garnalen', 'shrimp', _meatFish),
   BuiltInItem('tofu', 'Tofu', 'Tofu', 'vegan', _meatFish),
+  BuiltInItem('burgers', 'Burgers', 'Hamburgers', 'hamburger', _meatFish),
+  BuiltInItem(
+    'chicken_fillet',
+    'Chicken fillet',
+    'Kipfilet',
+    'drumstick',
+    _meatFish,
+  ),
 
   // Cheese and deli.
-  BuiltInItem('cheese', 'Cheese', 'Kaas', 'sandwich', _deli),
+  BuiltInItem('cheese', 'Cheese', 'Kaas', 'cheese', _deli),
   BuiltInItem(
     'grated_cheese',
     'Grated cheese',
     'Geraspte kaas',
-    'sandwich',
+    'cheese',
     _deli,
   ),
-  BuiltInItem('mozzarella', 'Mozzarella', 'Mozzarella', 'sandwich', _deli),
+  BuiltInItem('mozzarella', 'Mozzarella', 'Mozzarella', 'cheese', _deli),
   BuiltInItem('ham', 'Ham', 'Hesp', 'ham', _deli),
   BuiltInItem('salami', 'Salami', 'Salami', 'ham', _deli),
   BuiltInItem('hummus', 'Hummus', 'Hummus', 'bean', _deli),
+  BuiltInItem('feta', 'Feta', 'Feta', 'cheese', _deli),
+  BuiltInItem('parmesan', 'Parmesan', 'Parmezaan', 'cheese', _deli),
 
   // Frozen.
   BuiltInItem(
@@ -136,53 +201,64 @@ const builtInItems = [
   BuiltInItem('ice_cubes', 'Ice cubes', 'IJsblokjes', 'snowflake', _frozen),
 
   // Pantry.
-  BuiltInItem('pasta', 'Pasta', 'Pasta', 'wheat', _pantry),
-  BuiltInItem('rice', 'Rice', 'Rijst', 'wheat', _pantry),
-  BuiltInItem('flour', 'Flour', 'Bloem', 'wheat', _pantry),
-  BuiltInItem('sugar', 'Sugar', 'Suiker', 'candy', _pantry),
-  BuiltInItem('salt', 'Salt', 'Zout', 'cookingPot', _pantry),
-  BuiltInItem('pepper', 'Pepper', 'Peper', 'cookingPot', _pantry),
-  BuiltInItem('olive_oil', 'Olive oil', 'Olijfolie', 'droplet', _pantry),
-  BuiltInItem('vinegar', 'Vinegar', 'Azijn', 'droplet', _pantry),
+  BuiltInItem('pasta', 'Pasta', 'Pasta', 'pasta', _pantry),
+  BuiltInItem('rice', 'Rice', 'Rijst', 'rice', _pantry),
+  BuiltInItem('flour', 'Flour', 'Bloem', 'paperBag', _pantry),
+  BuiltInItem('sugar', 'Sugar', 'Suiker', 'paperBag', _pantry),
+  BuiltInItem('salt', 'Salt', 'Zout', 'saltShaker', _pantry),
+  BuiltInItem('pepper', 'Pepper', 'Peper', 'saltShaker', _pantry),
+  BuiltInItem('olive_oil', 'Olive oil', 'Olijfolie', 'bottle', _pantry),
+  BuiltInItem('vinegar', 'Vinegar', 'Azijn', 'bottle', _pantry),
   BuiltInItem(
     'canned_tomatoes',
     'Canned tomatoes',
     'Tomatenblokjes',
-    'cookingPot',
+    'can',
     _pantry,
   ),
   BuiltInItem(
     'tomato_sauce',
     'Pasta sauce',
     'Pastasaus',
-    'cookingPot',
+    'jar',
     _pantry,
   ),
   BuiltInItem('stock_cubes', 'Stock cubes', 'Bouillonblokjes', 'soup', _pantry),
   BuiltInItem('soup', 'Soup', 'Soep', 'soup', _pantry),
-  BuiltInItem('beans', 'Beans', 'Bonen', 'bean', _pantry),
-  BuiltInItem('chickpeas', 'Chickpeas', 'Kikkererwten', 'bean', _pantry),
+  BuiltInItem('beans', 'Beans', 'Bonen', 'can', _pantry),
+  BuiltInItem('chickpeas', 'Chickpeas', 'Kikkererwten', 'can', _pantry),
   BuiltInItem('nuts', 'Nuts', 'Noten', 'nut', _pantry),
   BuiltInItem('spices', 'Spices', 'Kruiden', 'leaf', _pantry),
-  BuiltInItem('mayonnaise', 'Mayonnaise', 'Mayonaise', 'egg', _pantry),
-  BuiltInItem('ketchup', 'Ketchup', 'Ketchup', 'cherry', _pantry),
-  BuiltInItem('mustard', 'Mustard', 'Mosterd', 'cookingPot', _pantry),
+  BuiltInItem('mayonnaise', 'Mayonnaise', 'Mayonaise', 'sauceBottle', _pantry),
+  BuiltInItem('ketchup', 'Ketchup', 'Ketchup', 'sauceBottle', _pantry),
+  BuiltInItem('mustard', 'Mustard', 'Mosterd', 'sauceBottle', _pantry),
+  BuiltInItem('noodles', 'Noodles', 'Noedels', 'pasta', _pantry),
+  BuiltInItem(
+    'sunflower_oil',
+    'Sunflower oil',
+    'Zonnebloemolie',
+    'bottle',
+    _pantry,
+  ),
+  BuiltInItem('canned_tuna', 'Canned tuna', 'Tonijn in blik', 'can', _pantry),
+  BuiltInItem('coconut_milk', 'Coconut milk', 'Kokosmelk', 'can', _pantry),
+  BuiltInItem('sweetcorn', 'Sweetcorn', 'Maïs', 'can', _pantry),
 
   // Breakfast.
   BuiltInItem('coffee', 'Coffee', 'Koffie', 'coffee', _breakfast),
-  BuiltInItem('tea', 'Tea', 'Thee', 'coffee', _breakfast),
+  BuiltInItem('tea', 'Tea', 'Thee', 'teaMug', _breakfast),
   BuiltInItem('cereal', 'Cereal', 'Ontbijtgranen', 'wheat', _breakfast),
   BuiltInItem('muesli', 'Muesli', 'Muesli', 'wheat', _breakfast),
-  BuiltInItem('jam', 'Jam', 'Confituur', 'cherry', _breakfast),
-  BuiltInItem('peanut_butter', 'Peanut butter', 'Pindakaas', 'nut', _breakfast),
+  BuiltInItem('jam', 'Jam', 'Confituur', 'jar', _breakfast),
+  BuiltInItem('peanut_butter', 'Peanut butter', 'Pindakaas', 'jar', _breakfast),
   BuiltInItem(
     'chocolate_spread',
     'Chocolate spread',
     'Choco',
-    'cookie',
+    'jar',
     _breakfast,
   ),
-  BuiltInItem('honey', 'Honey', 'Honing', 'droplet', _breakfast),
+  BuiltInItem('honey', 'Honey', 'Honing', 'jar', _breakfast),
 
   // Snacks.
   BuiltInItem('crisps', 'Crisps', 'Chips', 'popcorn', _snacks),
@@ -207,24 +283,32 @@ const builtInItems = [
     'citrus',
     _drinks,
   ),
-  BuiltInItem('soft_drinks', 'Soft drinks', 'Frisdrank', 'cupSoda', _drinks),
+  BuiltInItem('soft_drinks', 'Soft drinks', 'Frisdrank', 'canSoda', _drinks),
   BuiltInItem('beer', 'Beer', 'Bier', 'beer', _drinks),
   BuiltInItem('wine', 'Wine', 'Wijn', 'wine', _drinks),
-  BuiltInItem('sparkling_wine', 'Sparkling wine', 'Cava', 'wine', _drinks),
+  BuiltInItem(
+    'sparkling_wine',
+    'Sparkling wine',
+    'Cava',
+    'bottleWine',
+    _drinks,
+  ),
+  BuiltInItem('apple_juice', 'Apple juice', 'Appelsap', 'apple', _drinks),
+  BuiltInItem('iced_tea', 'Iced tea', 'Ice tea', 'cupSoda', _drinks),
 
   // Household.
   BuiltInItem(
     'toilet_paper',
     'Toilet paper',
     'Toiletpapier',
-    'toilet',
+    'toiletRoll',
     _household,
   ),
   BuiltInItem(
     'kitchen_roll',
     'Kitchen roll',
     'Keukenrol',
-    'toilet',
+    'toiletRoll',
     _household,
   ),
   BuiltInItem(
@@ -255,7 +339,7 @@ const builtInItems = [
     'sprayCan',
     _household,
   ),
-  BuiltInItem('sponges', 'Sponges', 'Sponsjes', 'brushCleaning', _household),
+  BuiltInItem('sponges', 'Sponges', 'Sponsjes', 'sponge', _household),
   BuiltInItem('bin_bags', 'Bin bags', 'Vuilniszakken', 'trash2', _household),
   BuiltInItem(
     'aluminium_foil',
@@ -285,6 +369,7 @@ const builtInItems = [
   BuiltInItem('plasters', 'Plasters', 'Pleisters', 'bandage', _care),
   BuiltInItem('painkillers', 'Painkillers', 'Pijnstillers', 'pill', _care),
   BuiltInItem('tissues', 'Tissues', 'Zakdoekjes', 'package', _care),
+  BuiltInItem('vitamins', 'Vitamins', 'Vitamines', 'pillBottle', _care),
 
   // Baby.
   BuiltInItem('nappies', 'Nappies', 'Luiers', 'baby', _baby),
@@ -308,6 +393,7 @@ const builtInItems = [
     'bone',
     _pets,
   ),
+  BuiltInItem('bird_seed', 'Bird seed', 'Vogelzaad', 'bird', _pets),
 ];
 
 /// Keeps the built-in catalog in the database in line with [builtInItems].
@@ -353,6 +439,34 @@ abstract final class BuiltInCatalog {
       }
     }
     if (inserts.isNotEmpty) await CatalogItem.db.insert(session, inserts);
-    if (updates.isNotEmpty) await CatalogItem.db.update(session, updates);
+    if (updates.isNotEmpty) {
+      await CatalogItem.db.update(session, updates);
+      await _updateListItems(session, updates);
+    }
+  }
+
+  /// List items keep a copy of their catalog item's icon and category; give
+  /// them the new ones.
+  static Future<void> _updateListItems(
+    Session session,
+    List<CatalogItem> changed,
+  ) async {
+    final byId = {for (final item in changed) item.id!: item};
+    final listItems = await ShoppingItem.db.find(
+      session,
+      where: (t) => t.catalogItemId.inSet(byId.keys.toSet()),
+    );
+    final updates = [
+      for (final listItem in listItems)
+        if (byId[listItem.catalogItemId] case final catalogItem?)
+          if (listItem.iconKey != catalogItem.iconKey ||
+              listItem.category != catalogItem.category)
+            listItem.copyWith(
+              iconKey: catalogItem.iconKey,
+              category: catalogItem.category,
+              updatedAt: DateTime.now(),
+            ),
+    ];
+    if (updates.isNotEmpty) await ShoppingItem.db.update(session, updates);
   }
 }

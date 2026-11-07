@@ -9,6 +9,7 @@ import 'src/generated/serverpod.dart';
 import 'src/services/admin_alerts.dart';
 import 'src/services/built_in_catalog.dart';
 import 'src/services/host_settings.dart';
+import 'src/services/item_matcher.dart';
 import 'src/services/nest_logging.dart';
 import 'src/services/nest_metrics.dart';
 import 'src/services/sign_up_policy.dart';
@@ -26,6 +27,7 @@ void run(List<String> args) async {
   final session = await pod.createSession();
   try {
     await BuiltInCatalog.sync(session);
+    await ItemMatcher.backfill(session);
     await SignUpPolicy.syncSuperAdmin(session);
   } finally {
     await session.close();

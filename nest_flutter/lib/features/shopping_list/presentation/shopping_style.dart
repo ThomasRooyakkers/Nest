@@ -4,10 +4,13 @@ import 'package:nest_client/nest_client.dart';
 import 'package:nest_shared/nest_shared.dart';
 
 import '../../../l10n/app_localizations.dart';
+import 'grocery_icons.dart';
 
-/// Icons of the catalog's `iconKey`s (Lucide names). Keep in line with the
-/// server's built-in catalog; `shopping_style_test` checks every key.
+/// Icons of the catalog's `iconKey`s: Lucide names plus Nest's own grocery
+/// icons. Keep in line with the server's built-in catalog and its word
+/// matches; `shopping_logic_test` checks every key.
 const catalogIcons = <String, IconData>{
+  ...groceryIconsByKey,
   'apple': LucideIcons.apple,
   'baby': LucideIcons.baby,
   'banana': LucideIcons.banana,
@@ -17,9 +20,14 @@ const catalogIcons = <String, IconData>{
   'bean': LucideIcons.bean,
   'beef': LucideIcons.beef,
   'beer': LucideIcons.beer,
+  'bird': LucideIcons.bird,
   'bone': LucideIcons.bone,
+  'bottleWine': LucideIcons.bottleWine,
   'brushCleaning': LucideIcons.brushCleaning,
   'cake': LucideIcons.cake,
+  'cakeSlice': LucideIcons.cakeSlice,
+  'can': LucideIcons.can,
+  'canSoda': LucideIcons.canSoda,
   'candy': LucideIcons.candy,
   'carrot': LucideIcons.carrot,
   'cat': LucideIcons.cat,
@@ -30,7 +38,10 @@ const catalogIcons = <String, IconData>{
   'cookingPot': LucideIcons.cookingPot,
   'croissant': LucideIcons.croissant,
   'cupSoda': LucideIcons.cupSoda,
+  'cupcake': LucideIcons.cupcake,
+  'dessert': LucideIcons.dessert,
   'dog': LucideIcons.dog,
+  'donut': LucideIcons.donut,
   'droplet': LucideIcons.droplet,
   'droplets': LucideIcons.droplets,
   'drumstick': LucideIcons.drumstick,
@@ -41,6 +52,7 @@ const catalogIcons = <String, IconData>{
   'glassWater': LucideIcons.glassWater,
   'grape': LucideIcons.grape,
   'ham': LucideIcons.ham,
+  'hamburger': LucideIcons.hamburger,
   'iceCreamCone': LucideIcons.iceCreamCone,
   'leaf': LucideIcons.leaf,
   'leafyGreen': LucideIcons.leafyGreen,
@@ -50,8 +62,10 @@ const catalogIcons = <String, IconData>{
   'milkOff': LucideIcons.milkOff,
   'nut': LucideIcons.nut,
   'package': LucideIcons.package,
+  'paperBag': LucideIcons.paperBag,
   'pawPrint': LucideIcons.pawPrint,
   'pill': LucideIcons.pill,
+  'pillBottle': LucideIcons.pillBottle,
   'pizza': LucideIcons.pizza,
   'popcorn': LucideIcons.popcorn,
   'salad': LucideIcons.salad,
