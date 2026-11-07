@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Nest colour tokens (CLAUDE.md section 8): the "Navy & ivory" palette.
+/// Nest colour tokens (docs/spec/design-system.md): the "Navy & ivory" palette.
 /// Ivory surfaces, deep navy for actions and To buy tiles, and soft sand,
 /// mist, lilac and blush tints per feature with dark text (4.5:1 or more).
 ///

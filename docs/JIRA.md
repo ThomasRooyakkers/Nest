@@ -2,7 +2,7 @@
 
 Project **Nest** (key `NEST`) on https://ingeniumworks.atlassian.net/browse/NEST
 — a company-managed Kanban project. Jira holds the backlog and the work
-in flight; `docs/STATUS.md` stays the record of what was built and why.
+in flight; `docs/history/STATUS-HISTORY.md` stays the record of what was built and why.
 
 ## Where does it belong? Components
 
@@ -87,5 +87,5 @@ comment saying what is needed (or flag the item).
   commit hash or release when done.
 - Never put secrets, passwords or personal data of family members in
   Jira.
-- `docs/STATUS.md` keeps the detailed history; Jira items link to it
+- `docs/history/STATUS-HISTORY.md` keeps the detailed history; Jira items link to it
   rather than copying it.

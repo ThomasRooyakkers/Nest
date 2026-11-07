@@ -1,0 +1,82 @@
+# Deviations from the spec
+
+Decisions that differ from `CLAUDE.md` or `docs/spec/`, with the reason.
+Check the entries for the area you are working on.
+
+- **No watchlist card on the dashboard** (Thomas, 2026-10-30), although
+  section 7 lists "next item on the watchlist".
+- **TMDB is picked by the key, not a `tmdb: fake|tmdb` setting:** with
+  `tmdbApiKey` set the server uses TMDB, without it the fake film data. A
+  host without a key gets sample titles instead of an error.
+- **`householdRating` is 1–5 hearts**, shared by the household; the grid
+  shows it instead of TMDB's rating once set.
+- **"Pick something for tonight" picks from Want to watch only.**
+
+- **Tasks store `dueDate` + `dueMinutes` instead of `dueAt`:** the due day is
+  a calendar day (00:00 UTC, the same for everyone in the household) and the
+  time is optional wall-clock minutes, so recurrence never shifts across
+  daylight saving changes and "due some time today" is possible.
+- **Next occurrences are created when a task is checked off** (in the
+  `setDone` call), not by a future call.
+- **Mine shows only tasks assigned to me**, not unassigned ones.
+- **Recipes store `photoPath` instead of `photoUrl`:** photos are private
+  files served through the guarded `recipe.photo` method, not public URLs.
+- **Recipe changes need a connection** (reading and cooking work offline);
+  queuing photo uploads offline was not worth the complexity.
+- **Favourites are per household** (as in section 6), not per member.
+- **Meal plan weeks start on Monday** for everyone, so members with
+  different languages see the same weeks.
+- **A recipe meal also stores the recipe's title** (`freeText`), so it keeps
+  its name when the recipe is deleted; the app shows the recipe's current
+  title while it exists.
+- **Breakfast and lunch are switched on by owners on the meal plan screen**
+  (`household.setMealSlots`), not in settings: there is no feature toggle UI
+  yet.
+- **Add to list lets the user untick ingredients** before adding; items
+  already to buy start unticked and the server skips them anyway.
+
+- **Serverpod 4.x instead of 3.x** (decided by Thomas, 2026-10-27). Embedded PostgreSQL in
+  development and tests, no Docker. CLAUDE.md sections 2 and 4 updated.
+- **Nunito is bundled as a variable font**; use the `nunito()` helper in `nest_shared` for
+  custom text styles (sets the `wght` axis).
+- **Three sets of ARB files**: `nest_shared` (shared strings), `nest_flutter/lib/l10n`
+  (`app_*.arb`) and `nest_admin/lib/l10n` (`admin_*.arb`). Generated localization files are
+  committed.
+- **User table:** Serverpod 4's auth user table cannot be extended, so the user fields from
+  section 6 live in `nest_user` (linked 1:1 to the auth user). Email stays in the auth
+  module's profile.
+- **`admin_audit_log` has `at` instead of `createdAt/updatedAt`** (append-only, as in
+  section 6).
+- **Sign-in UI is Nest's own**, not Serverpod's ready-made `SignInWidget`: that widget's
+  error messages are hard-coded English, which conflicts with rule 5.
+- **`serverpod_auth_idp_client` is a direct dependency of `nest_flutter`** (part of the
+  auth module, pinned 4.0.4) so sign-in errors can be told apart and translated.
+- **`nest_server/lib/server.dart`** exposes `createServerpod()` so the seed command can
+  start the server on free ports.
+- **List members do not restrict access:** every household member can see and edit
+  every shopping list; `memberIds` says who uses a list (avatars, later "Going
+  shopping" notifications). Tenant isolation stays per household.
+- **Recently used is not filtered by store**, only To buy is (with the hidden-items
+  hint), so anything bought before can be re-added from any store view.
+- **Pure feature logic lives in `features/<feature>/domain/`** (e.g. shopping board
+  sorting, catalog search), next to `data/` and `presentation/`.
+- **Drift cache stores server rows as JSON** in one generic table per kind instead of
+  a typed table per model, so later features (tasks, recipes) reuse it.
+- **drift 2.34.4 / drift_dev 2.34.1+1** instead of the newest 2.35: newer drift_dev
+  needs `sqlparser` 0.45, which conflicts with Serverpod 4.0.4 in the shared
+  workspace. The web files `nest_flutter/web/sqlite3.wasm` and `drift_worker.js` are
+  copied from that drift package (see README).
+- **API on `nest-api.g3cko.be`** instead of sharing `nest.g3cko.be`: Serverpod serves
+  the API and the web app on separate ports, and a one-level subdomain is covered by
+  Cloudflare's free certificate (`api.nest.g3cko.be` would not be).
+- **Sign-up codes go through Resend** (Thomas's choice), sent with a plain HTTPS call
+  (no new package); `ServerpodCloudEmailIdpConfig` was replaced.
+- **Invite-only sign-up uses a ticket** (`sign_up_invite`): the auth
+  module's registration calls cannot carry an invite code, so the app first
+  redeems the code for the email address, and registration checks the ticket.
+- **Web app config is generated by the server** instead of baked in with
+  `SERVER_URL`, so one web build (and one image) serves every host.
+- **Sign-up mode is invite-only in development too** unless `signUpMode:
+  'open'` is set in `passwords.yaml` (see the example file).
+- The template's `AGENTS.md` (Serverpod MCP workflow) was not copied; CLAUDE.md stays the
+  single instruction file.

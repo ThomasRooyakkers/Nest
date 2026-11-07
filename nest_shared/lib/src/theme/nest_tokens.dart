@@ -1,4 +1,4 @@
-/// Spacing tokens (CLAUDE.md section 8).
+/// Spacing tokens (docs/spec/design-system.md).
 abstract final class NestSpacing {
   /// Padding around a screen's content.
   static const double screen = 20;
@@ -10,7 +10,7 @@ abstract final class NestSpacing {
   static const double gap = 16;
 }
 
-/// Corner radius tokens (CLAUDE.md section 8).
+/// Corner radius tokens (docs/spec/design-system.md).
 abstract final class NestRadii {
   static const double card = 24;
   static const double cardLarge = 28;

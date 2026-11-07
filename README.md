@@ -1,7 +1,7 @@
 # Nest
 
 Private, bilingual (English + Dutch) family app for iOS and Android, built
-with Flutter and a self-hosted Serverpod backend. See `CLAUDE.md` for the full
+with Flutter and a self-hosted Serverpod backend. See `CLAUDE.md` and `docs/spec/` for the full
 specification and `docs/STATUS.md` for where the project stands.
 
 ## Packages
