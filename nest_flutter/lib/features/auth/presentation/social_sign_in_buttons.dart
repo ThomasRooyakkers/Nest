@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nest_shared/nest_shared.dart';
@@ -8,7 +9,8 @@ import '../../../l10n/app_localizations.dart';
 import '../data/social_sign_in_repository.dart';
 
 /// "Continue with Apple" and "Continue with Google", when the server offers
-/// them. Shows nothing otherwise.
+/// them. Shows nothing otherwise. On iOS, Google reuses the account used
+/// last on the device, so "Use another Google account" is offered below it.
 class SocialSignInButtons extends ConsumerStatefulWidget {
   const SocialSignInButtons({super.key, this.inviteCode});
 
@@ -99,6 +101,23 @@ class _SocialSignInButtonsState extends ConsumerState<SocialSignInButtons> {
                       inviteCode: code?.call(),
                     ),
                   ),
+          ),
+        if (googleClientId != null &&
+            defaultTargetPlatform == TargetPlatform.iOS)
+          Center(
+            child: TextButton(
+              style: TextButton.styleFrom(minimumSize: const Size(44, 44)),
+              onPressed: _busy
+                  ? null
+                  : () => _run(
+                      (repo) => repo.signInWithGoogle(
+                        serverClientId: googleClientId,
+                        inviteCode: code?.call(),
+                        anotherAccount: true,
+                      ),
+                    ),
+              child: Text(l10n.useAnotherGoogleAccount),
+            ),
           ),
         if (_busy) ...[
           const SizedBox(height: 12),

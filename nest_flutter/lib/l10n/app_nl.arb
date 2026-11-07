@@ -361,6 +361,7 @@
   "orDivider": "of",
   "continueWithApple": "Doorgaan met Apple",
   "continueWithGoogle": "Doorgaan met Google",
+  "useAnotherGoogleAccount": "Ander Google-account gebruiken",
   "signInMethodsTitle": "Aanmeldmethoden",
   "signInMethodsHint": "Koppel Apple of Google één keer, dan melden ze je aan bij dit account.",
   "signInMethodHint": "Koppel {provider} één keer, dan kun je er voortaan mee aanmelden bij dit account.",

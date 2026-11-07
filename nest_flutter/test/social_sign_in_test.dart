@@ -37,6 +37,25 @@ void main() {
     expect(social.calls, [('apple', null)]);
   }, variant: ios);
 
+  testWidgets('iOS offers another Google account (NEST-23)', (tester) async {
+    final social = FakeSocialSignInRepository();
+    await pumpNestApp(
+      tester,
+      signedIn: false,
+      health: socialServer(),
+      socialSignIn: social,
+    );
+
+    await tester.scrollUntilVisible(
+      find.text('Use another Google account'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(find.text('Use another Google account'));
+    await tester.pumpAndSettle();
+    expect(social.calls, [('another google:server-client', null)]);
+  }, variant: ios);
+
   testWidgets('no buttons on servers without Google or Apple', (tester) async {
     await pumpNestApp(tester, signedIn: false);
     expect(find.text('Continue with Apple'), findsNothing);
@@ -53,6 +72,7 @@ void main() {
     );
 
     expect(find.text('Continue with Apple'), findsNothing);
+    expect(find.text('Use another Google account'), findsNothing);
     await tester.tap(find.text('Continue with Google'));
     await tester.pumpAndSettle();
     expect(social.calls, [('google:server-client', null)]);

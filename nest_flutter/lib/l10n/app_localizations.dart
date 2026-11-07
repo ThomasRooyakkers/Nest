@@ -2264,6 +2264,12 @@ abstract class AppLocalizations {
   /// **'Continue with Google'**
   String get continueWithGoogle;
 
+  /// Link below the Google sign-in button on iOS: sign in with a different Google account than the one used last on this device
+  ///
+  /// In en, this message translates to:
+  /// **'Use another Google account'**
+  String get useAnotherGoogleAccount;
+
   /// Settings card for linking Apple and Google
   ///
   /// In en, this message translates to:

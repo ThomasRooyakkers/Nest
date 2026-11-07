@@ -20,6 +20,9 @@ The backlog is in Jira (`docs/JIRA.md`).
 - **Google Play:** paused (iOS first). A closed test was submitted
   2026-11-02; personal account needs 12 testers × 14 days. Family gets the
   signed release APK directly (home-screen name "Hoomly" since 2026-11-04).
+- **NEST-23:** iOS Google sign-in now reuses the last Google account
+  silently, so Google's "shared data" mail no longer comes on every sign-in;
+  not yet checked on a real iPhone.
 - **Open bug:** Google sign-in fails on Thomas's old Android phone ("Something
   went wrong", never reaches the server); cause not confirmed.
 

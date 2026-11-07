@@ -7,6 +7,26 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Google "shared data" mail on every iOS sign-in (2026-11-07, NEST-23):**
+- Cause: the mail is Google's "You shared some Google Account data with
+  Nest by G3cko". On iOS Google sends it after every *interactive* Google
+  sign-in (`GoogleSignIn.authenticate()`), also for an account that already
+  gave access; Android (Credential Manager) does not (reported in
+  google/GoogleSignIn-iOS#311). Nest always used the interactive flow and
+  also told Google to forget the account on every Nest sign-out. Neither the
+  app nor the server forces consent or revokes access.
+- Fix (app only, Thomas's choice): on iOS "Continue with Google" first
+  signs in silently with the Google account used last on the device
+  (`attemptLightweightAuthentication`), and a Nest sign-out no longer
+  forgets it. A new "Use another Google account" link under the Google
+  button (iOS only) forgets it and runs the full flow (one mail, expected).
+  Linking Google in Settings keeps the full flow. Android unchanged.
+- Trade-off: on a shared iPad the next person signs in as the previous
+  Google account unless they tap the link. New strings
+  `useAnotherGoogleAccount` (en/nl); widget test for the link; 202 app
+  tests pass. **Not verified on a real iPhone yet** (needs a real Google
+  sign-in): sign out of Nest, Continue with Google, expect no mail.
+
 **Android fixes and recipe buttons (2026-11-07, NEST-35/36/37/33, release
 1.1, commit `4dfdc06`):**
 - Back (NEST-35): on another tab Android back goes to Home; on Home it

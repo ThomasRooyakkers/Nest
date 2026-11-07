@@ -1269,6 +1269,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get continueWithGoogle => 'Doorgaan met Google';
 
   @override
+  String get useAnotherGoogleAccount => 'Ander Google-account gebruiken';
+
+  @override
   String get signInMethodsTitle => 'Aanmeldmethoden';
 
   @override

@@ -136,8 +136,12 @@ class FakeSocialSignInRepository implements SocialSignInRepository {
   Future<bool> signInWithGoogle({
     required String serverClientId,
     String? inviteCode,
+    bool anotherAccount = false,
   }) async {
-    calls.add(('google:$serverClientId', inviteCode));
+    calls.add((
+      '${anotherAccount ? 'another google' : 'google'}:$serverClientId',
+      inviteCode,
+    ));
     if (error case final e?) throw e;
     return true;
   }

@@ -1737,6 +1737,10 @@
   "@continueWithGoogle": {
     "description": "Google sign-in button"
   },
+  "useAnotherGoogleAccount": "Use another Google account",
+  "@useAnotherGoogleAccount": {
+    "description": "Link below the Google sign-in button on iOS: sign in with a different Google account than the one used last on this device"
+  },
   "signInMethodsTitle": "Sign-in methods",
   "@signInMethodsTitle": {
     "description": "Settings card for linking Apple and Google"

@@ -50,11 +50,22 @@ class SocialSignInRepository {
   static bool _googleReady = false;
 
   /// Returns false when the user cancelled.
+  ///
+  /// On iOS this first signs in silently with the Google account used last
+  /// on this device: Google mails "You shared some Google Account data" on
+  /// every interactive sign-in there, also for an account that already
+  /// gave access (NEST-23). [anotherAccount] forgets that account and lets
+  /// the user pick one.
   Future<bool> signInWithGoogle({
     required String serverClientId,
     String? inviteCode,
+    bool anotherAccount = false,
   }) async {
-    final idToken = await _googleIdToken(serverClientId);
+    final idToken = await _googleIdToken(
+      serverClientId,
+      silent: !anotherAccount,
+      forget: anotherAccount,
+    );
     if (idToken == null) return false;
     final success = await _client.googleIdp.signIn(
       idToken: idToken,
@@ -103,18 +114,34 @@ class SocialSignInRepository {
   }
 
   /// Google's ID token for [serverClientId], or null when cancelled.
-  Future<String?> _googleIdToken(String serverClientId) async {
+  /// [silent] tries the remembered account first (iOS only: on Android the
+  /// "lightweight" attempt shows Google's own prompt); [forget] drops it.
+  Future<String?> _googleIdToken(
+    String serverClientId, {
+    bool silent = false,
+    bool forget = false,
+  }) async {
     final google = GoogleSignIn.instance;
     if (!_googleReady) {
       await google.initialize(
         // Not supported on Android, which uses the signing key's SHA-1.
-        clientId: defaultTargetPlatform == TargetPlatform.iOS
-            ? googleIosClientId
-            : null,
+        clientId: _isIos ? googleIosClientId : null,
         serverClientId: serverClientId,
       );
       _googleReady = true;
     }
+    if (_isIos && silent) {
+      final GoogleSignInAccount? restored;
+      try {
+        restored = await google.attemptLightweightAuthentication();
+      } on GoogleSignInException {
+        // E.g. the remembered sign-in expired: fall back to the full flow.
+        return _googleIdToken(serverClientId);
+      }
+      final idToken = restored?.authentication.idToken;
+      if (idToken != null) return idToken;
+    }
+    if (forget) await google.signOut();
     final GoogleSignInAccount account;
     try {
       account = await google.authenticate();
@@ -148,10 +175,14 @@ class SocialSignInRepository {
   }
 
   /// Forgets the Google account on this device, so the next Google sign-in
-  /// lets the user pick an account again.
+  /// lets the user pick an account again. Not on iOS, where the next
+  /// sign-in reuses it silently (see [signInWithGoogle]) and "Use another
+  /// Google account" picks a different one.
   static Future<void> signOutGoogle() async {
-    if (_googleReady) await GoogleSignIn.instance.signOut();
+    if (_googleReady && !_isIos) await GoogleSignIn.instance.signOut();
   }
+
+  static bool get _isIos => defaultTargetPlatform == TargetPlatform.iOS;
 
   static String? _code(String? code) {
     final trimmed = code?.trim() ?? '';
