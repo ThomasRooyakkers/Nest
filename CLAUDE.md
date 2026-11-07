@@ -23,6 +23,7 @@ Nest is a private, bilingual (English + Dutch) family app for iOS and Android, b
 - **Small steps, always green.** After each meaningful change: run `serverpod generate` if models or endpoints changed, run the tests, fix failures, then commit with a short conventional message (`feat:`, `fix:`, `test:`, `chore:`, `docs:`).
 - **Ask before** adding a dependency that is not listed in section 4, changing a decision in this file, or deleting data or migrations. When something is ambiguous, ask one clear question rather than guessing.
 - **Keep `docs/STATUS.md` current:** current phase, what is done, what is next, open questions, and any deviations from this file with the reason.
+- **Backlog and tasks live in Jira** (project `NEST`, decided 2026-11-07): follow `docs/JIRA.md` for components, the `claude`/`thomas` labels, releases and the workflow. Pick up work from the Claude queue, create an item for new work, and move items as you go. STATUS.md stays the detailed history.
 - **Verify versions.** Use the latest stable Flutter and Serverpod 4.x releases (decided 2026-10-27, replacing 3.x). Check the official Serverpod documentation for the exact CLI install command, auth module and APIs of the installed version rather than relying on memory, and pin versions in `pubspec.yaml`.
 
 ---
