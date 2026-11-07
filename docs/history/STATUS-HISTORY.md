@@ -7,8 +7,17 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**0.18.0 released and deployed (2026-11-07):** `mealPlan.swap` (API 13,
+NEST-41) plus the app stories NEST-32, 34, 40 below. Tag `v0.18.0`, images
+for nest-server and nest-backup published; deployed by Claude with Thomas's
+OK (`.env.bak-20261107-151022`, dump `nest-pre-update-20261107-151032`).
+Verified: public health 0.18.0 / API 13, no migration needed. A release
+build (`SERVER_URL=https://nest-api.g3cko.be/`) was installed on Thomas's
+iPhone with `flutter install`, which removes the old app first, so it
+needs a new sign-in.
+
 **1.1 app stories NEST-34, 40, 41, 32 (2026-11-07, commits `9dc0945`,
-`77648b3`, `825abbb`, `46bc71f`, not released yet):**
+`77648b3`, `825abbb`, `46bc71f`, released in 0.18.0):**
 - NEST-34: a Recipes button (book icon) in the meal plan header opens the
   recipe library inside the Meals tab (`/meals/recipes`, sharing the route
   tree with `/recipes` under Home), so recipe, edit and cook pages keep
@@ -31,8 +40,8 @@ work is finished; search this file rather than reading it whole.
   (`SwipePages`, 300 px/s minimum, flipped for right-to-left). The chip
   row still scrolls on its own; these are tab roots, so iOS swipe-back is
   unaffected.
-- Server tests (468) and app tests (227) pass. Needs a server release
-  (0.18.0) for the swap endpoint and a phone check of all four.
+- Server tests (468) and app tests (227) pass. A phone check of all four
+  is still open.
 
 **0.17.0 released and deployed (2026-11-07):** grocery icons and item
 matcher (NEST-24), default store and brighter store colours (below).
