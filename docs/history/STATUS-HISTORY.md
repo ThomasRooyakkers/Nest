@@ -19,8 +19,12 @@ share one call. The app also checks on resume (`NestApp`, via
 `AppLifecycleListener`); on start `client.auth.initialize()` already
 validates. New tests in `nest_flutter/test/live_sync_test.dart`; all 195
 app tests pass. The optional server change (`requireLogin` so a rejected
-token gets a 401) was not made. Not yet checked against a real server with
-a revoked sign-in; reaches devices with the next app build.
+token gets a 401) was not made. Checked end to end against the local dev
+server: signed in as `sarah@nest.test`, revoked the device's refresh token
+(Sign out all devices from a second sign-in) and made its access token dead;
+the server answered `notSignedIn`, the check signed the device out, and the
+loop made one attempt and stopped (two refusals in the server log, then
+none). Reaches devices with the next app build.
 
 **Android app name Hoomly (2026-11-04, Thomas's request):** the Android
 home-screen name (`android:label`) is now "Hoomly", like the store
