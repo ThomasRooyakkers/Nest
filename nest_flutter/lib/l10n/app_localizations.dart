@@ -1952,23 +1952,29 @@ abstract class AppLocalizations {
   /// **'Recipe'**
   String get mealFromRecipe;
 
-  /// Choice in the meal sheet: free text.
+  /// Hint in the meal box: typing suggests recipes.
   ///
   /// In en, this message translates to:
-  /// **'Something else'**
-  String get mealFromText;
+  /// **'Type a meal or find a recipe'**
+  String get mealTextHint;
+
+  /// Heading above the recipes that match the typed meal.
+  ///
+  /// In en, this message translates to:
+  /// **'From your recipes'**
+  String get mealRecipeSuggestions;
+
+  /// Tooltip of the button that unlinks the picked recipe and keeps its name as text.
+  ///
+  /// In en, this message translates to:
+  /// **'Use as plain text'**
+  String get mealClearRecipe;
 
   /// Free-text field in the meal sheet.
   ///
   /// In en, this message translates to:
   /// **'What\'s on the menu?'**
   String get mealTextLabel;
-
-  /// Meal sheet without recipes.
-  ///
-  /// In en, this message translates to:
-  /// **'No recipes yet. Add them in the recipe library, or choose Something else.'**
-  String get mealNoRecipes;
 
   /// Section of the meal sheet.
   ///

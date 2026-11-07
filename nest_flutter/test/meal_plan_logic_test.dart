@@ -76,4 +76,35 @@ void main() {
     expect(mealServings(meal.copyWith(servings: 6), recipe), 6);
     expect(mealServings(meal, null), isNull);
   });
+
+  group('recipe suggestions in the meal box', () {
+    Recipe recipe(int id, String title) =>
+        Recipe(id: id, householdId: 1, title: title, servings: 4, tags: []);
+    final recipes = [
+      recipe(1, 'Crème brûlée'),
+      recipe(2, 'Pumpkin soup'),
+      recipe(3, 'Spicy pumpkin curry'),
+      recipe(4, 'Pancakes'),
+    ];
+    List<String> titles(String query) => [
+      for (final r in mealRecipeSuggestions(recipes, query)) r.title,
+    ];
+
+    test('match the title ignoring case and accents', () {
+      expect(titles('creme'), ['Crème brûlée']);
+      expect(titles('BRULEE'), ['Crème brûlée']);
+      expect(titles('Crème'), ['Crème brûlée']);
+    });
+
+    test('every word must match; titles starting with it come first', () {
+      expect(titles('pumpkin'), ['Pumpkin soup', 'Spicy pumpkin curry']);
+      expect(titles('curry pumpkin'), ['Spicy pumpkin curry']);
+      expect(titles('p'), ['Pancakes', 'Pumpkin soup', 'Spicy pumpkin curry']);
+    });
+
+    test('nothing typed suggests nothing, and the list is capped', () {
+      expect(titles('  '), isEmpty);
+      expect(mealRecipeSuggestions(recipes, 'e', limit: 2), hasLength(2));
+    });
+  });
 }

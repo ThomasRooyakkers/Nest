@@ -51,3 +51,46 @@ String mealTitle(MealPlanEntry entry, Recipe? recipe) =>
 /// Servings to cook for a meal: its own, else the recipe's.
 int? mealServings(MealPlanEntry entry, Recipe? recipe) =>
     entry.servings ?? recipe?.servings;
+
+/// [text] in lower case with common Latin accents removed, for matching
+/// "creme" with "Crème brûlée".
+String foldForSearch(String text) {
+  const from = 'àáâãäåāçèéêëēìíîïīñòóôõöøōùúûüūýÿ';
+  const to = 'aaaaaaaceeeeeiiiiinooooooouuuuuyy';
+  final lower = text.toLowerCase();
+  final out = StringBuffer();
+  for (final char in lower.split('')) {
+    final index = from.indexOf(char);
+    out.write(index < 0 ? char : to[index]);
+  }
+  return out
+      .toString()
+      .replaceAll('æ', 'ae')
+      .replaceAll('œ', 'oe')
+      .replaceAll('ß', 'ss');
+}
+
+/// Recipes whose title matches what is typed in the meal box: every word
+/// of [query] appears in the title, ignoring case and accents. Titles that
+/// start with the query come first, then A–Z; at most [limit].
+List<Recipe> mealRecipeSuggestions(
+  Iterable<Recipe> recipes,
+  String query, {
+  int limit = 5,
+}) {
+  final folded = foldForSearch(query.trim());
+  final words = folded.split(RegExp(r'\s+')).where((w) => w.isNotEmpty);
+  if (words.isEmpty) return const [];
+  final matches = [
+    for (final recipe in recipes)
+      if (words.every(foldForSearch(recipe.title).contains)) recipe,
+  ];
+  int rank(Recipe r) => foldForSearch(r.title).startsWith(folded) ? 0 : 1;
+  matches.sort((a, b) {
+    final byRank = rank(a).compareTo(rank(b));
+    return byRank != 0
+        ? byRank
+        : foldForSearch(a.title).compareTo(foldForSearch(b.title));
+  });
+  return matches.take(limit).toList();
+}

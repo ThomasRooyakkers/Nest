@@ -1458,19 +1458,23 @@
   },
   "mealFromRecipe": "Recipe",
   "@mealFromRecipe": {
-    "description": "Choice in the meal sheet: a recipe from the library."
+    "description": "Label above the recipe picked for a meal in the meal sheet."
   },
-  "mealFromText": "Something else",
-  "@mealFromText": {
-    "description": "Choice in the meal sheet: free text."
+  "mealTextHint": "Type a meal or find a recipe",
+  "@mealTextHint": {
+    "description": "Hint in the meal box: typing suggests recipes."
+  },
+  "mealRecipeSuggestions": "From your recipes",
+  "@mealRecipeSuggestions": {
+    "description": "Heading above the recipes that match the typed meal."
+  },
+  "mealClearRecipe": "Use as plain text",
+  "@mealClearRecipe": {
+    "description": "Tooltip of the button that unlinks the picked recipe and keeps its name as text."
   },
   "mealTextLabel": "What's on the menu?",
   "@mealTextLabel": {
     "description": "Free-text field in the meal sheet."
-  },
-  "mealNoRecipes": "No recipes yet. Add them in the recipe library, or choose Something else.",
-  "@mealNoRecipes": {
-    "description": "Meal sheet without recipes."
   },
   "mealDayLabel": "Day",
   "@mealDayLabel": {

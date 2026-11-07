@@ -1077,14 +1077,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mealFromRecipe => 'Recipe';
 
   @override
-  String get mealFromText => 'Something else';
+  String get mealTextHint => 'Type a meal or find a recipe';
+
+  @override
+  String get mealRecipeSuggestions => 'From your recipes';
+
+  @override
+  String get mealClearRecipe => 'Use as plain text';
 
   @override
   String get mealTextLabel => 'What\'s on the menu?';
-
-  @override
-  String get mealNoRecipes =>
-      'No recipes yet. Add them in the recipe library, or choose Something else.';
 
   @override
   String get mealDayLabel => 'Day';

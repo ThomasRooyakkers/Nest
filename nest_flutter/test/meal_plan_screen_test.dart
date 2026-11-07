@@ -135,8 +135,6 @@ void main() {
     // Monday, the first empty day.
     await tapText(tester, 'Plan dinner');
     expect(find.text('Dinner · Monday, October 26'), findsOneWidget);
-    await tester.tap(find.text('Something else'));
-    await tester.pumpAndSettle();
     await tester.enterText(
       find.widgetWithText(TextField, "What's on the menu?"),
       'Leftovers',
@@ -164,6 +162,21 @@ void main() {
   ) async {
     await openMeals(tester);
     await tapText(tester, 'Plan dinner');
+    // Nothing is suggested until something is typed.
+    expect(find.text('From your recipes'), findsNothing);
+    await tester.enterText(
+      find.widgetWithText(TextField, "What's on the menu?"),
+      'pan',
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('From your recipes'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(BottomSheet),
+        matching: find.text('Pumpkin soup'),
+      ),
+      findsNothing,
+    );
     await tester.tap(find.text('Pancakes'));
     await tester.pumpAndSettle();
     expect(find.text('2 servings'), findsOneWidget);
@@ -175,6 +188,48 @@ void main() {
     final saved = server.entries.firstWhere((e) => e.freeText == 'Pancakes');
     expect(saved.recipeId, isNotNull);
     expect(saved.servings, 3);
+  });
+
+  testWidgets('text matching a recipe stays plain text unless picked', (
+    tester,
+  ) async {
+    await openMeals(tester);
+    await tapText(tester, 'Plan dinner');
+    await tester.enterText(
+      find.widgetWithText(TextField, "What's on the menu?"),
+      'Pancakes with friends',
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('From your recipes'), findsNothing);
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+    final saved = server.entries.firstWhere(
+      (e) => e.freeText == 'Pancakes with friends',
+    );
+    expect(saved.recipeId, isNull);
+  });
+
+  testWidgets('a recipe meal is edited in the box and can become text', (
+    tester,
+  ) async {
+    await openMeals(tester);
+    await tapText(tester, 'Pumpkin soup');
+    // The planned recipe shows as picked, with its servings.
+    expect(find.text('Recipe'), findsOneWidget);
+    expect(find.byTooltip('Use as plain text'), findsOneWidget);
+    expect(find.text('4 servings'), findsWidgets);
+
+    await tester.tap(find.byTooltip('Use as plain text'));
+    await tester.pumpAndSettle();
+    final box = find.widgetWithText(TextField, "What's on the menu?");
+    expect(tester.widget<TextField>(box).controller!.text, 'Pumpkin soup');
+    await tester.enterText(box, 'Pumpkin soup from the freezer');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+    final saved = server.entries.firstWhere((e) => e.date == day(0));
+    expect(saved.recipeId, isNull);
+    expect(saved.freeText, 'Pumpkin soup from the freezer');
   });
 
   testWidgets('a planned meal opens its recipe at its servings', (
@@ -288,8 +343,6 @@ void main() {
   testWidgets('a failed save shows the error in the sheet', (tester) async {
     await openMeals(tester);
     await tapText(tester, 'Plan dinner');
-    await tester.tap(find.text('Something else'));
-    await tester.pumpAndSettle();
     await tester.enterText(
       find.widgetWithText(TextField, "What's on the menu?"),
       'Leftovers',
@@ -321,6 +374,6 @@ void main() {
     expect(find.text('Deze week'), findsOneWidget);
     await tapText(tester, 'Avondeten plannen');
     expect(tester.takeException(), isNull);
-    expect(find.text('Iets anders'), findsOneWidget);
+    expect(find.text('Typ een maaltijd of zoek een recept'), findsOneWidget);
   });
 }

@@ -6,16 +6,17 @@ import 'package:nest_shared/nest_shared.dart';
 
 import '../../../core/backend/error_messages.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../recipes/domain/recipe_logic.dart';
 import '../../recipes/presentation/recipe_providers.dart';
 import '../../recipes/presentation/recipe_screen.dart';
 import '../../tasks/domain/task_logic.dart';
 import '../../tasks/presentation/task_providers.dart';
 import '../data/meal_plan_repository.dart';
+import '../domain/meal_plan_logic.dart';
 import 'meal_plan_style.dart';
 
 /// Bottom sheet to plan a meal for [slot] on [day], or to change, move or
-/// remove [entry]. The meal is a recipe from the library or free text.
+/// remove [entry]. One box: typing suggests recipes from the library;
+/// picking one plans that recipe, otherwise the text is the meal.
 Future<void> showMealSheet(
   BuildContext context, {
   required int householdId,
@@ -58,15 +59,9 @@ class _MealSheetState extends ConsumerState<_MealSheet> {
     text: widget.entry?.recipeId == null ? widget.entry?.freeText : null,
   );
   late final _note = TextEditingController(text: widget.entry?.prepAheadNote);
-  final _search = TextEditingController();
   late DateTime _day = widget.day;
   late int? _recipeId = widget.entry?.recipeId;
   late int? _servings = widget.entry?.servings;
-
-  /// Whether the meal is a recipe (else free text).
-  late bool _fromRecipe =
-      widget.entry?.recipeId != null ||
-      (widget.entry == null && ref.read(recipesAvailableProvider));
   var _saving = false;
   String? _error;
 
@@ -74,14 +69,12 @@ class _MealSheetState extends ConsumerState<_MealSheet> {
   void initState() {
     super.initState();
     _text.addListener(() => setState(() {}));
-    _search.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
     _text.dispose();
     _note.dispose();
-    _search.dispose();
     super.dispose();
   }
 
@@ -184,13 +177,13 @@ class _MealSheetState extends ConsumerState<_MealSheet> {
         ? ref.watch(recipesProvider(widget.householdId)).value ??
               const <Recipe>[]
         : const <Recipe>[];
-    final fromRecipe = recipesOn && _fromRecipe;
+    // A picked recipe, else the typed text is the meal.
     final recipe = recipes.where((r) => r.id == _recipeId).firstOrNull;
-    final query = _search.text.trim();
-    final matches = filterRecipes(recipes, query: query);
+    final suggestions = recipe == null
+        ? mealRecipeSuggestions(recipes, _text.text)
+        : const <Recipe>[];
     final canSave =
-        !_saving &&
-        (fromRecipe ? recipe != null : _text.text.trim().isNotEmpty);
+        !_saving && (recipe != null || _text.text.trim().isNotEmpty);
 
     Widget section(String label) => Padding(
       padding: const EdgeInsets.only(top: NestSpacing.gap, bottom: 8),
@@ -212,43 +205,41 @@ class _MealSheetState extends ConsumerState<_MealSheet> {
               '${slotLabel(l10n, widget.slot)} · ${fullDayLabel(context, _day)}',
               style: textTheme.titleLarge,
             ),
-            if (recipesOn) ...[
-              const SizedBox(height: NestSpacing.gap),
-              SegmentedButton<bool>(
-                showSelectedIcon: false,
-                segments: [
-                  ButtonSegment(
-                    value: true,
-                    icon: const Icon(LucideIcons.cookingPot, size: 18),
-                    label: Text(l10n.mealFromRecipe),
-                  ),
-                  ButtonSegment(
-                    value: false,
-                    icon: const Icon(LucideIcons.pencil, size: 18),
-                    label: Text(l10n.mealFromText),
-                  ),
-                ],
-                selected: {fromRecipe},
-                onSelectionChanged: (value) =>
-                    setState(() => _fromRecipe = value.single),
-              ),
-            ],
             const SizedBox(height: NestSpacing.gap),
-            if (fromRecipe) ...[
-              if (recipes.isEmpty)
-                Text(l10n.mealNoRecipes, style: textTheme.bodyMedium)
-              else ...[
-                if (recipes.length > 5) ...[
-                  TextField(
-                    controller: _search,
-                    textInputAction: TextInputAction.search,
-                    decoration: InputDecoration(
-                      hintText: l10n.recipesSearchHint,
-                      prefixIcon: const Icon(LucideIcons.search, size: 20),
-                    ),
-                  ),
-                  const SizedBox(height: NestSpacing.gapSmall),
-                ],
+            if (recipe != null) ...[
+              Text(l10n.mealFromRecipe, style: textTheme.labelMedium),
+              const SizedBox(height: 8),
+              _PickedRecipe(
+                recipe: recipe,
+                onClear: () => setState(() {
+                  // Back to plain text, ready to edit.
+                  _text.text = recipe.title;
+                  _recipeId = null;
+                  _servings = null;
+                }),
+              ),
+              section(l10n.mealServingsLabel),
+              Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: ServingsStepper(
+                  servings: _servings ?? recipe.servings,
+                  onChanged: (value) => setState(() => _servings = value),
+                ),
+              ),
+            ] else ...[
+              TextField(
+                controller: _text,
+                autofocus: widget.entry == null,
+                maxLength: 120,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: InputDecoration(
+                  labelText: l10n.mealTextLabel,
+                  hintText: recipesOn ? l10n.mealTextHint : null,
+                  counterText: '',
+                ),
+              ),
+              if (suggestions.isNotEmpty) ...[
+                section(l10n.mealRecipeSuggestions),
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: colors.border),
@@ -257,11 +248,10 @@ class _MealSheetState extends ConsumerState<_MealSheet> {
                   clipBehavior: Clip.antiAlias,
                   child: Column(
                     children: [
-                      for (final (index, r) in matches.indexed) ...[
+                      for (final (index, r) in suggestions.indexed) ...[
                         if (index > 0) const Divider(height: 1),
                         _RecipeOption(
                           recipe: r,
-                          selected: r.id == _recipeId,
                           onTap: () => setState(() {
                             _recipeId = r.id;
                             _servings = r.servings;
@@ -272,27 +262,7 @@ class _MealSheetState extends ConsumerState<_MealSheet> {
                   ),
                 ),
               ],
-              if (recipe != null) ...[
-                section(l10n.mealServingsLabel),
-                Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: ServingsStepper(
-                    servings: _servings ?? recipe.servings,
-                    onChanged: (value) => setState(() => _servings = value),
-                  ),
-                ),
-              ],
-            ] else
-              TextField(
-                controller: _text,
-                autofocus: widget.entry == null && !recipesOn,
-                maxLength: 120,
-                textCapitalization: TextCapitalization.sentences,
-                decoration: InputDecoration(
-                  labelText: l10n.mealTextLabel,
-                  counterText: '',
-                ),
-              ),
+            ],
             section(l10n.mealDayLabel),
             Align(
               alignment: AlignmentDirectional.centerStart,
@@ -320,9 +290,7 @@ class _MealSheetState extends ConsumerState<_MealSheet> {
             ],
             const SizedBox(height: NestSpacing.screen),
             FilledButton(
-              onPressed: canSave
-                  ? () => _save(fromRecipe ? recipe : null)
-                  : null,
+              onPressed: canSave ? () => _save(recipe) : null,
               child: Text(l10n.saveButton),
             ),
             if (widget.entry != null) ...[
@@ -341,15 +309,11 @@ class _MealSheetState extends ConsumerState<_MealSheet> {
   }
 }
 
+/// A recipe suggested for the typed text; tapping it plans that recipe.
 class _RecipeOption extends StatelessWidget {
-  const _RecipeOption({
-    required this.recipe,
-    required this.selected,
-    required this.onTap,
-  });
+  const _RecipeOption({required this.recipe, required this.onTap});
 
   final Recipe recipe;
-  final bool selected;
   final VoidCallback onTap;
 
   @override
@@ -357,10 +321,9 @@ class _RecipeOption extends StatelessWidget {
     final colors = NestColors.of(context);
     final textTheme = Theme.of(context).textTheme;
     return Semantics(
-      selected: selected,
       button: true,
       child: Material(
-        color: selected ? colors.accentTint : colors.surface,
+        color: colors.surface,
         child: InkWell(
           onTap: onTap,
           child: ConstrainedBox(
@@ -369,21 +332,57 @@ class _RecipeOption extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               child: Row(
                 children: [
+                  Icon(LucideIcons.bookOpen, size: 18, color: colors.inkMuted),
+                  const SizedBox(width: 10),
                   Expanded(
-                    child: Text(
-                      recipe.title,
-                      style: textTheme.bodyLarge?.copyWith(
-                        color: selected ? colors.accentDark : colors.ink,
-                      ),
-                    ),
+                    child: Text(recipe.title, style: textTheme.bodyLarge),
                   ),
-                  if (selected)
-                    Icon(LucideIcons.check, size: 20, color: colors.accentDark),
                 ],
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// The recipe picked for the meal, with a button that turns it back into
+/// plain text.
+class _PickedRecipe extends StatelessWidget {
+  const _PickedRecipe({required this.recipe, required this.onClear});
+
+  final Recipe recipe;
+  final VoidCallback onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final colors = NestColors.of(context);
+    final textTheme = Theme.of(context).textTheme;
+    return Container(
+      constraints: const BoxConstraints(minHeight: 52),
+      padding: const EdgeInsetsDirectional.only(start: 14, end: 4),
+      decoration: BoxDecoration(
+        color: colors.accentTint,
+        borderRadius: BorderRadius.circular(NestRadii.tile),
+      ),
+      child: Row(
+        children: [
+          Icon(LucideIcons.bookOpen, size: 20, color: colors.accentDark),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              recipe.title,
+              style: textTheme.bodyLarge?.copyWith(color: colors.accentDark),
+            ),
+          ),
+          IconButton(
+            tooltip: l10n.mealClearRecipe,
+            icon: Icon(LucideIcons.x, color: colors.accentDark),
+            onPressed: onClear,
+          ),
+        ],
       ),
     );
   }

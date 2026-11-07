@@ -1079,14 +1079,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get mealFromRecipe => 'Recept';
 
   @override
-  String get mealFromText => 'Iets anders';
+  String get mealTextHint => 'Typ een maaltijd of zoek een recept';
+
+  @override
+  String get mealRecipeSuggestions => 'Uit je recepten';
+
+  @override
+  String get mealClearRecipe => 'Als gewone tekst gebruiken';
 
   @override
   String get mealTextLabel => 'Wat staat er op het menu?';
-
-  @override
-  String get mealNoRecipes =>
-      'Nog geen recepten. Voeg ze toe in de receptenbibliotheek, of kies Iets anders.';
 
   @override
   String get mealDayLabel => 'Dag';
