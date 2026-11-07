@@ -482,41 +482,56 @@ class _Board extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _StoreChips(householdId: householdId, stores: stores, active: store),
-        if (store != null) ...[
-          const SizedBox(height: 4),
-          Row(
+        SwipeContent(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
-                child: Text(
-                  board.hiddenCount > 0
-                      ? l10n.shoppingHiddenItems(board.hiddenCount)
-                      : '',
-                  style: textTheme.bodySmall,
+              if (store != null) ...[
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        board.hiddenCount > 0
+                            ? l10n.shoppingHiddenItems(board.hiddenCount)
+                            : '',
+                        style: textTheme.bodySmall,
+                      ),
+                    ),
+                    TextButton.icon(
+                      icon: const Icon(LucideIcons.pencil, size: 16),
+                      label: Text(l10n.shoppingEditStore),
+                      onPressed: () =>
+                          context.push(Routes.editStore(store.id!)),
+                    ),
+                  ],
                 ),
-              ),
-              TextButton.icon(
-                icon: const Icon(LucideIcons.pencil, size: 16),
-                label: Text(l10n.shoppingEditStore),
-                onPressed: () => context.push(Routes.editStore(store.id!)),
-              ),
+              ],
+              const SizedBox(height: NestSpacing.gap),
+              _SectionTitle(l10n.shoppingToBuy, count: board.toBuy.length),
+              const SizedBox(height: 10),
+              if (board.toBuy.isEmpty)
+                NestCard(
+                  child: Text(
+                    l10n.shoppingNothingToBuy,
+                    style: textTheme.bodyMedium,
+                  ),
+                )
+              else
+                TileGrid(
+                  children: [for (final item in board.toBuy) tile(item)],
+                ),
+              if (board.recent.isNotEmpty) ...[
+                const SizedBox(height: NestSpacing.screen),
+                _SectionTitle(l10n.shoppingRecentlyUsed),
+                const SizedBox(height: 10),
+                TileGrid(
+                  children: [for (final item in board.recent) tile(item)],
+                ),
+              ],
             ],
           ),
-        ],
-        const SizedBox(height: NestSpacing.gap),
-        _SectionTitle(l10n.shoppingToBuy, count: board.toBuy.length),
-        const SizedBox(height: 10),
-        if (board.toBuy.isEmpty)
-          NestCard(
-            child: Text(l10n.shoppingNothingToBuy, style: textTheme.bodyMedium),
-          )
-        else
-          TileGrid(children: [for (final item in board.toBuy) tile(item)]),
-        if (board.recent.isNotEmpty) ...[
-          const SizedBox(height: NestSpacing.screen),
-          _SectionTitle(l10n.shoppingRecentlyUsed),
-          const SizedBox(height: 10),
-          TileGrid(children: [for (final item in board.recent) tile(item)]),
-        ],
+        ),
       ],
     );
   }
@@ -645,20 +660,26 @@ class _StoreChips extends ConsumerWidget {
       clipBehavior: Clip.none,
       child: Row(
         children: [
-          chip(
-            label: l10n.shoppingAllStores,
+          KeepVisibleWhenSelected(
             selected: active == null,
-            onTap: () => selection.select(null),
+            child: chip(
+              label: l10n.shoppingAllStores,
+              selected: active == null,
+              onTap: () => selection.select(null),
+            ),
           ),
           for (final store in stores)
-            Semantics(
-              hint: store.isDefault ? l10n.storeDefault : null,
-              child: chip(
-                label: store.name,
-                selected: active?.id == store.id,
-                style: storeStyle(store.color),
-                isDefault: store.isDefault,
-                onTap: () => selection.select(store.id),
+            KeepVisibleWhenSelected(
+              selected: active?.id == store.id,
+              child: Semantics(
+                hint: store.isDefault ? l10n.storeDefault : null,
+                child: chip(
+                  label: store.name,
+                  selected: active?.id == store.id,
+                  style: storeStyle(store.color),
+                  isDefault: store.isDefault,
+                  onTap: () => selection.select(store.id),
+                ),
               ),
             ),
           _AddStoreChip(onTap: () => context.push(Routes.newStore)),

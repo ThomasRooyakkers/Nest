@@ -78,25 +78,34 @@ class WatchlistScreen extends ConsumerWidget {
                   const SizedBox(height: NestSpacing.gapSmall),
                   NestNotice(l10n.watchOffline, tone: NestNoticeTone.info),
                 ],
-                if (status == WatchStatus.want &&
-                    shown != null &&
-                    shown.isNotEmpty) ...[
-                  const SizedBox(height: NestSpacing.gapSmall),
-                  _PickButton(
-                    onTap: () => showTonightPick(
-                      context,
-                      householdId: householdId,
-                      items: items!,
-                    ),
+                SwipeContent(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (status == WatchStatus.want &&
+                          shown != null &&
+                          shown.isNotEmpty) ...[
+                        const SizedBox(height: NestSpacing.gapSmall),
+                        _PickButton(
+                          onTap: () => showTonightPick(
+                            context,
+                            householdId: householdId,
+                            items: items!,
+                          ),
+                        ),
+                      ],
+                      const SizedBox(height: NestSpacing.gap),
+                      if (shown == null)
+                        const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        )
+                      else if (shown.isEmpty)
+                        _EmptyCard(status: status)
+                      else
+                        _PosterGrid(householdId: householdId, items: shown),
+                    ],
                   ),
-                ],
-                const SizedBox(height: NestSpacing.gap),
-                if (shown == null)
-                  const Center(child: CircularProgressIndicator.adaptive())
-                else if (shown.isEmpty)
-                  _EmptyCard(status: status)
-                else
-                  _PosterGrid(householdId: householdId, items: shown),
+                ),
                 const SizedBox(height: NestSpacing.gap),
                 const TmdbAttribution(),
               ],
@@ -169,46 +178,52 @@ class _StatusChips extends ConsumerWidget {
     Widget chip(WatchStatus status) {
       final isSelected = status == selected;
       final count = counts[status] ?? 0;
-      return Padding(
-        padding: const EdgeInsetsDirectional.only(end: 8),
-        child: Semantics(
-          selected: isSelected,
-          button: true,
-          child: Material(
-            color: isSelected ? colors.ink : colors.surface,
-            elevation: isSelected ? 0 : 1,
-            shadowColor: colors.ink.withValues(alpha: 0.18),
-            shape: const StadiumBorder(),
-            child: InkWell(
-              customBorder: const StadiumBorder(),
-              onTap: () =>
-                  ref.read(selectedWatchStatusProvider.notifier).select(status),
-              child: Container(
-                constraints: const BoxConstraints(
-                  minHeight: NestSizes.minTouchTarget,
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      statusLabel(l10n, status),
-                      style: textTheme.labelLarge?.copyWith(
-                        fontSize: 14,
-                        color: isSelected ? colors.surface : colors.ink,
-                      ),
-                    ),
-                    if (count > 0) ...[
-                      const SizedBox(width: 6),
+      return KeepVisibleWhenSelected(
+        selected: isSelected,
+        child: Padding(
+          padding: const EdgeInsetsDirectional.only(end: 8),
+          child: Semantics(
+            selected: isSelected,
+            button: true,
+            child: Material(
+              color: isSelected ? colors.ink : colors.surface,
+              elevation: isSelected ? 0 : 1,
+              shadowColor: colors.ink.withValues(alpha: 0.18),
+              shape: const StadiumBorder(),
+              child: InkWell(
+                customBorder: const StadiumBorder(),
+                onTap: () => ref
+                    .read(selectedWatchStatusProvider.notifier)
+                    .select(status),
+                child: Container(
+                  constraints: const BoxConstraints(
+                    minHeight: NestSizes.minTouchTarget,
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                       Text(
-                        '$count',
+                        statusLabel(l10n, status),
                         style: textTheme.labelLarge?.copyWith(
                           fontSize: 14,
-                          color: isSelected ? colors.surface : colors.inkMuted,
+                          color: isSelected ? colors.surface : colors.ink,
                         ),
                       ),
+                      if (count > 0) ...[
+                        const SizedBox(width: 6),
+                        Text(
+                          '$count',
+                          style: textTheme.labelLarge?.copyWith(
+                            fontSize: 14,
+                            color: isSelected
+                                ? colors.surface
+                                : colors.inkMuted,
+                          ),
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
             ),

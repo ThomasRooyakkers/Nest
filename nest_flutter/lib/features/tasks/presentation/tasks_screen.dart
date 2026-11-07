@@ -110,15 +110,23 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                   _OfflineNotice(householdId: householdId),
                 ],
                 const SizedBox(height: NestSpacing.gap),
-                if (tasks == null)
-                  const Center(child: CircularProgressIndicator.adaptive())
-                else
-                  _TaskList(
-                    householdId: householdId,
-                    filter: filter,
-                    tasks: filterTasks(tasks, filter, userId: userId, now: now),
-                    now: now,
-                  ),
+                SwipeContent(
+                  child: tasks == null
+                      ? const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        )
+                      : _TaskList(
+                          householdId: householdId,
+                          filter: filter,
+                          tasks: filterTasks(
+                            tasks,
+                            filter,
+                            userId: userId,
+                            now: now,
+                          ),
+                          now: now,
+                        ),
+                ),
               ],
             ),
           ),
@@ -143,55 +151,61 @@ class _FilterChips extends ConsumerWidget {
     Widget chip(TaskFilter filter) {
       final isSelected = filter == selected;
       final count = filter == TaskFilter.overdue ? overdueCount : 0;
-      return Padding(
-        padding: const EdgeInsetsDirectional.only(end: 8),
-        child: Semantics(
-          selected: isSelected,
-          button: true,
-          child: Material(
-            color: isSelected ? colors.ink : colors.surface,
-            elevation: isSelected ? 0 : 1,
-            shadowColor: colors.ink.withValues(alpha: 0.18),
-            shape: const StadiumBorder(),
-            child: InkWell(
-              customBorder: const StadiumBorder(),
-              onTap: () =>
-                  ref.read(selectedTaskFilterProvider.notifier).select(filter),
-              child: Container(
-                constraints: const BoxConstraints(
-                  minHeight: NestSizes.minTouchTarget,
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      filterLabel(l10n, filter),
-                      style: textTheme.labelLarge?.copyWith(
-                        fontSize: 14,
-                        color: isSelected ? colors.surface : colors.ink,
+      return KeepVisibleWhenSelected(
+        selected: isSelected,
+        child: Padding(
+          padding: const EdgeInsetsDirectional.only(end: 8),
+          child: Semantics(
+            selected: isSelected,
+            button: true,
+            child: Material(
+              color: isSelected ? colors.ink : colors.surface,
+              elevation: isSelected ? 0 : 1,
+              shadowColor: colors.ink.withValues(alpha: 0.18),
+              shape: const StadiumBorder(),
+              child: InkWell(
+                customBorder: const StadiumBorder(),
+                onTap: () => ref
+                    .read(selectedTaskFilterProvider.notifier)
+                    .select(filter),
+                child: Container(
+                  constraints: const BoxConstraints(
+                    minHeight: NestSizes.minTouchTarget,
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        filterLabel(l10n, filter),
+                        style: textTheme.labelLarge?.copyWith(
+                          fontSize: 14,
+                          color: isSelected ? colors.surface : colors.ink,
+                        ),
                       ),
-                    ),
-                    if (count > 0) ...[
-                      const SizedBox(width: 6),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 7,
-                          vertical: 1,
-                        ),
-                        decoration: BoxDecoration(
-                          color: colors.warning,
-                          borderRadius: BorderRadius.circular(NestRadii.badge),
-                        ),
-                        child: Text(
-                          '$count',
-                          style: textTheme.labelMedium?.copyWith(
-                            color: colors.warningInk,
+                      if (count > 0) ...[
+                        const SizedBox(width: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 7,
+                            vertical: 1,
+                          ),
+                          decoration: BoxDecoration(
+                            color: colors.warning,
+                            borderRadius: BorderRadius.circular(
+                              NestRadii.badge,
+                            ),
+                          ),
+                          child: Text(
+                            '$count',
+                            style: textTheme.labelMedium?.copyWith(
+                              color: colors.warningInk,
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
             ),
