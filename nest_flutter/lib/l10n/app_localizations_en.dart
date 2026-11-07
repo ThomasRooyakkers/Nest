@@ -455,6 +455,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get storeColor => 'Colour';
 
   @override
+  String get storeDefault => 'Default store';
+
+  @override
+  String get storeDefaultHint =>
+      'New items go to this store when All stores is shown. Items that already have stores keep them.';
+
+  @override
   String get storeCategoryOrder => 'Aisle order';
 
   @override
@@ -483,19 +490,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get storeColorSage => 'Blue';
 
   @override
-  String get storeColorHoney => 'Sand';
+  String get storeColorHoney => 'Yellow';
 
   @override
-  String get storeColorApricot => 'Mist';
+  String get storeColorApricot => 'Green';
 
   @override
-  String get storeColorLavender => 'Lilac';
+  String get storeColorLavender => 'Purple';
 
   @override
-  String get storeColorRose => 'Blush';
+  String get storeColorRose => 'Red';
 
   @override
-  String get storeColorNeutral => 'Linen';
+  String get storeColorNeutral => 'Orange';
 
   @override
   String get itemSpec => 'Details';

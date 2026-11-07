@@ -585,6 +585,8 @@
   "@storeColor": {
     "description": "Colour picker in the store editor."
   },
+  "storeDefault": "Default store",
+  "storeDefaultHint": "New items go to this store when All stores is shown. Items that already have stores keep them.",
   "storeCategoryOrder": "Aisle order",
   "@storeCategoryOrder": {
     "description": "Category order section in the store editor."
@@ -628,23 +630,23 @@
   "@storeColorSage": {
     "description": "Store colour."
   },
-  "storeColorHoney": "Sand",
+  "storeColorHoney": "Yellow",
   "@storeColorHoney": {
     "description": "Store colour."
   },
-  "storeColorApricot": "Mist",
+  "storeColorApricot": "Green",
   "@storeColorApricot": {
     "description": "Store colour."
   },
-  "storeColorLavender": "Lilac",
+  "storeColorLavender": "Purple",
   "@storeColorLavender": {
     "description": "Store colour."
   },
-  "storeColorRose": "Blush",
+  "storeColorRose": "Red",
   "@storeColorRose": {
     "description": "Store colour."
   },
-  "storeColorNeutral": "Linen",
+  "storeColorNeutral": "Orange",
   "@storeColorNeutral": {
     "description": "Store colour."
   },

@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nest_client/nest_client.dart';
-import 'package:nest_shared/nest_shared.dart';
 
 import '../../../l10n/app_localizations.dart';
 import 'grocery_icons.dart';
@@ -130,16 +129,57 @@ String categoryLabel(AppLocalizations l10n, ShoppingCategory category) =>
       ShoppingCategory.other => l10n.categoryOther,
     };
 
-/// Background and foreground of a store's chip.
-(Color, Color) storeColors(NestColors colors, StoreColor color) =>
-    switch (color) {
-      StoreColor.sage => (colors.accentTint, colors.accentDark),
-      StoreColor.honey => (colors.honey, colors.honeyInk),
-      StoreColor.apricot => (colors.apricot, colors.apricotInk),
-      StoreColor.lavender => (colors.lavender, colors.lavenderInk),
-      StoreColor.rose => (colors.rose, colors.roseInk),
-      StoreColor.neutral => (colors.chip, colors.inkMuted),
-    };
+/// A store's colours: [fill] for its selected chip and its dots, with
+/// [onFill] text on it (4.5:1 or more), and the light [tint] of its chip.
+typedef StoreStyle = ({Color fill, Color onFill, Color tint});
+
+const _white = Color(0xFFFFFFFF);
+const _ink = Color(0xFF1F2A3D);
+
+/// Bright, clearly different store colours. The enum names are kept from
+/// the first palette (older apps only know these six).
+StoreStyle storeStyle(StoreColor color) => switch (color) {
+  StoreColor.sage => (
+    fill: const Color(0xFF2F6FDE),
+    onFill: _white,
+    tint: const Color(0xFFDCE8FB),
+  ),
+  StoreColor.apricot => (
+    fill: const Color(0xFF1B7F3E),
+    onFill: _white,
+    tint: const Color(0xFFD6F0DE),
+  ),
+  StoreColor.honey => (
+    fill: const Color(0xFFF5C518),
+    onFill: _ink,
+    tint: const Color(0xFFFDF1C4),
+  ),
+  StoreColor.neutral => (
+    fill: const Color(0xFFF2851F),
+    onFill: _ink,
+    tint: const Color(0xFFFDE3CC),
+  ),
+  StoreColor.rose => (
+    fill: const Color(0xFFDC3545),
+    onFill: _white,
+    tint: const Color(0xFFFADADD),
+  ),
+  StoreColor.lavender => (
+    fill: const Color(0xFF7C4DCC),
+    onFill: _white,
+    tint: const Color(0xFFE9DFF8),
+  ),
+};
+
+/// The store colours in the order the store editor offers them.
+const storeColorOrder = [
+  StoreColor.sage,
+  StoreColor.apricot,
+  StoreColor.honey,
+  StoreColor.neutral,
+  StoreColor.rose,
+  StoreColor.lavender,
+];
 
 String storeColorLabel(AppLocalizations l10n, StoreColor color) =>
     switch (color) {

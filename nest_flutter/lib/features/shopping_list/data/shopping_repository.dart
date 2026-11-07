@@ -268,6 +268,7 @@ class ShoppingRepository {
     required String name,
     String spec = '',
     List<int> storeIds = const [],
+    int? defaultStoreId,
     required int? addedById,
   }) async {
     final items = await _readItems(householdId);
@@ -280,6 +281,13 @@ class ShoppingRepository {
                   : i.name.toLowerCase() == name.trim().toLowerCase()),
         )
         .firstOrNull;
+
+    // The household's default store fills in for items without stores.
+    if (storeIds.isEmpty &&
+        defaultStoreId != null &&
+        (existing?.storeIds.isEmpty ?? true)) {
+      storeIds = [defaultStoreId];
+    }
 
     final now = DateTime.now();
     int? tempId;
@@ -406,7 +414,23 @@ class ShoppingRepository {
     int listId,
     List<NewShoppingItem> items, {
     int? sourceRecipeId,
+    int? defaultStoreId,
   }) async {
+    if (defaultStoreId != null) {
+      // Items already limited to stores keep them.
+      final limited = {
+        for (final item in await _readItems(householdId))
+          if (item.listId == listId && item.storeIds.isNotEmpty)
+            item.name.trim().toLowerCase(),
+      };
+      items = [
+        for (final item in items)
+          item.storeIds.isEmpty &&
+                  !limited.contains(item.name.trim().toLowerCase())
+              ? item.copyWith(storeIds: [defaultStoreId])
+              : item,
+      ];
+    }
     final result = await _client.shopping.addItems(
       householdId,
       listId,
@@ -436,7 +460,24 @@ class ShoppingRepository {
 
   Future<Store> saveStore(int householdId, Store store) async {
     final saved = await _client.shopping.saveStore(householdId, store);
-    await _db.upsertRows(ShoppingKinds.store, householdId, cacheRows([saved]));
+    // The server keeps one default store; mirror that before its event
+    // about the other stores arrives.
+    final others = saved.isDefault
+        ? [
+            for (final other in await _db.readRows(
+              ShoppingKinds.store,
+              householdId,
+              Store.fromJson,
+            ))
+              if (other.isDefault && other.id != saved.id)
+                other.copyWith(isDefault: false),
+          ]
+        : const <Store>[];
+    await _db.upsertRows(
+      ShoppingKinds.store,
+      householdId,
+      cacheRows([saved, ...others]),
+    );
     return saved;
   }
 

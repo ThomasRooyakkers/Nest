@@ -158,12 +158,9 @@ class _ItemSheetState extends ConsumerState<_ItemSheet> {
                         width: 14,
                         height: 14,
                         decoration: BoxDecoration(
-                          // The light tint on the dark selected chip.
-                          color: _storeIds.contains(store.id)
-                              ? storeColors(colors, store.color).$1
-                              : storeColors(colors, store.color).$2,
+                          color: storeStyle(store.color).fill,
                           shape: BoxShape.circle,
-                          border: Border.all(color: colors.borderStrong),
+                          border: Border.all(color: colors.surface, width: 2),
                         ),
                       ),
                       label: Text(store.name),

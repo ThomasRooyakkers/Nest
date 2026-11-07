@@ -884,6 +884,18 @@ abstract class AppLocalizations {
   /// **'Colour'**
   String get storeColor;
 
+  /// No description provided for @storeDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default store'**
+  String get storeDefault;
+
+  /// No description provided for @storeDefaultHint.
+  ///
+  /// In en, this message translates to:
+  /// **'New items go to this store when All stores is shown. Items that already have stores keep them.'**
+  String get storeDefaultHint;
+
   /// Category order section in the store editor.
   ///
   /// In en, this message translates to:
@@ -929,31 +941,31 @@ abstract class AppLocalizations {
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Sand'**
+  /// **'Yellow'**
   String get storeColorHoney;
 
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Mist'**
+  /// **'Green'**
   String get storeColorApricot;
 
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Lilac'**
+  /// **'Purple'**
   String get storeColorLavender;
 
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Blush'**
+  /// **'Red'**
   String get storeColorRose;
 
   /// Store colour.
   ///
   /// In en, this message translates to:
-  /// **'Linen'**
+  /// **'Orange'**
   String get storeColorNeutral;
 
   /// Field for an item's spec.

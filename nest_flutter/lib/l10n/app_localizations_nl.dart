@@ -457,6 +457,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get storeColor => 'Kleur';
 
   @override
+  String get storeDefault => 'Standaardwinkel';
+
+  @override
+  String get storeDefaultHint =>
+      'Nieuwe items gaan naar deze winkel als Alle winkels getoond wordt. Items die al winkels hebben, houden die.';
+
+  @override
   String get storeCategoryOrder => 'Volgorde in de winkel';
 
   @override
@@ -485,19 +492,19 @@ class AppLocalizationsNl extends AppLocalizations {
   String get storeColorSage => 'Blauw';
 
   @override
-  String get storeColorHoney => 'Zand';
+  String get storeColorHoney => 'Geel';
 
   @override
-  String get storeColorApricot => 'Grijsblauw';
+  String get storeColorApricot => 'Groen';
 
   @override
-  String get storeColorLavender => 'Lila';
+  String get storeColorLavender => 'Paars';
 
   @override
-  String get storeColorRose => 'Poederroze';
+  String get storeColorRose => 'Rood';
 
   @override
-  String get storeColorNeutral => 'Linnen';
+  String get storeColorNeutral => 'Oranje';
 
   @override
   String get itemSpec => 'Details';

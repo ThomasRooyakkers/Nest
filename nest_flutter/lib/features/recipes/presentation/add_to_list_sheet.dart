@@ -6,6 +6,7 @@ import 'package:nest_shared/nest_shared.dart';
 import '../../../core/backend/error_messages.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../shopping_list/data/shopping_repository.dart';
+import '../../shopping_list/domain/shopping_logic.dart';
 import '../../shopping_list/presentation/shopping_providers.dart';
 import '../domain/recipe_logic.dart';
 
@@ -61,24 +62,29 @@ class _AddToListSheetState extends ConsumerState<_AddToListSheet> {
     final messenger = ScaffoldMessenger.of(context);
     setState(() => _busy = true);
     try {
-      final result = await ref.read(shoppingRepositoryProvider).addItems(
-        widget.householdId,
-        list.id!,
-        [
-          for (final index in selected)
-            NewShoppingItem(
-              name: _ingredients[index].name,
-              spec: shoppingSpec(
-                _ingredients[index],
-                widget.recipe.servings,
-                widget.servings,
-                locale,
-              ),
-              storeIds: [],
-            ),
-        ],
-        sourceRecipeId: widget.recipe.id,
-      );
+      final result = await ref
+          .read(shoppingRepositoryProvider)
+          .addItems(
+            widget.householdId,
+            list.id!,
+            [
+              for (final index in selected)
+                NewShoppingItem(
+                  name: _ingredients[index].name,
+                  spec: shoppingSpec(
+                    _ingredients[index],
+                    widget.recipe.servings,
+                    widget.servings,
+                    locale,
+                  ),
+                  storeIds: [],
+                ),
+            ],
+            sourceRecipeId: widget.recipe.id,
+            defaultStoreId: defaultStoreOf(
+              ref.read(shoppingStoresProvider(widget.householdId)).value,
+            )?.id,
+          );
       if (mounted) Navigator.pop(context);
       messenger.showSnackBar(
         SnackBar(

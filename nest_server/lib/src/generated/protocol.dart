@@ -1705,6 +1705,13 @@ class Protocol extends _is.DatabaseSerializationManager {
           columnDefault: '\'sage\'',
         ),
         _isp.ColumnDefinition(
+          name: 'isDefault',
+          columnType: _isp.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+          columnDefault: 'false',
+        ),
+        _isp.ColumnDefinition(
           name: 'address',
           columnType: _isp.ColumnType.text,
           isNullable: true,

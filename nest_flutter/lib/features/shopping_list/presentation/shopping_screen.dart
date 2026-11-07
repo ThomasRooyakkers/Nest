@@ -253,7 +253,8 @@ class _OfflineNotice extends ConsumerWidget {
 }
 
 /// Adds an item to the active list as the signed-in user. With a store
-/// selected, the item is for that store.
+/// selected, the item is for that store; otherwise for the household's
+/// default store, if any.
 Future<void> _addItem(
   WidgetRef ref, {
   required int householdId,
@@ -262,6 +263,7 @@ Future<void> _addItem(
   required String name,
 }) {
   final store = ref.read(activeStoreProvider(householdId));
+  final stores = ref.read(shoppingStoresProvider(householdId)).value;
   return ref
       .read(shoppingRepositoryProvider)
       .addItem(
@@ -270,6 +272,7 @@ Future<void> _addItem(
         catalogItem: catalogItem,
         name: name,
         storeIds: [?store?.id],
+        defaultStoreId: defaultStoreOf(stores)?.id,
         addedById: ref.read(currentUserProvider).value?.id,
       );
 }
@@ -446,10 +449,13 @@ class _Board extends ConsumerWidget {
               householdId,
               item,
               ShoppingItemStatus.toBuy,
-              // Put back while a store is selected: for that store, unless
-              // it already has stores (then it is shown here already).
-              storeIds: store != null && item.storeIds.isEmpty
-                  ? [store.id!]
+              // Put back while a store is selected: for that store, else
+              // for the default store; unless it already has stores.
+              storeIds: item.storeIds.isEmpty
+                  ? switch (store ?? defaultStoreOf(stores)) {
+                      final target? => [target.id!],
+                      null => null,
+                    }
                   : null,
             ),
       onLongPress: () => showItemSheet(
@@ -545,58 +551,82 @@ class _StoreChips extends ConsumerWidget {
       required String label,
       required bool selected,
       required VoidCallback onTap,
-      Color? dot,
-    }) => Padding(
-      padding: const EdgeInsetsDirectional.only(end: 8),
-      child: Semantics(
-        selected: selected,
-        button: true,
-        child: Material(
-          color: selected ? colors.ink : colors.surface,
-          elevation: selected ? 0 : 1,
-          shadowColor: colors.ink.withValues(alpha: 0.18),
-          shape: const StadiumBorder(),
-          child: InkWell(
-            customBorder: const StadiumBorder(),
-            onTap: onTap,
-            child: Container(
-              constraints: const BoxConstraints(
-                minHeight: NestSizes.minTouchTarget,
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (dot != null) ...[
-                    Container(
-                      width: 10,
-                      height: 10,
-                      decoration: BoxDecoration(
-                        color: dot,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: selected
-                              ? colors.surface.withValues(alpha: 0.6)
-                              : colors.borderStrong,
+      StoreStyle? style,
+      bool isDefault = false,
+    }) {
+      final background = switch ((style, selected)) {
+        (final style?, true) => style.fill,
+        (final style?, false) => style.tint,
+        (null, true) => colors.ink,
+        (null, false) => colors.surface,
+      };
+      final foreground = switch ((style, selected)) {
+        (final style?, true) => style.onFill,
+        (null, true) => colors.surface,
+        _ => colors.ink,
+      };
+      return Padding(
+        padding: const EdgeInsetsDirectional.only(end: 8),
+        child: Semantics(
+          selected: selected,
+          button: true,
+          child: Material(
+            color: background,
+            elevation: selected || style != null ? 0 : 1,
+            shadowColor: colors.ink.withValues(alpha: 0.18),
+            shape: StadiumBorder(
+              side: selected && style != null
+                  ? BorderSide(color: colors.ink, width: 2)
+                  : BorderSide.none,
+            ),
+            child: InkWell(
+              customBorder: const StadiumBorder(),
+              onTap: onTap,
+              child: Container(
+                constraints: const BoxConstraints(
+                  minHeight: NestSizes.minTouchTarget,
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (style != null) ...[
+                      Container(
+                        width: 14,
+                        height: 14,
+                        decoration: BoxDecoration(
+                          color: style.fill,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: colors.surface, width: 2),
                         ),
                       ),
+                      const SizedBox(width: 8),
+                    ],
+                    Text(
+                      label,
+                      style: textTheme.labelLarge?.copyWith(
+                        fontSize: 14,
+                        color: foreground,
+                      ),
                     ),
-                    const SizedBox(width: 8),
+                    if (isDefault) ...[
+                      const SizedBox(width: 6),
+                      ExcludeSemantics(
+                        child: Icon(
+                          LucideIcons.star,
+                          size: 14,
+                          color: foreground,
+                        ),
+                      ),
+                    ],
                   ],
-                  Text(
-                    label,
-                    style: textTheme.labelLarge?.copyWith(
-                      fontSize: 14,
-                      color: selected ? colors.surface : colors.ink,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -609,14 +639,15 @@ class _StoreChips extends ConsumerWidget {
             onTap: () => selection.select(null),
           ),
           for (final store in stores)
-            chip(
-              label: store.name,
-              selected: active?.id == store.id,
-              // The light tint on the dark selected chip.
-              dot: active?.id == store.id
-                  ? storeColors(colors, store.color).$1
-                  : storeColors(colors, store.color).$2,
-              onTap: () => selection.select(store.id),
+            Semantics(
+              hint: store.isDefault ? l10n.storeDefault : null,
+              child: chip(
+                label: store.name,
+                selected: active?.id == store.id,
+                style: storeStyle(store.color),
+                isDefault: store.isDefault,
+                onTap: () => selection.select(store.id),
+              ),
             ),
           _AddStoreChip(onTap: () => context.push(Routes.newStore)),
         ],

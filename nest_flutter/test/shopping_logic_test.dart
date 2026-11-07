@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'dart:math' as math;
+
+import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nest_client/nest_client.dart';
 import 'package:nest_flutter/features/shopping_list/domain/shopping_logic.dart';
@@ -150,6 +153,43 @@ void main() {
         item(id, name, ShoppingCategory.other).copyWith(catalogItemId: id);
     expect(itemName(withCatalog(1, 'Milk'), catalog, 'nl'), 'Melk');
     expect(itemName(withCatalog(2, 'My sauce'), catalog, 'nl'), 'My sauce');
+  });
+
+  test('store colours keep text readable (4.5:1) and are all different', () {
+    double luminance(Color c) => c.computeLuminance();
+    double contrast(Color a, Color b) {
+      final (x, y) = (luminance(a), luminance(b));
+      return (math.max(x, y) + 0.05) / (math.min(x, y) + 0.05);
+    }
+
+    const ink = Color(0xFF1F2A3D);
+    for (final color in StoreColor.values) {
+      final style = storeStyle(color);
+      expect(
+        contrast(style.fill, style.onFill),
+        greaterThan(4.5),
+        reason: '$color',
+      );
+      expect(contrast(style.tint, ink), greaterThan(4.5), reason: '$color');
+    }
+    expect(storeColorOrder.toSet(), StoreColor.values.toSet());
+    expect(
+      StoreColor.values.map((c) => storeStyle(c).fill).toSet(),
+      hasLength(StoreColor.values.length),
+    );
+  });
+
+  test('defaultStoreOf finds the default store', () {
+    Store store(int id, {bool isDefault = false}) => Store(
+      id: id,
+      householdId: 1,
+      name: '$id',
+      isDefault: isDefault,
+      categoryOrder: [],
+    );
+    expect(defaultStoreOf([store(1), store(2, isDefault: true)])?.id, 2);
+    expect(defaultStoreOf([store(1)]), isNull);
+    expect(defaultStoreOf(null), isNull);
   });
 
   test('every icon of the built-in catalog has a Lucide icon', () {

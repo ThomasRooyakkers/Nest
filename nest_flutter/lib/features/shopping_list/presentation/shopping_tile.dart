@@ -113,19 +113,15 @@ class ShoppingTile extends StatelessWidget {
                     children: [
                       for (final store in stores.take(3))
                         Container(
-                          width: 10,
-                          height: 10,
+                          width: 14,
+                          height: 14,
                           margin: const EdgeInsetsDirectional.only(start: 3),
                           decoration: BoxDecoration(
-                            // Deep store colours vanish on navy, so To buy
-                            // tiles show the light tint.
-                            color: toBuy
-                                ? storeColors(colors, store.color).$1
-                                : storeColors(colors, store.color).$2,
+                            color: storeStyle(store.color).fill,
                             shape: BoxShape.circle,
-                            border: Border.all(
-                              color: toBuy ? colors.surface : colors.border,
-                            ),
+                            // The white ring keeps every colour visible on
+                            // the navy To buy tiles too.
+                            border: Border.all(color: colors.surface, width: 2),
                           ),
                         ),
                     ],

@@ -112,6 +112,7 @@ class ShoppingEndpoint extends Endpoint {
     final fields = (
       name: _validName(store.name),
       color: store.color,
+      isDefault: store.isDefault,
       address: address == null || address.isEmpty ? null : address,
       // Keep the first occurrence of each category.
       categoryOrder: store.categoryOrder.toSet().toList(),
@@ -125,6 +126,7 @@ class ShoppingEndpoint extends Endpoint {
           householdId: access.householdId,
           name: fields.name,
           color: fields.color,
+          isDefault: fields.isDefault,
           address: fields.address,
           categoryOrder: fields.categoryOrder,
         ),
@@ -136,13 +138,33 @@ class ShoppingEndpoint extends Endpoint {
         existing.copyWith(
           name: fields.name,
           color: fields.color,
+          isDefault: fields.isDefault,
           address: fields.address,
           categoryOrder: fields.categoryOrder,
           updatedAt: DateTime.now(),
         ),
       );
     }
-    await _post(session, access, stores: [saved]);
+    // At most one default store: the one saved last wins.
+    final unset = <Store>[];
+    if (saved.isDefault) {
+      final others = await Store.db.find(
+        session,
+        where: (t) =>
+            t.householdId.equals(access.householdId) &
+            t.isDefault.equals(true) &
+            t.id.notEquals(saved.id),
+      );
+      if (others.isNotEmpty) {
+        unset.addAll(
+          await Store.db.update(session, [
+            for (final other in others)
+              other.copyWith(isDefault: false, updatedAt: DateTime.now()),
+          ]),
+        );
+      }
+    }
+    await _post(session, access, stores: [saved, ...unset]);
     return saved;
   }
 

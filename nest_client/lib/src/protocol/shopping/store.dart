@@ -25,11 +25,13 @@ abstract class Store
     this.household,
     required this.name,
     _iobp6u7f.StoreColor? color,
+    bool? isDefault,
     this.address,
     required this.categoryOrder,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : color = color ?? _iobp6u7f.StoreColor.sage,
+       isDefault = isDefault ?? false,
        createdAt = createdAt ?? DateTime.now(),
        updatedAt = updatedAt ?? DateTime.now();
 
@@ -39,6 +41,7 @@ abstract class Store
     _iaj5kvsg.Household? household,
     required String name,
     _iobp6u7f.StoreColor? color,
+    bool? isDefault,
     String? address,
     required List<_ixhb06id.ShoppingCategory> categoryOrder,
     DateTime? createdAt,
@@ -60,6 +63,9 @@ abstract class Store
           : _iobp6u7f.StoreColor.fromJson(
               (jsonSerialization['color'] as String),
             ),
+      isDefault: jsonSerialization['isDefault'] == null
+          ? null
+          : _isc.BoolJsonExtension.fromJson(jsonSerialization['isDefault']),
       address: jsonSerialization['address'] as String?,
       categoryOrder: _ilcqbmdc.Protocol()
           .deserialize<List<_ixhb06id.ShoppingCategory>>(
@@ -87,6 +93,10 @@ abstract class Store
 
   _iobp6u7f.StoreColor color;
 
+  /// Items added while "All stores" is shown go to this store. At most one
+  /// store per household is the default.
+  bool isDefault;
+
   String? address;
 
   /// Categories in the order of the store's layout. Categories missing
@@ -106,6 +116,7 @@ abstract class Store
     _iaj5kvsg.Household? household,
     String? name,
     _iobp6u7f.StoreColor? color,
+    bool? isDefault,
     String? address,
     List<_ixhb06id.ShoppingCategory>? categoryOrder,
     DateTime? createdAt,
@@ -120,6 +131,7 @@ abstract class Store
       if (household != null) 'household': household?.toJson(),
       'name': name,
       'color': color.toJson(),
+      'isDefault': isDefault,
       if (address != null) 'address': address,
       'categoryOrder': categoryOrder.toJson(valueToJson: (v) => v.toJson()),
       'createdAt': createdAt.toJson(),
@@ -136,6 +148,7 @@ abstract class Store
       if (household != null) 'household': household?.toJsonForProtocol(),
       'name': name,
       'color': color.toJson(),
+      'isDefault': isDefault,
       if (address != null) 'address': address,
       'categoryOrder': categoryOrder.toJson(valueToJson: (v) => v.toJson()),
       'createdAt': createdAt.toJson(),
@@ -158,6 +171,7 @@ class _StoreImpl extends Store {
     _iaj5kvsg.Household? household,
     required String name,
     _iobp6u7f.StoreColor? color,
+    bool? isDefault,
     String? address,
     required List<_ixhb06id.ShoppingCategory> categoryOrder,
     DateTime? createdAt,
@@ -168,6 +182,7 @@ class _StoreImpl extends Store {
          household: household,
          name: name,
          color: color,
+         isDefault: isDefault,
          address: address,
          categoryOrder: categoryOrder,
          createdAt: createdAt,
@@ -184,6 +199,7 @@ class _StoreImpl extends Store {
     Object? household = _Undefined,
     String? name,
     _iobp6u7f.StoreColor? color,
+    bool? isDefault,
     Object? address = _Undefined,
     List<_ixhb06id.ShoppingCategory>? categoryOrder,
     DateTime? createdAt,
@@ -197,6 +213,7 @@ class _StoreImpl extends Store {
           : this.household?.copyWith(),
       name: name ?? this.name,
       color: color ?? this.color,
+      isDefault: isDefault ?? this.isDefault,
       address: address is String? ? address : this.address,
       categoryOrder:
           categoryOrder ?? this.categoryOrder.map((e0) => e0).toList(),

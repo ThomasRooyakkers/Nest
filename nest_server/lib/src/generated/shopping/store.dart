@@ -25,11 +25,13 @@ abstract class Store implements _is.TableRow<int?>, _is.ProtocolSerialization {
     this.household,
     required this.name,
     _iobp6u7f.StoreColor? color,
+    bool? isDefault,
     this.address,
     required this.categoryOrder,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : color = color ?? _iobp6u7f.StoreColor.sage,
+       isDefault = isDefault ?? false,
        createdAt = createdAt ?? DateTime.now(),
        updatedAt = updatedAt ?? DateTime.now();
 
@@ -39,6 +41,7 @@ abstract class Store implements _is.TableRow<int?>, _is.ProtocolSerialization {
     _iaj5kvsg.Household? household,
     required String name,
     _iobp6u7f.StoreColor? color,
+    bool? isDefault,
     String? address,
     required List<_ixhb06id.ShoppingCategory> categoryOrder,
     DateTime? createdAt,
@@ -60,6 +63,9 @@ abstract class Store implements _is.TableRow<int?>, _is.ProtocolSerialization {
           : _iobp6u7f.StoreColor.fromJson(
               (jsonSerialization['color'] as String),
             ),
+      isDefault: jsonSerialization['isDefault'] == null
+          ? null
+          : _is.BoolJsonExtension.fromJson(jsonSerialization['isDefault']),
       address: jsonSerialization['address'] as String?,
       categoryOrder: _imc1swab.Protocol()
           .deserialize<List<_ixhb06id.ShoppingCategory>>(
@@ -89,6 +95,10 @@ abstract class Store implements _is.TableRow<int?>, _is.ProtocolSerialization {
 
   _iobp6u7f.StoreColor color;
 
+  /// Items added while "All stores" is shown go to this store. At most one
+  /// store per household is the default.
+  bool isDefault;
+
   String? address;
 
   /// Categories in the order of the store's layout. Categories missing
@@ -111,6 +121,7 @@ abstract class Store implements _is.TableRow<int?>, _is.ProtocolSerialization {
     _iaj5kvsg.Household? household,
     String? name,
     _iobp6u7f.StoreColor? color,
+    bool? isDefault,
     String? address,
     List<_ixhb06id.ShoppingCategory>? categoryOrder,
     DateTime? createdAt,
@@ -125,6 +136,7 @@ abstract class Store implements _is.TableRow<int?>, _is.ProtocolSerialization {
       if (household != null) 'household': household?.toJson(),
       'name': name,
       'color': color.toJson(),
+      'isDefault': isDefault,
       if (address != null) 'address': address,
       'categoryOrder': categoryOrder.toJson(valueToJson: (v) => v.toJson()),
       'createdAt': createdAt.toJson(),
@@ -141,6 +153,7 @@ abstract class Store implements _is.TableRow<int?>, _is.ProtocolSerialization {
       if (household != null) 'household': household?.toJsonForProtocol(),
       'name': name,
       'color': color.toJson(),
+      'isDefault': isDefault,
       if (address != null) 'address': address,
       'categoryOrder': categoryOrder.toJson(valueToJson: (v) => v.toJson()),
       'createdAt': createdAt.toJson(),
@@ -185,6 +198,7 @@ class _StoreImpl extends Store {
     _iaj5kvsg.Household? household,
     required String name,
     _iobp6u7f.StoreColor? color,
+    bool? isDefault,
     String? address,
     required List<_ixhb06id.ShoppingCategory> categoryOrder,
     DateTime? createdAt,
@@ -195,6 +209,7 @@ class _StoreImpl extends Store {
          household: household,
          name: name,
          color: color,
+         isDefault: isDefault,
          address: address,
          categoryOrder: categoryOrder,
          createdAt: createdAt,
@@ -211,6 +226,7 @@ class _StoreImpl extends Store {
     Object? household = _Undefined,
     String? name,
     _iobp6u7f.StoreColor? color,
+    bool? isDefault,
     Object? address = _Undefined,
     List<_ixhb06id.ShoppingCategory>? categoryOrder,
     DateTime? createdAt,
@@ -224,6 +240,7 @@ class _StoreImpl extends Store {
           : this.household?.copyWith(),
       name: name ?? this.name,
       color: color ?? this.color,
+      isDefault: isDefault ?? this.isDefault,
       address: address is String? ? address : this.address,
       categoryOrder:
           categoryOrder ?? this.categoryOrder.map((e0) => e0).toList(),
@@ -250,6 +267,11 @@ class StoreUpdateTable extends _is.UpdateTable<StoreTable> {
     _iobp6u7f.StoreColor value,
   ) => _is.ColumnValue(
     table.color,
+    value,
+  );
+
+  _is.ColumnValue<bool, bool> isDefault(bool value) => _is.ColumnValue(
+    table.isDefault,
     value,
   );
 
@@ -297,6 +319,11 @@ class StoreTable extends _is.Table<int?> {
       _is.EnumSerialization.byName,
       hasDefault: true,
     );
+    isDefault = _is.ColumnBool(
+      'isDefault',
+      this,
+      hasDefault: true,
+    );
     address = _is.ColumnString(
       'address',
       this,
@@ -326,6 +353,10 @@ class StoreTable extends _is.Table<int?> {
   late final _is.ColumnString name;
 
   late final _is.ColumnEnum<_iobp6u7f.StoreColor> color;
+
+  /// Items added while "All stores" is shown go to this store. At most one
+  /// store per household is the default.
+  late final _is.ColumnBool isDefault;
 
   late final _is.ColumnString address;
 
@@ -357,6 +388,7 @@ class StoreTable extends _is.Table<int?> {
     householdId,
     name,
     color,
+    isDefault,
     address,
     categoryOrder,
     createdAt,

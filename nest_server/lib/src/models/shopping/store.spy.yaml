@@ -5,6 +5,9 @@ fields:
   household: Household?, relation(onDelete=Cascade)
   name: String
   color: StoreColor, default=sage
+  ### Items added while "All stores" is shown go to this store. At most one
+  ### store per household is the default.
+  isDefault: bool, default=false
   address: String?
   ### Categories in the order of the store's layout. Categories missing
   ### here come after these, in their default order.

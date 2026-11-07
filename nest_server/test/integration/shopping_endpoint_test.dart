@@ -220,6 +220,33 @@ void main() {
       expect(store.householdId, householdId, reason: 'set by the server');
     });
 
+    test('a household has at most one default store', () async {
+      Future<Store> save(Store store) =>
+          endpoints.shopping.saveStore(anna, householdId, store);
+      final market = await save(
+        Store(householdId: 0, name: 'Market', categoryOrder: []),
+      );
+      expect(market.isDefault, isFalse);
+      final diy = await save(
+        Store(householdId: 0, name: 'DIY', isDefault: true, categoryOrder: []),
+      );
+      expect(diy.isDefault, isTrue);
+
+      await save(market.copyWith(isDefault: true));
+      final stores = await endpoints.shopping.stores(bram, householdId);
+      expect(
+        {for (final s in stores) s.name: s.isDefault},
+        {
+          'DIY': false,
+          'Market': true,
+        },
+      );
+
+      await save(market.copyWith(isDefault: false));
+      final none = await endpoints.shopping.stores(bram, householdId);
+      expect(none.where((s) => s.isDefault), isEmpty);
+    });
+
     test('deleting a store frees the items limited to it', () async {
       Future<Store> store(String name) => endpoints.shopping.saveStore(
         anna,

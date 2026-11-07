@@ -130,3 +130,7 @@ CatalogItem? exactCatalogMatch(List<CatalogItem> catalog, String query) {
       .where((c) => c.nameEn.toLowerCase() == q || c.nameNl.toLowerCase() == q)
       .firstOrNull;
 }
+
+/// The household's default store, or null.
+Store? defaultStoreOf(Iterable<Store>? stores) =>
+    stores?.where((s) => s.isDefault).firstOrNull;

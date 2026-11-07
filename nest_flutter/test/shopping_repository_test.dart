@@ -142,6 +142,31 @@ void main() {
     expect(await pending(), 0);
   });
 
+  test('the default store fills in only for items without stores', () async {
+    final store = server.addStore('DIY', [], isDefault: true);
+    await repository.refresh(householdId);
+    await repository.addItem(
+      householdId,
+      listId: list.id!,
+      catalogItem: milk,
+      name: 'Milk',
+      defaultStoreId: store.id,
+      addedById: 7,
+    );
+    await repository.addItem(
+      householdId,
+      listId: list.id!,
+      name: 'Nails',
+      storeIds: [12345],
+      defaultStoreId: store.id,
+      addedById: 7,
+    );
+    await repository.flush(householdId);
+    expect(server.items.map((i) => i.name), ['Milk', 'Nails']);
+    expect(server.items.first.storeIds, [store.id]);
+    expect(server.items.last.storeIds, [12345]);
+  });
+
   test('refresh keeps the cache while changes are queued', () async {
     server.online = false;
     await repository.addItem(

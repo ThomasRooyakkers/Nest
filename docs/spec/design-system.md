@@ -30,6 +30,8 @@ Implement these tokens once in `nest_shared` as a `ThemeData` plus a `NestColors
 | warning / warningInk | #F6DCD0 / #9A3B22 | overdue, backup warnings |
 | rating | #F5B301 | filled rating hearts and stars (gold; an icon fill, never text) |
 
+**Store colours** (decided 2026-11-07, brighter and clearly different; separate from the feature tints above): blue #2F6FDE, green #1B7F3E, yellow #F5C518, orange #F2851F, red #DC3545, purple #7C4DCC, each with a light tint for its chip. The selected store chip is filled with its colour (white or ink text, 4.5:1); store dots on tiles are 14 px with a white ring. The `StoreColor` names (sage, apricot, honey, neutral, rose, lavender) are kept so older apps keep working.
+
 The palette is "Navy & ivory", chosen 2026-10-31 from side-by-side options (inspired by a navy, ivory and gold marble image). Every text pair keeps 4.5:1 (checked in `nest_shared/test/nest_colors_test.dart`). Overdue is shown as warningInk text, not a filled badge. Token names (honey, apricot, …) are kept from the first palette.
 
 - **Type:** Nunito. Screen titles 28/800 with tight tracking (about −0.6), card titles 22/800, body 15/650, secondary 13–14/600, labels 11–12/800 with slight letter spacing. Pushed screens use a compact centred 17/800 title; tab screens draw their own large title.

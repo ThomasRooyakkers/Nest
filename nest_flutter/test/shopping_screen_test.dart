@@ -237,6 +237,87 @@ void main() {
     expect(server.items.firstWhere((i) => i.id == 2).storeIds, [999]);
   });
 
+  testWidgets('with All stores, items go to the default store', (
+    tester,
+  ) async {
+    final diy = server.addStore('DIY', [], isDefault: true);
+    server.items.add(
+      ShoppingItem(
+        id: 3,
+        householdId: 1,
+        listId: list.id!,
+        name: 'Eggs',
+        category: ShoppingCategory.dairyEggs,
+        iconKey: 'egg',
+        storeIds: [],
+        status: ShoppingItemStatus.recent,
+      ),
+    );
+    await openShopping(tester);
+    expect(
+      find.bySemanticsLabel(RegExp('DIY')),
+      findsWidgets,
+      reason: 'the default store has a chip',
+    );
+
+    await tester.enterText(find.byType(TextField), 'Melo');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Melon'));
+    await tester.pumpAndSettle();
+    expect(server.items.last.storeIds, [diy.id]);
+
+    await tester.tap(tile('Eggs'));
+    await tester.pumpAndSettle();
+    expect(server.items.firstWhere((i) => i.id == 3).storeIds, [diy.id]);
+
+    await tester.tap(tile('Bread'));
+    await tester.pumpAndSettle();
+    expect(
+      server.items.firstWhere((i) => i.id == 2).storeIds,
+      [999],
+      reason: 'items with stores keep them',
+    );
+
+    await tester.ensureVisible(find.text('Market'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Market'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'Secret stuff');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Add “Secret stuff”'));
+    await tester.pumpAndSettle();
+    expect(
+      server.items.last.storeIds,
+      [market.id],
+      reason: 'a picked store wins over the default',
+    );
+  });
+
+  testWidgets('the store editor makes a store the default', (tester) async {
+    await openShopping(tester);
+    await tester.tap(find.text('Market'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Edit store'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Default store'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Default store'));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Save'),
+      300,
+      scrollable: find
+          .descendant(
+            of: find.byType(ReorderableListView),
+            matching: find.byType(Scrollable),
+          )
+          .first,
+    );
+    await tester.tap(find.text('Save'));
+    await tester.pumpAndSettle();
+    expect(server.stores.single.isDefault, isTrue);
+  });
+
   testWidgets('changes made by others appear live', (tester) async {
     await openShopping(tester);
     final melon = server.catalog.firstWhere((c) => c.nameEn == 'Melon');

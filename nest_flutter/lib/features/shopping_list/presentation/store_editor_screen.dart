@@ -7,6 +7,7 @@ import 'package:nest_client/nest_client.dart';
 import 'package:nest_shared/nest_shared.dart';
 
 import '../../../core/backend/error_messages.dart';
+import '../../../core/backend/server_health_repository.dart';
 import '../../../core/household/household_repository.dart';
 import '../../../l10n/app_localizations.dart';
 import '../data/shopping_repository.dart';
@@ -60,6 +61,7 @@ class _StoreEditorState extends ConsumerState<_StoreEditor> {
     text: widget.store?.address ?? '',
   );
   late var _color = widget.store?.color ?? StoreColor.sage;
+  late var _isDefault = widget.store?.isDefault ?? false;
   late final _order =
       (categoryRanks(widget.store).entries.toList()
             ..sort((a, b) => a.value.compareTo(b.value)))
@@ -104,6 +106,7 @@ class _StoreEditorState extends ConsumerState<_StoreEditor> {
             name: _name.text.trim(),
             address: _address.text.trim(),
             color: _color,
+            isDefault: _isDefault,
             categoryOrder: _order,
           ),
         );
@@ -180,7 +183,7 @@ class _StoreEditorState extends ConsumerState<_StoreEditor> {
           spacing: 8,
           runSpacing: 8,
           children: [
-            for (final color in StoreColor.values)
+            for (final color in storeColorOrder)
               ChoiceChip(
                 showCheckmark: false,
                 side: BorderSide(
@@ -188,12 +191,11 @@ class _StoreEditorState extends ConsumerState<_StoreEditor> {
                   width: _color == color ? 2 : 1,
                 ),
                 avatar: Container(
-                  width: 16,
-                  height: 16,
+                  width: 18,
+                  height: 18,
                   decoration: BoxDecoration(
-                    color: storeColors(colors, color).$1,
+                    color: storeStyle(color).fill,
                     shape: BoxShape.circle,
-                    border: Border.all(color: colors.borderStrong),
                   ),
                 ),
                 label: Text(storeColorLabel(l10n, color)),
@@ -202,6 +204,17 @@ class _StoreEditorState extends ConsumerState<_StoreEditor> {
               ),
           ],
         ),
+        // Servers before API level 12 have no default store.
+        if (ref.watch(serverSupportsProvider(12))) ...[
+          const SizedBox(height: NestSpacing.gap),
+          SwitchListTile.adaptive(
+            contentPadding: EdgeInsets.zero,
+            title: Text(l10n.storeDefault, style: textTheme.bodyLarge),
+            subtitle: Text(l10n.storeDefaultHint, style: textTheme.bodySmall),
+            value: _isDefault,
+            onChanged: (value) => setState(() => _isDefault = value),
+          ),
+        ],
         const SizedBox(height: NestSpacing.screen),
         Text(l10n.storeCategoryOrder, style: textTheme.titleMedium),
         const SizedBox(height: 4),

@@ -122,11 +122,16 @@ class FakeShoppingServer {
     return item;
   }
 
-  Store addStore(String name, List<ShoppingCategory> order) {
+  Store addStore(
+    String name,
+    List<ShoppingCategory> order, {
+    bool isDefault = false,
+  }) {
     final store = Store(
       id: _nextId++,
       householdId: householdId,
       name: name,
+      isDefault: isDefault,
       categoryOrder: order,
     );
     stores.add(store);
