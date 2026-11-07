@@ -7,6 +7,31 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Android fixes and recipe buttons (2026-11-07, NEST-35/36/37/33, release
+1.1, commit `4dfdc06`):**
+- Back (NEST-35): on another tab Android back goes to Home; on Home it
+  leaves the app; sheets and pushed screens still close first (`PopScope`
+  in `NestShell`).
+- Tab bar gap (NEST-36): on Android the floating tab bar keeps 20 px above
+  the system navigation bar (`tabBarBottomGap`: inset + 20); iOS keeps
+  inset − 6. Older Android versions (no edge-to-edge) report no inset and
+  keep 20 px.
+- + tooltip (NEST-37): new `ShellAddButton` for Tasks and Recipes. On Android
+  it has no visual tooltip (it covered the tab bar after a long press); the
+  icon carries the label for TalkBack. iOS keeps the tooltip. Other
+  icon-only buttons are in the top header, where a tooltip covers nothing,
+  so they are unchanged.
+- Recipe screen (NEST-33): Edit and Delete are round header buttons next to
+  the favourite button instead of a menu; Delete still confirms first. The
+  unused `recipeMoreActions` string is removed from both ARB files.
+
+New tests in `test/nest_shell_test.dart` and `test/router_test.dart`; all
+201 app tests pass. Checked on the Android emulator (`nest_pixel`, debug
+build against the local server) with gesture and 3-button navigation: the
+gap shows in both, a long press on + shows no tooltip, Back goes sheet →
+Tasks → Home → launcher, and Delete → Cancel keeps the recipe. Not yet
+checked on a real phone or on iOS.
+
 **Dead sign-in no longer loops (2026-11-07, NEST-38, release 1.1):** when
 the server refuses a device's sign-in (`notSignedIn` or a 401), the live
 sync (`LiveSyncLoop`) now asks `AuthRepository.checkSignIn()`, which calls

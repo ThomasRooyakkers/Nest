@@ -49,8 +49,10 @@ Details for every item: `docs/history/STATUS-HISTORY.md`.
    via `~/nest/deploy/rclone/rclone.conf`).
 8. Phase 9 — Dashboard + release (CLAUDE.md section 10).
 9. **1.1 in progress** (Jira release 1.1). Done: the app signs out on a
-   dead sign-in instead of retrying forever (NEST-38; needs a new app
-   build to reach devices).
+   dead sign-in instead of retrying forever (NEST-38); Android back, tab
+   bar gap and + tooltip fixes, recipe Edit/Delete buttons (NEST-35/36/37/33,
+   checked on the emulator; a phone check is still open). All need a new
+   app build to reach devices.
 
 ## Open questions
 
