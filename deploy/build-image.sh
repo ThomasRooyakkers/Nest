@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds the Nest server image, with the admin portal built in, and the
+# Builds the Hoomly server image, with the admin portal built in, and the
 # backup image. The family app is mobile only; the server's web domain serves
 # the static site in nest_server/web/site.
 #
@@ -7,15 +7,15 @@
 #   deploy/build-image.sh --push          # arm64 + amd64, pushed
 #   deploy/build-image.sh --web           # only the admin portal, into nest_server/web
 #
-# IMAGE (default ghcr.io/thomasrooyakkers/nest-server), BACKUP_IMAGE (default
-# ghcr.io/thomasrooyakkers/nest-backup) and VERSION (default: the server
+# IMAGE (default ghcr.io/thomasrooyakkers/hoomly-server), BACKUP_IMAGE (default
+# ghcr.io/thomasrooyakkers/hoomly-backup) and VERSION (default: the server
 # version in nest_server/lib/src/endpoints/health_endpoint.dart) name the
 # images. Releases are pushed by .github/workflows/server-image.yml.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-IMAGE="${IMAGE:-ghcr.io/thomasrooyakkers/nest-server}"
-BACKUP_IMAGE="${BACKUP_IMAGE:-ghcr.io/thomasrooyakkers/nest-backup}"
+IMAGE="${IMAGE:-ghcr.io/thomasrooyakkers/hoomly-server}"
+BACKUP_IMAGE="${BACKUP_IMAGE:-ghcr.io/thomasrooyakkers/hoomly-backup}"
 VERSION="${VERSION:-$(sed -n "s/^const nestServerVersion = '\(.*\)';/\1/p" \
   "$ROOT/nest_server/lib/src/endpoints/health_endpoint.dart")}"
 

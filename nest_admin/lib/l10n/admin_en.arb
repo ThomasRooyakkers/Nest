@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "adminTitle": "Nest admin",
+  "adminTitle": "Hoomly admin",
   "@adminTitle": {
     "description": "Title of the admin portal."
   },
@@ -354,11 +354,11 @@
       }
     }
   },
-  "disableMessage": "This user is signed out everywhere and can no longer use Nest until enabled again. Nothing is deleted.",
+  "disableMessage": "This user is signed out everywhere and can no longer use Hoomly until enabled again. Nothing is deleted.",
   "@disableMessage": {
     "description": "Confirmation dialog text."
   },
-  "enableMessage": "This user can use Nest again.",
+  "enableMessage": "This user can use Hoomly again.",
   "@enableMessage": {
     "description": "Confirmation dialog text."
   },

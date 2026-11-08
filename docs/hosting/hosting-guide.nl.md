@@ -1,13 +1,13 @@
-# Een Nest-server hosten
+# Een Hoomly-server hosten
 
 *English: [hosting-guide.md](hosting-guide.md)*
 
-Nest is een privé-gezinsapp. Iedereen kan een Nest-server draaien voor het
-eigen gezin: dezelfde Nest-app (iPhone en Android) verbindt met de server
+Hoomly is een privé-gezinsapp. Iedereen kan een Hoomly-server draaien voor het
+eigen gezin: dezelfde Hoomly-app (iPhone en Android) verbindt met de server
 die de gebruikers kiezen. Eén server kan meerdere huishoudens bevatten, en
 elk huishouden ziet alleen zijn eigen gegevens.
 
-Deze handleiding zet een server op vanaf nul. Je hoeft de code van Nest niet
+Deze handleiding zet een server op vanaf nul. Je hoeft de code van Hoomly niet
 te kennen.
 
 ## Wat je nodig hebt
@@ -33,8 +33,8 @@ te kennen.
 
 ## 1. Haal de bestanden op
 
-Maak een map voor Nest en download het Compose-bestand en de
-voorbeeldinstellingen uit de [Nest-repository](https://github.com/ThomasRooyakkers/Nest):
+Maak een map voor Hoomly en download het Compose-bestand en de
+voorbeeldinstellingen uit de [Hoomly-repository](https://github.com/ThomasRooyakkers/Nest):
 
 ```bash
 mkdir -p ~/nest && cd ~/nest
@@ -42,8 +42,11 @@ curl -fsSLO https://raw.githubusercontent.com/ThomasRooyakkers/Nest/main/deploy/
 curl -fsSL -o .env https://raw.githubusercontent.com/ThomasRooyakkers/Nest/main/deploy/.env.example
 ```
 
-Het serverimage zelf, `ghcr.io/thomasrooyakkers/nest-server`, downloadt
+Het serverimage zelf, `ghcr.io/thomasrooyakkers/hoomly-server`, downloadt
 Docker bij het starten (stap 4). Het draait op arm64 en amd64.
+Tot november 2026 heette het `nest-server` (en het back-upimage
+`nest-backup`); die namen krijgen dezelfde releases, dus een bestaande
+`.env` die ze noemt blijft werken.
 
 ## 2. Vul `.env` in
 
@@ -56,7 +59,7 @@ Open `.env` in een editor. Elke instelling wordt in het bestand uitgelegd.
 | `SUPER_ADMIN_EMAIL` | je eigen e-mailadres: dat account wordt superbeheerder van de server |
 | `SIGN_UP_MODE` | `invite-only` (aanbevolen: nieuwe accounts hebben een uitnodigingscode van een huishouden nodig) of `open` |
 | `NEST_IMAGE`, `NEST_BACKUP_IMAGE`, `NEST_VERSION` | het server- en back-upimage en de versie; laat de waarden uit `.env.example` staan, tenzij je een bepaalde versie wilt |
-| `UPDATE_CHECK` | `on` (standaard): de Server-pagina van het beheerportaal toont of er een nieuwere Nest-versie is, gelezen uit de openbare releaselijst op GitHub, hoogstens om de 6 uur en alleen terwijl die pagina open is; `off`: nooit vragen |
+| `UPDATE_CHECK` | `on` (standaard): de Server-pagina van het beheerportaal toont of er een nieuwere Hoomly-versie is, gelezen uit de openbare releaselijst op GitHub, hoogstens om de 6 uur en alleen terwijl die pagina open is; `off`: nooit vragen |
 | `LOG_RETENTION` | hoe lang het logboek van het beheerportaal mislukte en trage aanroepen bewaart, bv. `14d` (standaard) of `30d`; logs zitten nooit in back-ups |
 | `ALERTS` | `on` (standaard): de server controleert elke 5 minuten op een late of mislukte back-up, minder dan 10 % vrije schijfruimte, 10 of meer serverfouten in 15 minuten en een onbereikbare database, en mailt de superbeheerder als een probleem begint, dagelijks zolang het duurt en als het opgelost is (e-mail nodig); `off`: meldingen staan alleen in het beheerportaal |
 | `ALERT_EMAIL` | optioneel: stuur meldingen naar dit adres in plaats van naar `SUPER_ADMIN_EMAIL` |
@@ -137,12 +140,12 @@ De eerste start downloadt de images en maakt de database aan; dat duurt een
 minuut. Controleer daarna:
 
 - `https://nest-api.example.com/` antwoordt (een lege pagina is goed), en
-- `https://nest.example.com/` toont een korte Nest-pagina die naar de app
-  verwijst (Nest heeft geen webversie; dit adres typt je gezin in de app).
+- `https://nest.example.com/` toont een korte Hoomly-pagina die naar de app
+  verwijst (Hoomly heeft geen webversie; dit adres typt je gezin in de app).
 
 ## 5. Maak je account
 
-1. Installeer de Nest-app, tik op het aanmeldscherm op **Server wijzigen**,
+1. Installeer de Hoomly-app, tik op het aanmeldscherm op **Server wijzigen**,
    vul `nest.example.com` in en tik op **Verbinden**. Kies dan **Account
    aanmaken** met het e-mailadres van `SUPER_ADMIN_EMAIL`. Je hebt geen
    uitnodigingscode nodig.
@@ -159,12 +162,12 @@ minuut. Controleer daarna:
 
 ## 6. Verbind de app
 
-Nest is een app voor iPhone en Android; er is geen webversie.
+Hoomly is een app voor iPhone en Android; er is geen webversie.
 
 - Tik op het aanmeldscherm op **Server wijzigen**, vul
   `nest.example.com` in en tik op **Verbinden**. De app controleert dat het
-  een Nest-server met een geschikte versie is en onthoudt hem. Instellingen
-  en Over Nest tonen welke server de app gebruikt. Overschakelen naar een
+  een Hoomly-server met een geschikte versie is en onthoudt hem. Instellingen
+  en Over Hoomly tonen welke server de app gebruikt. Overschakelen naar een
   andere server meldt je af en wist de gegevens op het toestel.
 
 ## Mail
@@ -177,7 +180,7 @@ Om aanmeld- en wachtwoordcodes te mailen:
 
    ```bash
    RESEND_API_KEY=re_...
-   MAIL_FROM=Nest <nest@example.com>
+   MAIL_FROM=Hoomly <hoomly@example.com>
    ```
 
 3. Pas het toe: `docker compose up -d`.
@@ -200,12 +203,12 @@ de posters van de beeldserver van TMDB.
 3. Pas het toe: `docker compose up -d`.
 
 Zonder sleutel biedt de zoekfunctie van de kijklijst een paar voorbeeldtitels,
-zodat je de functie kunt uitproberen. Nest toont de vermelding van TMDB op de
-kijklijst en het scherm Over Nest, zoals de voorwaarden van TMDB vragen.
+zodat je de functie kunt uitproberen. Hoomly toont de vermelding van TMDB op de
+kijklijst en het scherm Over Hoomly, zoals de voorwaarden van TMDB vragen.
 
 ## Aanmelden met Google en Apple
 
-De gepubliceerde Nest-app voor iOS kan "Doorgaan met Apple" en "Doorgaan met
+De gepubliceerde Hoomly-app voor iOS kan "Doorgaan met Apple" en "Doorgaan met
 Google" aanbieden. Daarvoor zijn sleutels nodig die voor die app (bundle-ID
 `be.g3cko.nest`) zijn uitgegeven en bij de beheerder van de app horen. Op je
 eigen server biedt de app dus alleen aanmelden met e-mail aan, tenzij je een
@@ -231,7 +234,7 @@ docker compose up -d
 
 Wijzigingen aan de database worden automatisch toegepast wanneer de nieuwe
 versie start. Wil je op een versie blijven, zet dan `NEST_VERSION` in `.env`
-(bijvoorbeeld `0.2.0`) in plaats van `latest`. Oudere Nest-apps blijven
+(bijvoorbeeld `0.2.0`) in plaats van `latest`. Oudere Hoomly-apps blijven
 werken met nieuwere servers; is een app te oud voor de server, dan meldt hij
 dat.
 
@@ -243,7 +246,7 @@ grafieken van belasting, geheugen, fouten, trage aanroepen, reactietijd van
 de database, verbindingen, vrije schijfruimte en databasegrootte over de
 laatste dag, week of maand. Het toont ook de huishoudens, gebruikers,
 back-ups, systeemstatus, de instellingen van de server, logs,
-inloggebeurtenissen en een auditlog van elke beheeractie. Het toont nooit wat een huishouden in Nest bewaart (geen
+inloggebeurtenissen en een auditlog van elke beheeractie. Het toont nooit wat een huishouden in Hoomly bewaart (geen
 lijstitems, recepten of taaknamen).
 
 **Huishoudens en gebruikers.** Open een huishouden om de rollen van leden,
@@ -263,7 +266,7 @@ Beveiliging toont inlogs, mislukte inlogpogingen, nieuwe accounts en
 wachtwoordherstel, 30 dagen bewaard. Geen van beide bewaart IP-adressen,
 SQL of inhoud van huishoudens; e-mailadressen zijn gemaskeerd en
 aanmeldcodes verborgen. Beide zitten niet in back-ups. Vermeld ze in je
-eigen privacybeleid: dat van Nest (`/privacy.html`) is een voorbeeld.
+eigen privacybeleid: dat van Hoomly (`/privacy.html`) is een voorbeeld.
 
 Zet daarvoor `NEST_ADMIN_DOMAIN` in `.env` (bijvoorbeeld
 `nest-admin.example.com`), stuur het door zoals het webadres (poort 8082) en
@@ -359,7 +362,7 @@ nieuwe machine wijzen.
 
 - **`docker compose up` meldt dat een instelling ontbreekt:** vul ze in in
   `.env`.
-- **De app meldt "Op dit adres antwoordt geen Nest-server":** controleer dat
+- **De app meldt "Op dit adres antwoordt geen Hoomly-server":** controleer dat
   beide adressen in een browser openen, en dat de tunnel of proxy het
   webdomein naar poort 8082 en het API-domein naar 8080 stuurt.
 - **Een nieuw adres wordt "niet gevonden" hoewel de tunnel of proxy klaar

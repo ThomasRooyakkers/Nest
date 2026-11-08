@@ -8,6 +8,8 @@ This file tells Claude Code everything it needs to build **Nest**, a family hous
 
 Nest is a private, bilingual (English + Dutch) family app for iOS and Android, built with Flutter. Only the admin portal is a web application; the family app has no web version (decided 2026-10-31: a mobile-only experience). It is **bring your own backend**: anyone can host a Nest server for their own family, and one app connects to whichever server the user chooses. Thomas hosts one for his family and relatives at `nest.g3cko.be`. Each server is multi-tenant: it serves several households, and each household sees only its own data. A separate admin portal lets each server's super-admin manage households, users, backups and system health.
 
+**Name:** users see the app as **Hoomly** everywhere (stores, home screen, in-app text, emails, website, admin portal, server image `hoomly-server`; decided 2026-11-08). "Nest" stays the codebase name: packages, repo, bundle IDs, env var names and `nest.g3cko.be`.
+
 **v1 features:** Dashboard, Shopping List (Bring!-style tiles, multiple lists, manually added stores), Recipes, Meal Planning, Tasks, Watchlist (TMDB), admin portal, and a self-hosting kit (published server image and hosting guide) so others can run their own server.
 
 **Out of scope for v1:** notifications of any kind (push, reminders, daily summary; removed 2026-10-28, may return later; the one exception, decided 2026-11-04, is alert emails about server problems to the server's own super-admin), expenses, notes, calendar, general file storage, recipe import from websites, sending a whole week's meal plan to the shopping list, paid subscriptions.

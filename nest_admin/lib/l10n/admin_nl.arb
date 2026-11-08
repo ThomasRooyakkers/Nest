@@ -1,6 +1,6 @@
 {
   "@@locale": "nl",
-  "adminTitle": "Nest-beheer",
+  "adminTitle": "Hoomly-beheer",
   "signInIntro": "Log in met je superbeheerdersaccount.",
   "email": "E-mail",
   "password": "Wachtwoord",
@@ -74,8 +74,8 @@
   "enable": "Inschakelen",
   "disableTitle": "{name} uitschakelen?",
   "enableTitle": "{name} inschakelen?",
-  "disableMessage": "Deze gebruiker wordt overal uitgelogd en kan Nest niet meer gebruiken tot die weer ingeschakeld wordt. Er wordt niets verwijderd.",
-  "enableMessage": "Deze gebruiker kan Nest weer gebruiken.",
+  "disableMessage": "Deze gebruiker wordt overal uitgelogd en kan Hoomly niet meer gebruiken tot die weer ingeschakeld wordt. Er wordt niets verwijderd.",
+  "enableMessage": "Deze gebruiker kan Hoomly weer gebruiken.",
   "backUpNow": "Nu back-uppen",
   "backupRequested": "Back-up gevraagd om {time}. Die start binnen een minuut.",
   "backupStatusRunning": "Bezig",

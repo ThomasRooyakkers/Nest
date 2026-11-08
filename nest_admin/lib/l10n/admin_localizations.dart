@@ -101,7 +101,7 @@ abstract class AdminLocalizations {
   /// Title of the admin portal.
   ///
   /// In en, this message translates to:
-  /// **'Nest admin'**
+  /// **'Hoomly admin'**
   String get adminTitle;
 
   /// Text under the title on the sign-in screen.
@@ -545,13 +545,13 @@ abstract class AdminLocalizations {
   /// Confirmation dialog text.
   ///
   /// In en, this message translates to:
-  /// **'This user is signed out everywhere and can no longer use Nest until enabled again. Nothing is deleted.'**
+  /// **'This user is signed out everywhere and can no longer use Hoomly until enabled again. Nothing is deleted.'**
   String get disableMessage;
 
   /// Confirmation dialog text.
   ///
   /// In en, this message translates to:
-  /// **'This user can use Nest again.'**
+  /// **'This user can use Hoomly again.'**
   String get enableMessage;
 
   /// Button that asks for a backup right away.

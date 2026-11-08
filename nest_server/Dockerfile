@@ -1,4 +1,4 @@
-# The Nest server image, with the admin portal and the static site
+# The Hoomly server image, with the admin portal and the static site
 # (web/site) built in. Build it with deploy/build-image.sh, which first builds
 # the admin portal into nest_server/web/admin (the same build works on every
 # host: the server serves its config). By hand, from the project root:
@@ -33,8 +33,8 @@ FROM alpine:3.22
 WORKDIR /app
 
 ARG NEST_VERSION=dev
-LABEL org.opencontainers.image.title="Nest server" \
-      org.opencontainers.image.description="Nest family app server with the admin portal built in" \
+LABEL org.opencontainers.image.title="Hoomly server" \
+      org.opencontainers.image.description="Hoomly family app server with the admin portal built in" \
       org.opencontainers.image.version="$NEST_VERSION" \
       org.opencontainers.image.licenses="NOASSERTION"
 

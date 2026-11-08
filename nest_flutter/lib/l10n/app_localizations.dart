@@ -317,7 +317,7 @@ abstract class AppLocalizations {
   /// Text before the create-account button.
   ///
   /// In en, this message translates to:
-  /// **'New to Nest?'**
+  /// **'New to Hoomly?'**
   String get noAccountYet;
 
   /// Button and title for registration.
@@ -425,7 +425,7 @@ abstract class AppLocalizations {
   /// Explains why we ask the name.
   ///
   /// In en, this message translates to:
-  /// **'This is how your family sees you in Nest.'**
+  /// **'This is how your family sees you in Hoomly.'**
   String get onboardingNameSubtitle;
 
   /// Label of the name field.
@@ -1115,7 +1115,7 @@ abstract class AppLocalizations {
   /// Explanation on the choose server screen.
   ///
   /// In en, this message translates to:
-  /// **'Nest works with any Nest server. Enter the address your family uses.'**
+  /// **'Hoomly works with any Hoomly server. Enter the address your family uses.'**
   String get chooseServerSubtitle;
 
   /// Current server on the choose server screen.
@@ -1148,22 +1148,22 @@ abstract class AppLocalizations {
   /// **'That is not a valid address.'**
   String get serverInvalidAddress;
 
-  /// Error when no Nest server is found at the address.
+  /// Error when no Hoomly server is found at the address.
   ///
   /// In en, this message translates to:
-  /// **'No Nest server answered at this address.'**
+  /// **'No Hoomly server answered at this address.'**
   String get serverNotFound;
 
   /// Error when the server is too old for the app.
   ///
   /// In en, this message translates to:
-  /// **'This server runs an older version of Nest than this app supports. Ask its administrator to update it.'**
+  /// **'This server runs an older version of Hoomly than this app supports. Ask its administrator to update it.'**
   String get serverTooOld;
 
   /// Error when the app is too old for the server.
   ///
   /// In en, this message translates to:
-  /// **'This server needs a newer version of the app. Please update Nest.'**
+  /// **'This server needs a newer version of the app. Please update Hoomly.'**
   String get appTooOld;
 
   /// Title of the dialog confirming a server switch.
@@ -1187,13 +1187,13 @@ abstract class AppLocalizations {
   /// Title of the About screen and the button that opens it.
   ///
   /// In en, this message translates to:
-  /// **'About Nest'**
+  /// **'About Hoomly'**
   String get aboutTitle;
 
   /// Short description on the About screen.
   ///
   /// In en, this message translates to:
-  /// **'Nest is a private family app. Your household\'s data lives on the Nest server you choose.'**
+  /// **'Hoomly is a private family app. Your household\'s data lives on the Hoomly server you choose.'**
   String get aboutText;
 
   /// App version on the About screen.
@@ -2345,7 +2345,7 @@ abstract class AppLocalizations {
   /// Error when linking an account that belongs to someone else
   ///
   /// In en, this message translates to:
-  /// **'This Apple or Google account already belongs to another Nest account.'**
+  /// **'This Apple or Google account already belongs to another Hoomly account.'**
   String get errorAlreadyLinked;
 }
 

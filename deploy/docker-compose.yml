@@ -1,4 +1,4 @@
-# A Nest server: PostgreSQL, the Nest server (API, web address and admin
+# A Hoomly server: PostgreSQL, the Hoomly server (API, web address and admin
 # portal), daily backups and, optionally, a Cloudflare Tunnel. Put this
 # file and your .env (from .env.example) in one folder and run:
 #   docker compose up -d
@@ -22,7 +22,7 @@ services:
       retries: 10
 
   nest:
-    image: ${NEST_IMAGE:-ghcr.io/thomasrooyakkers/nest-server}:${NEST_VERSION:-latest}
+    image: ${NEST_IMAGE:-ghcr.io/thomasrooyakkers/hoomly-server}:${NEST_VERSION:-latest}
     restart: unless-stopped
     depends_on:
       postgres:
@@ -82,7 +82,7 @@ services:
   # the targets of BACKUP_TARGETS: by default ./backups/restic. See
   # deploy/backup/backup.sh and the hosting guide.
   backup:
-    image: ${NEST_BACKUP_IMAGE:-ghcr.io/thomasrooyakkers/nest-backup}:${NEST_VERSION:-latest}
+    image: ${NEST_BACKUP_IMAGE:-ghcr.io/thomasrooyakkers/hoomly-backup}:${NEST_VERSION:-latest}
     restart: unless-stopped
     depends_on:
       postgres:

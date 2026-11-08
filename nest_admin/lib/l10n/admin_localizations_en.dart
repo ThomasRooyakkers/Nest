@@ -9,7 +9,7 @@ class AdminLocalizationsEn extends AdminLocalizations {
   AdminLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get adminTitle => 'Nest admin';
+  String get adminTitle => 'Hoomly admin';
 
   @override
   String get signInIntro => 'Sign in with your super-admin account.';
@@ -274,10 +274,10 @@ class AdminLocalizationsEn extends AdminLocalizations {
 
   @override
   String get disableMessage =>
-      'This user is signed out everywhere and can no longer use Nest until enabled again. Nothing is deleted.';
+      'This user is signed out everywhere and can no longer use Hoomly until enabled again. Nothing is deleted.';
 
   @override
-  String get enableMessage => 'This user can use Nest again.';
+  String get enableMessage => 'This user can use Hoomly again.';
 
   @override
   String get backUpNow => 'Back up now';

@@ -145,7 +145,7 @@ void main() {
       await tester.tap(find.text('Connect'));
       await tester.pumpAndSettle();
       expect(
-        find.text('No Nest server answered at this address.'),
+        find.text('No Hoomly server answered at this address.'),
         findsOneWidget,
       );
 
@@ -203,7 +203,7 @@ void main() {
       );
       expect(
         find.text(
-          'This server needs a newer version of the app. Please update Nest.',
+          'This server needs a newer version of the app. Please update Hoomly.',
         ),
         findsOneWidget,
       );
@@ -214,13 +214,13 @@ void main() {
       await tester.tap(find.byTooltip('Settings'));
       await tester.pumpAndSettle();
       await tester.scrollUntilVisible(
-        find.text('About Nest'),
+        find.text('About Hoomly'),
         200,
         scrollable: mainScrollable,
       );
-      await tester.ensureVisible(find.text('About Nest'));
+      await tester.ensureVisible(find.text('About Hoomly'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('About Nest'));
+      await tester.tap(find.text('About Hoomly'));
       await tester.pumpAndSettle();
       expect(find.text('App version $appVersion'), findsOneWidget);
       expect(

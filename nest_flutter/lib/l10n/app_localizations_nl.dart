@@ -128,7 +128,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get forgotPassword => 'Wachtwoord vergeten?';
 
   @override
-  String get noAccountYet => 'Nieuw bij Nest?';
+  String get noAccountYet => 'Nieuw bij Hoomly?';
 
   @override
   String get createAccount => 'Account aanmaken';
@@ -185,7 +185,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get onboardingNameTitle => 'Hoe heet je?';
 
   @override
-  String get onboardingNameSubtitle => 'Zo ziet je gezin je in Nest.';
+  String get onboardingNameSubtitle => 'Zo ziet je gezin je in Hoomly.';
 
   @override
   String get nameLabel => 'Naam';
@@ -584,7 +584,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get chooseServerSubtitle =>
-      'Nest werkt met elke Nest-server. Vul het adres in dat je gezin gebruikt.';
+      'Hoomly werkt met elke Hoomly-server. Vul het adres in dat je gezin gebruikt.';
 
   @override
   String currentServerLabel(String server) {
@@ -606,15 +606,15 @@ class AppLocalizationsNl extends AppLocalizations {
   String get serverInvalidAddress => 'Dat is geen geldig adres.';
 
   @override
-  String get serverNotFound => 'Op dit adres antwoordt geen Nest-server.';
+  String get serverNotFound => 'Op dit adres antwoordt geen Hoomly-server.';
 
   @override
   String get serverTooOld =>
-      'Deze server draait een oudere versie van Nest dan deze app ondersteunt. Vraag de beheerder om hem bij te werken.';
+      'Deze server draait een oudere versie van Hoomly dan deze app ondersteunt. Vraag de beheerder om hem bij te werken.';
 
   @override
   String get appTooOld =>
-      'Deze server heeft een nieuwere versie van de app nodig. Werk Nest bij.';
+      'Deze server heeft een nieuwere versie van de app nodig. Werk Hoomly bij.';
 
   @override
   String switchServerTitle(String server) {
@@ -629,11 +629,11 @@ class AppLocalizationsNl extends AppLocalizations {
   String get switchButton => 'Overschakelen';
 
   @override
-  String get aboutTitle => 'Over Nest';
+  String get aboutTitle => 'Over Hoomly';
 
   @override
   String get aboutText =>
-      'Nest is een privé-gezinsapp. De gegevens van je huishouden staan op de Nest-server die je kiest.';
+      'Hoomly is een privé-gezinsapp. De gegevens van je huishouden staan op de Hoomly-server die je kiest.';
 
   @override
   String appVersionLabel(String version) {
@@ -1314,5 +1314,5 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get errorAlreadyLinked =>
-      'Dit Apple- of Google-account hoort al bij een ander Nest-account.';
+      'Dit Apple- of Google-account hoort al bij een ander Hoomly-account.';
 }

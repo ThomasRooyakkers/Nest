@@ -1,13 +1,13 @@
-# Hosting a Nest server
+# Hosting a Hoomly server
 
 *Nederlands: [hosting-guide.nl.md](hosting-guide.nl.md)*
 
-Nest is a private family app. Anyone can run a Nest server for their own
-family: the same Nest app (iPhone and Android) connects to whichever server
+Hoomly is a private family app. Anyone can run a Hoomly server for their own
+family: the same Hoomly app (iPhone and Android) connects to whichever server
 its users choose. One server can hold several households, and each household
 only ever sees its own data.
 
-This guide sets up a server from scratch. You need no knowledge of Nest's
+This guide sets up a server from scratch. You need no knowledge of Hoomly's
 code.
 
 ## What you need
@@ -31,8 +31,8 @@ code.
 
 ## 1. Get the files
 
-Make a folder for Nest and download the Compose file and the example
-settings from the [Nest repository](https://github.com/ThomasRooyakkers/Nest):
+Make a folder for Hoomly and download the Compose file and the example
+settings from the [Hoomly repository](https://github.com/ThomasRooyakkers/Nest):
 
 ```bash
 mkdir -p ~/nest && cd ~/nest
@@ -40,8 +40,11 @@ curl -fsSLO https://raw.githubusercontent.com/ThomasRooyakkers/Nest/main/deploy/
 curl -fsSL -o .env https://raw.githubusercontent.com/ThomasRooyakkers/Nest/main/deploy/.env.example
 ```
 
-The server image itself, `ghcr.io/thomasrooyakkers/nest-server`, is
+The server image itself, `ghcr.io/thomasrooyakkers/hoomly-server`, is
 downloaded by Docker when you start (step 4). It runs on arm64 and amd64.
+Until November 2026 it was called `nest-server` (and the backup image
+`nest-backup`); those names keep getting the same releases, so an existing
+`.env` that names them keeps working.
 
 ## 2. Fill in `.env`
 
@@ -54,7 +57,7 @@ Open `.env` in an editor. Every setting is explained in the file.
 | `SUPER_ADMIN_EMAIL` | your own email address: that account becomes the server's super-admin |
 | `SIGN_UP_MODE` | `invite-only` (recommended: new accounts need a household invite code) or `open` |
 | `NEST_IMAGE`, `NEST_BACKUP_IMAGE`, `NEST_VERSION` | the server and backup images and the version; keep the values from `.env.example` unless you want a specific version |
-| `UPDATE_CHECK` | `on` (default): the admin portal's Server page shows whether a newer Nest release exists, read from the public release list on GitHub at most every 6 hours and only while that page is open; `off`: never ask |
+| `UPDATE_CHECK` | `on` (default): the admin portal's Server page shows whether a newer Hoomly release exists, read from the public release list on GitHub at most every 6 hours and only while that page is open; `off`: never ask |
 | `LOG_RETENTION` | how long the admin portal's Logs page keeps failed and slow calls, e.g. `14d` (default) or `30d`; logs are never in backups |
 | `ALERTS` | `on` (default): every 5 minutes the server checks for a late or failed backup, less than 10 % free disk, 10 or more server errors in 15 minutes and an unreachable database, and emails the super-admin when a problem starts, daily while it lasts and when it is resolved (needs mail); `off`: alerts only show in the admin portal |
 | `ALERT_EMAIL` | optional: send alert emails here instead of to `SUPER_ADMIN_EMAIL` |
@@ -134,13 +137,13 @@ The first start downloads the images and creates the database; that takes a
 minute. Then check:
 
 - `https://nest-api.example.com/` answers (an empty page is fine), and
-- `https://nest.example.com/` shows a short Nest page that points to the
-  app (Nest has no web version; this address is what your family types in
+- `https://nest.example.com/` shows a short Hoomly page that points to the
+  app (Hoomly has no web version; this address is what your family types in
   the app).
 
 ## 5. Create your account
 
-1. Install the Nest app, tap **Change server** on the sign-in screen, enter
+1. Install the Hoomly app, tap **Change server** on the sign-in screen, enter
    `nest.example.com` and tap **Connect**. Then choose **Create account**
    with the email address of `SUPER_ADMIN_EMAIL`. You need no invite code.
 2. Enter the code from the email. Without mail set up, find it in the log:
@@ -156,10 +159,10 @@ minute. Then check:
 
 ## 6. Connect the app
 
-Nest is an app for iPhone and Android; there is no web version.
+Hoomly is an app for iPhone and Android; there is no web version.
 
 - On the sign-in screen, tap **Change server**, enter
-  `nest.example.com` and tap **Connect**. The app checks that it is a Nest
+  `nest.example.com` and tap **Connect**. The app checks that it is a Hoomly
   server of a compatible version and remembers it. Settings and About show
   which server the app uses. Switching to another server signs you out and
   clears the data stored on the device.
@@ -174,7 +177,7 @@ To email sign-up and password reset codes:
 
    ```bash
    RESEND_API_KEY=re_...
-   MAIL_FROM=Nest <nest@example.com>
+   MAIL_FROM=Hoomly <hoomly@example.com>
    ```
 
 3. Apply it: `docker compose up -d`.
@@ -197,12 +200,12 @@ posters from TMDB's image server.
 3. Apply it: `docker compose up -d`.
 
 Without a key the watchlist search offers a few sample titles, so the
-feature can be tried. Nest shows TMDB's attribution on the watchlist and the
+feature can be tried. Hoomly shows TMDB's attribution on the watchlist and the
 About screen, as TMDB's terms require.
 
 ## Google and Apple sign-in
 
-The published Nest iOS app can offer "Continue with Apple" and "Continue
+The published Hoomly iOS app can offer "Continue with Apple" and "Continue
 with Google". Both need keys issued for that app (bundle ID `be.g3cko.nest`),
 which belong to the app's maintainer, so on your own server the app offers
 email sign-in only, unless you build and publish your own iOS app with your
@@ -226,7 +229,7 @@ docker compose up -d
 
 Database changes are applied automatically when the new version starts.
 To stay on a version, set `NEST_VERSION` in `.env` (for example `0.2.0`)
-instead of `latest`. Older Nest apps keep working with newer servers; when an
+instead of `latest`. Older Hoomly apps keep working with newer servers; when an
 app is too old for the server, it says so.
 
 ## Admin portal
@@ -237,7 +240,7 @@ hour, and charts of load, memory, errors, slow calls, database response
 time, connections, free disk and database size over the last day, week or
 month. It also shows the households, users, backups, system health, the
 server's settings, logs, sign-in events and an audit log of every admin
-action. It never shows what a household keeps in Nest (no list items,
+action. It never shows what a household keeps in Hoomly (no list items,
 recipes or task titles).
 
 **Households and users.** Open a household to manage its members' roles,
@@ -255,7 +258,7 @@ to your own address, a film data test and whether a newer release exists
 sign-ins, new accounts and password resets, kept for 30 days. Neither
 stores IP addresses, SQL text or household content; emails are masked and
 sign-up codes hidden. Both are left out of backups. Mention them in your
-own privacy policy: Nest's (`/privacy.html`) is an example.
+own privacy policy: Hoomly's (`/privacy.html`) is an example.
 
 To use it, set `NEST_ADMIN_DOMAIN` in `.env` (for example
 `nest-admin.example.com`), route it like the web address (port 8082) and run
@@ -346,7 +349,7 @@ backup as above (`docker compose run --rm backup restore ...`) and run
 ## Troubleshooting
 
 - **`docker compose up` says a setting is missing:** fill it in in `.env`.
-- **The app says "No Nest server answered at this address":** check that
+- **The app says "No Hoomly server answered at this address":** check that
   both addresses open in a browser, and that the tunnel or proxy sends the
   web domain to port 8082 and the API domain to 8080.
 - **A new address is "not found" although the tunnel or proxy is set up:**

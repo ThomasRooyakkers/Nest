@@ -9,7 +9,7 @@ class NestSharedLocalizationsEn extends NestSharedLocalizations {
   NestSharedLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'Nest';
+  String get appName => 'Hoomly';
 
   @override
   String get connectionChecking => 'Connecting…';

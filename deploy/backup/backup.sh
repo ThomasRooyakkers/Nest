@@ -1,5 +1,5 @@
 #!/bin/sh
-# Nest backup job. Runs in the backup container (deploy/backup/Dockerfile).
+# Hoomly backup job. Runs in the backup container (deploy/backup/Dockerfile).
 #
 #   nest-backup run                      daily at BACKUP_TIME, and on request
 #   nest-backup now                      one backup now
@@ -13,7 +13,7 @@
 #   BACKUP_TIME       local time of the daily backup, HH:MM (default 03:00)
 #   BACKUP_KEEP       restic forget options (default: the last 10, 14 daily,
 #                     8 weekly, 12 monthly)
-#   PGHOST, PGUSER, PGPASSWORD, PGDATABASE   the Nest database
+#   PGHOST, PGUSER, PGPASSWORD, PGDATABASE   the Hoomly database
 #
 # Every backup dumps the database once and stores the dump in each target.
 # Each target gets its own row in backup_run.
@@ -147,7 +147,7 @@ backup_requested() {
 run() {
   log "targets: $BACKUP_TARGETS; daily at $BACKUP_TIME ($(date +%Z))"
   until sql "SELECT 1 FROM backup_run LIMIT 1" >/dev/null 2>&1; do
-    log "waiting for the database (and the Nest server's migrations)"
+    log "waiting for the database (and the Hoomly server's migrations)"
     sleep 10
   done
   # Runs that were cut off by a restart.
@@ -177,7 +177,7 @@ restore() {
   RESTIC_REPOSITORY=$(repository_of "$1")
   log "restoring snapshot $2 of $1 into database $PGDATABASE"
   restic dump "$2" "$DUMP" | psql -X -q -v ON_ERROR_STOP=1 --single-transaction >/dev/null
-  log "restored. Start the Nest server again: docker compose start nest"
+  log "restored. Start the Hoomly server again: docker compose start nest"
 }
 
 case "${1:-run}" in

@@ -104,7 +104,7 @@ abstract class NestSharedLocalizations {
   /// Product name, not translated.
   ///
   /// In en, this message translates to:
-  /// **'Nest'**
+  /// **'Hoomly'**
   String get appName;
 
   /// Shown while the app checks whether the server can be reached.

@@ -12,7 +12,7 @@ void main() {
     testWidgets('signed out shows sign in', (tester) async {
       final container = await pumpNestApp(tester, signedIn: false);
       expect(container.read(appGateProvider), AppGate.signedOut);
-      expect(find.text('New to Nest?'), findsOneWidget);
+      expect(find.text('New to Hoomly?'), findsOneWidget);
     });
 
     testWidgets('a new user is asked for a name, then a household', (
@@ -80,7 +80,7 @@ void main() {
       await pumpNestApp(tester, signedIn: false);
       await tester.tap(find.text('Nederlands'));
       await tester.pumpAndSettle();
-      expect(find.text('Nieuw bij Nest?'), findsOneWidget);
+      expect(find.text('Nieuw bij Hoomly?'), findsOneWidget);
       await flushEmailDebounce(tester);
     });
 

@@ -1,9 +1,11 @@
 name: Server image
 
-# Builds the Nest server image (admin portal included) and the
+# Builds the Hoomly server image (admin portal included) and the
 # backup image for arm64 and amd64 and publishes them to
-# ghcr.io/<owner>/nest-server and ghcr.io/<owner>/nest-backup. Runs for a version tag that
-# matches nestServerVersion, e.g. v0.2.0, or by hand.
+# ghcr.io/<owner>/hoomly-server and ghcr.io/<owner>/hoomly-backup. The same
+# images are also tagged under the old names nest-server and nest-backup, so
+# servers whose .env names those keep getting releases. Runs for a version tag
+# that matches nestServerVersion, e.g. v0.2.0, or by hand.
 #
 # Each architecture builds on its own native runner (no QEMU emulation, which
 # made the arm64 build take most of ten minutes) with a layer cache; the
@@ -145,10 +147,14 @@ jobs:
         run: |
           owner="${GITHUB_REPOSITORY_OWNER,,}"
           for image in server backup; do
-            name="ghcr.io/$owner/nest-$image"
+            name="ghcr.io/$owner/hoomly-$image"
             docker buildx imagetools create \
               -t "$name:$VERSION" -t "$name:latest" \
               "$name@$(cat digests/$image-amd64)" \
               "$name@$(cat digests/$image-arm64)"
             docker buildx imagetools inspect "$name:$VERSION"
+            # The old name (until 0.18.0) gets the same image.
+            old="ghcr.io/$owner/nest-$image"
+            docker buildx imagetools create \
+              -t "$old:$VERSION" -t "$old:latest" "$name:$VERSION"
           done

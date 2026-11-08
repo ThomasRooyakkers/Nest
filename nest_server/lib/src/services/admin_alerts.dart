@@ -290,9 +290,9 @@ abstract final class AdminAlerts {
   }) {
     final (en, nl) = _title(kind);
     final host = Serverpod.instance.config.apiServer.publicHost;
-    if (resolved) return 'Nest $host: resolved / opgelost: $en';
-    if (reminder) return 'Nest $host: still / nog steeds: $en / $nl';
-    return 'Nest $host: $en / $nl';
+    if (resolved) return 'Hoomly $host: resolved / opgelost: $en';
+    if (reminder) return 'Hoomly $host: still / nog steeds: $en / $nl';
+    return 'Hoomly $host: $en / $nl';
   }
 
   static String _body(
@@ -318,9 +318,9 @@ abstract final class AdminAlerts {
         'Admin portal / Beheerportaal: $portal',
         '',
       ],
-      'You get this email as the super-admin of this Nest server. Turn '
+      'You get this email as the super-admin of this Hoomly server. Turn '
           'alert emails off with ALERTS=off in .env.',
-      'Je krijgt deze mail als superbeheerder van deze Nest-server. Zet '
+      'Je krijgt deze mail als superbeheerder van deze Hoomly-server. Zet '
           'meldingen uit met ALERTS=off in .env.',
     ].join('\n');
   }

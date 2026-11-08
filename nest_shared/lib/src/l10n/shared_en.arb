@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appName": "Nest",
+  "appName": "Hoomly",
   "@appName": {"description": "Product name, not translated."},
   "connectionChecking": "Connecting…",
   "@connectionChecking": {"description": "Shown while the app checks whether the server can be reached."},

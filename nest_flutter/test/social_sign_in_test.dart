@@ -170,7 +170,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         find.text(
-          'This Apple or Google account already belongs to another Nest account.',
+          'This Apple or Google account already belongs to another Hoomly account.',
         ),
         findsOneWidget,
       );

@@ -124,7 +124,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forgotPassword => 'Forgot password?';
 
   @override
-  String get noAccountYet => 'New to Nest?';
+  String get noAccountYet => 'New to Hoomly?';
 
   @override
   String get createAccount => 'Create account';
@@ -183,7 +183,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingNameSubtitle =>
-      'This is how your family sees you in Nest.';
+      'This is how your family sees you in Hoomly.';
 
   @override
   String get nameLabel => 'Name';
@@ -582,7 +582,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chooseServerSubtitle =>
-      'Nest works with any Nest server. Enter the address your family uses.';
+      'Hoomly works with any Hoomly server. Enter the address your family uses.';
 
   @override
   String currentServerLabel(String server) {
@@ -604,15 +604,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get serverInvalidAddress => 'That is not a valid address.';
 
   @override
-  String get serverNotFound => 'No Nest server answered at this address.';
+  String get serverNotFound => 'No Hoomly server answered at this address.';
 
   @override
   String get serverTooOld =>
-      'This server runs an older version of Nest than this app supports. Ask its administrator to update it.';
+      'This server runs an older version of Hoomly than this app supports. Ask its administrator to update it.';
 
   @override
   String get appTooOld =>
-      'This server needs a newer version of the app. Please update Nest.';
+      'This server needs a newer version of the app. Please update Hoomly.';
 
   @override
   String switchServerTitle(String server) {
@@ -627,11 +627,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get switchButton => 'Switch';
 
   @override
-  String get aboutTitle => 'About Nest';
+  String get aboutTitle => 'About Hoomly';
 
   @override
   String get aboutText =>
-      'Nest is a private family app. Your household\'s data lives on the Nest server you choose.';
+      'Hoomly is a private family app. Your household\'s data lives on the Hoomly server you choose.';
 
   @override
   String appVersionLabel(String version) {
@@ -1312,5 +1312,5 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorAlreadyLinked =>
-      'This Apple or Google account already belongs to another Nest account.';
+      'This Apple or Google account already belongs to another Hoomly account.';
 }

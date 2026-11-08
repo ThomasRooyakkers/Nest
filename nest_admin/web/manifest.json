@@ -1,11 +1,11 @@
 {
-    "name": "Nest admin",
-    "short_name": "Nest admin",
+    "name": "Hoomly admin",
+    "short_name": "Hoomly admin",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FAF5EE",
     "theme_color": "#3F6B57",
-    "description": "Nest admin portal",
+    "description": "Hoomly admin portal",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

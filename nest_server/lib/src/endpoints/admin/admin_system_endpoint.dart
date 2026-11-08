@@ -110,10 +110,10 @@ class AdminSystemEndpoint extends Endpoint {
     } else {
       problem = await VerificationMail.deliver(
         to: to,
-        subject: 'Nest test email / Nest-testmail',
+        subject: 'Hoomly test email / Hoomly-testmail',
         text:
-            'This test email from your Nest server arrived, so mail works.\n'
-            'Deze testmail van je Nest-server is aangekomen, dus mail werkt.\n',
+            'This test email from your Hoomly server arrived, so mail works.\n'
+            'Deze testmail van je Hoomly-server is aangekomen, dus mail werkt.\n',
       );
     }
     await AdminGuard.audit(

@@ -26,10 +26,10 @@ abstract final class VerificationMail {
     email: email,
     code: code,
     label: 'Registration',
-    subject: 'Your Nest code / Je Nest-code',
+    subject: 'Your Hoomly code / Je Hoomly-code',
     text:
-        'Your code to create a Nest account: $code\n'
-        'Je code om een Nest-account te maken: $code\n',
+        'Your code to create a Hoomly account: $code\n'
+        'Je code om een Hoomly-account te maken: $code\n',
   );
 
   static Future<void> sendPasswordResetCode(
@@ -41,10 +41,10 @@ abstract final class VerificationMail {
     email: email,
     code: code,
     label: 'Password reset',
-    subject: 'Reset your Nest password / Je Nest-wachtwoord herstellen',
+    subject: 'Reset your Hoomly password / Je Hoomly-wachtwoord herstellen',
     text:
-        'Your code to choose a new Nest password: $code\n'
-        'Je code om een nieuw Nest-wachtwoord te kiezen: $code\n',
+        'Your code to choose a new Hoomly password: $code\n'
+        'Je code om een nieuw Hoomly-wachtwoord te kiezen: $code\n',
   );
 
   static Future<void> _send(

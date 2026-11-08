@@ -150,7 +150,7 @@
   "@forgotPassword": {
     "description": "Link to reset the password."
   },
-  "noAccountYet": "New to Nest?",
+  "noAccountYet": "New to Hoomly?",
   "@noAccountYet": {
     "description": "Text before the create-account button."
   },
@@ -228,7 +228,7 @@
   "@onboardingNameTitle": {
     "description": "Title of the name step after registering."
   },
-  "onboardingNameSubtitle": "This is how your family sees you in Nest.",
+  "onboardingNameSubtitle": "This is how your family sees you in Hoomly.",
   "@onboardingNameSubtitle": {
     "description": "Explains why we ask the name."
   },
@@ -756,7 +756,7 @@
   "@chooseServerTitle": {
     "description": "Title of the screen to choose a server."
   },
-  "chooseServerSubtitle": "Nest works with any Nest server. Enter the address your family uses.",
+  "chooseServerSubtitle": "Hoomly works with any Hoomly server. Enter the address your family uses.",
   "@chooseServerSubtitle": {
     "description": "Explanation on the choose server screen."
   },
@@ -790,15 +790,15 @@
   "@serverInvalidAddress": {
     "description": "Error when the typed server address is invalid."
   },
-  "serverNotFound": "No Nest server answered at this address.",
+  "serverNotFound": "No Hoomly server answered at this address.",
   "@serverNotFound": {
-    "description": "Error when no Nest server is found at the address."
+    "description": "Error when no Hoomly server is found at the address."
   },
-  "serverTooOld": "This server runs an older version of Nest than this app supports. Ask its administrator to update it.",
+  "serverTooOld": "This server runs an older version of Hoomly than this app supports. Ask its administrator to update it.",
   "@serverTooOld": {
     "description": "Error when the server is too old for the app."
   },
-  "appTooOld": "This server needs a newer version of the app. Please update Nest.",
+  "appTooOld": "This server needs a newer version of the app. Please update Hoomly.",
   "@appTooOld": {
     "description": "Error when the app is too old for the server."
   },
@@ -819,11 +819,11 @@
   "@switchButton": {
     "description": "Confirms switching servers."
   },
-  "aboutTitle": "About Nest",
+  "aboutTitle": "About Hoomly",
   "@aboutTitle": {
     "description": "Title of the About screen and the button that opens it."
   },
-  "aboutText": "Nest is a private family app. Your household's data lives on the Nest server you choose.",
+  "aboutText": "Hoomly is a private family app. Your household's data lives on the Hoomly server you choose.",
   "@aboutText": {
     "description": "Short description on the About screen."
   },
@@ -1793,7 +1793,7 @@
       }
     }
   },
-  "errorAlreadyLinked": "This Apple or Google account already belongs to another Nest account.",
+  "errorAlreadyLinked": "This Apple or Google account already belongs to another Hoomly account.",
   "@errorAlreadyLinked": {
     "description": "Error when linking an account that belongs to someone else"
   }

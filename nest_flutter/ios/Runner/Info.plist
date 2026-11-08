@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Nest</string>
+	<string>Hoomly</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -20,7 +20,7 @@
 		<string>nl</string>
 	</array>
 	<key>CFBundleName</key>
-	<string>Nest</string>
+	<string>Hoomly</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -47,9 +47,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Nest uses the camera to take a photo of a recipe.</string>
+	<string>Hoomly uses the camera to take a photo of a recipe.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Nest uses your photos to add a picture to a recipe.</string>
+	<string>Hoomly uses your photos to add a picture to a recipe.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
