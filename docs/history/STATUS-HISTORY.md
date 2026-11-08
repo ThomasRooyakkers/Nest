@@ -7,6 +7,30 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Pi upgraded to Ubuntu 26.04 LTS (2026-11-08, NEST-27):** by Claude with
+Thomas's OK. Dump `nest-pre-os-upgrade-20261108-092242.sql.gz` first, then
+the pending reboot, then `do-release-upgrade -f
+DistUpgradeViewNonInteractive` in tmux (exit 0, existing config kept; log in
+`~/os-upgrade-2026-11-08.log`). After reboot: kernel 7.0.0-1020-raspi,
+Docker 29.1.3 (docker.io), no failed units. All containers restarted on
+their own; API ping 0.18.0 / API 13, site and privacy page 200, tunnel
+connected, Scrypted running. About a minute of downtime per reboot.
+
+**Hoomly rebrand (2026-11-08, commit `97ea5d5`, NEST-22):** Thomas
+decided that everything users see says Hoomly and that "Nest" stays the
+codebase name (packages, repo, bundle IDs, env var names, compose service
+names, `nest.g3cko.be`). Changed: `appName` and all app strings with Nest
+(EN + NL), iOS `CFBundleDisplayName`/`CFBundleName` and the camera/photo
+permission texts, admin portal title and strings, sign-up/reset emails,
+admin alert and test emails, the static site and privacy page, the hosting
+guides, deploy kit comments and `MAIL_FROM` example, Dockerfile labels and
+README. Server images are now built as `ghcr.io/<owner>/hoomly-server` and
+`hoomly-backup`; the release workflow also tags each release under the old
+names `nest-server` / `nest-backup`, so existing `.env` files keep working
+(noted in both hosting guides). App tests (232), admin (23), shared (24)
+and server (468) pass. Not released yet: needs server 0.19.0 and a new app
+build.
+
 **Smoother swipe between pages (2026-11-07, commit `4af8f8e`, NEST-32):**
 the page content (not the title or chips) now follows the finger, fades
 and slides out, and the next page slides in from the other side

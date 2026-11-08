@@ -51,20 +51,18 @@ Details for every item: `docs/history/STATUS-HISTORY.md`.
    (with recipe photos) before the phase 9 gate, and add a second backup target (NFS share and/or OneDrive
    via `~/nest/deploy/rclone/rclone.conf`).
 8. Phase 9 — Dashboard + release (CLAUDE.md section 10).
-9. **1.1 in progress** (Jira release 1.1). Built and closed in Jira
-   (2026-11-08, Thomas closed the phone checks): NEST-23, 24, 25, 26, 32,
-   33, 34, 35, 36, 37, 38, 39, 40, 41. Server 0.18.0 is deployed; the
-   newest app build is on Thomas's iPhone; the Android APK (2026-11-04)
-   predates the Android fixes. Left: NEST-22 (Hoomly rebrand, needs
-   Thomas's naming decision), NEST-42 (Android Google sign-in bug, needs
-   phone logs), NEST-27 (Pi upgrade to 26.04, Thomas's OK).
+9. **1.1 in progress** (Jira release 1.1). Built and closed in Jira:
+   NEST-23–27 and 32–41 (the Pi runs Ubuntu 26.04 LTS since 2026-11-08).
+   NEST-22 Hoomly rebrand is built (`97ea5d5`), not released: needs server
+   0.19.0 (images now `hoomly-server` / `hoomly-backup`, old names kept as
+   aliases; make the new GitHub packages public if they come out private)
+   and a new app build for iOS and Android. Left: NEST-42 (Android Google
+   sign-in bug, needs phone logs).
 
 ## Open questions
 
 - **Claudecraft volume** `world-of-claudecraft_eastbrook_pgdata` is still on the Pi:
   delete it or keep it.
-- **Ubuntu 25.10 on the Pi is end of life** and a reboot is pending; upgrading to
-  26.04 LTS is Thomas's call (the Nest containers restart on their own).
 - **Typing a local http server** (`localhost:8080`) in Change server tries
   https; type `http://localhost:8080`. Fine for production; could try http
   for local addresses later.
