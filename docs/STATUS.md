@@ -51,19 +51,13 @@ Details for every item: `docs/history/STATUS-HISTORY.md`.
    (with recipe photos) before the phase 9 gate, and add a second backup target (NFS share and/or OneDrive
    via `~/nest/deploy/rclone/rclone.conf`).
 8. Phase 9 — Dashboard + release (CLAUDE.md section 10).
-9. **1.1 in progress** (Jira release 1.1). Done: the app signs out on a
-   dead sign-in instead of retrying forever (NEST-38); Android back, tab
-   bar gap and + tooltip fixes, recipe Edit/Delete buttons (NEST-35/36/37/33,
-   checked on the emulator; a phone check is still open). Own grocery
-   icons, 25 new catalog items and icons for typed items (NEST-24); items
-   added with a store selected go to that store (NEST-25); a default store
-   per household and brighter store colours. Also a Recipes button in the
-   meal plan header (NEST-34), one box to plan a meal with recipe
-   suggestions (NEST-40), swapping meals between days (NEST-41) and
-   swiping between task filters, stores and watchlist tabs (NEST-32).
-   Server 0.18.0 is deployed; the newest app build is on Thomas's iPhone
-   (Iris's and other devices need a new build). All four need a phone
-   check.
+9. **1.1 in progress** (Jira release 1.1). Built and closed in Jira
+   (2026-11-08, Thomas closed the phone checks): NEST-23, 24, 25, 26, 32,
+   33, 34, 35, 36, 37, 38, 39, 40, 41. Server 0.18.0 is deployed; the
+   newest app build is on Thomas's iPhone; the Android APK (2026-11-04)
+   predates the Android fixes. Left: NEST-22 (Hoomly rebrand, needs
+   Thomas's naming decision), NEST-42 (Android Google sign-in bug, needs
+   phone logs), NEST-27 (Pi upgrade to 26.04, Thomas's OK).
 
 ## Open questions
 
