@@ -10,7 +10,7 @@ The backlog is in Jira (`docs/JIRA.md`).
 
 - **Phase 9 (Dashboard + release) in progress.** Phases 0–8 are done and
   released. The dashboard is built; Google and Apple sign-in are live.
-- **Server:** 0.18.0 (API level 13) on Thomas's Pi at `nest.g3cko.be` /
+- **Server:** 0.19.2 (API level 13, image `hoomly-server`) on Thomas's Pi at `nest.g3cko.be` /
   `nest-api.g3cko.be`. Includes the admin portal packages A (management),
   B (logs, security events) and C (Overview metrics, admin alert emails).
   Resend is on for the Pi; a real alert email has not been seen yet.
@@ -53,11 +53,9 @@ Details for every item: `docs/history/STATUS-HISTORY.md`.
 8. Phase 9 — Dashboard + release (CLAUDE.md section 10).
 9. **1.1 in progress** (Jira release 1.1). Built and closed in Jira:
    NEST-23–27 and 32–41 (the Pi runs Ubuntu 26.04 LTS since 2026-11-08).
-   NEST-22 Hoomly rebrand is built (`97ea5d5`), not released: needs server
-   0.19.0 (images now `hoomly-server` / `hoomly-backup`, old names kept as
-   aliases; make the new GitHub packages public if they come out private)
-   and a new app build for iOS and Android. Left: NEST-42 (Android Google
-   sign-in bug, needs phone logs).
+   NEST-22 Hoomly rebrand: server part live in 0.19.2; the app part needs a
+   new iOS and Android build. Left: NEST-42 (Android Google sign-in bug,
+   needs phone logs).
 
 ## Open questions
 

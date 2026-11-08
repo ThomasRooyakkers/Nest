@@ -7,6 +7,28 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**0.19.2 released and deployed (2026-11-08):** the Hoomly rebrand
+(NEST-22) on the server. Getting there took three tags:
+- `v0.19.0` failed: package:sqlite3's build hook (pulled in by
+  serverpod_database) downloads a prebuilt SQLite from GitHub Releases, and
+  GitHub answered 504 all morning; the hook hashed the error page and
+  reported a hash mismatch (upstream simolus3/sqlite3.dart#435). Fix
+  (`9e51ced`): the Dockerfile's generated workspace and the Tests workflow
+  set `hooks: user_defines: sqlite3: source: system`, so server builds no
+  longer download SQLite (the server uses PostgreSQL and only loads SQLite
+  for a SQLite dialect). Not in the committed root pubspec: the Android app
+  needs the bundled SQLite. The Tests workflow also caches the Serverpod CLI
+  per version and retries its install.
+- `v0.19.1` failed at publishing: the rename had left the build jobs pushing
+  to nest-server while publish tagged hoomly-server. Fix (`bba3c15`): each
+  build pushes to both names and each name is tagged from its own copies.
+- `v0.19.2` passed (image, Tests, Analyze, Format). hoomly-server and
+  hoomly-backup came out public. Deployed by Claude with Thomas's OK: Pi
+  `.env` now names `hoomly-server` 0.19.2 (`.env.bak-20261108-130157`),
+  dump `nest-pre-update-20261108-130159`. Verified: API ping 0.19.2 / API 13,
+  site and privacy page titled Hoomly, admin portal "Hoomly admin", no
+  migration, no errors. A real email was not sent to check the new subject.
+
 **Pi upgraded to Ubuntu 26.04 LTS (2026-11-08, NEST-27):** by Claude with
 Thomas's OK. Dump `nest-pre-os-upgrade-20261108-092242.sql.gz` first, then
 the pending reboot, then `do-release-upgrade -f
