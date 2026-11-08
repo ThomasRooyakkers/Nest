@@ -11,12 +11,20 @@ FROM dart:3.13.7 AS build
 WORKDIR /app
 COPY pubspec.lock .
 COPY nest_server nest_server
+# `source: system` stops package:sqlite3's build hook from downloading a
+# prebuilt SQLite from GitHub Releases, which failed every image build on
+# 2026-11-08 (GitHub answered 504). The server uses PostgreSQL and only loads
+# SQLite for a SQLite database dialect, so nothing is needed at run time.
 RUN printf '%s\n' \
   'name: _' \
   'environment:' \
   '  sdk: ^3.12.2' \
   'workspace:' \
   '  - nest_server' \
+  'hooks:' \
+  '  user_defines:' \
+  '    sqlite3:' \
+  '      source: system' \
   > pubspec.yaml
 RUN dart pub get
 

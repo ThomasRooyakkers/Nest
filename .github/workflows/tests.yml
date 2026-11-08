@@ -31,12 +31,38 @@ jobs:
           path: ~/.cache/serverpod/pg-binaries
           key: serverpod-pg-binaries-${{runner.os}}-${{env.VERSION}}
 
+      # This job only builds the server, which uses PostgreSQL. `source: system`
+      # stops package:sqlite3's build hook from downloading a prebuilt SQLite
+      # from GitHub Releases, which failed every run on 2026-11-08 (GitHub
+      # answered 504). Not in the committed pubspec: the Android app needs the
+      # bundled SQLite for its offline cache.
+      - name: Use the system SQLite for server builds
+        run: |
+          printf '%s\n' '' 'hooks:' '  user_defines:' '    sqlite3:' '      source: system' >> pubspec.yaml
+
       - name: Install dependencies
         run: flutter pub get
 
+      # The installed CLI is cached per Serverpod version, so its build (which
+      # also downloads SQLite and cannot take the setting above) runs once per
+      # version, with retries for a flaky download.
+      - name: Cache Serverpod CLI
+        id: cli-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/state/Dart/install
+          key: serverpod-cli-${{runner.os}}-${{env.VERSION}}
+
       - name: Install Serverpod CLI
         run: |
-          dart install serverpod_cli@$VERSION
+          if [ "${{ steps.cli-cache.outputs.cache-hit }}" != "true" ]; then
+            for attempt in 1 2 3 4 5; do
+              dart install serverpod_cli@$VERSION && break
+              [ "$attempt" = 5 ] && exit 1
+              echo "Install failed (attempt $attempt), retrying in $((attempt * 30)) s"
+              sleep $((attempt * 30))
+            done
+          fi
           # `dart install` puts executables in the Dart data home, which is not
           # on the PATH of a GitHub runner.
           echo "${XDG_STATE_HOME:-$HOME/.local/state}/Dart/install/bin" >> "$GITHUB_PATH"
