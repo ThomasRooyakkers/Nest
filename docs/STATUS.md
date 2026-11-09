@@ -19,9 +19,10 @@ The backlog is in Jira (`docs/JIRA.md`).
   2026-11-09 with What's New in English and Dutch, description says
   Hoomly; build 1.1.0 (2) uploaded and selected. Thomas still has to click
   Add for Review and submit (review notes updated for 1.1).
-- **Google Play:** paused (iOS first). A closed test was submitted
-  2026-11-02; personal account needs 12 testers × 14 days. Family gets the
-  signed release APK directly (home-screen name "Hoomly" since 2026-11-04).
+- **Google Play:** 1.1.0 (2) sent to Google for production review
+  2026-11-09 (all 178 countries, full rollout, managed publishing off, so it
+  goes live once approved). The account is an organisation account since
+  2026-11-09, so no 12-tester rule.
 - **NEST-23:** iOS Google sign-in now reuses the last Google account
   silently, so Google's "shared data" mail no longer comes on every sign-in;
   not yet checked on a real iPhone.

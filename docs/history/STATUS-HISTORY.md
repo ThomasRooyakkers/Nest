@@ -7,6 +7,18 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Google Play 1.1 sent for production review (2026-11-09):** Thomas
+switched the Play developer account (same ID 4997764981545368596) from
+personal to organisation, which removes the 12-tester, 14-day closed-test
+rule; production was open right away. Claude rebuilt the AAB
+(`flutter build appbundle --release`, 1.1.0+2, upload key; the one on disk
+was still 1.0 from 2026-11-02), filled the production draft "1.1.0 (2)" with
+en-GB and nl-NL release notes (rebrand, meal plan, grocery icons and default
+store, smoother swipe, Android back and tab bar, sign-in fixes), and set all
+178 countries. Thomas uploaded the AAB and completed the EU trader status
+declaration (quick checks blocked on it). Four changes sent for review;
+managed publishing is off, so 1.1 goes live on approval.
+
 **0.19.2 released and deployed (2026-11-08):** the Hoomly rebrand
 (NEST-22) on the server. Getting there took three tags:
 - `v0.19.0` failed: package:sqlite3's build hook (pulled in by
