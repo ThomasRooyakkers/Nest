@@ -15,8 +15,10 @@ The backlog is in Jira (`docs/JIRA.md`).
   B (logs, security events) and C (Overview metrics, admin alert emails).
   Resend is on for the Pi; a real alert email has not been seen yet.
   `UPTIME_PING_URL` is not set (needs Thomas's healthchecks.io account).
-- **App Store:** record "Hoomly" exists, build 1.0.0 (1) uploaded; Thomas
-  still has to finish the listing items and submit for review.
+- **App Store:** 1.0 is live (Ready for Distribution). Version 1.1 created
+  2026-11-09 with What's New in English and Dutch; build 1.1.0 (2) is
+  archived and waiting for Thomas to upload it (Xcode Organizer), then
+  select the build and Add for Review.
 - **Google Play:** paused (iOS first). A closed test was submitted
   2026-11-02; personal account needs 12 testers × 14 days. Family gets the
   signed release APK directly (home-screen name "Hoomly" since 2026-11-04).
