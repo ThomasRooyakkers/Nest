@@ -57,8 +57,8 @@ abstract class TaskEvent
   @_isc.useResult
   TaskEvent copyWith({
     int? householdId,
-    List<_if91w2qc.Task>? tasks,
-    List<int>? removedTaskIds,
+    List<_if91w2qc.Task>? tasks = const _isc.$UndefinedList<_if91w2qc.Task>(),
+    List<int>? removedTaskIds = const _isc.$UndefinedList<int>(),
   });
   @override
   Map<String, dynamic> toJson() {
@@ -87,8 +87,6 @@ abstract class TaskEvent
   }
 }
 
-class _Undefined {}
-
 class _TaskEventImpl extends TaskEvent {
   _TaskEventImpl({
     required int householdId,
@@ -106,17 +104,17 @@ class _TaskEventImpl extends TaskEvent {
   @override
   TaskEvent copyWith({
     int? householdId,
-    Object? tasks = _Undefined,
-    Object? removedTaskIds = _Undefined,
+    List<_if91w2qc.Task>? tasks = const _isc.$UndefinedList<_if91w2qc.Task>(),
+    List<int>? removedTaskIds = const _isc.$UndefinedList<int>(),
   }) {
     return TaskEvent(
       householdId: householdId ?? this.householdId,
-      tasks: tasks is List<_if91w2qc.Task>?
-          ? tasks
-          : this.tasks?.map((e0) => e0.copyWith()).toList(),
-      removedTaskIds: removedTaskIds is List<int>?
-          ? removedTaskIds
-          : this.removedTaskIds?.map((e0) => e0).toList(),
+      tasks: tasks is _isc.UndefinedSentinel
+          ? this.tasks?.map((e0) => e0.copyWith()).toList()
+          : tasks,
+      removedTaskIds: removedTaskIds is _isc.UndefinedSentinel
+          ? this.removedTaskIds?.map((e0) => e0).toList()
+          : removedTaskIds,
     );
   }
 }

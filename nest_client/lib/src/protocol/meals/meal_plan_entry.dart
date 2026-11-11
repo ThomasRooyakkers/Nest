@@ -141,16 +141,16 @@ abstract class MealPlanEntry
   MealPlanEntry copyWith({
     int? id,
     int? householdId,
-    _iaj5kvsg.Household? household,
+    _iaj5kvsg.Household? household = const _UndefinedMealPlanEntry$household(),
     DateTime? date,
     _izm7s29y.MealSlot? slot,
     int? recipeId,
-    _ieuwfnog.Recipe? recipe,
+    _ieuwfnog.Recipe? recipe = const _UndefinedMealPlanEntry$recipe(),
     String? freeText,
     int? servings,
     String? prepAheadNote,
     int? createdById,
-    _ihr4yuyc.NestUser? createdBy,
+    _ihr4yuyc.NestUser? createdBy = const _UndefinedMealPlanEntry$createdBy(),
     DateTime? createdAt,
     DateTime? updatedAt,
   });
@@ -204,6 +204,21 @@ abstract class MealPlanEntry
 
 class _Undefined {}
 
+class _UndefinedMealPlanEntry$household extends _isc.UndefinedSentinel
+    implements _iaj5kvsg.Household {
+  const _UndefinedMealPlanEntry$household();
+}
+
+class _UndefinedMealPlanEntry$recipe extends _isc.UndefinedSentinel
+    implements _ieuwfnog.Recipe {
+  const _UndefinedMealPlanEntry$recipe();
+}
+
+class _UndefinedMealPlanEntry$createdBy extends _isc.UndefinedSentinel
+    implements _ihr4yuyc.NestUser {
+  const _UndefinedMealPlanEntry$createdBy();
+}
+
 class _MealPlanEntryImpl extends MealPlanEntry {
   _MealPlanEntryImpl({
     int? id,
@@ -244,36 +259,38 @@ class _MealPlanEntryImpl extends MealPlanEntry {
   MealPlanEntry copyWith({
     Object? id = _Undefined,
     int? householdId,
-    Object? household = _Undefined,
+    _iaj5kvsg.Household? household = const _UndefinedMealPlanEntry$household(),
     DateTime? date,
     _izm7s29y.MealSlot? slot,
     Object? recipeId = _Undefined,
-    Object? recipe = _Undefined,
+    _ieuwfnog.Recipe? recipe = const _UndefinedMealPlanEntry$recipe(),
     String? freeText,
     Object? servings = _Undefined,
     String? prepAheadNote,
     Object? createdById = _Undefined,
-    Object? createdBy = _Undefined,
+    _ihr4yuyc.NestUser? createdBy = const _UndefinedMealPlanEntry$createdBy(),
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
     return MealPlanEntry(
       id: id is int? ? id : this.id,
       householdId: householdId ?? this.householdId,
-      household: household is _iaj5kvsg.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _isc.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       date: date ?? this.date,
       slot: slot ?? this.slot,
       recipeId: recipeId is int? ? recipeId : this.recipeId,
-      recipe: recipe is _ieuwfnog.Recipe? ? recipe : this.recipe?.copyWith(),
+      recipe: recipe is _isc.UndefinedSentinel
+          ? this.recipe?.copyWith()
+          : recipe,
       freeText: freeText ?? this.freeText,
       servings: servings is int? ? servings : this.servings,
       prepAheadNote: prepAheadNote ?? this.prepAheadNote,
       createdById: createdById is int? ? createdById : this.createdById,
-      createdBy: createdBy is _ihr4yuyc.NestUser?
-          ? createdBy
-          : this.createdBy?.copyWith(),
+      createdBy: createdBy is _isc.UndefinedSentinel
+          ? this.createdBy?.copyWith()
+          : createdBy,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

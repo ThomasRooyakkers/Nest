@@ -105,13 +105,16 @@ abstract class ShoppingEvent
   @_is.useResult
   ShoppingEvent copyWith({
     int? householdId,
-    List<_irn8wed6.ShoppingList>? lists,
-    List<int>? removedListIds,
-    List<_imhj2cwu.Store>? stores,
-    List<int>? removedStoreIds,
-    List<_i2oeu5fq.CatalogItem>? catalogItems,
-    List<_ify8i7oo.ShoppingItem>? items,
-    List<int>? removedItemIds,
+    List<_irn8wed6.ShoppingList>? lists =
+        const _is.$UndefinedList<_irn8wed6.ShoppingList>(),
+    List<int>? removedListIds = const _is.$UndefinedList<int>(),
+    List<_imhj2cwu.Store>? stores = const _is.$UndefinedList<_imhj2cwu.Store>(),
+    List<int>? removedStoreIds = const _is.$UndefinedList<int>(),
+    List<_i2oeu5fq.CatalogItem>? catalogItems =
+        const _is.$UndefinedList<_i2oeu5fq.CatalogItem>(),
+    List<_ify8i7oo.ShoppingItem>? items =
+        const _is.$UndefinedList<_ify8i7oo.ShoppingItem>(),
+    List<int>? removedItemIds = const _is.$UndefinedList<int>(),
   });
   @override
   Map<String, dynamic> toJson() {
@@ -157,8 +160,6 @@ abstract class ShoppingEvent
   }
 }
 
-class _Undefined {}
-
 class _ShoppingEventImpl extends ShoppingEvent {
   _ShoppingEventImpl({
     required int householdId,
@@ -186,37 +187,40 @@ class _ShoppingEventImpl extends ShoppingEvent {
   @override
   ShoppingEvent copyWith({
     int? householdId,
-    Object? lists = _Undefined,
-    Object? removedListIds = _Undefined,
-    Object? stores = _Undefined,
-    Object? removedStoreIds = _Undefined,
-    Object? catalogItems = _Undefined,
-    Object? items = _Undefined,
-    Object? removedItemIds = _Undefined,
+    List<_irn8wed6.ShoppingList>? lists =
+        const _is.$UndefinedList<_irn8wed6.ShoppingList>(),
+    List<int>? removedListIds = const _is.$UndefinedList<int>(),
+    List<_imhj2cwu.Store>? stores = const _is.$UndefinedList<_imhj2cwu.Store>(),
+    List<int>? removedStoreIds = const _is.$UndefinedList<int>(),
+    List<_i2oeu5fq.CatalogItem>? catalogItems =
+        const _is.$UndefinedList<_i2oeu5fq.CatalogItem>(),
+    List<_ify8i7oo.ShoppingItem>? items =
+        const _is.$UndefinedList<_ify8i7oo.ShoppingItem>(),
+    List<int>? removedItemIds = const _is.$UndefinedList<int>(),
   }) {
     return ShoppingEvent(
       householdId: householdId ?? this.householdId,
-      lists: lists is List<_irn8wed6.ShoppingList>?
-          ? lists
-          : this.lists?.map((e0) => e0.copyWith()).toList(),
-      removedListIds: removedListIds is List<int>?
-          ? removedListIds
-          : this.removedListIds?.map((e0) => e0).toList(),
-      stores: stores is List<_imhj2cwu.Store>?
-          ? stores
-          : this.stores?.map((e0) => e0.copyWith()).toList(),
-      removedStoreIds: removedStoreIds is List<int>?
-          ? removedStoreIds
-          : this.removedStoreIds?.map((e0) => e0).toList(),
-      catalogItems: catalogItems is List<_i2oeu5fq.CatalogItem>?
-          ? catalogItems
-          : this.catalogItems?.map((e0) => e0.copyWith()).toList(),
-      items: items is List<_ify8i7oo.ShoppingItem>?
-          ? items
-          : this.items?.map((e0) => e0.copyWith()).toList(),
-      removedItemIds: removedItemIds is List<int>?
-          ? removedItemIds
-          : this.removedItemIds?.map((e0) => e0).toList(),
+      lists: lists is _is.UndefinedSentinel
+          ? this.lists?.map((e0) => e0.copyWith()).toList()
+          : lists,
+      removedListIds: removedListIds is _is.UndefinedSentinel
+          ? this.removedListIds?.map((e0) => e0).toList()
+          : removedListIds,
+      stores: stores is _is.UndefinedSentinel
+          ? this.stores?.map((e0) => e0.copyWith()).toList()
+          : stores,
+      removedStoreIds: removedStoreIds is _is.UndefinedSentinel
+          ? this.removedStoreIds?.map((e0) => e0).toList()
+          : removedStoreIds,
+      catalogItems: catalogItems is _is.UndefinedSentinel
+          ? this.catalogItems?.map((e0) => e0.copyWith()).toList()
+          : catalogItems,
+      items: items is _is.UndefinedSentinel
+          ? this.items?.map((e0) => e0.copyWith()).toList()
+          : items,
+      removedItemIds: removedItemIds is _is.UndefinedSentinel
+          ? this.removedItemIds?.map((e0) => e0).toList()
+          : removedItemIds,
     );
   }
 }

@@ -96,7 +96,7 @@ abstract class AdminHouseholdSummary
     List<String>? ownerNames,
     List<_im1kgcet.HouseholdFeature>? enabledFeatures,
     DateTime? createdAt,
-    DateTime? lastActivityAt,
+    DateTime? lastActivityAt = const _is.$UndefinedDateTime(),
   });
   @override
   Map<String, dynamic> toJson() {
@@ -134,8 +134,6 @@ abstract class AdminHouseholdSummary
   }
 }
 
-class _Undefined {}
-
 class _AdminHouseholdSummaryImpl extends AdminHouseholdSummary {
   _AdminHouseholdSummaryImpl({
     required int id,
@@ -169,7 +167,7 @@ class _AdminHouseholdSummaryImpl extends AdminHouseholdSummary {
     List<String>? ownerNames,
     List<_im1kgcet.HouseholdFeature>? enabledFeatures,
     DateTime? createdAt,
-    Object? lastActivityAt = _Undefined,
+    DateTime? lastActivityAt = const _is.$UndefinedDateTime(),
   }) {
     return AdminHouseholdSummary(
       id: id ?? this.id,
@@ -180,9 +178,9 @@ class _AdminHouseholdSummaryImpl extends AdminHouseholdSummary {
       enabledFeatures:
           enabledFeatures ?? this.enabledFeatures.map((e0) => e0).toList(),
       createdAt: createdAt ?? this.createdAt,
-      lastActivityAt: lastActivityAt is DateTime?
-          ? lastActivityAt
-          : this.lastActivityAt,
+      lastActivityAt: lastActivityAt is _is.UndefinedSentinel
+          ? this.lastActivityAt
+          : lastActivityAt,
     );
   }
 }

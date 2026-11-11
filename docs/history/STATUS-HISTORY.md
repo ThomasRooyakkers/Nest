@@ -7,6 +7,24 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Serverpod 4.1.1 (NEST-44, 2026-11-11, not yet released):** the Pi's logs
+(3 days) held ~1,500 error lines in the `nest` container; ~1,450 came from
+one burst on 2026-11-09 14:51–14:56: 364 plain GETs to `/v1/websocket`, each
+logged by Serverpod 4.0.4 as "Invalid WebSocket upgrade request" plus "Bad
+state: Header already sent" (the caller still got 400; source unknown,
+possibly Play's pre-launch test devices). The rest: normal sign-in mistakes
+logged at ERROR, Cloudflare tunnel QUIC timeouts that reconnected by
+themselves (09-11 01h/18h, 11-11 02:50), and 5 harmless duplicate
+health-metric inserts. Upgraded server, client, admin and app to Serverpod
+4.1.1 (CLI too; CI `VERSION`), and drift 2.35.0 / drift_dev 2.35.3 (4.1 needs
+sqlparser 0.45; the old drift pin deviation is gone). Regenerated code; new
+migration `20261111111039919` adds the auth module's email OTP login table
+(additive). Checked locally: a bad websocket request gets 400 with nothing
+logged on 4.1.1 (4.0.4 logs the error), a real handshake still gets 101, and
+a 4.0.4 client (the 1.1 apps) signs in, loads households and lists and keeps
+the shopping stream open against 4.1.1. Tests: server 468, app 232, admin 23,
+shared 24, all green; `dart analyze --fatal-infos` clean.
+
 **Google Play 1.1 sent for production review (2026-11-09):** Thomas
 switched the Play developer account (same ID 4997764981545368596) from
 personal to organisation, which removes the 12-tester, 14-day closed-test

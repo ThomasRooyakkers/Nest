@@ -56,8 +56,9 @@ abstract class MealPlanEvent
   @_isc.useResult
   MealPlanEvent copyWith({
     int? householdId,
-    List<_iyo7z7wz.MealPlanEntry>? entries,
-    List<int>? removedEntryIds,
+    List<_iyo7z7wz.MealPlanEntry>? entries =
+        const _isc.$UndefinedList<_iyo7z7wz.MealPlanEntry>(),
+    List<int>? removedEntryIds = const _isc.$UndefinedList<int>(),
   });
   @override
   Map<String, dynamic> toJson() {
@@ -87,8 +88,6 @@ abstract class MealPlanEvent
   }
 }
 
-class _Undefined {}
-
 class _MealPlanEventImpl extends MealPlanEvent {
   _MealPlanEventImpl({
     required int householdId,
@@ -106,17 +105,18 @@ class _MealPlanEventImpl extends MealPlanEvent {
   @override
   MealPlanEvent copyWith({
     int? householdId,
-    Object? entries = _Undefined,
-    Object? removedEntryIds = _Undefined,
+    List<_iyo7z7wz.MealPlanEntry>? entries =
+        const _isc.$UndefinedList<_iyo7z7wz.MealPlanEntry>(),
+    List<int>? removedEntryIds = const _isc.$UndefinedList<int>(),
   }) {
     return MealPlanEvent(
       householdId: householdId ?? this.householdId,
-      entries: entries is List<_iyo7z7wz.MealPlanEntry>?
-          ? entries
-          : this.entries?.map((e0) => e0.copyWith()).toList(),
-      removedEntryIds: removedEntryIds is List<int>?
-          ? removedEntryIds
-          : this.removedEntryIds?.map((e0) => e0).toList(),
+      entries: entries is _isc.UndefinedSentinel
+          ? this.entries?.map((e0) => e0.copyWith()).toList()
+          : entries,
+      removedEntryIds: removedEntryIds is _isc.UndefinedSentinel
+          ? this.removedEntryIds?.map((e0) => e0).toList()
+          : removedEntryIds,
     );
   }
 }

@@ -11,6 +11,7 @@
 // ignore_for_file: dead_code, unnecessary_null_comparison
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:async' as _ida;
 import 'package:nest_server/src/generated/protocol.dart' as _imc1swab;
 import 'package:serverpod/serverpod.dart' as _is;
 import '../recipes/recipe.dart' as _ieuwfnog;
@@ -72,7 +73,7 @@ abstract class RecipeStep
   RecipeStep copyWith({
     int? id,
     int? recipeId,
-    _ieuwfnog.Recipe? recipe,
+    _ieuwfnog.Recipe? recipe = const _UndefinedRecipeStep$recipe(),
     int? position,
     String? text,
   });
@@ -130,6 +131,11 @@ abstract class RecipeStep
 
 class _Undefined {}
 
+class _UndefinedRecipeStep$recipe extends _is.UndefinedSentinel
+    implements _ieuwfnog.Recipe {
+  const _UndefinedRecipeStep$recipe();
+}
+
 class _RecipeStepImpl extends RecipeStep {
   _RecipeStepImpl({
     int? id,
@@ -152,14 +158,16 @@ class _RecipeStepImpl extends RecipeStep {
   RecipeStep copyWith({
     Object? id = _Undefined,
     int? recipeId,
-    Object? recipe = _Undefined,
+    _ieuwfnog.Recipe? recipe = const _UndefinedRecipeStep$recipe(),
     int? position,
     String? text,
   }) {
     return RecipeStep(
       id: id is int? ? id : this.id,
       recipeId: recipeId ?? this.recipeId,
-      recipe: recipe is _ieuwfnog.Recipe? ? recipe : this.recipe?.copyWith(),
+      recipe: recipe is _is.UndefinedSentinel
+          ? this.recipe?.copyWith()
+          : recipe,
       position: position ?? this.position,
       text: text ?? this.text,
     );
@@ -324,6 +332,71 @@ class RecipeStepRepository {
       include: include,
       lockMode: lockMode,
       lockBehavior: lockBehavior,
+    );
+  }
+
+  /// Emits [RecipeStep]s matching the given query parameters every time the
+  /// source tables are modified.
+  ///
+  /// Use [where] to specify which items to include in the return value.
+  /// If none is specified, all items will be returned.
+  ///
+  /// To specify the order of the items use [orderBy] or [orderByList]
+  /// when sorting by multiple columns.
+  ///
+  /// The maximum number of items can be set by [limit]. If no limit is set,
+  /// all items matching the query will be returned.
+  ///
+  /// [offset] defines how many items to skip, after which [limit] (or all)
+  /// items are read from the database.
+  ///
+  /// Use [throttle] to specify the minimum interval between queries. It can
+  /// also be set to `null`, in which case the stream will only be throttled
+  /// when its subscription is paused.
+  ///
+  /// Source tables are collected from the queried table, [where], [orderBy],
+  /// [orderByList], and the [include] graph. [alsoTriggerOnTables] is added
+  /// to that set. Pass [Table] instances such as `RecipeStep.t`.
+  ///
+  /// Raw [Expression] SQL is not inspected. Tables referenced only in raw
+  /// SQL must be passed via [alsoTriggerOnTables].
+  ///
+  /// The stream always reads committed state and never joins an ambient
+  /// [Transaction]. Emissions for a write fire after that write commits.
+  ///
+  /// Currently only supported on SQLite. Calling this method on PostgreSQL
+  /// throws an [UnsupportedError].
+  ///
+  /// ```dart
+  /// var subscription = Persons.db.watch(
+  ///   session,
+  ///   where: (t) => t.lastName.equals('Jones'),
+  ///   orderBy: (t) => t.firstName,
+  ///   limit: 100,
+  /// ).listen((persons) {
+  ///   // Handle the latest matching rows.
+  /// });
+  /// ```
+  _ida.Stream<List<RecipeStep>> watch(
+    _is.DatabaseSession session, {
+    _is.WhereExpressionBuilder<RecipeStepTable>? where,
+    int? limit,
+    int? offset,
+    _is.OrderByBuilder<RecipeStepTable>? orderBy,
+    _is.OrderByListBuilder<RecipeStepTable>? orderByList,
+    RecipeStepInclude? include,
+    Duration? throttle = const Duration(milliseconds: 30),
+    Iterable<_is.Table>? alsoTriggerOnTables,
+  }) {
+    return session.db.watch<RecipeStep>(
+      where: where?.call(RecipeStep.t),
+      orderBy: orderBy?.call(RecipeStep.t),
+      orderByList: orderByList?.call(RecipeStep.t),
+      limit: limit,
+      offset: offset,
+      include: include,
+      throttle: throttle,
+      alsoTriggerOnTables: alsoTriggerOnTables,
     );
   }
 

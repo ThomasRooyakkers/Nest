@@ -11,6 +11,7 @@
 // ignore_for_file: dead_code, unnecessary_null_comparison
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:async' as _ida;
 import 'package:nest_server/src/generated/protocol.dart' as _imc1swab;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'household.dart' as _ijonbu5t;
@@ -100,9 +101,9 @@ abstract class Membership
   Membership copyWith({
     int? id,
     int? userId,
-    _iasjmgi7.NestUser? user,
+    _iasjmgi7.NestUser? user = const _UndefinedMembership$user(),
     int? householdId,
-    _ijonbu5t.Household? household,
+    _ijonbu5t.Household? household = const _UndefinedMembership$household(),
     _iur1rrwm.MembershipRole? role,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -173,6 +174,16 @@ abstract class Membership
 
 class _Undefined {}
 
+class _UndefinedMembership$user extends _is.UndefinedSentinel
+    implements _iasjmgi7.NestUser {
+  const _UndefinedMembership$user();
+}
+
+class _UndefinedMembership$household extends _is.UndefinedSentinel
+    implements _ijonbu5t.Household {
+  const _UndefinedMembership$household();
+}
+
 class _MembershipImpl extends Membership {
   _MembershipImpl({
     int? id,
@@ -201,9 +212,9 @@ class _MembershipImpl extends Membership {
   Membership copyWith({
     Object? id = _Undefined,
     int? userId,
-    Object? user = _Undefined,
+    _iasjmgi7.NestUser? user = const _UndefinedMembership$user(),
     int? householdId,
-    Object? household = _Undefined,
+    _ijonbu5t.Household? household = const _UndefinedMembership$household(),
     _iur1rrwm.MembershipRole? role,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -211,11 +222,11 @@ class _MembershipImpl extends Membership {
     return Membership(
       id: id is int? ? id : this.id,
       userId: userId ?? this.userId,
-      user: user is _iasjmgi7.NestUser? ? user : this.user?.copyWith(),
+      user: user is _is.UndefinedSentinel ? this.user?.copyWith() : user,
       householdId: householdId ?? this.householdId,
-      household: household is _ijonbu5t.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _is.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       role: role ?? this.role,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -439,6 +450,71 @@ class MembershipRepository {
       include: include,
       lockMode: lockMode,
       lockBehavior: lockBehavior,
+    );
+  }
+
+  /// Emits [Membership]s matching the given query parameters every time the
+  /// source tables are modified.
+  ///
+  /// Use [where] to specify which items to include in the return value.
+  /// If none is specified, all items will be returned.
+  ///
+  /// To specify the order of the items use [orderBy] or [orderByList]
+  /// when sorting by multiple columns.
+  ///
+  /// The maximum number of items can be set by [limit]. If no limit is set,
+  /// all items matching the query will be returned.
+  ///
+  /// [offset] defines how many items to skip, after which [limit] (or all)
+  /// items are read from the database.
+  ///
+  /// Use [throttle] to specify the minimum interval between queries. It can
+  /// also be set to `null`, in which case the stream will only be throttled
+  /// when its subscription is paused.
+  ///
+  /// Source tables are collected from the queried table, [where], [orderBy],
+  /// [orderByList], and the [include] graph. [alsoTriggerOnTables] is added
+  /// to that set. Pass [Table] instances such as `Membership.t`.
+  ///
+  /// Raw [Expression] SQL is not inspected. Tables referenced only in raw
+  /// SQL must be passed via [alsoTriggerOnTables].
+  ///
+  /// The stream always reads committed state and never joins an ambient
+  /// [Transaction]. Emissions for a write fire after that write commits.
+  ///
+  /// Currently only supported on SQLite. Calling this method on PostgreSQL
+  /// throws an [UnsupportedError].
+  ///
+  /// ```dart
+  /// var subscription = Persons.db.watch(
+  ///   session,
+  ///   where: (t) => t.lastName.equals('Jones'),
+  ///   orderBy: (t) => t.firstName,
+  ///   limit: 100,
+  /// ).listen((persons) {
+  ///   // Handle the latest matching rows.
+  /// });
+  /// ```
+  _ida.Stream<List<Membership>> watch(
+    _is.DatabaseSession session, {
+    _is.WhereExpressionBuilder<MembershipTable>? where,
+    int? limit,
+    int? offset,
+    _is.OrderByBuilder<MembershipTable>? orderBy,
+    _is.OrderByListBuilder<MembershipTable>? orderByList,
+    MembershipInclude? include,
+    Duration? throttle = const Duration(milliseconds: 30),
+    Iterable<_is.Table>? alsoTriggerOnTables,
+  }) {
+    return session.db.watch<Membership>(
+      where: where?.call(Membership.t),
+      orderBy: orderBy?.call(Membership.t),
+      orderByList: orderByList?.call(Membership.t),
+      limit: limit,
+      offset: offset,
+      include: include,
+      throttle: throttle,
+      alsoTriggerOnTables: alsoTriggerOnTables,
     );
   }
 

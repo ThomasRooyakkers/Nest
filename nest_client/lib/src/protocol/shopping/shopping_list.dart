@@ -85,7 +85,7 @@ abstract class ShoppingList
   ShoppingList copyWith({
     int? id,
     int? householdId,
-    _iaj5kvsg.Household? household,
+    _iaj5kvsg.Household? household = const _UndefinedShoppingList$household(),
     String? name,
     List<int>? memberIds,
     DateTime? createdAt,
@@ -127,6 +127,11 @@ abstract class ShoppingList
 
 class _Undefined {}
 
+class _UndefinedShoppingList$household extends _isc.UndefinedSentinel
+    implements _iaj5kvsg.Household {
+  const _UndefinedShoppingList$household();
+}
+
 class _ShoppingListImpl extends ShoppingList {
   _ShoppingListImpl({
     int? id,
@@ -153,7 +158,7 @@ class _ShoppingListImpl extends ShoppingList {
   ShoppingList copyWith({
     Object? id = _Undefined,
     int? householdId,
-    Object? household = _Undefined,
+    _iaj5kvsg.Household? household = const _UndefinedShoppingList$household(),
     String? name,
     List<int>? memberIds,
     DateTime? createdAt,
@@ -162,9 +167,9 @@ class _ShoppingListImpl extends ShoppingList {
     return ShoppingList(
       id: id is int? ? id : this.id,
       householdId: householdId ?? this.householdId,
-      household: household is _iaj5kvsg.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _isc.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       name: name ?? this.name,
       memberIds: memberIds ?? this.memberIds.map((e0) => e0).toList(),
       createdAt: createdAt ?? this.createdAt,

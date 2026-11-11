@@ -82,7 +82,7 @@ abstract class BackupRequest
     int? id,
     int? requestedBy,
     DateTime? requestedAt,
-    DateTime? pickedUpAt,
+    DateTime? pickedUpAt = const _isc.$UndefinedDateTime(),
     DateTime? createdAt,
     DateTime? updatedAt,
   });
@@ -145,7 +145,7 @@ class _BackupRequestImpl extends BackupRequest {
     Object? id = _Undefined,
     int? requestedBy,
     DateTime? requestedAt,
-    Object? pickedUpAt = _Undefined,
+    DateTime? pickedUpAt = const _isc.$UndefinedDateTime(),
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -153,7 +153,9 @@ class _BackupRequestImpl extends BackupRequest {
       id: id is int? ? id : this.id,
       requestedBy: requestedBy ?? this.requestedBy,
       requestedAt: requestedAt ?? this.requestedAt,
-      pickedUpAt: pickedUpAt is DateTime? ? pickedUpAt : this.pickedUpAt,
+      pickedUpAt: pickedUpAt is _isc.UndefinedSentinel
+          ? this.pickedUpAt
+          : pickedUpAt,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

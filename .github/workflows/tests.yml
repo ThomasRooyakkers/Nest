@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      VERSION: '4.0.4'
+      VERSION: '4.1.1'
       SERVERPOD_PASSWORD_database: 'ze0OuOc_3oBliVz7wkr-NroF1810ThQ-'
       SERVERPOD_PASSWORD_redis: 'tMOhmnwJUN7WOgLSXhpZccaTis15Kqwy'
 

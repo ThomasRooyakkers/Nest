@@ -161,7 +161,7 @@ abstract class Recipe
   Recipe copyWith({
     int? id,
     int? householdId,
-    _iaj5kvsg.Household? household,
+    _iaj5kvsg.Household? household = const _UndefinedRecipe$household(),
     String? title,
     String? description,
     String? photoPath,
@@ -171,9 +171,11 @@ abstract class Recipe
     List<String>? tags,
     bool? isFavorite,
     int? createdById,
-    _ihr4yuyc.NestUser? createdBy,
-    List<_i86ex859.RecipeIngredient>? ingredients,
-    List<_ifnvjxdn.RecipeStep>? steps,
+    _ihr4yuyc.NestUser? createdBy = const _UndefinedRecipe$createdBy(),
+    List<_i86ex859.RecipeIngredient>? ingredients =
+        const _isc.$UndefinedList<_i86ex859.RecipeIngredient>(),
+    List<_ifnvjxdn.RecipeStep>? steps =
+        const _isc.$UndefinedList<_ifnvjxdn.RecipeStep>(),
     DateTime? createdAt,
     DateTime? updatedAt,
   });
@@ -238,6 +240,16 @@ abstract class Recipe
 
 class _Undefined {}
 
+class _UndefinedRecipe$household extends _isc.UndefinedSentinel
+    implements _iaj5kvsg.Household {
+  const _UndefinedRecipe$household();
+}
+
+class _UndefinedRecipe$createdBy extends _isc.UndefinedSentinel
+    implements _ihr4yuyc.NestUser {
+  const _UndefinedRecipe$createdBy();
+}
+
 class _RecipeImpl extends Recipe {
   _RecipeImpl({
     int? id,
@@ -284,7 +296,7 @@ class _RecipeImpl extends Recipe {
   Recipe copyWith({
     Object? id = _Undefined,
     int? householdId,
-    Object? household = _Undefined,
+    _iaj5kvsg.Household? household = const _UndefinedRecipe$household(),
     String? title,
     String? description,
     Object? photoPath = _Undefined,
@@ -294,18 +306,20 @@ class _RecipeImpl extends Recipe {
     List<String>? tags,
     bool? isFavorite,
     Object? createdById = _Undefined,
-    Object? createdBy = _Undefined,
-    Object? ingredients = _Undefined,
-    Object? steps = _Undefined,
+    _ihr4yuyc.NestUser? createdBy = const _UndefinedRecipe$createdBy(),
+    List<_i86ex859.RecipeIngredient>? ingredients =
+        const _isc.$UndefinedList<_i86ex859.RecipeIngredient>(),
+    List<_ifnvjxdn.RecipeStep>? steps =
+        const _isc.$UndefinedList<_ifnvjxdn.RecipeStep>(),
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
     return Recipe(
       id: id is int? ? id : this.id,
       householdId: householdId ?? this.householdId,
-      household: household is _iaj5kvsg.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _isc.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       title: title ?? this.title,
       description: description ?? this.description,
       photoPath: photoPath is String? ? photoPath : this.photoPath,
@@ -315,15 +329,15 @@ class _RecipeImpl extends Recipe {
       tags: tags ?? this.tags.map((e0) => e0).toList(),
       isFavorite: isFavorite ?? this.isFavorite,
       createdById: createdById is int? ? createdById : this.createdById,
-      createdBy: createdBy is _ihr4yuyc.NestUser?
-          ? createdBy
-          : this.createdBy?.copyWith(),
-      ingredients: ingredients is List<_i86ex859.RecipeIngredient>?
-          ? ingredients
-          : this.ingredients?.map((e0) => e0.copyWith()).toList(),
-      steps: steps is List<_ifnvjxdn.RecipeStep>?
-          ? steps
-          : this.steps?.map((e0) => e0.copyWith()).toList(),
+      createdBy: createdBy is _isc.UndefinedSentinel
+          ? this.createdBy?.copyWith()
+          : createdBy,
+      ingredients: ingredients is _isc.UndefinedSentinel
+          ? this.ingredients?.map((e0) => e0.copyWith()).toList()
+          : ingredients,
+      steps: steps is _isc.UndefinedSentinel
+          ? this.steps?.map((e0) => e0.copyWith()).toList()
+          : steps,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

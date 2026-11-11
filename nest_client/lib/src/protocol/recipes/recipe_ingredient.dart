@@ -86,7 +86,7 @@ abstract class RecipeIngredient
   RecipeIngredient copyWith({
     int? id,
     int? recipeId,
-    _ieuwfnog.Recipe? recipe,
+    _ieuwfnog.Recipe? recipe = const _UndefinedRecipeIngredient$recipe(),
     int? position,
     double? quantity,
     String? unit,
@@ -131,6 +131,11 @@ abstract class RecipeIngredient
 
 class _Undefined {}
 
+class _UndefinedRecipeIngredient$recipe extends _isc.UndefinedSentinel
+    implements _ieuwfnog.Recipe {
+  const _UndefinedRecipeIngredient$recipe();
+}
+
 class _RecipeIngredientImpl extends RecipeIngredient {
   _RecipeIngredientImpl({
     int? id,
@@ -159,7 +164,7 @@ class _RecipeIngredientImpl extends RecipeIngredient {
   RecipeIngredient copyWith({
     Object? id = _Undefined,
     int? recipeId,
-    Object? recipe = _Undefined,
+    _ieuwfnog.Recipe? recipe = const _UndefinedRecipeIngredient$recipe(),
     int? position,
     Object? quantity = _Undefined,
     String? unit,
@@ -169,7 +174,9 @@ class _RecipeIngredientImpl extends RecipeIngredient {
     return RecipeIngredient(
       id: id is int? ? id : this.id,
       recipeId: recipeId ?? this.recipeId,
-      recipe: recipe is _ieuwfnog.Recipe? ? recipe : this.recipe?.copyWith(),
+      recipe: recipe is _isc.UndefinedSentinel
+          ? this.recipe?.copyWith()
+          : recipe,
       position: position ?? this.position,
       quantity: quantity is double? ? quantity : this.quantity,
       unit: unit ?? this.unit,

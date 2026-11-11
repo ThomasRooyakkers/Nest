@@ -191,12 +191,295 @@ export 'watchlist/watch_type.dart';
 export 'watchlist/watchlist_event.dart';
 export 'watchlist/watchlist_item.dart';
 
-class Protocol extends _is.DatabaseSerializationManager {
+class Protocol extends _is.DatabaseSerializationManager
+    implements _is.DatabaseProtocolDeserializationProvider {
   Protocol._();
 
   factory Protocol() => _instance;
 
   static final Protocol _instance = Protocol._().._registerHostProtocols();
+
+  @override
+  _is.ProtocolDeserialization get deserializationMetadata =>
+      _is.ProtocolDeserialization.cached(
+        this,
+        types: const [
+          _is.getType<_ixjhpv4d.AdminAlert>,
+          _is.getType<_iehuwih8.AdminAlertKind>,
+          _is.getType<_imf78wrj.AdminAlertsOverview>,
+          _is.getType<_i0hg09us.AdminAuditEntry>,
+          _is.getType<_iha05d3i.AdminAuditLog>,
+          _is.getType<_iwl7hvp6.AdminBackups>,
+          _is.getType<_iv028t0j.AdminCheckResult>,
+          _is.getType<_iemnk66i.AdminHouseholdCounts>,
+          _is.getType<_ifu8acxo.AdminHouseholdDetail>,
+          _is.getType<_i4qmiwk8.AdminHouseholdMember>,
+          _is.getType<_i1ee57op.AdminHouseholdSummary>,
+          _is.getType<_i4ntnh9u.AdminLogMessage>,
+          _is.getType<_iyyaqnmo.AdminLogSession>,
+          _is.getType<_ixzo8wi2.AdminLogSessionDetail>,
+          _is.getType<_iv7hdcmn.AdminLogSummary>,
+          _is.getType<_ifczr9hk.AdminMetricPoint>,
+          _is.getType<_iz1k9427.AdminMetricSeries>,
+          _is.getType<_i8533ftt.AdminMetrics>,
+          _is.getType<_isq3d78n.AdminSecurityEvent>,
+          _is.getType<_i3d9qk19.AdminServerSettings>,
+          _is.getType<_i9cu0zbm.AdminSystemHealth>,
+          _is.getType<_iptprp3i.AdminUpdateStatus>,
+          _is.getType<_i2dp81hp.AdminUserDetail>,
+          _is.getType<_ixoux1a1.AdminUserHousehold>,
+          _is.getType<_infu3osd.AdminUserSummary>,
+          _is.getType<_iskrofwd.BackupRequest>,
+          _is.getType<_iabyer0k.BackupRun>,
+          _is.getType<_io9tgzbh.BackupRunStatus>,
+          _is.getType<_iyriq3os.MetricsRange>,
+          _is.getType<_ijyxkmer.SecurityEvent>,
+          _is.getType<_ilfcta1d.SecurityEventType>,
+          _is.getType<_ijonbu5t.Household>,
+          _is.getType<_idhxy0am.HouseholdFeature>,
+          _is.getType<_itc130bt.HouseholdInvite>,
+          _is.getType<_iv10erpj.HouseholdMember>,
+          _is.getType<_imk37xix.HouseholdStatus>,
+          _is.getType<_ieufxm3y.MealPlanEntry>,
+          _is.getType<_ig1w91gd.MealPlanEvent>,
+          _is.getType<_irc89x16.MealSlot>,
+          _is.getType<_iu35fd1a.Membership>,
+          _is.getType<_iur1rrwm.MembershipRole>,
+          _is.getType<_i46wom1w.MyHousehold>,
+          _is.getType<_i11cf01m.NestErrorCode>,
+          _is.getType<_id4drunt.NestException>,
+          _is.getType<_iasjmgi7.NestUser>,
+          _is.getType<_ihz7f6c5.Recipe>,
+          _is.getType<_ih8tv5ny.RecipeEvent>,
+          _is.getType<_i2xp5czv.RecipeIngredient>,
+          _is.getType<_i24txk3r.RecipeStep>,
+          _is.getType<_i7aj6ss6.ServerPing>,
+          _is.getType<_i3qdje8t.AddedShoppingItems>,
+          _is.getType<_ivm0zj1y.CatalogItem>,
+          _is.getType<_ii7fl845.NewShoppingItem>,
+          _is.getType<_iplosgx6.ShoppingCategory>,
+          _is.getType<_iuoywej7.ShoppingEvent>,
+          _is.getType<_iiy01kib.ShoppingItem>,
+          _is.getType<_ivkuu3ll.ShoppingItemStatus>,
+          _is.getType<_i8tkdv3k.ShoppingList>,
+          _is.getType<_icm155bx.Store>,
+          _is.getType<_ip61som0.StoreColor>,
+          _is.getType<_ifdx88jm.SignInMethods>,
+          _is.getType<_izkprrmi.SignUpInvite>,
+          _is.getType<_i4y3a5ag.SignUpMode>,
+          _is.getType<_i253is06.Task>,
+          _is.getType<_iuwcsatz.TaskEvent>,
+          _is.getType<_ieirl7mq.TaskRecurrence>,
+          _is.getType<_inbfv6m4.TmdbTitle>,
+          _is.getType<_itdekt2o.WatchStatus>,
+          _is.getType<_irhe6aqe.WatchType>,
+          _is.getType<_i1vaprkc.WatchlistEvent>,
+          _is.getType<_i28z76f1.WatchlistItem>,
+          _is.getType<_ixjhpv4d.AdminAlert?>,
+          _is.getType<_iehuwih8.AdminAlertKind?>,
+          _is.getType<_imf78wrj.AdminAlertsOverview?>,
+          _is.getType<_i0hg09us.AdminAuditEntry?>,
+          _is.getType<_iha05d3i.AdminAuditLog?>,
+          _is.getType<_iwl7hvp6.AdminBackups?>,
+          _is.getType<_iv028t0j.AdminCheckResult?>,
+          _is.getType<_iemnk66i.AdminHouseholdCounts?>,
+          _is.getType<_ifu8acxo.AdminHouseholdDetail?>,
+          _is.getType<_i4qmiwk8.AdminHouseholdMember?>,
+          _is.getType<_i1ee57op.AdminHouseholdSummary?>,
+          _is.getType<_i4ntnh9u.AdminLogMessage?>,
+          _is.getType<_iyyaqnmo.AdminLogSession?>,
+          _is.getType<_ixzo8wi2.AdminLogSessionDetail?>,
+          _is.getType<_iv7hdcmn.AdminLogSummary?>,
+          _is.getType<_ifczr9hk.AdminMetricPoint?>,
+          _is.getType<_iz1k9427.AdminMetricSeries?>,
+          _is.getType<_i8533ftt.AdminMetrics?>,
+          _is.getType<_isq3d78n.AdminSecurityEvent?>,
+          _is.getType<_i3d9qk19.AdminServerSettings?>,
+          _is.getType<_i9cu0zbm.AdminSystemHealth?>,
+          _is.getType<_iptprp3i.AdminUpdateStatus?>,
+          _is.getType<_i2dp81hp.AdminUserDetail?>,
+          _is.getType<_ixoux1a1.AdminUserHousehold?>,
+          _is.getType<_infu3osd.AdminUserSummary?>,
+          _is.getType<_iskrofwd.BackupRequest?>,
+          _is.getType<_iabyer0k.BackupRun?>,
+          _is.getType<_io9tgzbh.BackupRunStatus?>,
+          _is.getType<_iyriq3os.MetricsRange?>,
+          _is.getType<_ijyxkmer.SecurityEvent?>,
+          _is.getType<_ilfcta1d.SecurityEventType?>,
+          _is.getType<_ijonbu5t.Household?>,
+          _is.getType<_idhxy0am.HouseholdFeature?>,
+          _is.getType<_itc130bt.HouseholdInvite?>,
+          _is.getType<_iv10erpj.HouseholdMember?>,
+          _is.getType<_imk37xix.HouseholdStatus?>,
+          _is.getType<_ieufxm3y.MealPlanEntry?>,
+          _is.getType<_ig1w91gd.MealPlanEvent?>,
+          _is.getType<_irc89x16.MealSlot?>,
+          _is.getType<_iu35fd1a.Membership?>,
+          _is.getType<_iur1rrwm.MembershipRole?>,
+          _is.getType<_i46wom1w.MyHousehold?>,
+          _is.getType<_i11cf01m.NestErrorCode?>,
+          _is.getType<_id4drunt.NestException?>,
+          _is.getType<_iasjmgi7.NestUser?>,
+          _is.getType<_ihz7f6c5.Recipe?>,
+          _is.getType<_ih8tv5ny.RecipeEvent?>,
+          _is.getType<_i2xp5czv.RecipeIngredient?>,
+          _is.getType<_i24txk3r.RecipeStep?>,
+          _is.getType<_i7aj6ss6.ServerPing?>,
+          _is.getType<_i3qdje8t.AddedShoppingItems?>,
+          _is.getType<_ivm0zj1y.CatalogItem?>,
+          _is.getType<_ii7fl845.NewShoppingItem?>,
+          _is.getType<_iplosgx6.ShoppingCategory?>,
+          _is.getType<_iuoywej7.ShoppingEvent?>,
+          _is.getType<_iiy01kib.ShoppingItem?>,
+          _is.getType<_ivkuu3ll.ShoppingItemStatus?>,
+          _is.getType<_i8tkdv3k.ShoppingList?>,
+          _is.getType<_icm155bx.Store?>,
+          _is.getType<_ip61som0.StoreColor?>,
+          _is.getType<_ifdx88jm.SignInMethods?>,
+          _is.getType<_izkprrmi.SignUpInvite?>,
+          _is.getType<_i4y3a5ag.SignUpMode?>,
+          _is.getType<_i253is06.Task?>,
+          _is.getType<_iuwcsatz.TaskEvent?>,
+          _is.getType<_ieirl7mq.TaskRecurrence?>,
+          _is.getType<_inbfv6m4.TmdbTitle?>,
+          _is.getType<_itdekt2o.WatchStatus?>,
+          _is.getType<_irhe6aqe.WatchType?>,
+          _is.getType<_i1vaprkc.WatchlistEvent?>,
+          _is.getType<_i28z76f1.WatchlistItem?>,
+          _is.getType<List<_ixjhpv4d.AdminAlert>>,
+          _is.getType<List<_iabyer0k.BackupRun>>,
+          _is.getType<List<_i4qmiwk8.AdminHouseholdMember>>,
+          _is.getType<List<_irc89x16.MealSlot>>,
+          _is.getType<List<String>>,
+          _is.getType<List<_idhxy0am.HouseholdFeature>>,
+          _is.getType<List<_i4ntnh9u.AdminLogMessage>>,
+          _is.getType<List<_ifczr9hk.AdminMetricPoint>>,
+          _is.getType<List<_iz1k9427.AdminMetricSeries>>,
+          _is.getType<List<_ixoux1a1.AdminUserHousehold>>,
+          _is.getType<List<_irc89x16.MealSlot>?>,
+          _is.getType<List<_ieufxm3y.MealPlanEntry>>,
+          _is.getType<List<_ieufxm3y.MealPlanEntry>?>,
+          _is.getType<List<int>>,
+          _is.getType<List<int>?>,
+          _is.getType<List<_i2xp5czv.RecipeIngredient>>,
+          _is.getType<List<_i2xp5czv.RecipeIngredient>?>,
+          _is.getType<List<_i24txk3r.RecipeStep>>,
+          _is.getType<List<_i24txk3r.RecipeStep>?>,
+          _is.getType<List<_ihz7f6c5.Recipe>>,
+          _is.getType<List<_ihz7f6c5.Recipe>?>,
+          _is.getType<List<_iiy01kib.ShoppingItem>>,
+          _is.getType<List<_i8tkdv3k.ShoppingList>>,
+          _is.getType<List<_i8tkdv3k.ShoppingList>?>,
+          _is.getType<List<_icm155bx.Store>>,
+          _is.getType<List<_icm155bx.Store>?>,
+          _is.getType<List<_ivm0zj1y.CatalogItem>>,
+          _is.getType<List<_ivm0zj1y.CatalogItem>?>,
+          _is.getType<List<_iiy01kib.ShoppingItem>?>,
+          _is.getType<List<_iplosgx6.ShoppingCategory>>,
+          _is.getType<List<_i253is06.Task>>,
+          _is.getType<List<_i253is06.Task>?>,
+          _is.getType<List<_i28z76f1.WatchlistItem>>,
+          _is.getType<List<_i28z76f1.WatchlistItem>?>,
+          _is.getType<List<_isazwzo0.AdminAuditEntry>>,
+          _is.getType<List<_if8bmo50.AdminHouseholdSummary>>,
+          _is.getType<List<_iez4op0n.HouseholdFeature>>,
+          _is.getType<List<_iq0dwtsv.AdminLogSession>>,
+          _is.getType<List<_iaiaweev.AdminSecurityEvent>>,
+          _is.getType<List<_ik5zjdct.AdminUserSummary>>,
+          _is.getType<List<_i87acs67.MyHousehold>>,
+          _is.getType<List<_i9scnr3x.HouseholdMember>>,
+          _is.getType<List<_iliwnvwg.MealSlot>>,
+          _is.getType<List<_i33h3ld7.MealPlanEntry>>,
+          _is.getType<List<_iei9bazg.Recipe>>,
+          _is.getType<List<_iustknb5.ShoppingList>>,
+          _is.getType<List<_iq3p81du.Store>>,
+          _is.getType<List<_iped7yon.CatalogItem>>,
+          _is.getType<List<_i8kxgwhu.ShoppingItem>>,
+          _is.getType<List<_i97lm970.NewShoppingItem>>,
+          _is.getType<List<int>>,
+          _is.getType<List<_iw4rp4ni.Task>>,
+          _is.getType<List<_ixouyji5.WatchlistItem>>,
+          _is.getType<List<_i74l1vkw.TmdbTitle>>,
+        ],
+        modules: const [
+          _iais.Protocol.new,
+          _iacs.Protocol.new,
+          _isp.Protocol.new,
+        ],
+        classNames: const [
+          'AdminAlert',
+          'AdminAlertKind',
+          'AdminAlertsOverview',
+          'AdminAuditEntry',
+          'AdminAuditLog',
+          'AdminBackups',
+          'AdminCheckResult',
+          'AdminHouseholdCounts',
+          'AdminHouseholdDetail',
+          'AdminHouseholdMember',
+          'AdminHouseholdSummary',
+          'AdminLogMessage',
+          'AdminLogSession',
+          'AdminLogSessionDetail',
+          'AdminLogSummary',
+          'AdminMetricPoint',
+          'AdminMetricSeries',
+          'AdminMetrics',
+          'AdminSecurityEvent',
+          'AdminServerSettings',
+          'AdminSystemHealth',
+          'AdminUpdateStatus',
+          'AdminUserDetail',
+          'AdminUserHousehold',
+          'AdminUserSummary',
+          'BackupRequest',
+          'BackupRun',
+          'BackupRunStatus',
+          'MetricsRange',
+          'SecurityEvent',
+          'SecurityEventType',
+          'Household',
+          'HouseholdFeature',
+          'HouseholdInvite',
+          'HouseholdMember',
+          'HouseholdStatus',
+          'MealPlanEntry',
+          'MealPlanEvent',
+          'MealSlot',
+          'Membership',
+          'MembershipRole',
+          'MyHousehold',
+          'NestErrorCode',
+          'NestException',
+          'NestUser',
+          'Recipe',
+          'RecipeEvent',
+          'RecipeIngredient',
+          'RecipeStep',
+          'ServerPing',
+          'AddedShoppingItems',
+          'CatalogItem',
+          'NewShoppingItem',
+          'ShoppingCategory',
+          'ShoppingEvent',
+          'ShoppingItem',
+          'ShoppingItemStatus',
+          'ShoppingList',
+          'Store',
+          'StoreColor',
+          'SignInMethods',
+          'SignUpInvite',
+          'SignUpMode',
+          'Task',
+          'TaskEvent',
+          'TaskRecurrence',
+          'TmdbTitle',
+          'WatchStatus',
+          'WatchType',
+          'WatchlistEvent',
+          'WatchlistItem',
+        ],
+      );
 
   static List<_isp.TableDefinition> get targetTableDefinitions => [
     _isp.TableDefinition(
@@ -2047,11 +2330,8 @@ class Protocol extends _is.DatabaseSerializationManager {
     ..._isp.Protocol.targetTableDefinitions,
   ];
 
-  static String? getClassNameFromObjectJson(dynamic data) {
-    if (data is! Map) return null;
-    final className = data['__className__'] as String?;
-    return className;
-  }
+  static String? getClassNameFromObjectJson(dynamic data) =>
+      _is.ProtocolDeserialization.readClassName(data);
 
   @override
   T deserialize<T>(
@@ -2059,8 +2339,8 @@ class Protocol extends _is.DatabaseSerializationManager {
     Type? t,
   ]) {
     t ??= T;
-
-    final dataClassName = getClassNameFromObjectJson(data);
+    final rawDataClassName = _is.ProtocolDeserialization.readClassName(data);
+    final dataClassName = rawDataClassName;
     if (dataClassName != null && dataClassName != getClassNameForType(t)) {
       try {
         return deserializeByClassName({
@@ -2888,15 +3168,16 @@ class Protocol extends _is.DatabaseSerializationManager {
               .toList()
           as T;
     }
-    try {
-      return _iais.Protocol().deserialize<T>(data, t);
-    } on _is.DeserializationTypeNotFoundException catch (_) {}
-    try {
-      return _iacs.Protocol().deserialize<T>(data, t);
-    } on _is.DeserializationTypeNotFoundException catch (_) {}
-    try {
-      return _isp.Protocol().deserialize<T>(data, t);
-    } on _is.DeserializationTypeNotFoundException catch (_) {}
+    final modules = deserializationMetadata.modulesForDeserialization(
+      t,
+      className: rawDataClassName,
+    );
+    for (final module in modules) {
+      try {
+        return module.deserialize<T>(data, t);
+      } on _is.DeserializationTypeNotFoundException catch (_) {}
+    }
+
     return super.deserialize<T>(data, t);
   }
 
@@ -3369,16 +3650,22 @@ class Protocol extends _is.DatabaseSerializationManager {
       return deserialize<_i28z76f1.WatchlistItem>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
-      data['className'] = dataClassName.substring(19);
-      return _iais.Protocol().deserializeByClassName(data);
+      return _iais.Protocol().deserializeByClassName({
+        ...data,
+        'className': dataClassName.substring(19),
+      });
     }
     if (dataClassName.startsWith('serverpod_auth_core.')) {
-      data['className'] = dataClassName.substring(20);
-      return _iacs.Protocol().deserializeByClassName(data);
+      return _iacs.Protocol().deserializeByClassName({
+        ...data,
+        'className': dataClassName.substring(20),
+      });
     }
     if (dataClassName.startsWith('serverpod.')) {
-      data['className'] = dataClassName.substring(10);
-      return _isp.Protocol().deserializeByClassName(data);
+      return _isp.Protocol().deserializeByClassName({
+        ...data,
+        'className': dataClassName.substring(10),
+      });
     }
     return super.deserializeByClassName(data);
   }

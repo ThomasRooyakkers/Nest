@@ -89,7 +89,7 @@ abstract class AdminHouseholdDetail
     List<_ic1ej8hl.AdminHouseholdMember>? members,
     List<_izm7s29y.MealSlot>? mealSlots,
     String? inviteCode,
-    DateTime? inviteExpiresAt,
+    DateTime? inviteExpiresAt = const _is.$UndefinedDateTime(),
     _iklo6z4c.AdminHouseholdCounts? counts,
   });
   @override
@@ -152,7 +152,7 @@ class _AdminHouseholdDetailImpl extends AdminHouseholdDetail {
     List<_ic1ej8hl.AdminHouseholdMember>? members,
     List<_izm7s29y.MealSlot>? mealSlots,
     Object? inviteCode = _Undefined,
-    Object? inviteExpiresAt = _Undefined,
+    DateTime? inviteExpiresAt = const _is.$UndefinedDateTime(),
     _iklo6z4c.AdminHouseholdCounts? counts,
   }) {
     return AdminHouseholdDetail(
@@ -160,9 +160,9 @@ class _AdminHouseholdDetailImpl extends AdminHouseholdDetail {
       members: members ?? this.members.map((e0) => e0.copyWith()).toList(),
       mealSlots: mealSlots ?? this.mealSlots.map((e0) => e0).toList(),
       inviteCode: inviteCode is String? ? inviteCode : this.inviteCode,
-      inviteExpiresAt: inviteExpiresAt is DateTime?
-          ? inviteExpiresAt
-          : this.inviteExpiresAt,
+      inviteExpiresAt: inviteExpiresAt is _is.UndefinedSentinel
+          ? this.inviteExpiresAt
+          : inviteExpiresAt,
       counts: counts ?? this.counts.copyWith(),
     );
   }

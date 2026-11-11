@@ -993,7 +993,16 @@ class $$CachedRowsTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$CachedRowsTable, CachedRow>(table),
+                  BaseReferences<_$NestDatabase, $CachedRowsTable, CachedRow>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -1167,7 +1176,16 @@ class $$PendingOpsTableTableManager
                 json: json,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$PendingOpsTable, PendingOp>(table),
+                  BaseReferences<_$NestDatabase, $PendingOpsTable, PendingOp>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),
@@ -1300,7 +1318,16 @@ class $$KeyValuesTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$KeyValuesTable, KeyValue>(table),
+                  BaseReferences<_$NestDatabase, $KeyValuesTable, KeyValue>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),

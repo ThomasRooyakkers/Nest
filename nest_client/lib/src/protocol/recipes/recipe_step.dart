@@ -66,7 +66,7 @@ abstract class RecipeStep
   RecipeStep copyWith({
     int? id,
     int? recipeId,
-    _ieuwfnog.Recipe? recipe,
+    _ieuwfnog.Recipe? recipe = const _UndefinedRecipeStep$recipe(),
     int? position,
     String? text,
   });
@@ -102,6 +102,11 @@ abstract class RecipeStep
 
 class _Undefined {}
 
+class _UndefinedRecipeStep$recipe extends _isc.UndefinedSentinel
+    implements _ieuwfnog.Recipe {
+  const _UndefinedRecipeStep$recipe();
+}
+
 class _RecipeStepImpl extends RecipeStep {
   _RecipeStepImpl({
     int? id,
@@ -124,14 +129,16 @@ class _RecipeStepImpl extends RecipeStep {
   RecipeStep copyWith({
     Object? id = _Undefined,
     int? recipeId,
-    Object? recipe = _Undefined,
+    _ieuwfnog.Recipe? recipe = const _UndefinedRecipeStep$recipe(),
     int? position,
     String? text,
   }) {
     return RecipeStep(
       id: id is int? ? id : this.id,
       recipeId: recipeId ?? this.recipeId,
-      recipe: recipe is _ieuwfnog.Recipe? ? recipe : this.recipe?.copyWith(),
+      recipe: recipe is _isc.UndefinedSentinel
+          ? this.recipe?.copyWith()
+          : recipe,
       position: position ?? this.position,
       text: text ?? this.text,
     );

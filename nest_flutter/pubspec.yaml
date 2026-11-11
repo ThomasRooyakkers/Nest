@@ -27,7 +27,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
-  drift: 2.34.4
+  drift: 2.35.0
   drift_flutter: 0.3.1
   flutter:
     sdk: flutter
@@ -45,15 +45,15 @@ dependencies:
   nest_shared:
     path: ../nest_shared
   riverpod_annotation: 4.0.7
-  serverpod_auth_idp_client: 4.0.4
-  serverpod_auth_idp_flutter: 4.0.4
-  serverpod_flutter: 4.0.4
+  serverpod_auth_idp_client: 4.1.1
+  serverpod_auth_idp_flutter: 4.1.1
+  serverpod_flutter: 4.1.1
   wakelock_plus: 1.8.2
 
 dev_dependencies:
   # Used for agents to drive the app through the Dart MCP
   build_runner: 2.16.1
-  drift_dev: 2.34.1+1
+  drift_dev: 2.35.3
   flutter_driver:
     sdk: flutter
   flutter_lints: '>=3.0.0 <7.0.0'

@@ -11,6 +11,7 @@
 // ignore_for_file: dead_code, unnecessary_null_comparison
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:async' as _ida;
 import 'package:nest_server/src/generated/protocol.dart' as _imc1swab;
 import 'package:serverpod/serverpod.dart' as _is;
 import '../household.dart' as _iaj5kvsg;
@@ -109,7 +110,7 @@ abstract class CatalogItem
   CatalogItem copyWith({
     int? id,
     int? householdId,
-    _iaj5kvsg.Household? household,
+    _iaj5kvsg.Household? household = const _UndefinedCatalogItem$household(),
     String? builtInKey,
     String? nameEn,
     String? nameNl,
@@ -182,6 +183,11 @@ abstract class CatalogItem
 
 class _Undefined {}
 
+class _UndefinedCatalogItem$household extends _is.UndefinedSentinel
+    implements _iaj5kvsg.Household {
+  const _UndefinedCatalogItem$household();
+}
+
 class _CatalogItemImpl extends CatalogItem {
   _CatalogItemImpl({
     int? id,
@@ -214,7 +220,7 @@ class _CatalogItemImpl extends CatalogItem {
   CatalogItem copyWith({
     Object? id = _Undefined,
     Object? householdId = _Undefined,
-    Object? household = _Undefined,
+    _iaj5kvsg.Household? household = const _UndefinedCatalogItem$household(),
     Object? builtInKey = _Undefined,
     String? nameEn,
     String? nameNl,
@@ -226,9 +232,9 @@ class _CatalogItemImpl extends CatalogItem {
     return CatalogItem(
       id: id is int? ? id : this.id,
       householdId: householdId is int? ? householdId : this.householdId,
-      household: household is _iaj5kvsg.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _is.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       builtInKey: builtInKey is String? ? builtInKey : this.builtInKey,
       nameEn: nameEn ?? this.nameEn,
       nameNl: nameNl ?? this.nameNl,
@@ -469,6 +475,71 @@ class CatalogItemRepository {
       include: include,
       lockMode: lockMode,
       lockBehavior: lockBehavior,
+    );
+  }
+
+  /// Emits [CatalogItem]s matching the given query parameters every time the
+  /// source tables are modified.
+  ///
+  /// Use [where] to specify which items to include in the return value.
+  /// If none is specified, all items will be returned.
+  ///
+  /// To specify the order of the items use [orderBy] or [orderByList]
+  /// when sorting by multiple columns.
+  ///
+  /// The maximum number of items can be set by [limit]. If no limit is set,
+  /// all items matching the query will be returned.
+  ///
+  /// [offset] defines how many items to skip, after which [limit] (or all)
+  /// items are read from the database.
+  ///
+  /// Use [throttle] to specify the minimum interval between queries. It can
+  /// also be set to `null`, in which case the stream will only be throttled
+  /// when its subscription is paused.
+  ///
+  /// Source tables are collected from the queried table, [where], [orderBy],
+  /// [orderByList], and the [include] graph. [alsoTriggerOnTables] is added
+  /// to that set. Pass [Table] instances such as `CatalogItem.t`.
+  ///
+  /// Raw [Expression] SQL is not inspected. Tables referenced only in raw
+  /// SQL must be passed via [alsoTriggerOnTables].
+  ///
+  /// The stream always reads committed state and never joins an ambient
+  /// [Transaction]. Emissions for a write fire after that write commits.
+  ///
+  /// Currently only supported on SQLite. Calling this method on PostgreSQL
+  /// throws an [UnsupportedError].
+  ///
+  /// ```dart
+  /// var subscription = Persons.db.watch(
+  ///   session,
+  ///   where: (t) => t.lastName.equals('Jones'),
+  ///   orderBy: (t) => t.firstName,
+  ///   limit: 100,
+  /// ).listen((persons) {
+  ///   // Handle the latest matching rows.
+  /// });
+  /// ```
+  _ida.Stream<List<CatalogItem>> watch(
+    _is.DatabaseSession session, {
+    _is.WhereExpressionBuilder<CatalogItemTable>? where,
+    int? limit,
+    int? offset,
+    _is.OrderByBuilder<CatalogItemTable>? orderBy,
+    _is.OrderByListBuilder<CatalogItemTable>? orderByList,
+    CatalogItemInclude? include,
+    Duration? throttle = const Duration(milliseconds: 30),
+    Iterable<_is.Table>? alsoTriggerOnTables,
+  }) {
+    return session.db.watch<CatalogItem>(
+      where: where?.call(CatalogItem.t),
+      orderBy: orderBy?.call(CatalogItem.t),
+      orderByList: orderByList?.call(CatalogItem.t),
+      limit: limit,
+      offset: offset,
+      include: include,
+      throttle: throttle,
+      alsoTriggerOnTables: alsoTriggerOnTables,
     );
   }
 

@@ -107,11 +107,11 @@ abstract class NestUser
   NestUser copyWith({
     int? id,
     _isc.UuidValue? authUserId,
-    _iacc.AuthUser? authUser,
+    _iacc.AuthUser? authUser = const _UndefinedNestUser$authUser(),
     String? name,
     String? locale,
     bool? isSuperAdmin,
-    DateTime? disabledAt,
+    DateTime? disabledAt = const _isc.$UndefinedDateTime(),
     DateTime? createdAt,
     DateTime? updatedAt,
   });
@@ -155,6 +155,11 @@ abstract class NestUser
 
 class _Undefined {}
 
+class _UndefinedNestUser$authUser extends _isc.UndefinedSentinel
+    implements _iacc.AuthUser {
+  const _UndefinedNestUser$authUser();
+}
+
 class _NestUserImpl extends NestUser {
   _NestUserImpl({
     int? id,
@@ -185,24 +190,26 @@ class _NestUserImpl extends NestUser {
   NestUser copyWith({
     Object? id = _Undefined,
     _isc.UuidValue? authUserId,
-    Object? authUser = _Undefined,
+    _iacc.AuthUser? authUser = const _UndefinedNestUser$authUser(),
     String? name,
     String? locale,
     bool? isSuperAdmin,
-    Object? disabledAt = _Undefined,
+    DateTime? disabledAt = const _isc.$UndefinedDateTime(),
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
     return NestUser(
       id: id is int? ? id : this.id,
       authUserId: authUserId ?? this.authUserId,
-      authUser: authUser is _iacc.AuthUser?
-          ? authUser
-          : this.authUser?.copyWith(),
+      authUser: authUser is _isc.UndefinedSentinel
+          ? this.authUser?.copyWith()
+          : authUser,
       name: name ?? this.name,
       locale: locale ?? this.locale,
       isSuperAdmin: isSuperAdmin ?? this.isSuperAdmin,
-      disabledAt: disabledAt is DateTime? ? disabledAt : this.disabledAt,
+      disabledAt: disabledAt is _isc.UndefinedSentinel
+          ? this.disabledAt
+          : disabledAt,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

@@ -11,6 +11,7 @@
 // ignore_for_file: dead_code, unnecessary_null_comparison
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:async' as _ida;
 import 'package:nest_server/src/generated/protocol.dart' as _imc1swab;
 import 'package:serverpod/serverpod.dart' as _is;
 import '../household.dart' as _iaj5kvsg;
@@ -182,11 +183,12 @@ abstract class ShoppingItem
   ShoppingItem copyWith({
     int? id,
     int? householdId,
-    _iaj5kvsg.Household? household,
+    _iaj5kvsg.Household? household = const _UndefinedShoppingItem$household(),
     int? listId,
-    _irn8wed6.ShoppingList? list,
+    _irn8wed6.ShoppingList? list = const _UndefinedShoppingItem$list(),
     int? catalogItemId,
-    _i2oeu5fq.CatalogItem? catalogItem,
+    _i2oeu5fq.CatalogItem? catalogItem =
+        const _UndefinedShoppingItem$catalogItem(),
     String? name,
     String? spec,
     _ixhb06id.ShoppingCategory? category,
@@ -195,7 +197,7 @@ abstract class ShoppingItem
     _io1gvp9b.ShoppingItemStatus? status,
     DateTime? statusChangedAt,
     int? addedById,
-    _ihr4yuyc.NestUser? addedBy,
+    _ihr4yuyc.NestUser? addedBy = const _UndefinedShoppingItem$addedBy(),
     int? sourceRecipeId,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -292,6 +294,26 @@ abstract class ShoppingItem
 
 class _Undefined {}
 
+class _UndefinedShoppingItem$household extends _is.UndefinedSentinel
+    implements _iaj5kvsg.Household {
+  const _UndefinedShoppingItem$household();
+}
+
+class _UndefinedShoppingItem$list extends _is.UndefinedSentinel
+    implements _irn8wed6.ShoppingList {
+  const _UndefinedShoppingItem$list();
+}
+
+class _UndefinedShoppingItem$catalogItem extends _is.UndefinedSentinel
+    implements _i2oeu5fq.CatalogItem {
+  const _UndefinedShoppingItem$catalogItem();
+}
+
+class _UndefinedShoppingItem$addedBy extends _is.UndefinedSentinel
+    implements _ihr4yuyc.NestUser {
+  const _UndefinedShoppingItem$addedBy();
+}
+
 class _ShoppingItemImpl extends ShoppingItem {
   _ShoppingItemImpl({
     int? id,
@@ -342,11 +364,12 @@ class _ShoppingItemImpl extends ShoppingItem {
   ShoppingItem copyWith({
     Object? id = _Undefined,
     int? householdId,
-    Object? household = _Undefined,
+    _iaj5kvsg.Household? household = const _UndefinedShoppingItem$household(),
     int? listId,
-    Object? list = _Undefined,
+    _irn8wed6.ShoppingList? list = const _UndefinedShoppingItem$list(),
     Object? catalogItemId = _Undefined,
-    Object? catalogItem = _Undefined,
+    _i2oeu5fq.CatalogItem? catalogItem =
+        const _UndefinedShoppingItem$catalogItem(),
     String? name,
     String? spec,
     _ixhb06id.ShoppingCategory? category,
@@ -355,7 +378,7 @@ class _ShoppingItemImpl extends ShoppingItem {
     _io1gvp9b.ShoppingItemStatus? status,
     DateTime? statusChangedAt,
     Object? addedById = _Undefined,
-    Object? addedBy = _Undefined,
+    _ihr4yuyc.NestUser? addedBy = const _UndefinedShoppingItem$addedBy(),
     Object? sourceRecipeId = _Undefined,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -363,15 +386,15 @@ class _ShoppingItemImpl extends ShoppingItem {
     return ShoppingItem(
       id: id is int? ? id : this.id,
       householdId: householdId ?? this.householdId,
-      household: household is _iaj5kvsg.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _is.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       listId: listId ?? this.listId,
-      list: list is _irn8wed6.ShoppingList? ? list : this.list?.copyWith(),
+      list: list is _is.UndefinedSentinel ? this.list?.copyWith() : list,
       catalogItemId: catalogItemId is int? ? catalogItemId : this.catalogItemId,
-      catalogItem: catalogItem is _i2oeu5fq.CatalogItem?
-          ? catalogItem
-          : this.catalogItem?.copyWith(),
+      catalogItem: catalogItem is _is.UndefinedSentinel
+          ? this.catalogItem?.copyWith()
+          : catalogItem,
       name: name ?? this.name,
       spec: spec ?? this.spec,
       category: category ?? this.category,
@@ -380,9 +403,9 @@ class _ShoppingItemImpl extends ShoppingItem {
       status: status ?? this.status,
       statusChangedAt: statusChangedAt ?? this.statusChangedAt,
       addedById: addedById is int? ? addedById : this.addedById,
-      addedBy: addedBy is _ihr4yuyc.NestUser?
-          ? addedBy
-          : this.addedBy?.copyWith(),
+      addedBy: addedBy is _is.UndefinedSentinel
+          ? this.addedBy?.copyWith()
+          : addedBy,
       sourceRecipeId: sourceRecipeId is int?
           ? sourceRecipeId
           : this.sourceRecipeId,
@@ -775,6 +798,71 @@ class ShoppingItemRepository {
       include: include,
       lockMode: lockMode,
       lockBehavior: lockBehavior,
+    );
+  }
+
+  /// Emits [ShoppingItem]s matching the given query parameters every time the
+  /// source tables are modified.
+  ///
+  /// Use [where] to specify which items to include in the return value.
+  /// If none is specified, all items will be returned.
+  ///
+  /// To specify the order of the items use [orderBy] or [orderByList]
+  /// when sorting by multiple columns.
+  ///
+  /// The maximum number of items can be set by [limit]. If no limit is set,
+  /// all items matching the query will be returned.
+  ///
+  /// [offset] defines how many items to skip, after which [limit] (or all)
+  /// items are read from the database.
+  ///
+  /// Use [throttle] to specify the minimum interval between queries. It can
+  /// also be set to `null`, in which case the stream will only be throttled
+  /// when its subscription is paused.
+  ///
+  /// Source tables are collected from the queried table, [where], [orderBy],
+  /// [orderByList], and the [include] graph. [alsoTriggerOnTables] is added
+  /// to that set. Pass [Table] instances such as `ShoppingItem.t`.
+  ///
+  /// Raw [Expression] SQL is not inspected. Tables referenced only in raw
+  /// SQL must be passed via [alsoTriggerOnTables].
+  ///
+  /// The stream always reads committed state and never joins an ambient
+  /// [Transaction]. Emissions for a write fire after that write commits.
+  ///
+  /// Currently only supported on SQLite. Calling this method on PostgreSQL
+  /// throws an [UnsupportedError].
+  ///
+  /// ```dart
+  /// var subscription = Persons.db.watch(
+  ///   session,
+  ///   where: (t) => t.lastName.equals('Jones'),
+  ///   orderBy: (t) => t.firstName,
+  ///   limit: 100,
+  /// ).listen((persons) {
+  ///   // Handle the latest matching rows.
+  /// });
+  /// ```
+  _ida.Stream<List<ShoppingItem>> watch(
+    _is.DatabaseSession session, {
+    _is.WhereExpressionBuilder<ShoppingItemTable>? where,
+    int? limit,
+    int? offset,
+    _is.OrderByBuilder<ShoppingItemTable>? orderBy,
+    _is.OrderByListBuilder<ShoppingItemTable>? orderByList,
+    ShoppingItemInclude? include,
+    Duration? throttle = const Duration(milliseconds: 30),
+    Iterable<_is.Table>? alsoTriggerOnTables,
+  }) {
+    return session.db.watch<ShoppingItem>(
+      where: where?.call(ShoppingItem.t),
+      orderBy: orderBy?.call(ShoppingItem.t),
+      orderByList: orderByList?.call(ShoppingItem.t),
+      limit: limit,
+      offset: offset,
+      include: include,
+      throttle: throttle,
+      alsoTriggerOnTables: alsoTriggerOnTables,
     );
   }
 

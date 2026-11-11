@@ -113,7 +113,7 @@ abstract class Store
   Store copyWith({
     int? id,
     int? householdId,
-    _iaj5kvsg.Household? household,
+    _iaj5kvsg.Household? household = const _UndefinedStore$household(),
     String? name,
     _iobp6u7f.StoreColor? color,
     bool? isDefault,
@@ -164,6 +164,11 @@ abstract class Store
 
 class _Undefined {}
 
+class _UndefinedStore$household extends _isc.UndefinedSentinel
+    implements _iaj5kvsg.Household {
+  const _UndefinedStore$household();
+}
+
 class _StoreImpl extends Store {
   _StoreImpl({
     int? id,
@@ -196,7 +201,7 @@ class _StoreImpl extends Store {
   Store copyWith({
     Object? id = _Undefined,
     int? householdId,
-    Object? household = _Undefined,
+    _iaj5kvsg.Household? household = const _UndefinedStore$household(),
     String? name,
     _iobp6u7f.StoreColor? color,
     bool? isDefault,
@@ -208,9 +213,9 @@ class _StoreImpl extends Store {
     return Store(
       id: id is int? ? id : this.id,
       householdId: householdId ?? this.householdId,
-      household: household is _iaj5kvsg.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _isc.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       name: name ?? this.name,
       color: color ?? this.color,
       isDefault: isDefault ?? this.isDefault,

@@ -85,8 +85,8 @@ abstract class AdminAlert
     _i1y8ztxo.AdminAlertKind? kind,
     String? details,
     DateTime? openedAt,
-    DateTime? lastSentAt,
-    DateTime? resolvedAt,
+    DateTime? lastSentAt = const _isc.$UndefinedDateTime(),
+    DateTime? resolvedAt = const _isc.$UndefinedDateTime(),
   });
   @override
   Map<String, dynamic> toJson() {
@@ -148,16 +148,20 @@ class _AdminAlertImpl extends AdminAlert {
     _i1y8ztxo.AdminAlertKind? kind,
     Object? details = _Undefined,
     DateTime? openedAt,
-    Object? lastSentAt = _Undefined,
-    Object? resolvedAt = _Undefined,
+    DateTime? lastSentAt = const _isc.$UndefinedDateTime(),
+    DateTime? resolvedAt = const _isc.$UndefinedDateTime(),
   }) {
     return AdminAlert(
       id: id is int? ? id : this.id,
       kind: kind ?? this.kind,
       details: details is String? ? details : this.details,
       openedAt: openedAt ?? this.openedAt,
-      lastSentAt: lastSentAt is DateTime? ? lastSentAt : this.lastSentAt,
-      resolvedAt: resolvedAt is DateTime? ? resolvedAt : this.resolvedAt,
+      lastSentAt: lastSentAt is _isc.UndefinedSentinel
+          ? this.lastSentAt
+          : lastSentAt,
+      resolvedAt: resolvedAt is _isc.UndefinedSentinel
+          ? this.resolvedAt
+          : resolvedAt,
     );
   }
 }

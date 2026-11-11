@@ -103,7 +103,7 @@ abstract class CatalogItem
   CatalogItem copyWith({
     int? id,
     int? householdId,
-    _iaj5kvsg.Household? household,
+    _iaj5kvsg.Household? household = const _UndefinedCatalogItem$household(),
     String? builtInKey,
     String? nameEn,
     String? nameNl,
@@ -154,6 +154,11 @@ abstract class CatalogItem
 
 class _Undefined {}
 
+class _UndefinedCatalogItem$household extends _isc.UndefinedSentinel
+    implements _iaj5kvsg.Household {
+  const _UndefinedCatalogItem$household();
+}
+
 class _CatalogItemImpl extends CatalogItem {
   _CatalogItemImpl({
     int? id,
@@ -186,7 +191,7 @@ class _CatalogItemImpl extends CatalogItem {
   CatalogItem copyWith({
     Object? id = _Undefined,
     Object? householdId = _Undefined,
-    Object? household = _Undefined,
+    _iaj5kvsg.Household? household = const _UndefinedCatalogItem$household(),
     Object? builtInKey = _Undefined,
     String? nameEn,
     String? nameNl,
@@ -198,9 +203,9 @@ class _CatalogItemImpl extends CatalogItem {
     return CatalogItem(
       id: id is int? ? id : this.id,
       householdId: householdId is int? ? householdId : this.householdId,
-      household: household is _iaj5kvsg.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _isc.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       builtInKey: builtInKey is String? ? builtInKey : this.builtInKey,
       nameEn: nameEn ?? this.nameEn,
       nameNl: nameNl ?? this.nameNl,

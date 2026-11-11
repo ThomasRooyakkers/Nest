@@ -59,6 +59,8 @@ Details for every item: `docs/history/STATUS-HISTORY.md`.
    NEST-22 Hoomly rebrand: server part live in 0.19.2; the app part needs a
    new iOS and Android build. Left: NEST-42 (Android Google sign-in bug,
    needs phone logs).
+10. **NEST-44 Serverpod 4.1.1** (stops the websocket error noise in the
+   Pi's logs): upgraded and tested, committed; not yet released or deployed.
 
 ## Open questions
 

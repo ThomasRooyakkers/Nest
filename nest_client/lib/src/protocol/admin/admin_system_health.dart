@@ -157,7 +157,7 @@ abstract class AdminSystemHealth
     bool? mailConfigured,
     bool? filmDataConfigured,
     List<_i2211eyr.BackupRun>? lastBackups,
-    DateTime? lastSuccessfulBackupAt,
+    DateTime? lastSuccessfulBackupAt = const _isc.$UndefinedDateTime(),
   });
   @override
   Map<String, dynamic> toJson() {
@@ -279,7 +279,7 @@ class _AdminSystemHealthImpl extends AdminSystemHealth {
     bool? mailConfigured,
     bool? filmDataConfigured,
     List<_i2211eyr.BackupRun>? lastBackups,
-    Object? lastSuccessfulBackupAt = _Undefined,
+    DateTime? lastSuccessfulBackupAt = const _isc.$UndefinedDateTime(),
   }) {
     return AdminSystemHealth(
       serverTime: serverTime ?? this.serverTime,
@@ -303,9 +303,9 @@ class _AdminSystemHealthImpl extends AdminSystemHealth {
       filmDataConfigured: filmDataConfigured ?? this.filmDataConfigured,
       lastBackups:
           lastBackups ?? this.lastBackups.map((e0) => e0.copyWith()).toList(),
-      lastSuccessfulBackupAt: lastSuccessfulBackupAt is DateTime?
-          ? lastSuccessfulBackupAt
-          : this.lastSuccessfulBackupAt,
+      lastSuccessfulBackupAt: lastSuccessfulBackupAt is _isc.UndefinedSentinel
+          ? this.lastSuccessfulBackupAt
+          : lastSuccessfulBackupAt,
     );
   }
 }

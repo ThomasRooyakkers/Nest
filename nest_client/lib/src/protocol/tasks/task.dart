@@ -153,17 +153,17 @@ abstract class Task
   Task copyWith({
     int? id,
     int? householdId,
-    _iaj5kvsg.Household? household,
+    _iaj5kvsg.Household? household = const _UndefinedTask$household(),
     String? title,
     String? notes,
     int? assigneeId,
-    _ihr4yuyc.NestUser? assignee,
-    DateTime? dueDate,
+    _ihr4yuyc.NestUser? assignee = const _UndefinedTask$assignee(),
+    DateTime? dueDate = const _isc.$UndefinedDateTime(),
     int? dueMinutes,
     _irx5q63y.TaskRecurrence? recurrence,
-    DateTime? doneAt,
+    DateTime? doneAt = const _isc.$UndefinedDateTime(),
     int? doneById,
-    _ihr4yuyc.NestUser? doneBy,
+    _ihr4yuyc.NestUser? doneBy = const _UndefinedTask$assignee(),
     int? nextTaskId,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -222,6 +222,16 @@ abstract class Task
 
 class _Undefined {}
 
+class _UndefinedTask$household extends _isc.UndefinedSentinel
+    implements _iaj5kvsg.Household {
+  const _UndefinedTask$household();
+}
+
+class _UndefinedTask$assignee extends _isc.UndefinedSentinel
+    implements _ihr4yuyc.NestUser {
+  const _UndefinedTask$assignee();
+}
+
 class _TaskImpl extends Task {
   _TaskImpl({
     int? id,
@@ -266,17 +276,17 @@ class _TaskImpl extends Task {
   Task copyWith({
     Object? id = _Undefined,
     int? householdId,
-    Object? household = _Undefined,
+    _iaj5kvsg.Household? household = const _UndefinedTask$household(),
     String? title,
     String? notes,
     Object? assigneeId = _Undefined,
-    Object? assignee = _Undefined,
-    Object? dueDate = _Undefined,
+    _ihr4yuyc.NestUser? assignee = const _UndefinedTask$assignee(),
+    DateTime? dueDate = const _isc.$UndefinedDateTime(),
     Object? dueMinutes = _Undefined,
     _irx5q63y.TaskRecurrence? recurrence,
-    Object? doneAt = _Undefined,
+    DateTime? doneAt = const _isc.$UndefinedDateTime(),
     Object? doneById = _Undefined,
-    Object? doneBy = _Undefined,
+    _ihr4yuyc.NestUser? doneBy = const _UndefinedTask$assignee(),
     Object? nextTaskId = _Undefined,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -284,21 +294,23 @@ class _TaskImpl extends Task {
     return Task(
       id: id is int? ? id : this.id,
       householdId: householdId ?? this.householdId,
-      household: household is _iaj5kvsg.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _isc.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       title: title ?? this.title,
       notes: notes ?? this.notes,
       assigneeId: assigneeId is int? ? assigneeId : this.assigneeId,
-      assignee: assignee is _ihr4yuyc.NestUser?
-          ? assignee
-          : this.assignee?.copyWith(),
-      dueDate: dueDate is DateTime? ? dueDate : this.dueDate,
+      assignee: assignee is _isc.UndefinedSentinel
+          ? this.assignee?.copyWith()
+          : assignee,
+      dueDate: dueDate is _isc.UndefinedSentinel ? this.dueDate : dueDate,
       dueMinutes: dueMinutes is int? ? dueMinutes : this.dueMinutes,
       recurrence: recurrence ?? this.recurrence,
-      doneAt: doneAt is DateTime? ? doneAt : this.doneAt,
+      doneAt: doneAt is _isc.UndefinedSentinel ? this.doneAt : doneAt,
       doneById: doneById is int? ? doneById : this.doneById,
-      doneBy: doneBy is _ihr4yuyc.NestUser? ? doneBy : this.doneBy?.copyWith(),
+      doneBy: doneBy is _isc.UndefinedSentinel
+          ? this.doneBy?.copyWith()
+          : doneBy,
       nextTaskId: nextTaskId is int? ? nextTaskId : this.nextTaskId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,

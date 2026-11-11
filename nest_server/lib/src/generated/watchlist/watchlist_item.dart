@@ -11,6 +11,7 @@
 // ignore_for_file: dead_code, unnecessary_null_comparison
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:async' as _ida;
 import 'package:nest_server/src/generated/protocol.dart' as _imc1swab;
 import 'package:serverpod/serverpod.dart' as _is;
 import '../household.dart' as _iaj5kvsg;
@@ -142,7 +143,7 @@ abstract class WatchlistItem
   WatchlistItem copyWith({
     int? id,
     int? householdId,
-    _iaj5kvsg.Household? household,
+    _iaj5kvsg.Household? household = const _UndefinedWatchlistItem$household(),
     int? tmdbId,
     _ix3az44g.WatchType? type,
     String? title,
@@ -151,7 +152,7 @@ abstract class WatchlistItem
     double? rating,
     _ikkd49ke.WatchStatus? status,
     int? addedById,
-    _ihr4yuyc.NestUser? addedBy,
+    _ihr4yuyc.NestUser? addedBy = const _UndefinedWatchlistItem$addedBy(),
     int? householdRating,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -236,6 +237,16 @@ abstract class WatchlistItem
 
 class _Undefined {}
 
+class _UndefinedWatchlistItem$household extends _is.UndefinedSentinel
+    implements _iaj5kvsg.Household {
+  const _UndefinedWatchlistItem$household();
+}
+
+class _UndefinedWatchlistItem$addedBy extends _is.UndefinedSentinel
+    implements _ihr4yuyc.NestUser {
+  const _UndefinedWatchlistItem$addedBy();
+}
+
 class _WatchlistItemImpl extends WatchlistItem {
   _WatchlistItemImpl({
     int? id,
@@ -278,7 +289,7 @@ class _WatchlistItemImpl extends WatchlistItem {
   WatchlistItem copyWith({
     Object? id = _Undefined,
     int? householdId,
-    Object? household = _Undefined,
+    _iaj5kvsg.Household? household = const _UndefinedWatchlistItem$household(),
     int? tmdbId,
     _ix3az44g.WatchType? type,
     String? title,
@@ -287,7 +298,7 @@ class _WatchlistItemImpl extends WatchlistItem {
     Object? rating = _Undefined,
     _ikkd49ke.WatchStatus? status,
     Object? addedById = _Undefined,
-    Object? addedBy = _Undefined,
+    _ihr4yuyc.NestUser? addedBy = const _UndefinedWatchlistItem$addedBy(),
     Object? householdRating = _Undefined,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -295,9 +306,9 @@ class _WatchlistItemImpl extends WatchlistItem {
     return WatchlistItem(
       id: id is int? ? id : this.id,
       householdId: householdId ?? this.householdId,
-      household: household is _iaj5kvsg.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _is.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       tmdbId: tmdbId ?? this.tmdbId,
       type: type ?? this.type,
       title: title ?? this.title,
@@ -306,9 +317,9 @@ class _WatchlistItemImpl extends WatchlistItem {
       rating: rating is double? ? rating : this.rating,
       status: status ?? this.status,
       addedById: addedById is int? ? addedById : this.addedById,
-      addedBy: addedBy is _ihr4yuyc.NestUser?
-          ? addedBy
-          : this.addedBy?.copyWith(),
+      addedBy: addedBy is _is.UndefinedSentinel
+          ? this.addedBy?.copyWith()
+          : addedBy,
       householdRating: householdRating is int?
           ? householdRating
           : this.householdRating,
@@ -627,6 +638,71 @@ class WatchlistItemRepository {
       include: include,
       lockMode: lockMode,
       lockBehavior: lockBehavior,
+    );
+  }
+
+  /// Emits [WatchlistItem]s matching the given query parameters every time the
+  /// source tables are modified.
+  ///
+  /// Use [where] to specify which items to include in the return value.
+  /// If none is specified, all items will be returned.
+  ///
+  /// To specify the order of the items use [orderBy] or [orderByList]
+  /// when sorting by multiple columns.
+  ///
+  /// The maximum number of items can be set by [limit]. If no limit is set,
+  /// all items matching the query will be returned.
+  ///
+  /// [offset] defines how many items to skip, after which [limit] (or all)
+  /// items are read from the database.
+  ///
+  /// Use [throttle] to specify the minimum interval between queries. It can
+  /// also be set to `null`, in which case the stream will only be throttled
+  /// when its subscription is paused.
+  ///
+  /// Source tables are collected from the queried table, [where], [orderBy],
+  /// [orderByList], and the [include] graph. [alsoTriggerOnTables] is added
+  /// to that set. Pass [Table] instances such as `WatchlistItem.t`.
+  ///
+  /// Raw [Expression] SQL is not inspected. Tables referenced only in raw
+  /// SQL must be passed via [alsoTriggerOnTables].
+  ///
+  /// The stream always reads committed state and never joins an ambient
+  /// [Transaction]. Emissions for a write fire after that write commits.
+  ///
+  /// Currently only supported on SQLite. Calling this method on PostgreSQL
+  /// throws an [UnsupportedError].
+  ///
+  /// ```dart
+  /// var subscription = Persons.db.watch(
+  ///   session,
+  ///   where: (t) => t.lastName.equals('Jones'),
+  ///   orderBy: (t) => t.firstName,
+  ///   limit: 100,
+  /// ).listen((persons) {
+  ///   // Handle the latest matching rows.
+  /// });
+  /// ```
+  _ida.Stream<List<WatchlistItem>> watch(
+    _is.DatabaseSession session, {
+    _is.WhereExpressionBuilder<WatchlistItemTable>? where,
+    int? limit,
+    int? offset,
+    _is.OrderByBuilder<WatchlistItemTable>? orderBy,
+    _is.OrderByListBuilder<WatchlistItemTable>? orderByList,
+    WatchlistItemInclude? include,
+    Duration? throttle = const Duration(milliseconds: 30),
+    Iterable<_is.Table>? alsoTriggerOnTables,
+  }) {
+    return session.db.watch<WatchlistItem>(
+      where: where?.call(WatchlistItem.t),
+      orderBy: orderBy?.call(WatchlistItem.t),
+      orderByList: orderByList?.call(WatchlistItem.t),
+      limit: limit,
+      offset: offset,
+      include: include,
+      throttle: throttle,
+      alsoTriggerOnTables: alsoTriggerOnTables,
     );
   }
 

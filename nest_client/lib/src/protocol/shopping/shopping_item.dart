@@ -176,11 +176,12 @@ abstract class ShoppingItem
   ShoppingItem copyWith({
     int? id,
     int? householdId,
-    _iaj5kvsg.Household? household,
+    _iaj5kvsg.Household? household = const _UndefinedShoppingItem$household(),
     int? listId,
-    _irn8wed6.ShoppingList? list,
+    _irn8wed6.ShoppingList? list = const _UndefinedShoppingItem$list(),
     int? catalogItemId,
-    _i2oeu5fq.CatalogItem? catalogItem,
+    _i2oeu5fq.CatalogItem? catalogItem =
+        const _UndefinedShoppingItem$catalogItem(),
     String? name,
     String? spec,
     _ixhb06id.ShoppingCategory? category,
@@ -189,7 +190,7 @@ abstract class ShoppingItem
     _io1gvp9b.ShoppingItemStatus? status,
     DateTime? statusChangedAt,
     int? addedById,
-    _ihr4yuyc.NestUser? addedBy,
+    _ihr4yuyc.NestUser? addedBy = const _UndefinedShoppingItem$addedBy(),
     int? sourceRecipeId,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -254,6 +255,26 @@ abstract class ShoppingItem
 
 class _Undefined {}
 
+class _UndefinedShoppingItem$household extends _isc.UndefinedSentinel
+    implements _iaj5kvsg.Household {
+  const _UndefinedShoppingItem$household();
+}
+
+class _UndefinedShoppingItem$list extends _isc.UndefinedSentinel
+    implements _irn8wed6.ShoppingList {
+  const _UndefinedShoppingItem$list();
+}
+
+class _UndefinedShoppingItem$catalogItem extends _isc.UndefinedSentinel
+    implements _i2oeu5fq.CatalogItem {
+  const _UndefinedShoppingItem$catalogItem();
+}
+
+class _UndefinedShoppingItem$addedBy extends _isc.UndefinedSentinel
+    implements _ihr4yuyc.NestUser {
+  const _UndefinedShoppingItem$addedBy();
+}
+
 class _ShoppingItemImpl extends ShoppingItem {
   _ShoppingItemImpl({
     int? id,
@@ -304,11 +325,12 @@ class _ShoppingItemImpl extends ShoppingItem {
   ShoppingItem copyWith({
     Object? id = _Undefined,
     int? householdId,
-    Object? household = _Undefined,
+    _iaj5kvsg.Household? household = const _UndefinedShoppingItem$household(),
     int? listId,
-    Object? list = _Undefined,
+    _irn8wed6.ShoppingList? list = const _UndefinedShoppingItem$list(),
     Object? catalogItemId = _Undefined,
-    Object? catalogItem = _Undefined,
+    _i2oeu5fq.CatalogItem? catalogItem =
+        const _UndefinedShoppingItem$catalogItem(),
     String? name,
     String? spec,
     _ixhb06id.ShoppingCategory? category,
@@ -317,7 +339,7 @@ class _ShoppingItemImpl extends ShoppingItem {
     _io1gvp9b.ShoppingItemStatus? status,
     DateTime? statusChangedAt,
     Object? addedById = _Undefined,
-    Object? addedBy = _Undefined,
+    _ihr4yuyc.NestUser? addedBy = const _UndefinedShoppingItem$addedBy(),
     Object? sourceRecipeId = _Undefined,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -325,15 +347,15 @@ class _ShoppingItemImpl extends ShoppingItem {
     return ShoppingItem(
       id: id is int? ? id : this.id,
       householdId: householdId ?? this.householdId,
-      household: household is _iaj5kvsg.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _isc.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       listId: listId ?? this.listId,
-      list: list is _irn8wed6.ShoppingList? ? list : this.list?.copyWith(),
+      list: list is _isc.UndefinedSentinel ? this.list?.copyWith() : list,
       catalogItemId: catalogItemId is int? ? catalogItemId : this.catalogItemId,
-      catalogItem: catalogItem is _i2oeu5fq.CatalogItem?
-          ? catalogItem
-          : this.catalogItem?.copyWith(),
+      catalogItem: catalogItem is _isc.UndefinedSentinel
+          ? this.catalogItem?.copyWith()
+          : catalogItem,
       name: name ?? this.name,
       spec: spec ?? this.spec,
       category: category ?? this.category,
@@ -342,9 +364,9 @@ class _ShoppingItemImpl extends ShoppingItem {
       status: status ?? this.status,
       statusChangedAt: statusChangedAt ?? this.statusChangedAt,
       addedById: addedById is int? ? addedById : this.addedById,
-      addedBy: addedBy is _ihr4yuyc.NestUser?
-          ? addedBy
-          : this.addedBy?.copyWith(),
+      addedBy: addedBy is _isc.UndefinedSentinel
+          ? this.addedBy?.copyWith()
+          : addedBy,
       sourceRecipeId: sourceRecipeId is int?
           ? sourceRecipeId
           : this.sourceRecipeId,

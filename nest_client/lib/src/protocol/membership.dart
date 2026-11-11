@@ -94,9 +94,9 @@ abstract class Membership
   Membership copyWith({
     int? id,
     int? userId,
-    _iasjmgi7.NestUser? user,
+    _iasjmgi7.NestUser? user = const _UndefinedMembership$user(),
     int? householdId,
-    _ijonbu5t.Household? household,
+    _ijonbu5t.Household? household = const _UndefinedMembership$household(),
     _iur1rrwm.MembershipRole? role,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -139,6 +139,16 @@ abstract class Membership
 
 class _Undefined {}
 
+class _UndefinedMembership$user extends _isc.UndefinedSentinel
+    implements _iasjmgi7.NestUser {
+  const _UndefinedMembership$user();
+}
+
+class _UndefinedMembership$household extends _isc.UndefinedSentinel
+    implements _ijonbu5t.Household {
+  const _UndefinedMembership$household();
+}
+
 class _MembershipImpl extends Membership {
   _MembershipImpl({
     int? id,
@@ -167,9 +177,9 @@ class _MembershipImpl extends Membership {
   Membership copyWith({
     Object? id = _Undefined,
     int? userId,
-    Object? user = _Undefined,
+    _iasjmgi7.NestUser? user = const _UndefinedMembership$user(),
     int? householdId,
-    Object? household = _Undefined,
+    _ijonbu5t.Household? household = const _UndefinedMembership$household(),
     _iur1rrwm.MembershipRole? role,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -177,11 +187,11 @@ class _MembershipImpl extends Membership {
     return Membership(
       id: id is int? ? id : this.id,
       userId: userId ?? this.userId,
-      user: user is _iasjmgi7.NestUser? ? user : this.user?.copyWith(),
+      user: user is _isc.UndefinedSentinel ? this.user?.copyWith() : user,
       householdId: householdId ?? this.householdId,
-      household: household is _ijonbu5t.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _isc.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       role: role ?? this.role,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,

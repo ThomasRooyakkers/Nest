@@ -56,8 +56,9 @@ abstract class RecipeEvent
   @_is.useResult
   RecipeEvent copyWith({
     int? householdId,
-    List<_ieuwfnog.Recipe>? recipes,
-    List<int>? removedRecipeIds,
+    List<_ieuwfnog.Recipe>? recipes =
+        const _is.$UndefinedList<_ieuwfnog.Recipe>(),
+    List<int>? removedRecipeIds = const _is.$UndefinedList<int>(),
   });
   @override
   Map<String, dynamic> toJson() {
@@ -89,8 +90,6 @@ abstract class RecipeEvent
   }
 }
 
-class _Undefined {}
-
 class _RecipeEventImpl extends RecipeEvent {
   _RecipeEventImpl({
     required int householdId,
@@ -108,17 +107,18 @@ class _RecipeEventImpl extends RecipeEvent {
   @override
   RecipeEvent copyWith({
     int? householdId,
-    Object? recipes = _Undefined,
-    Object? removedRecipeIds = _Undefined,
+    List<_ieuwfnog.Recipe>? recipes =
+        const _is.$UndefinedList<_ieuwfnog.Recipe>(),
+    List<int>? removedRecipeIds = const _is.$UndefinedList<int>(),
   }) {
     return RecipeEvent(
       householdId: householdId ?? this.householdId,
-      recipes: recipes is List<_ieuwfnog.Recipe>?
-          ? recipes
-          : this.recipes?.map((e0) => e0.copyWith()).toList(),
-      removedRecipeIds: removedRecipeIds is List<int>?
-          ? removedRecipeIds
-          : this.removedRecipeIds?.map((e0) => e0).toList(),
+      recipes: recipes is _is.UndefinedSentinel
+          ? this.recipes?.map((e0) => e0.copyWith()).toList()
+          : recipes,
+      removedRecipeIds: removedRecipeIds is _is.UndefinedSentinel
+          ? this.removedRecipeIds?.map((e0) => e0).toList()
+          : removedRecipeIds,
     );
   }
 }

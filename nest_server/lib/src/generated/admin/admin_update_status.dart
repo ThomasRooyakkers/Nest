@@ -64,7 +64,7 @@ abstract class AdminUpdateStatus
     String? currentVersion,
     String? latestVersion,
     bool? updateAvailable,
-    DateTime? checkedAt,
+    DateTime? checkedAt = const _is.$UndefinedDateTime(),
     String? problem,
   });
   @override
@@ -122,7 +122,7 @@ class _AdminUpdateStatusImpl extends AdminUpdateStatus {
     String? currentVersion,
     Object? latestVersion = _Undefined,
     bool? updateAvailable,
-    Object? checkedAt = _Undefined,
+    DateTime? checkedAt = const _is.$UndefinedDateTime(),
     Object? problem = _Undefined,
   }) {
     return AdminUpdateStatus(
@@ -131,7 +131,9 @@ class _AdminUpdateStatusImpl extends AdminUpdateStatus {
           ? latestVersion
           : this.latestVersion,
       updateAvailable: updateAvailable ?? this.updateAvailable,
-      checkedAt: checkedAt is DateTime? ? checkedAt : this.checkedAt,
+      checkedAt: checkedAt is _is.UndefinedSentinel
+          ? this.checkedAt
+          : checkedAt,
       problem: problem is String? ? problem : this.problem,
     );
   }

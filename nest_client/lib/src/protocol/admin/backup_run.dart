@@ -104,7 +104,7 @@ abstract class BackupRun
   BackupRun copyWith({
     int? id,
     DateTime? startedAt,
-    DateTime? finishedAt,
+    DateTime? finishedAt = const _isc.$UndefinedDateTime(),
     _ithogegq.BackupRunStatus? status,
     int? sizeBytes,
     String? snapshotId,
@@ -187,7 +187,7 @@ class _BackupRunImpl extends BackupRun {
   BackupRun copyWith({
     Object? id = _Undefined,
     DateTime? startedAt,
-    Object? finishedAt = _Undefined,
+    DateTime? finishedAt = const _isc.$UndefinedDateTime(),
     _ithogegq.BackupRunStatus? status,
     Object? sizeBytes = _Undefined,
     Object? snapshotId = _Undefined,
@@ -199,7 +199,9 @@ class _BackupRunImpl extends BackupRun {
     return BackupRun(
       id: id is int? ? id : this.id,
       startedAt: startedAt ?? this.startedAt,
-      finishedAt: finishedAt is DateTime? ? finishedAt : this.finishedAt,
+      finishedAt: finishedAt is _isc.UndefinedSentinel
+          ? this.finishedAt
+          : finishedAt,
       status: status ?? this.status,
       sizeBytes: sizeBytes is int? ? sizeBytes : this.sizeBytes,
       snapshotId: snapshotId is String? ? snapshotId : this.snapshotId,

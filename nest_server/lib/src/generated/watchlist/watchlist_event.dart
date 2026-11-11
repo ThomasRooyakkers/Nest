@@ -56,8 +56,9 @@ abstract class WatchlistEvent
   @_is.useResult
   WatchlistEvent copyWith({
     int? householdId,
-    List<_il0tzadi.WatchlistItem>? items,
-    List<int>? removedItemIds,
+    List<_il0tzadi.WatchlistItem>? items =
+        const _is.$UndefinedList<_il0tzadi.WatchlistItem>(),
+    List<int>? removedItemIds = const _is.$UndefinedList<int>(),
   });
   @override
   Map<String, dynamic> toJson() {
@@ -86,8 +87,6 @@ abstract class WatchlistEvent
   }
 }
 
-class _Undefined {}
-
 class _WatchlistEventImpl extends WatchlistEvent {
   _WatchlistEventImpl({
     required int householdId,
@@ -105,17 +104,18 @@ class _WatchlistEventImpl extends WatchlistEvent {
   @override
   WatchlistEvent copyWith({
     int? householdId,
-    Object? items = _Undefined,
-    Object? removedItemIds = _Undefined,
+    List<_il0tzadi.WatchlistItem>? items =
+        const _is.$UndefinedList<_il0tzadi.WatchlistItem>(),
+    List<int>? removedItemIds = const _is.$UndefinedList<int>(),
   }) {
     return WatchlistEvent(
       householdId: householdId ?? this.householdId,
-      items: items is List<_il0tzadi.WatchlistItem>?
-          ? items
-          : this.items?.map((e0) => e0.copyWith()).toList(),
-      removedItemIds: removedItemIds is List<int>?
-          ? removedItemIds
-          : this.removedItemIds?.map((e0) => e0).toList(),
+      items: items is _is.UndefinedSentinel
+          ? this.items?.map((e0) => e0.copyWith()).toList()
+          : items,
+      removedItemIds: removedItemIds is _is.UndefinedSentinel
+          ? this.removedItemIds?.map((e0) => e0).toList()
+          : removedItemIds,
     );
   }
 }

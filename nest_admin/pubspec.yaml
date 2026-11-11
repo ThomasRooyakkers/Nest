@@ -23,9 +23,9 @@ dependencies:
   nest_shared:
     path: ../nest_shared
   riverpod_annotation: 4.0.7
-  serverpod_auth_idp_client: 4.0.4
-  serverpod_auth_idp_flutter: 4.0.4
-  serverpod_flutter: 4.0.4
+  serverpod_auth_idp_client: 4.1.1
+  serverpod_auth_idp_flutter: 4.1.1
+  serverpod_flutter: 4.1.1
 
 dev_dependencies:
   build_runner: 2.16.1

@@ -77,7 +77,7 @@ abstract class AdminUserDetail
     List<_if44ldo0.AdminUserHousehold>? households,
     _i7kwc777.SignInMethods? signInMethods,
     int? activeSessions,
-    DateTime? lastSeenAt,
+    DateTime? lastSeenAt = const _isc.$UndefinedDateTime(),
   });
   @override
   Map<String, dynamic> toJson() {
@@ -111,8 +111,6 @@ abstract class AdminUserDetail
   }
 }
 
-class _Undefined {}
-
 class _AdminUserDetailImpl extends AdminUserDetail {
   _AdminUserDetailImpl({
     required _i1o1zq20.AdminUserSummary summary,
@@ -137,7 +135,7 @@ class _AdminUserDetailImpl extends AdminUserDetail {
     List<_if44ldo0.AdminUserHousehold>? households,
     _i7kwc777.SignInMethods? signInMethods,
     int? activeSessions,
-    Object? lastSeenAt = _Undefined,
+    DateTime? lastSeenAt = const _isc.$UndefinedDateTime(),
   }) {
     return AdminUserDetail(
       summary: summary ?? this.summary.copyWith(),
@@ -145,7 +143,9 @@ class _AdminUserDetailImpl extends AdminUserDetail {
           households ?? this.households.map((e0) => e0.copyWith()).toList(),
       signInMethods: signInMethods ?? this.signInMethods.copyWith(),
       activeSessions: activeSessions ?? this.activeSessions,
-      lastSeenAt: lastSeenAt is DateTime? ? lastSeenAt : this.lastSeenAt,
+      lastSeenAt: lastSeenAt is _isc.UndefinedSentinel
+          ? this.lastSeenAt
+          : lastSeenAt,
     );
   }
 }

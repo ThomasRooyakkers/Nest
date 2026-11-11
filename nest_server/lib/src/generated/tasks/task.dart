@@ -11,6 +11,7 @@
 // ignore_for_file: dead_code, unnecessary_null_comparison
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:async' as _ida;
 import 'package:nest_server/src/generated/protocol.dart' as _imc1swab;
 import 'package:serverpod/serverpod.dart' as _is;
 import '../household.dart' as _iaj5kvsg;
@@ -158,17 +159,17 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
   Task copyWith({
     int? id,
     int? householdId,
-    _iaj5kvsg.Household? household,
+    _iaj5kvsg.Household? household = const _UndefinedTask$household(),
     String? title,
     String? notes,
     int? assigneeId,
-    _ihr4yuyc.NestUser? assignee,
-    DateTime? dueDate,
+    _ihr4yuyc.NestUser? assignee = const _UndefinedTask$assignee(),
+    DateTime? dueDate = const _is.$UndefinedDateTime(),
     int? dueMinutes,
     _irx5q63y.TaskRecurrence? recurrence,
-    DateTime? doneAt,
+    DateTime? doneAt = const _is.$UndefinedDateTime(),
     int? doneById,
-    _ihr4yuyc.NestUser? doneBy,
+    _ihr4yuyc.NestUser? doneBy = const _UndefinedTask$assignee(),
     int? nextTaskId,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -257,6 +258,16 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
 
 class _Undefined {}
 
+class _UndefinedTask$household extends _is.UndefinedSentinel
+    implements _iaj5kvsg.Household {
+  const _UndefinedTask$household();
+}
+
+class _UndefinedTask$assignee extends _is.UndefinedSentinel
+    implements _ihr4yuyc.NestUser {
+  const _UndefinedTask$assignee();
+}
+
 class _TaskImpl extends Task {
   _TaskImpl({
     int? id,
@@ -301,17 +312,17 @@ class _TaskImpl extends Task {
   Task copyWith({
     Object? id = _Undefined,
     int? householdId,
-    Object? household = _Undefined,
+    _iaj5kvsg.Household? household = const _UndefinedTask$household(),
     String? title,
     String? notes,
     Object? assigneeId = _Undefined,
-    Object? assignee = _Undefined,
-    Object? dueDate = _Undefined,
+    _ihr4yuyc.NestUser? assignee = const _UndefinedTask$assignee(),
+    DateTime? dueDate = const _is.$UndefinedDateTime(),
     Object? dueMinutes = _Undefined,
     _irx5q63y.TaskRecurrence? recurrence,
-    Object? doneAt = _Undefined,
+    DateTime? doneAt = const _is.$UndefinedDateTime(),
     Object? doneById = _Undefined,
-    Object? doneBy = _Undefined,
+    _ihr4yuyc.NestUser? doneBy = const _UndefinedTask$assignee(),
     Object? nextTaskId = _Undefined,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -319,21 +330,23 @@ class _TaskImpl extends Task {
     return Task(
       id: id is int? ? id : this.id,
       householdId: householdId ?? this.householdId,
-      household: household is _iaj5kvsg.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _is.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       title: title ?? this.title,
       notes: notes ?? this.notes,
       assigneeId: assigneeId is int? ? assigneeId : this.assigneeId,
-      assignee: assignee is _ihr4yuyc.NestUser?
-          ? assignee
-          : this.assignee?.copyWith(),
-      dueDate: dueDate is DateTime? ? dueDate : this.dueDate,
+      assignee: assignee is _is.UndefinedSentinel
+          ? this.assignee?.copyWith()
+          : assignee,
+      dueDate: dueDate is _is.UndefinedSentinel ? this.dueDate : dueDate,
       dueMinutes: dueMinutes is int? ? dueMinutes : this.dueMinutes,
       recurrence: recurrence ?? this.recurrence,
-      doneAt: doneAt is DateTime? ? doneAt : this.doneAt,
+      doneAt: doneAt is _is.UndefinedSentinel ? this.doneAt : doneAt,
       doneById: doneById is int? ? doneById : this.doneById,
-      doneBy: doneBy is _ihr4yuyc.NestUser? ? doneBy : this.doneBy?.copyWith(),
+      doneBy: doneBy is _is.UndefinedSentinel
+          ? this.doneBy?.copyWith()
+          : doneBy,
       nextTaskId: nextTaskId is int? ? nextTaskId : this.nextTaskId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -676,6 +689,71 @@ class TaskRepository {
       include: include,
       lockMode: lockMode,
       lockBehavior: lockBehavior,
+    );
+  }
+
+  /// Emits [Task]s matching the given query parameters every time the
+  /// source tables are modified.
+  ///
+  /// Use [where] to specify which items to include in the return value.
+  /// If none is specified, all items will be returned.
+  ///
+  /// To specify the order of the items use [orderBy] or [orderByList]
+  /// when sorting by multiple columns.
+  ///
+  /// The maximum number of items can be set by [limit]. If no limit is set,
+  /// all items matching the query will be returned.
+  ///
+  /// [offset] defines how many items to skip, after which [limit] (or all)
+  /// items are read from the database.
+  ///
+  /// Use [throttle] to specify the minimum interval between queries. It can
+  /// also be set to `null`, in which case the stream will only be throttled
+  /// when its subscription is paused.
+  ///
+  /// Source tables are collected from the queried table, [where], [orderBy],
+  /// [orderByList], and the [include] graph. [alsoTriggerOnTables] is added
+  /// to that set. Pass [Table] instances such as `Task.t`.
+  ///
+  /// Raw [Expression] SQL is not inspected. Tables referenced only in raw
+  /// SQL must be passed via [alsoTriggerOnTables].
+  ///
+  /// The stream always reads committed state and never joins an ambient
+  /// [Transaction]. Emissions for a write fire after that write commits.
+  ///
+  /// Currently only supported on SQLite. Calling this method on PostgreSQL
+  /// throws an [UnsupportedError].
+  ///
+  /// ```dart
+  /// var subscription = Persons.db.watch(
+  ///   session,
+  ///   where: (t) => t.lastName.equals('Jones'),
+  ///   orderBy: (t) => t.firstName,
+  ///   limit: 100,
+  /// ).listen((persons) {
+  ///   // Handle the latest matching rows.
+  /// });
+  /// ```
+  _ida.Stream<List<Task>> watch(
+    _is.DatabaseSession session, {
+    _is.WhereExpressionBuilder<TaskTable>? where,
+    int? limit,
+    int? offset,
+    _is.OrderByBuilder<TaskTable>? orderBy,
+    _is.OrderByListBuilder<TaskTable>? orderByList,
+    TaskInclude? include,
+    Duration? throttle = const Duration(milliseconds: 30),
+    Iterable<_is.Table>? alsoTriggerOnTables,
+  }) {
+    return session.db.watch<Task>(
+      where: where?.call(Task.t),
+      orderBy: orderBy?.call(Task.t),
+      orderByList: orderByList?.call(Task.t),
+      limit: limit,
+      offset: offset,
+      include: include,
+      throttle: throttle,
+      alsoTriggerOnTables: alsoTriggerOnTables,
     );
   }
 

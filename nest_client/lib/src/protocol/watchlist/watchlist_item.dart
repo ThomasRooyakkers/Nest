@@ -136,7 +136,7 @@ abstract class WatchlistItem
   WatchlistItem copyWith({
     int? id,
     int? householdId,
-    _iaj5kvsg.Household? household,
+    _iaj5kvsg.Household? household = const _UndefinedWatchlistItem$household(),
     int? tmdbId,
     _ix3az44g.WatchType? type,
     String? title,
@@ -145,7 +145,7 @@ abstract class WatchlistItem
     double? rating,
     _ikkd49ke.WatchStatus? status,
     int? addedById,
-    _ihr4yuyc.NestUser? addedBy,
+    _ihr4yuyc.NestUser? addedBy = const _UndefinedWatchlistItem$addedBy(),
     int? householdRating,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -202,6 +202,16 @@ abstract class WatchlistItem
 
 class _Undefined {}
 
+class _UndefinedWatchlistItem$household extends _isc.UndefinedSentinel
+    implements _iaj5kvsg.Household {
+  const _UndefinedWatchlistItem$household();
+}
+
+class _UndefinedWatchlistItem$addedBy extends _isc.UndefinedSentinel
+    implements _ihr4yuyc.NestUser {
+  const _UndefinedWatchlistItem$addedBy();
+}
+
 class _WatchlistItemImpl extends WatchlistItem {
   _WatchlistItemImpl({
     int? id,
@@ -244,7 +254,7 @@ class _WatchlistItemImpl extends WatchlistItem {
   WatchlistItem copyWith({
     Object? id = _Undefined,
     int? householdId,
-    Object? household = _Undefined,
+    _iaj5kvsg.Household? household = const _UndefinedWatchlistItem$household(),
     int? tmdbId,
     _ix3az44g.WatchType? type,
     String? title,
@@ -253,7 +263,7 @@ class _WatchlistItemImpl extends WatchlistItem {
     Object? rating = _Undefined,
     _ikkd49ke.WatchStatus? status,
     Object? addedById = _Undefined,
-    Object? addedBy = _Undefined,
+    _ihr4yuyc.NestUser? addedBy = const _UndefinedWatchlistItem$addedBy(),
     Object? householdRating = _Undefined,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -261,9 +271,9 @@ class _WatchlistItemImpl extends WatchlistItem {
     return WatchlistItem(
       id: id is int? ? id : this.id,
       householdId: householdId ?? this.householdId,
-      household: household is _iaj5kvsg.Household?
-          ? household
-          : this.household?.copyWith(),
+      household: household is _isc.UndefinedSentinel
+          ? this.household?.copyWith()
+          : household,
       tmdbId: tmdbId ?? this.tmdbId,
       type: type ?? this.type,
       title: title ?? this.title,
@@ -272,9 +282,9 @@ class _WatchlistItemImpl extends WatchlistItem {
       rating: rating is double? ? rating : this.rating,
       status: status ?? this.status,
       addedById: addedById is int? ? addedById : this.addedById,
-      addedBy: addedBy is _ihr4yuyc.NestUser?
-          ? addedBy
-          : this.addedBy?.copyWith(),
+      addedBy: addedBy is _isc.UndefinedSentinel
+          ? this.addedBy?.copyWith()
+          : addedBy,
       householdRating: householdRating is int?
           ? householdRating
           : this.householdRating,

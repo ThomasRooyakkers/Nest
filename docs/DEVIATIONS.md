@@ -50,7 +50,7 @@ Check the entries for the area you are working on.
 - **Sign-in UI is Nest's own**, not Serverpod's ready-made `SignInWidget`: that widget's
   error messages are hard-coded English, which conflicts with rule 5.
 - **`serverpod_auth_idp_client` is a direct dependency of `nest_flutter`** (part of the
-  auth module, pinned 4.0.4) so sign-in errors can be told apart and translated.
+  auth module, pinned 4.1.1) so sign-in errors can be told apart and translated.
 - **`nest_server/lib/server.dart`** exposes `createServerpod()` so the seed command can
   start the server on free ports.
 - **List members do not restrict access:** every household member can see and edit
@@ -62,10 +62,6 @@ Check the entries for the area you are working on.
   sorting, catalog search), next to `data/` and `presentation/`.
 - **Drift cache stores server rows as JSON** in one generic table per kind instead of
   a typed table per model, so later features (tasks, recipes) reuse it.
-- **drift 2.34.4 / drift_dev 2.34.1+1** instead of the newest 2.35: newer drift_dev
-  needs `sqlparser` 0.45, which conflicts with Serverpod 4.0.4 in the shared
-  workspace. The web files `nest_flutter/web/sqlite3.wasm` and `drift_worker.js` are
-  copied from that drift package (see README).
 - **API on `nest-api.g3cko.be`** instead of sharing `nest.g3cko.be`: Serverpod serves
   the API and the web app on separate ports, and a one-level subdomain is covered by
   Cloudflare's free certificate (`api.nest.g3cko.be` would not be).

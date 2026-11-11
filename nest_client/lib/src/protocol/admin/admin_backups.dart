@@ -52,7 +52,8 @@ abstract class AdminBackups
   @_isc.useResult
   AdminBackups copyWith({
     List<_i2211eyr.BackupRun>? runs,
-    _i4av8j21.BackupRequest? pendingRequest,
+    _i4av8j21.BackupRequest? pendingRequest =
+        const _UndefinedAdminBackups$pendingRequest(),
   });
   @override
   Map<String, dynamic> toJson() {
@@ -79,7 +80,10 @@ abstract class AdminBackups
   }
 }
 
-class _Undefined {}
+class _UndefinedAdminBackups$pendingRequest extends _isc.UndefinedSentinel
+    implements _i4av8j21.BackupRequest {
+  const _UndefinedAdminBackups$pendingRequest();
+}
 
 class _AdminBackupsImpl extends AdminBackups {
   _AdminBackupsImpl({
@@ -96,13 +100,14 @@ class _AdminBackupsImpl extends AdminBackups {
   @override
   AdminBackups copyWith({
     List<_i2211eyr.BackupRun>? runs,
-    Object? pendingRequest = _Undefined,
+    _i4av8j21.BackupRequest? pendingRequest =
+        const _UndefinedAdminBackups$pendingRequest(),
   }) {
     return AdminBackups(
       runs: runs ?? this.runs.map((e0) => e0.copyWith()).toList(),
-      pendingRequest: pendingRequest is _i4av8j21.BackupRequest?
-          ? pendingRequest
-          : this.pendingRequest?.copyWith(),
+      pendingRequest: pendingRequest is _isc.UndefinedSentinel
+          ? this.pendingRequest?.copyWith()
+          : pendingRequest,
     );
   }
 }

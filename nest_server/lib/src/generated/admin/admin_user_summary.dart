@@ -81,7 +81,7 @@ abstract class AdminUserSummary
     String? email,
     String? locale,
     bool? isSuperAdmin,
-    DateTime? disabledAt,
+    DateTime? disabledAt = const _is.$UndefinedDateTime(),
     int? householdCount,
     DateTime? createdAt,
   });
@@ -154,7 +154,7 @@ class _AdminUserSummaryImpl extends AdminUserSummary {
     Object? email = _Undefined,
     String? locale,
     bool? isSuperAdmin,
-    Object? disabledAt = _Undefined,
+    DateTime? disabledAt = const _is.$UndefinedDateTime(),
     int? householdCount,
     DateTime? createdAt,
   }) {
@@ -164,7 +164,9 @@ class _AdminUserSummaryImpl extends AdminUserSummary {
       email: email is String? ? email : this.email,
       locale: locale ?? this.locale,
       isSuperAdmin: isSuperAdmin ?? this.isSuperAdmin,
-      disabledAt: disabledAt is DateTime? ? disabledAt : this.disabledAt,
+      disabledAt: disabledAt is _is.UndefinedSentinel
+          ? this.disabledAt
+          : disabledAt,
       householdCount: householdCount ?? this.householdCount,
       createdAt: createdAt ?? this.createdAt,
     );

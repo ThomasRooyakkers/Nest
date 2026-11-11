@@ -111,9 +111,10 @@ abstract class Household
     String? name,
     _imk37xix.HouseholdStatus? status,
     List<_idhxy0am.HouseholdFeature>? enabledFeatures,
-    List<_irc89x16.MealSlot>? mealSlots,
+    List<_irc89x16.MealSlot>? mealSlots =
+        const _isc.$UndefinedList<_irc89x16.MealSlot>(),
     String? inviteCode,
-    DateTime? inviteExpiresAt,
+    DateTime? inviteExpiresAt = const _isc.$UndefinedDateTime(),
     DateTime? createdAt,
     DateTime? updatedAt,
   });
@@ -191,9 +192,10 @@ class _HouseholdImpl extends Household {
     String? name,
     _imk37xix.HouseholdStatus? status,
     List<_idhxy0am.HouseholdFeature>? enabledFeatures,
-    Object? mealSlots = _Undefined,
+    List<_irc89x16.MealSlot>? mealSlots =
+        const _isc.$UndefinedList<_irc89x16.MealSlot>(),
     Object? inviteCode = _Undefined,
-    Object? inviteExpiresAt = _Undefined,
+    DateTime? inviteExpiresAt = const _isc.$UndefinedDateTime(),
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -203,13 +205,13 @@ class _HouseholdImpl extends Household {
       status: status ?? this.status,
       enabledFeatures:
           enabledFeatures ?? this.enabledFeatures.map((e0) => e0).toList(),
-      mealSlots: mealSlots is List<_irc89x16.MealSlot>?
-          ? mealSlots
-          : this.mealSlots?.map((e0) => e0).toList(),
+      mealSlots: mealSlots is _isc.UndefinedSentinel
+          ? this.mealSlots?.map((e0) => e0).toList()
+          : mealSlots,
       inviteCode: inviteCode is String? ? inviteCode : this.inviteCode,
-      inviteExpiresAt: inviteExpiresAt is DateTime?
-          ? inviteExpiresAt
-          : this.inviteExpiresAt,
+      inviteExpiresAt: inviteExpiresAt is _isc.UndefinedSentinel
+          ? this.inviteExpiresAt
+          : inviteExpiresAt,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
