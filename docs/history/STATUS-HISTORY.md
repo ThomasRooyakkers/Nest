@@ -7,7 +7,7 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
-**Serverpod 4.1.1 (NEST-44, 2026-11-11, not yet released):** the Pi's logs
+**0.19.3 released and deployed (2026-11-11, NEST-44): Serverpod 4.1.1.** the Pi's logs
 (3 days) held ~1,500 error lines in the `nest` container; ~1,450 came from
 one burst on 2026-11-09 14:51–14:56: 364 plain GETs to `/v1/websocket`, each
 logged by Serverpod 4.0.4 as "Invalid WebSocket upgrade request" plus "Bad
@@ -24,6 +24,13 @@ logged on 4.1.1 (4.0.4 logs the error), a real handshake still gets 101, and
 a 4.0.4 client (the 1.1 apps) signs in, loads households and lists and keeps
 the shopping stream open against 4.1.1. Tests: server 468, app 232, admin 23,
 shared 24, all green; `dart analyze --fatal-infos` clean.
+Released as `v0.19.3` (CI: tests, analyze, format, server image all green)
+and deployed by Claude with Thomas's OK: Pi `.env` `NEST_VERSION=0.19.3`
+(`.env.bak-20261111-122222`), dump
+`~/nest/pre-update/nest-pre-update-20261111-122222.sql.gz` (the `backups`
+folder is not writable by the SSH user). Verified: ping 0.19.3 / API 13,
+migration applied, site/API/admin answer, a bad `/v1/websocket` GET gets 400
+with nothing logged.
 
 **Google Play 1.1 sent for production review (2026-11-09):** Thomas
 switched the Play developer account (same ID 4997764981545368596) from

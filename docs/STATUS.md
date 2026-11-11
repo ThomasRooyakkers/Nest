@@ -6,11 +6,11 @@ details to the top of the "Log" section in `docs/history/STATUS-HISTORY.md`
 and leave one line here. Deviations from the spec go in `docs/DEVIATIONS.md`.
 The backlog is in Jira (`docs/JIRA.md`).
 
-## Current state (2026-11-07)
+## Current state (2026-11-11)
 
 - **Phase 9 (Dashboard + release) in progress.** Phases 0–8 are done and
   released. The dashboard is built; Google and Apple sign-in are live.
-- **Server:** 0.19.2 (API level 13, image `hoomly-server`) on Thomas's Pi at `nest.g3cko.be` /
+- **Server:** 0.19.3 (Serverpod 4.1.1, API level 13, image `hoomly-server`) on Thomas's Pi at `nest.g3cko.be` /
   `nest-api.g3cko.be`. Includes the admin portal packages A (management),
   B (logs, security events) and C (Overview metrics, admin alert emails).
   Resend is on for the Pi; a real alert email has not been seen yet.
@@ -59,8 +59,6 @@ Details for every item: `docs/history/STATUS-HISTORY.md`.
    NEST-22 Hoomly rebrand: server part live in 0.19.2; the app part needs a
    new iOS and Android build. Left: NEST-42 (Android Google sign-in bug,
    needs phone logs).
-10. **NEST-44 Serverpod 4.1.1** (stops the websocket error noise in the
-   Pi's logs): upgraded and tested, committed; not yet released or deployed.
 
 ## Open questions
 
