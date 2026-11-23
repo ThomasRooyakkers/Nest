@@ -35,8 +35,13 @@ The backlog is in Jira (`docs/JIRA.md`).
   dark mode (NEST-46) and push notifications (NEST-30: NEST-49 server,
   NEST-50 app, NEST-51 Firebase setup by Thomas). Push is built and tested
   locally (server API level 15, migration `20261123132228672`, additive);
-  it needs NEST-51 (Firebase project, APNs key, service account on the Pi,
-  `firebase.json` for release builds) before it works on real phones.
+  Server 0.21.0 deployed 2026-11-23 (dump
+  `nest-pre-update-20261123-155223`; ping reports API 15 and push on).
+  NEST-51 done: Firebase project `hoomly-ca9f3` with iOS and Android apps,
+  APNs key uploaded, service account in the Pi's `.env`, `firebase.json`
+  local. App 2.0.0 (4) IPA built with Firebase (push entitlement
+  production); Thomas to upload with Transporter and test via TestFlight.
+  Android AAB 2.0.0 not built yet.
 - **NEST-46 (2026-11-23):** dark theme "Navy night" built (app only, no
   server change): follows the system, Settings → Appearance offers System /
   Light / Dark (saved on the device), holiday decorations adapted, Android launch

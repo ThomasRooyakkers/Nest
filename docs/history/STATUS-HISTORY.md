@@ -7,6 +7,19 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Server 0.21.0 deployed, Firebase set up (2026-11-23, NEST-51).** Claude
+registered the iOS and Android apps (`be.g3cko.nest`) in Firebase project
+`hoomly-ca9f3` and wrote the client config to the untracked
+`nest_flutter/firebase.json` (separate iOS and Android API keys, commit
+`83f18ea`); Thomas uploaded the APNs key (development and production) and
+put the service account in the Pi's `.env` (`FCM_SERVICE_ACCOUNT`, line
+prepared by Claude, backup `.env.bak-20261123-154312`). In the simulator a
+Firebase build registered a real FCM token with the local server. Tag
+`v0.21.0`, image built by CI, `NEST_VERSION=0.21.0`, `deploy/deploy.sh`
+(dump `nest-pre-update-20261123-155223`); the live ping reports version
+0.21.0, API 15, `pushNotifications: true`. App 2.0.0 (4): IPA with
+`--dart-define-from-file=firebase.json`, `aps-environment` production.
+
 **Push notifications (2026-11-23, NEST-30/49/50, version 2.0).** Thomas
 chose two events (someone assigns you a task; someone adds items to a list
 you share), sending from his own server only (option 1, no relay) and
