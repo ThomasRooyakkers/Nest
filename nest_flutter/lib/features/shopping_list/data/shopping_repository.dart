@@ -308,7 +308,9 @@ class ShoppingRepository {
         householdId: householdId,
         listId: listId,
         catalogItemId: catalogItem?.id,
-        name: name.trim(),
+        name: catalogItem == null
+            ? capitalizeItemName(name.trim())
+            : name.trim(),
         spec: spec,
         category: catalogItem?.category ?? ShoppingCategory.other,
         iconKey: catalogItem?.iconKey ?? '',

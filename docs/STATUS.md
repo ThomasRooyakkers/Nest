@@ -26,6 +26,11 @@ The backlog is in Jira (`docs/JIRA.md`).
 - **NEST-23:** iOS Google sign-in now reuses the last Google account
   silently, so Google's "shared data" mail no longer comes on every sign-in;
   not yet checked on a real iPhone.
+- **NEST-45 (2026-11-23, not released):** shopping catalog grown from 152 to
+  599 built-in items (English + Dutch, Belgian staples), smarter word
+  matching, own items start with a capital, typed text can always be added
+  as an own item. Server part needs a server release; the 22 new icons and
+  the app changes need a new app build.
 - **Open bug:** Google sign-in fails on Thomas's old Android phone ("Something
   went wrong", never reaches the server); cause not confirmed.
 

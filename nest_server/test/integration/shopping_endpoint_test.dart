@@ -109,6 +109,13 @@ void main() {
       expect(again.status, ShoppingItemStatus.toBuy);
     });
 
+    test('an own item starts with a capital', () async {
+      final item = await add('rode pesto');
+      expect(item.name, 'Rode pesto');
+      final again = await add('RODE PESTO');
+      expect(again.id, item.id);
+    });
+
     test('an own item gets the icon and category its words point to', () async {
       final item = await add('Trostomaten');
       expect(item.catalogItemId, isNot((await builtIn('tomatoes')).id));

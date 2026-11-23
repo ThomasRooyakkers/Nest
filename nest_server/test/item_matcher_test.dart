@@ -23,13 +23,16 @@ void main() {
     expect(key('Cherry tomatoes on the vine'), 'cherry_tomatoes');
     expect(key('Roma tomatoes'), 'tomatoes');
     expect(key('tomato sauce'), 'tomato_sauce');
-    expect(key('Organic whole milk'), 'milk');
-    expect(key('Coffee beans'), 'coffee');
+    expect(key('Organic whole milk'), 'whole_milk');
+    expect(key('Organic milk'), 'milk');
+    expect(key('Coffee beans'), 'coffee_beans');
+    expect(key('Ground coffee'), 'ground_coffee');
   });
 
   test('Dutch compounds match on their ending', () {
     expect(key('Trostomaten'), 'tomatoes');
-    expect(key('Volkorenbrood'), 'bread');
+    expect(key('Volkorenbrood'), 'wholemeal_bread');
+    expect(key('Maisbrood'), 'bread');
     expect(key('Tomatensaus'), 'tomato_sauce');
     expect(key('Gemberbier'), 'beer');
     expect(key('Roomboter'), 'butter');
@@ -44,8 +47,46 @@ void main() {
 
   test('very short words only match on their own', () {
     expect(key('ui'), 'onions');
-    expect(key('Rode ui'), 'onions');
+    expect(key('Rode ui'), 'red_onions');
+    expect(key('Gele ui'), 'onions');
     expect(key('Bui'), isNull);
+  });
+
+  test('the extended catalog finds specific items before general ones', () {
+    expect(key('Witloof'), 'chicory');
+    expect(key('Bloemkool'), 'cauliflower');
+    expect(key('Spitskool'), 'white_cabbage');
+    expect(key('Jonge kaas'), 'young_cheese');
+    expect(key('Geraspte gouda'), 'gouda');
+    expect(key('Filet américain'), 'filet_americain');
+    expect(key('Mosselen'), 'mussels');
+    expect(key('Grijze garnalen'), 'grey_shrimp');
+    expect(key('Rode wijn'), 'red_wine');
+    expect(key('Kriek'), 'special_beers');
+    expect(key('Jupiler'), 'lager');
+    expect(key('Speculoospasta'), 'speculoos_spread');
+    expect(key('Speculoos'), 'speculoos');
+    expect(key('Hagelslag'), 'chocolate_sprinkles');
+    expect(key('Frikandellen'), 'frozen_snacks');
+    expect(key('Rucola'), 'rocket');
+    expect(key('Basilicum'), 'basil');
+    expect(key('Spaghetti'), 'spaghetti');
+    expect(key('Mandarijn'), 'mandarins');
+    expect(key('Wasverzachter'), 'fabric_softener');
+    expect(key('PMD-zakken'), 'pmd_bags');
+  });
+
+  test('extended compounds still pick the right noun', () {
+    expect(key('Volkorenspaghetti'), 'spaghetti');
+    expect(key('Rijstpap'), 'rice_pudding');
+    expect(key('Griesmeelpap'), 'porridge');
+    expect(key('Hoestsiroop'), 'cough_syrup');
+    expect(key('Tomatenpuree'), 'tomato_puree');
+    expect(key('Zonnecrème'), 'sun_cream');
+    expect(key('Kipnuggets'), 'chicken_nuggets');
+    expect(key('Kippenboutjes'), 'chicken_drumsticks');
+    expect(key('Bruinbrood'), 'brown_bread');
+    expect(key('Notenbrood'), 'bread');
   });
 
   test('unknown names match nothing', () {
@@ -58,6 +99,13 @@ void main() {
     final keys = builtInItems.map((i) => i.key).toSet();
     for (final word in ['appel', 'hesp', 'foil', 'olie', 'zeep']) {
       expect(keys, contains(key(word)));
+    }
+  });
+
+  test('every built-in name finds its own item', () {
+    for (final item in builtInItems) {
+      expect(key(item.nameEn), item.key, reason: item.nameEn);
+      expect(key(item.nameNl), item.key, reason: item.nameNl);
     }
   });
 

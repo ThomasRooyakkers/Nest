@@ -142,6 +142,26 @@ void main() {
       expect(exactCatalogMatch(catalog, ' melk ')?.id, 1);
       expect(exactCatalogMatch(catalog, 'mel'), isNull);
     });
+    test("an own item hides the built-in item with the same name", () {
+      final withOwn = [
+        ...catalog,
+        catalogItem(5, 'melk', 'melk', householdId: 1),
+      ];
+      expect(
+        searchCatalog(withOwn, 'melk', 'nl').map((c) => c.id),
+        [5, 2],
+      );
+    });
+  });
+
+  test('capitalizeItemName starts typed names with a capital', () {
+    expect(capitalizeItemName('melk'), 'Melk');
+    expect(capitalizeItemName('rode ui'), 'Rode ui');
+    expect(capitalizeItemName('ijsblokjes'), 'IJsblokjes');
+    expect(capitalizeItemName('Melk'), 'Melk');
+    expect(capitalizeItemName('iPhone kabel'), 'iPhone kabel');
+    expect(capitalizeItemName('7up'), '7up');
+    expect(capitalizeItemName(''), '');
   });
 
   test('itemName translates built-in items only', () {

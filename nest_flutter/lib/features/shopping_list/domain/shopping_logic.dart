@@ -84,9 +84,25 @@ class ShoppingBoard {
   }
 }
 
+/// Starts a typed item name with a capital: "melk" -> "Melk",
+/// "ijsblokjes" -> "IJsblokjes". A first word that already has a capital
+/// ("iPhone") is left as typed. Keep in line with the server's
+/// `ItemNames.capitalize`.
+String capitalizeItemName(String name) {
+  if (name.isEmpty) return name;
+  final firstWord = name.split(RegExp(r'\s')).first;
+  if (firstWord != firstWord.toLowerCase()) return name;
+  final first = name[0];
+  if (first == first.toUpperCase()) return name;
+  if (name.startsWith('ij')) return 'IJ${name.substring(2)}';
+  return first.toUpperCase() + name.substring(1);
+}
+
 /// Catalog items matching [query] in either language, best matches first:
 /// names starting with the query before names containing it, the app's
-/// language before the other one.
+/// language before the other one. A built-in item with the same name as one
+/// of the household's own items is left out: adding by that name uses the
+/// own item.
 List<CatalogItem> searchCatalog(
   List<CatalogItem> catalog,
   String query,
@@ -108,9 +124,19 @@ List<CatalogItem> searchCatalog(
     return null;
   }
 
+  final ownNames = {
+    for (final item in catalog)
+      if (item.householdId != null) item.nameEn.toLowerCase(),
+  };
+  bool shadowed(CatalogItem item) =>
+      item.householdId == null &&
+      (ownNames.contains(item.nameEn.toLowerCase()) ||
+          ownNames.contains(item.nameNl.toLowerCase()));
+
   final ranked = [
     for (final item in catalog)
-      if (rank(item) case final r?) (r, item),
+      if (!shadowed(item))
+        if (rank(item) case final r?) (r, item),
   ];
   ranked.sort((a, b) {
     final byRank = a.$1.compareTo(b.$1);

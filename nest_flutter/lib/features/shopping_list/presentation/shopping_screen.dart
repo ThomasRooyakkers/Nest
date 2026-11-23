@@ -229,6 +229,7 @@ class _SearchField extends StatelessWidget {
       controller: controller,
       focusNode: focusNode,
       textInputAction: TextInputAction.done,
+      textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         hintText: l10n.shoppingSearchHint,
         prefixIcon: Icon(LucideIcons.search, color: colors.inkMuted),
@@ -318,7 +319,7 @@ class _SearchResults extends ConsumerWidget {
           i.catalogItemId,
     };
 
-    final results = searchCatalog(catalog, query, language);
+    final results = searchCatalog(catalog, query, language, limit: 12);
     final showOwn = exactCatalogMatch(catalog, query) == null;
 
     Widget row({
@@ -366,21 +367,6 @@ class _SearchResults extends ConsumerWidget {
         type: MaterialType.transparency,
         child: Column(
           children: [
-            if (showOwn && results.isEmpty)
-              row(
-                icon: LucideIcons.plus,
-                title: l10n.shoppingAddOwnItem(query),
-                onList: false,
-                onTap: () {
-                  _addItem(
-                    ref,
-                    householdId: householdId,
-                    list: list,
-                    name: query,
-                  );
-                  onAdded();
-                },
-              ),
             for (final item in results)
               row(
                 icon: itemIcon(item.iconKey, item.category),
@@ -394,6 +380,25 @@ class _SearchResults extends ConsumerWidget {
                     list: list,
                     catalogItem: item,
                     name: catalogName(item, language),
+                  );
+                  onAdded();
+                },
+              ),
+            // Typed text that is not exactly a catalog item can always be
+            // added as it is, also when similar items are suggested.
+            if (showOwn)
+              row(
+                icon: LucideIcons.plus,
+                title: l10n.shoppingAddOwnItem(
+                  capitalizeItemName(query.trim()),
+                ),
+                onList: false,
+                onTap: () {
+                  _addItem(
+                    ref,
+                    householdId: householdId,
+                    list: list,
+                    name: query,
                   );
                   onAdded();
                 },

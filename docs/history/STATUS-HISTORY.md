@@ -7,6 +7,33 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Better grocery adding (2026-11-23, NEST-45, not yet released).** The
+built-in catalog (`built_in_catalog.dart`) grew from 152 to 599 items: all
+152 old keys, names, icons and categories are unchanged; 447 new items
+cover the rest of a Belgian/Dutch weekly shop (witloof, filet américain,
+preskop, speculoos and speculoospasta, hagelslag, mosselen, grijze garnalen,
+frikandellen, Belgian beer styles, PMD bags, baby, pet and care items, ...).
+Names were written by Claude from general knowledge, with supermarket
+category trees only as a checklist; no shop data was copied (terms of use,
+EU database right). `BuiltInCatalog.sync` inserts the new items at start-up.
+The matcher's synonym map was rebuilt to match: words that now have their own
+item moved there (e.g. rucola, basilicum, spaghetti, mandarijn), risky short
+words were dropped (rood, wit, kop, gel, maatjes), and "sap" now points to
+fruit juice instead of orange juice. Some matches are now more specific
+("Volkorenbrood" -> wholemeal bread, "Rode ui" -> red onions). New test:
+every built-in name finds its own item. Icons: new items use 22 extra Lucide
+icons (shell, rabbit, gift, popsicle, iceCreamBowl, martini, utensils, ...)
+added to the app's `catalogIcons`; older apps show the category icon for
+those. Auto-capitalisation: new own items start with a capital on the server
+(`ItemNames.capitalize`, "ijsblokjes" -> "IJsblokjes", "iPhone" left alone)
+and in the app (`capitalizeItemName`, keyboard starts with a capital).
+Search: a built-in item with the same name as a household's own item is
+hidden (adding uses the own item anyway), suggestions are capped at 12, and
+"Add <typed text>" now shows below the suggestions whenever the text is not
+exactly a catalog item (before it only showed when nothing matched, which a
+bigger catalog would make rare). Tests: server 475, app 234, all green; not
+yet tried on a device.
+
 **0.19.3 released and deployed (2026-11-11, NEST-44): Serverpod 4.1.1.** the Pi's logs
 (3 days) held ~1,500 error lines in the `nest` container; ~1,450 came from
 one burst on 2026-11-09 14:51–14:56: 364 plain GETs to `/v1/websocket`, each
