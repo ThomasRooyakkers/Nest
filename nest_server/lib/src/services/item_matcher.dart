@@ -2,6 +2,7 @@ import 'package:serverpod/serverpod.dart';
 
 import '../generated/protocol.dart';
 import 'built_in_catalog.dart';
+import 'item_names.dart';
 
 /// Picks a fitting icon and category for an item the user typed, from the
 /// words in its name (English and Dutch): "Cherry tomatoes", "kerstomaten"
@@ -56,51 +57,67 @@ abstract final class ItemMatcher {
     return buffer.toString().replaceAll(RegExp('[^a-z0-9]+'), ' ').trim();
   }
 
-  /// Gives own items without an icon (added before the matcher existed) the
-  /// icon and category of a match, and updates the list items that use
-  /// them. Items the matcher finds nothing for are left alone.
-  static Future<void> backfill(Session session) async {
+  /// Tidies the households' own items at start-up: gives each the icon and
+  /// category the current matcher finds for its name (users cannot pick
+  /// these, so they always come from the matcher), and starts its name with
+  /// a capital. List items using it get the same icon and category, and the
+  /// capital when their name is the item's name. Items the matcher finds
+  /// nothing for keep their icon. Nothing is merged or deleted, and items
+  /// that are already right are not touched, so running it again does
+  /// nothing.
+  static Future<void> refreshOwnItems(Session session) async {
     final own = await CatalogItem.db.find(
       session,
-      where: (t) =>
-          t.householdId.notEquals(null) &
-          t.iconKey.equals('') &
-          t.category.equals(ShoppingCategory.other),
+      where: (t) => t.householdId.notEquals(null),
     );
     for (final item in own) {
       final guess = match(item.nameEn);
-      if (guess == null) continue;
+      final iconKey = guess?.iconKey ?? item.iconKey;
+      final category = guess?.category ?? item.category;
+      final name = ItemNames.capitalize(item.nameEn);
+      if (iconKey == item.iconKey &&
+          category == item.category &&
+          name == item.nameEn &&
+          name == item.nameNl) {
+        continue;
+      }
       await session.db.transaction((transaction) async {
+        final now = DateTime.now();
         await CatalogItem.db.updateRow(
           session,
           item.copyWith(
-            iconKey: guess.iconKey,
-            category: guess.category,
-            updatedAt: DateTime.now(),
+            nameEn: name,
+            nameNl: name,
+            iconKey: iconKey,
+            category: category,
+            updatedAt: now,
           ),
           transaction: transaction,
         );
         final listItems = await ShoppingItem.db.find(
           session,
-          where: (t) =>
-              t.catalogItemId.equals(item.id) &
-              t.iconKey.equals('') &
-              t.category.equals(ShoppingCategory.other),
+          where: (t) => t.catalogItemId.equals(item.id),
           transaction: transaction,
         );
-        if (listItems.isEmpty) return;
-        await ShoppingItem.db.update(
-          session,
-          [
-            for (final listItem in listItems)
+        final updates = [
+          for (final listItem in listItems)
+            if (listItem.iconKey != iconKey ||
+                listItem.category != category ||
+                (listItem.name == item.nameEn && listItem.name != name))
               listItem.copyWith(
-                iconKey: guess.iconKey,
-                category: guess.category,
-                updatedAt: DateTime.now(),
+                name: listItem.name == item.nameEn ? name : listItem.name,
+                iconKey: iconKey,
+                category: category,
+                updatedAt: now,
               ),
-          ],
-          transaction: transaction,
-        );
+        ];
+        if (updates.isNotEmpty) {
+          await ShoppingItem.db.update(
+            session,
+            updates,
+            transaction: transaction,
+          );
+        }
       });
     }
   }
@@ -329,9 +346,14 @@ abstract final class ItemMatcher {
     'chicken_drumsticks': ['drumsticks', 'kippenbouten', 'kippenpootjes'],
     'chicken_wings': ['vleugeltjes', 'wings'],
     'whole_chicken': ['braadkip', 'soepkip'],
-    'turkey': ['kalkoenfilet'],
+    'turkey': ['kalkoenfilet', 'kalkoengebraad', 'kalkoenrollade'],
     'pork_chops': ['kotelet', 'koteletten', 'karbonade'],
-    'pork_tenderloin': ['varkenshaas'],
+    'pork_tenderloin': [
+      'varkenshaas',
+      'varkensmignonet',
+      'mignonette',
+      'mignonnette',
+    ],
     'pork_belly': ['spekreepjes'],
     'spare_ribs': ['ribbetjes', 'ribs'],
     'beef_stew': ['runderstoofvlees', 'carbonades'],
@@ -522,7 +544,13 @@ abstract final class ItemMatcher {
     'marshmallows': ['spekjes snoep'],
     'mints': ['pepermunt', 'muntjes'],
     'sponge_fingers': ['boudoirs', 'boudoirkoekjes'],
-    'apple_sauce': ['compote', 'appelcompote'],
+    'apple_sauce': [
+      'compote',
+      'appelcompote',
+      'appels saus',
+      'appel saus',
+      'appelsaus',
+    ],
     'fruit_pouches': ['knijpfruit'],
     'still_water': ['spa blauw'],
     'cola': ['coca cola', 'cola zero', 'pepsi'],
@@ -667,5 +695,9 @@ abstract final class ItemMatcher {
     'cheese': ['kaasblokjes'],
     'baking_mix': ['wafelmix', 'cakemix', 'bakmix', 'pannenkoekmix'],
     'skewers': ['spiesjes', 'sate', 'saté', 'kebab', 'brochette'],
+    'green_beans': ['boontjes', 'prinsessenbonen'],
+    'coconut': ['kokosschilfers', 'kokosrasp'],
+    'bin_bags': ['vuilzakjes', 'vuilniszakjes'],
+    'spices': ['speculaaskruiden', 'speculaaspoeder'],
   };
 }

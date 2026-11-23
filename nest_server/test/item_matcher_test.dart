@@ -89,6 +89,16 @@ void main() {
     expect(key('Notenbrood'), 'bread');
   });
 
+  test('names from real lists find their item', () {
+    expect(key('appels saus'), 'apple_sauce');
+    expect(key('kalkoengebraad'), 'turkey');
+    expect(key('boontjes'), 'green_beans');
+    expect(key('kokosschilfers'), 'coconut');
+    expect(key('vuilzakjes bio'), 'bin_bags');
+    expect(key('speculaaspoeder'), 'spices');
+    expect(key('varkensmignonet'), 'pork_tenderloin');
+  });
+
   test('unknown names match nothing', () {
     expect(key('Secret stuff'), isNull);
     expect(key(''), isNull);

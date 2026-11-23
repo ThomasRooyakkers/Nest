@@ -139,13 +139,68 @@ void main() {
       final item = await add('', catalogItemId: own.id);
       expect(item.iconKey, '');
 
-      await ItemMatcher.backfill(session);
+      await ItemMatcher.refreshOwnItems(session);
       final items = await endpoints.shopping.items(anna, householdId);
       final bread = items.firstWhere((i) => i.id == item.id);
       expect(bread.iconKey, 'breadLoaf');
       expect(bread.category, ShoppingCategory.bakery);
       final still = items.firstWhere((i) => i.id == unknown.id);
       expect((still.iconKey, still.category), ('', ShoppingCategory.other));
+    });
+
+    test('start-up gives own items a better icon and a capital', () async {
+      final session = sessionBuilder.build();
+      Future<CatalogItem> insertOwn(
+        String name,
+        String icon,
+        ShoppingCategory c,
+      ) => CatalogItem.db.insertRow(
+        session,
+        CatalogItem(
+          householdId: householdId,
+          nameEn: name,
+          nameNl: name,
+          iconKey: icon,
+          category: c,
+        ),
+      );
+      final turkey = await insertOwn(
+        'kalkoengebraad',
+        'beef',
+        ShoppingCategory.meatFish,
+      );
+      final meat = await insertOwn('vlees', 'ham', ShoppingCategory.meatFish);
+      final phone = await insertOwn('iPhone kabel', '', ShoppingCategory.other);
+      final turkeyItem = await add('', catalogItemId: turkey.id);
+      final meatItem = await add('', catalogItemId: meat.id);
+      final phoneItem = await add('', catalogItemId: phone.id);
+      expect(turkeyItem.name, 'kalkoengebraad');
+
+      await ItemMatcher.refreshOwnItems(session);
+      var items = await endpoints.shopping.items(anna, householdId);
+      ShoppingItem byId(int id) => items.firstWhere((i) => i.id == id);
+      expect(byId(turkeyItem.id!).name, 'Kalkoengebraad');
+      expect(byId(turkeyItem.id!).iconKey, 'drumstick');
+      // No match: the icon stays, the name gets its capital.
+      expect(byId(meatItem.id!).name, 'Vlees');
+      expect(byId(meatItem.id!).iconKey, 'ham');
+      expect(byId(phoneItem.id!).name, 'iPhone kabel');
+      final catalog = await endpoints.shopping.catalog(anna, householdId);
+      final ownTurkey = catalog.firstWhere((c) => c.id == turkey.id);
+      expect(
+        (ownTurkey.nameEn, ownTurkey.nameNl),
+        (
+          'Kalkoengebraad',
+          'Kalkoengebraad',
+        ),
+      );
+      expect(catalog.where((c) => c.id == meat.id), hasLength(1));
+
+      // A second run changes nothing.
+      final before = {for (final i in items) i.id: i.updatedAt};
+      await ItemMatcher.refreshOwnItems(session);
+      items = await endpoints.shopping.items(anna, householdId);
+      expect({for (final i in items) i.id: i.updatedAt}, before);
     });
 
     test('a new built-in icon reaches items already on a list', () async {

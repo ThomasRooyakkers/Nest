@@ -27,7 +27,7 @@ void run(List<String> args) async {
   final session = await pod.createSession();
   try {
     await BuiltInCatalog.sync(session);
-    await ItemMatcher.backfill(session);
+    await ItemMatcher.refreshOwnItems(session);
     await SignUpPolicy.syncSuperAdmin(session);
   } finally {
     await session.close();
