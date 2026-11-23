@@ -10,7 +10,7 @@ The backlog is in Jira (`docs/JIRA.md`).
 
 - **Phase 9 (Dashboard + release) in progress.** Phases 0–8 are done and
   released. The dashboard is built; Google and Apple sign-in are live.
-- **Server:** 0.19.5 (Serverpod 4.1.1, API level 13, image `hoomly-server`) on Thomas's Pi at `nest.g3cko.be` /
+- **Server:** 0.20.0 (Serverpod 4.1.1, API level 13, image `hoomly-server`) on Thomas's Pi at `nest.g3cko.be` /
   `nest-api.g3cko.be`. Includes the admin portal packages A (management),
   B (logs, security events) and C (Overview metrics, admin alert emails).
   Resend is on for the Pi; a real alert email has not been seen yet.
@@ -31,7 +31,10 @@ The backlog is in Jira (`docs/JIRA.md`).
   start with a capital; existing own items tidied at start-up. Server part
   live in 0.19.4 and 0.19.5; the 22 new icons and the
   search changes in the app need a new app build.
-- **NEST-47 (2026-11-23, not released):** holiday decorations. Server API
+- **NEST-47 (2026-11-23):** holiday decorations; server 0.20.0 live (API 14,
+  dump `nest-pre-update-20261123-121104`). App 1.2.0 (3): iOS build uploaded
+  to App Store Connect (version 1.2 not yet created or submitted); Android AAB
+  built, not uploaded. Server API
   level 14 (`seasonal_setting` table, `adminSeasonal`, ping fields), a
   "Holiday decorations" card on the admin Server page, and Christmas (lights,
   snow, ribbon) and New Year (fireworks, popper, confetti) on the app's
