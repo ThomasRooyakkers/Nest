@@ -7,6 +7,15 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**0.19.4 released and deployed (2026-11-23, NEST-45):** the bigger catalog
+and server-side capitalisation. CI (tests, analyze, format, server image) all
+green on `b4b4587`; deployed by Claude with Thomas's OK: Pi `.env`
+`NEST_VERSION=0.19.4` (`.env.bak-20261123-095534`), dump
+`nest-pre-update-20261123-095537.sql.gz`. Verified: ping 0.19.4 / API 13,
+`catalog_item` has 599 built-in rows (sync ran at start-up) next to the 48
+own items, site 200, no errors in the log. The app part (22 icons, search
+changes) waits for the next app build.
+
 **Better grocery adding (2026-11-23, NEST-45, not yet released).** The
 built-in catalog (`built_in_catalog.dart`) grew from 152 to 599 items: all
 152 old keys, names, icons and categories are unchanged; 447 new items
