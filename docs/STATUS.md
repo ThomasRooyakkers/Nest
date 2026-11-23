@@ -51,7 +51,6 @@ The backlog is in Jira (`docs/JIRA.md`).
   tested end to end on the live server: task and shopping notifications
   arrived in the simulator. Android AAB 2.0.0 (4) built and signed
   (Downloads/Hoomly-2.0.0-4.aab), not uploaded to Play yet.
-  Android AAB 2.0.0 not built yet.
 - **NEST-46 (2026-11-23):** dark theme "Navy night" built (app only, no
   server change): follows the system, Settings → Appearance offers System /
   Light / Dark (saved on the device), holiday decorations adapted, Android launch
