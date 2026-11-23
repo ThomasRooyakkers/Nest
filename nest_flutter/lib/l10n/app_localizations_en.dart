@@ -1313,4 +1313,45 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorAlreadyLinked =>
       'This Apple or Google account already belongs to another Hoomly account.';
+
+  @override
+  String seasonalNightsUntilChristmas(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count more nights until Christmas',
+      one: '1 more night until Christmas',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get seasonalMerryChristmas => 'Merry Christmas';
+
+  @override
+  String get seasonalHappyHolidays => 'Happy holidays';
+
+  @override
+  String seasonalHoursUntilNewYear(int count, String year) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hours to go until $year',
+      one: '1 hour to go until $year',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get seasonalHappyNewYear => 'Happy New Year!';
+
+  @override
+  String get seasonalLightsLabel => 'Make the lights flash';
+
+  @override
+  String get settingsSeasonalTitle => 'Holiday decorations';
+
+  @override
+  String get settingsSeasonalSubtitle =>
+      'Lights, snow and fireworks around the holidays';
 }

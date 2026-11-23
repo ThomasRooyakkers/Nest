@@ -2347,6 +2347,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This Apple or Google account already belongs to another Hoomly account.'**
   String get errorAlreadyLinked;
+
+  /// Dashboard, under the greeting during the Christmas theme.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 more night until Christmas} other{{count} more nights until Christmas}}'**
+  String seasonalNightsUntilChristmas(int count);
+
+  /// Dashboard, under the greeting on 25 and 26 December.
+  ///
+  /// In en, this message translates to:
+  /// **'Merry Christmas'**
+  String get seasonalMerryChristmas;
+
+  /// Dashboard, under the greeting on the other Christmas theme days.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy holidays'**
+  String get seasonalHappyHolidays;
+
+  /// Dashboard, under the greeting on New Year's Eve.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hour to go until {year}} other{{count} hours to go until {year}}}'**
+  String seasonalHoursUntilNewYear(int count, String year);
+
+  /// Dashboard, under the greeting on 1 and 2 January.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy New Year!'**
+  String get seasonalHappyNewYear;
+
+  /// Accessibility label of the Christmas lights on the dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Make the lights flash'**
+  String get seasonalLightsLabel;
+
+  /// Settings switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Holiday decorations'**
+  String get settingsSeasonalTitle;
+
+  /// Settings switch subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lights, snow and fireworks around the holidays'**
+  String get settingsSeasonalSubtitle;
 }
 
 class _AppLocalizationsDelegate

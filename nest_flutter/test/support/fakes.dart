@@ -107,8 +107,12 @@ class FakeHealthRepository implements ServerHealthRepository {
     this.signUpMode = SignUpMode.inviteOnly,
     this.googleServerClientId,
     this.appleSignIn,
+    this.seasonalMode,
+    this.seasonalThemes,
   });
 
+  final SeasonalMode? seasonalMode;
+  final List<String>? seasonalThemes;
   final int? apiVersion;
   final int? minClientApiVersion;
   final SignUpMode? signUpMode;
@@ -124,6 +128,8 @@ class FakeHealthRepository implements ServerHealthRepository {
     signUpMode: signUpMode,
     googleServerClientId: googleServerClientId,
     appleSignIn: appleSignIn,
+    seasonalMode: seasonalMode,
+    seasonalThemes: seasonalThemes,
   );
 }
 

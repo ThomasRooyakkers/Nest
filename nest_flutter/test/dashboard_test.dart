@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nest_client/nest_client.dart';
@@ -7,6 +8,8 @@ import 'package:nest_flutter/features/tasks/presentation/task_row.dart';
 import 'support/fake_meal_plan_server.dart';
 import 'support/fake_recipe_server.dart';
 import 'support/fake_shopping_server.dart';
+import 'package:nest_flutter/features/seasonal/data/seasonal_preference.dart';
+import 'package:nest_flutter/features/seasonal/presentation/seasonal_decor.dart';
 import 'support/fake_task_server.dart';
 import 'support/fake_watchlist_server.dart';
 import 'support/fakes.dart';
@@ -205,5 +208,104 @@ void main() {
     await scrollTo(tester, find.text('2 taken vandaag'));
     await scrollTo(tester, find.text('Recepten'));
     expect(tester.takeException(), isNull);
+  });
+
+  group('holiday decorations', () {
+    Future<ProviderContainer> openAt(
+      WidgetTester tester,
+      DateTime at, {
+      FakeHealthRepository? health,
+      Locale? locale,
+      double textScale = 1,
+    }) {
+      // The decorations stand still, so the test can settle.
+      tester.platformDispatcher.accessibilityFeaturesTestValue =
+          const FakeAccessibilityFeatures(disableAnimations: true);
+      addTearDown(
+        tester.platformDispatcher.clearAccessibilityFeaturesTestValue,
+      );
+      return pumpNestApp(
+        tester,
+        mealPlanServer: meals,
+        recipeServer: recipes,
+        shoppingServer: shopping,
+        taskServer: tasks,
+        watchlistServer: watchlist,
+        members: members,
+        deviceLocale: locale,
+        textScale: textScale,
+        clock: () => at,
+        health:
+            health ??
+            FakeHealthRepository(
+              seasonalMode: SeasonalMode.automatic,
+              seasonalThemes: const ['christmas', 'newYear'],
+            ),
+        households: [
+          MyHousehold(
+            household: Household(
+              id: 1,
+              name: 'Home',
+              enabledFeatures: HouseholdFeature.values,
+            ),
+            role: MembershipRole.owner,
+          ),
+        ],
+        user: testUser(locale: locale?.languageCode ?? 'en'),
+      );
+    }
+
+    testWidgets('Christmas: lights, countdown and a way to switch it off', (
+      tester,
+    ) async {
+      final container = await openAt(tester, DateTime(2026, 12, 23, 18));
+      expect(find.bySemanticsLabel('Make the lights flash'), findsOneWidget);
+      expect(find.text('2 more nights until Christmas'), findsOneWidget);
+      expect(find.byType(SeasonalBackdrop), findsOneWidget);
+      expect(find.byType(SeasonalCardDecor), findsOneWidget);
+      expect(find.byType(SeasonalTabBarTop), findsOneWidget);
+      await tester.tap(find.byType(ChristmasLights));
+      await tester.pump();
+      expect(tester.takeException(), isNull);
+
+      await container.read(seasonalDecorationsOnProvider.notifier).set(false);
+      await tester.pumpAndSettle();
+      expect(find.byType(ChristmasLights), findsNothing);
+      expect(find.byType(SeasonalBackdrop), findsNothing);
+      expect(find.byType(SeasonalTabBarTop), findsNothing);
+      expect(find.text('WEDNESDAY, DECEMBER 23'), findsOneWidget);
+    });
+
+    testWidgets('New Year: fireworks and the hours to go', (tester) async {
+      await openAt(tester, DateTime(2026, 12, 31, 19));
+      expect(find.text('5 hours to go until 2027'), findsOneWidget);
+      expect(find.byType(ChristmasLights), findsNothing);
+      expect(find.byType(SeasonalBackdrop), findsOneWidget);
+    });
+
+    testWidgets('nothing on other days or on servers without the setting', (
+      tester,
+    ) async {
+      await openAt(
+        tester,
+        DateTime(2026, 12, 20),
+        health: FakeHealthRepository(),
+      );
+      expect(find.byType(SeasonalBackdrop), findsNothing);
+      expect(find.byType(SeasonalTabBarTop), findsNothing);
+    });
+
+    testWidgets('Christmas lays out in Dutch with large text', (tester) async {
+      await openAt(
+        tester,
+        DateTime(2026, 12, 24, 9),
+        locale: const Locale('nl'),
+        textScale: 2,
+      );
+      expect(tester.takeException(), isNull);
+      expect(find.text('Nog 1 nachtje tot Kerstmis'), findsOneWidget);
+      await scrollTo(tester, find.text('Recepten'));
+      expect(tester.takeException(), isNull);
+    });
   });
 }

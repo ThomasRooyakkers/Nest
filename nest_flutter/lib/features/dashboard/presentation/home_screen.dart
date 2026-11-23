@@ -15,6 +15,9 @@ import '../../../core/household/household_switcher.dart';
 import '../../../core/server/server_compatibility.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../meal_planning/domain/meal_plan_logic.dart';
+import '../../seasonal/domain/seasonal_logic.dart';
+import '../../seasonal/presentation/seasonal_decor.dart';
+import '../../seasonal/presentation/seasonal_providers.dart';
 import '../../meal_planning/presentation/meal_plan_providers.dart';
 import '../../recipes/presentation/recipe_providers.dart';
 import '../../settings/data/profile_repository.dart';
@@ -42,6 +45,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   /// Rebuilds every minute, so tasks turn overdue and the day changes
   /// while the dashboard is open.
   late final Timer _tick;
+
+  /// Snow or fireworks behind the cards; tapping the greeting surprises.
+  final _backdrop = GlobalKey<SeasonalBackdropState>();
 
   @override
   void initState() {
@@ -72,6 +78,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final today = DateFormat.MMMMEEEEd(localeTag).format(now);
     final name = ref.watch(currentUserProvider).value?.name ?? '';
     final householdId = ref.watch(activeHouseholdProvider)?.household.id;
+    final theme = ref.watch(
+      seasonalThemeProvider(DateTime(now.year, now.month, now.day)),
+    );
 
     final mealsOn = ref.watch(mealPlanAvailableProvider);
     final shoppingOn = _featureOn(HouseholdFeature.shopping, 1);
@@ -90,66 +99,103 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       if (tasksOn) ref.watch(taskSyncProvider(householdId));
     }
 
+    final tonight = mealsOn && householdId != null
+        ? _TonightCard(householdId: householdId, now: now, recipesOn: recipesOn)
+        : null;
+
     return Scaffold(
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(NestSpacing.screen),
-          children: [
-            Row(
+      body: Stack(
+        children: [
+          if (theme != null)
+            Positioned.fill(
+              child: SeasonalBackdrop(key: _backdrop, theme: theme),
+            ),
+          SafeArea(
+            child: ListView(
+              padding: const EdgeInsets.all(NestSpacing.screen),
               children: [
-                const Expanded(
-                  child: Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: HouseholdSwitcher(),
+                if (theme == SeasonalTheme.christmas) ...[
+                  const ChristmasLights(),
+                  const SizedBox(height: 4),
+                ],
+                Row(
+                  children: [
+                    const Expanded(
+                      child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: HouseholdSwitcher(),
+                      ),
+                    ),
+                    NestRoundButton(
+                      tooltip: l10n.settingsTitle,
+                      icon: LucideIcons.settings,
+                      // Push, not go: Android's back button must return to Home.
+                      onPressed: () => context.push(Routes.settings),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: NestSpacing.gap),
+                const SizedBox(height: 8),
+                Text(today.toUpperCase(), style: textTheme.labelMedium),
+                const SizedBox(height: 4),
+                GestureDetector(
+                  // A hidden surprise: a snow flurry or a big firework.
+                  excludeFromSemantics: true,
+                  onTap: theme == null
+                      ? null
+                      : () => _backdrop.currentState?.surprise(),
+                  child: Text(
+                    l10n.greeting(name),
+                    style: textTheme.headlineMedium?.copyWith(fontSize: 34),
                   ),
                 ),
-                NestRoundButton(
-                  tooltip: l10n.settingsTitle,
-                  icon: LucideIcons.settings,
-                  // Push, not go: Android's back button must return to Home.
-                  onPressed: () => context.push(Routes.settings),
-                ),
+                if (theme != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    seasonalGreetingText(l10n, theme, now),
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: NestColors.of(context).inkMuted,
+                    ),
+                  ),
+                ],
+                const SizedBox(height: NestSpacing.screen),
+                if (householdId != null) ...[
+                  if (tonight != null)
+                    _Gap(
+                      theme == null
+                          ? tonight
+                          : Padding(
+                              // Room for the snow and the bow above the card.
+                              padding: const EdgeInsets.only(top: 6),
+                              child: SeasonalCardDecor(
+                                theme: theme,
+                                child: tonight,
+                              ),
+                            ),
+                    ),
+                  if (shoppingOn || tasksOn)
+                    _Gap(
+                      _Tiles(
+                        householdId: householdId,
+                        now: now,
+                        shoppingOn: shoppingOn,
+                        tasksOn: tasksOn,
+                      ),
+                    ),
+                  if (tasksOn)
+                    _Gap(
+                      _TodayTasks(
+                        householdId: householdId,
+                        now: now,
+                        max: _maxTasks,
+                      ),
+                    ),
+                ],
+                if (recipesOn) const _Gap(_RecipesCard()),
               ],
             ),
-            const SizedBox(height: NestSpacing.gap),
-            const SizedBox(height: 8),
-            Text(today.toUpperCase(), style: textTheme.labelMedium),
-            const SizedBox(height: 4),
-            Text(
-              l10n.greeting(name),
-              style: textTheme.headlineMedium?.copyWith(fontSize: 34),
-            ),
-            const SizedBox(height: NestSpacing.screen),
-            if (householdId != null) ...[
-              if (mealsOn)
-                _Gap(
-                  _TonightCard(
-                    householdId: householdId,
-                    now: now,
-                    recipesOn: recipesOn,
-                  ),
-                ),
-              if (shoppingOn || tasksOn)
-                _Gap(
-                  _Tiles(
-                    householdId: householdId,
-                    now: now,
-                    shoppingOn: shoppingOn,
-                    tasksOn: tasksOn,
-                  ),
-                ),
-              if (tasksOn)
-                _Gap(
-                  _TodayTasks(
-                    householdId: householdId,
-                    now: now,
-                    max: _maxTasks,
-                  ),
-                ),
-            ],
-            if (recipesOn) const _Gap(_RecipesCard()),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

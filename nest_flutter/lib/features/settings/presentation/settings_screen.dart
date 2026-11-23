@@ -14,6 +14,8 @@ import '../../../core/household/household_repository.dart';
 import '../../../core/widgets/language_picker.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/data/auth_repository.dart';
+import '../../seasonal/data/seasonal_preference.dart';
+import '../../seasonal/domain/seasonal_logic.dart';
 import '../data/profile_repository.dart';
 import 'server_card.dart';
 import 'sign_in_methods_card.dart';
@@ -42,6 +44,10 @@ class SettingsScreen extends ConsumerWidget {
             const _ProfileCard(),
             const SizedBox(height: NestSpacing.gap),
             const _LanguageCard(),
+            if (ref.watch(serverSupportsProvider(seasonalApiVersion))) ...[
+              const SizedBox(height: NestSpacing.gap),
+              const _DecorationsCard(),
+            ],
             const SignInMethodsCard(),
             if (active != null) ...[
               const SizedBox(height: NestSpacing.gap),
@@ -225,6 +231,31 @@ class _LanguageCard extends ConsumerWidget {
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Holiday decorations on this device (the server decides which ones).
+class _DecorationsCard extends ConsumerWidget {
+  const _DecorationsCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final on = ref.watch(seasonalDecorationsOnProvider).value ?? true;
+    return NestCard(
+      // Ink of the tile paints on this Material, above the card.
+      child: Material(
+        type: MaterialType.transparency,
+        child: SwitchListTile.adaptive(
+          contentPadding: EdgeInsets.zero,
+          title: Text(l10n.settingsSeasonalTitle),
+          subtitle: Text(l10n.settingsSeasonalSubtitle),
+          value: on,
+          onChanged: (value) =>
+              ref.read(seasonalDecorationsOnProvider.notifier).set(value),
+        ),
       ),
     );
   }

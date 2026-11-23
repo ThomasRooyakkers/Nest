@@ -1796,5 +1796,50 @@
   "errorAlreadyLinked": "This Apple or Google account already belongs to another Hoomly account.",
   "@errorAlreadyLinked": {
     "description": "Error when linking an account that belongs to someone else"
+  },
+  "seasonalNightsUntilChristmas": "{count, plural, =1{1 more night until Christmas} other{{count} more nights until Christmas}}",
+  "@seasonalNightsUntilChristmas": {
+    "description": "Dashboard, under the greeting during the Christmas theme.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "seasonalMerryChristmas": "Merry Christmas",
+  "@seasonalMerryChristmas": {
+    "description": "Dashboard, under the greeting on 25 and 26 December."
+  },
+  "seasonalHappyHolidays": "Happy holidays",
+  "@seasonalHappyHolidays": {
+    "description": "Dashboard, under the greeting on the other Christmas theme days."
+  },
+  "seasonalHoursUntilNewYear": "{count, plural, =1{1 hour to go until {year}} other{{count} hours to go until {year}}}",
+  "@seasonalHoursUntilNewYear": {
+    "description": "Dashboard, under the greeting on New Year's Eve.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonalHappyNewYear": "Happy New Year!",
+  "@seasonalHappyNewYear": {
+    "description": "Dashboard, under the greeting on 1 and 2 January."
+  },
+  "seasonalLightsLabel": "Make the lights flash",
+  "@seasonalLightsLabel": {
+    "description": "Accessibility label of the Christmas lights on the dashboard."
+  },
+  "settingsSeasonalTitle": "Holiday decorations",
+  "@settingsSeasonalTitle": {
+    "description": "Settings switch."
+  },
+  "settingsSeasonalSubtitle": "Lights, snow and fireworks around the holidays",
+  "@settingsSeasonalSubtitle": {
+    "description": "Settings switch subtitle."
   }
 }

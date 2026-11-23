@@ -11,6 +11,10 @@ import 'package:nest_shared/nest_shared.dart';
 import '../core/backend/server_health_repository.dart';
 import '../core/household/household_repository.dart';
 import '../core/server/server_compatibility.dart';
+import '../features/seasonal/domain/seasonal_logic.dart';
+import '../features/seasonal/presentation/seasonal_decor.dart';
+import '../features/seasonal/presentation/seasonal_providers.dart';
+import '../features/tasks/presentation/task_providers.dart';
 import '../l10n/app_localizations.dart';
 
 /// A tab of the bottom tab bar. [branch] is the index of its branch in the
@@ -100,6 +104,7 @@ class NestShell extends ConsumerWidget {
         extendBody: true,
         body: shell,
         bottomNavigationBar: _TabBar(
+          theme: ref.watch(seasonalThemeProvider(_today(ref))),
           tabs: tabs,
           current: shell.currentIndex,
           onSelect: (branch) => shell.goBranch(
@@ -123,13 +128,21 @@ double tabBarBottomGap(BuildContext context) {
   return inset > 20 ? inset - 6 : 20;
 }
 
+DateTime _today(WidgetRef ref) {
+  final now = ref.watch(clockProvider)();
+  return DateTime(now.year, now.month, now.day);
+}
+
 class _TabBar extends StatelessWidget {
   const _TabBar({
+    required this.theme,
     required this.tabs,
     required this.current,
     required this.onSelect,
   });
 
+  /// Holiday theme: snow or confetti lies on top of the bar.
+  final SeasonalTheme? theme;
   final List<_Tab> tabs;
   final int current;
   final ValueChanged<int> onSelect;
@@ -140,49 +153,65 @@ class _TabBar extends StatelessWidget {
     final colors = NestColors.of(context);
     final radius = BorderRadius.circular(NestRadii.tabBar);
 
-    return Padding(
-      padding: EdgeInsets.fromLTRB(16, 0, 16, tabBarBottomGap(context)),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: radius,
-          boxShadow: NestShadows.floating(colors),
-        ),
-        // Frosted glass: content scrolling underneath stays faintly visible.
-        child: ClipRRect(
-          borderRadius: radius,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-            child: Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: colors.surface.withValues(alpha: 0.82),
-                borderRadius: radius,
-                border: Border.all(
-                  color: colors.surface.withValues(alpha: 0.6),
-                ),
+    final bar = DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: radius,
+        boxShadow: NestShadows.floating(colors),
+      ),
+      // Frosted glass: content scrolling underneath stays faintly visible.
+      child: ClipRRect(
+        borderRadius: radius,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+          child: Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: colors.surface.withValues(alpha: 0.82),
+              borderRadius: radius,
+              border: Border.all(
+                color: colors.surface.withValues(alpha: 0.6),
               ),
-              child: Row(
-                children: [
-                  for (final tab in tabs)
-                    Expanded(
-                      child: _TabButton(
-                        icon: tab.icon,
-                        label: tab.label(l10n),
-                        selected: tab.branch == current,
-                        onTap: () {
-                          if (tab.branch != current) {
-                            HapticFeedback.selectionClick();
-                          }
-                          onSelect(tab.branch);
-                        },
-                      ),
+            ),
+            child: Row(
+              children: [
+                for (final tab in tabs)
+                  Expanded(
+                    child: _TabButton(
+                      icon: tab.icon,
+                      label: tab.label(l10n),
+                      selected: tab.branch == current,
+                      onTap: () {
+                        if (tab.branch != current) {
+                          HapticFeedback.selectionClick();
+                        }
+                        onSelect(tab.branch);
+                      },
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           ),
         ),
       ),
+    );
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(16, 0, 16, tabBarBottomGap(context)),
+      child: theme == null
+          ? bar
+          : Stack(
+              clipBehavior: Clip.none,
+              children: [
+                bar,
+                Positioned(
+                  top: -7,
+                  left: 24,
+                  right: 24,
+                  height: 14,
+                  child: SeasonalTabBarTop(theme: theme!),
+                ),
+              ],
+            ),
     );
   }
 }

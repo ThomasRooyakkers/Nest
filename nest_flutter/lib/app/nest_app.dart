@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nest_shared/nest_shared.dart';
 
 import '../features/auth/data/auth_repository.dart';
+import '../core/backend/server_health_repository.dart';
 import '../l10n/app_localizations.dart';
 import 'app_locale.dart';
 import 'router.dart';
@@ -24,6 +25,9 @@ class _NestAppState extends ConsumerState<NestApp> {
 
   void _checkSignIn() {
     if (ref.read(signedInProvider)) unawaited(ref.read(signInCheckProvider)());
+    // Ask the server again, so a change such as holiday decorations shows
+    // when the app comes back.
+    ref.invalidate(serverPingProvider);
   }
 
   @override
