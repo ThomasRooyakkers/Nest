@@ -49,7 +49,8 @@ The backlog is in Jira (`docs/JIRA.md`).
   push and Firebase. Server 0.21.1 deployed the same day (privacy policy
   covers push and Firebase; dump `nest-pre-update-20261123-165905`). Push
   tested end to end on the live server: task and shopping notifications
-  arrived in the simulator. Android AAB 2.0.0 not built or uploaded yet.
+  arrived in the simulator. Android AAB 2.0.0 (4) built and signed
+  (Downloads/Hoomly-2.0.0-4.aab), not uploaded to Play yet.
   Android AAB 2.0.0 not built yet.
 - **NEST-46 (2026-11-23):** dark theme "Navy night" built (app only, no
   server change): follows the system, Settings → Appearance offers System /
