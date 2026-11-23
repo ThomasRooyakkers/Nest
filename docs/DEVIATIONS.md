@@ -76,3 +76,9 @@ Check the entries for the area you are working on.
   'open'` is set in `passwords.yaml` (see the example file).
 - The template's `AGENTS.md` (Serverpod MCP workflow) was not copied; CLAUDE.md stays the
   single instruction file.
+- **Holiday decorations** (NEST-47, asked for by Thomas 2026-11-23): not in
+  the v1 feature list. The super-admin switches them on the admin portal's
+  Server page (automatic by date, one theme always, or off); every member can
+  switch them off in Settings. Their colours (`SeasonalPalette`) are drawings,
+  never text, so they sit outside the design system's colour tokens. Christmas
+  runs 7–28 December, New Year 31 December – 2 January.

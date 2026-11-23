@@ -7,6 +7,33 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Holiday decorations: Christmas and New Year (2026-11-23, NEST-47, not yet
+released).** Designs agreed with Thomas on the design canvas
+(https://claude.ai/artifact/Uxr35wffq6rsFa5bt2WQHD). **Server** (API level
+14, commit `b501738`): `SeasonalMode` (automatic, always, off) and a
+one-row `seasonal_setting` table (migration `20261123102355644`, additive);
+without a row every known theme shows on its dates. `ServerPing` gained
+`seasonalMode` and `seasonalThemes` (the themes that may show); the app
+decides from the date, so every member sees it in their own time zone.
+`adminSeasonal.settings` / `save` (super-admin only, audited as
+`system.seasonalThemes`, unknown themes refused), in the admin access test.
+**Admin portal:** a "Holiday decorations" card on the Server page (mode,
+a switch per theme with its dates and a "Now" badge, or the one theme).
+**App** (commit `ca42803`): `features/seasonal` with the date logic
+(Christmas 7–28 Dec, New Year 31 Dec – 2 Jan), a device setting
+(`device.seasonalDecorations`, a switch in Settings on servers with level
+14), and painted decorations: Christmas lights that twinkle and change
+colour (tap: they flash), snow falling behind the cards (tap the greeting:
+a flurry), snow and a gold ribbon with a bow on tonight's card, snow on the
+tab bar, and a countdown line ("2 more nights until Christmas"); New Year
+fireworks behind the cards (tap the greeting: a big firework), a party
+popper on tonight's card, confetti on the tab bar and "5 hours to go until
+2027". Nothing moves with reduced motion; the ping is fetched again when
+the app comes back to the foreground. Tests: server 486, admin 24, app 243,
+all green. Checked in the iOS simulator against the local server with the
+setting on "always" for both themes (the simulator app now points at
+`localhost:8080`, signed in as a seed user).
+
 **0.19.5 released and deployed (2026-11-23, NEST-45): own items tidied.**
 Thomas asked to clean up the households' own items, but only icons and
 capitals (no merging into built-in items, no deleting). `ItemMatcher.backfill`

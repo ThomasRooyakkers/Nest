@@ -31,6 +31,12 @@ The backlog is in Jira (`docs/JIRA.md`).
   start with a capital; existing own items tidied at start-up. Server part
   live in 0.19.4 and 0.19.5; the 22 new icons and the
   search changes in the app need a new app build.
+- **NEST-47 (2026-11-23, not released):** holiday decorations. Server API
+  level 14 (`seasonal_setting` table, `adminSeasonal`, ping fields), a
+  "Holiday decorations" card on the admin Server page, and Christmas (lights,
+  snow, ribbon) and New Year (fireworks, popper, confetti) on the app's
+  dashboard, with a switch in Settings. Needs a server release and a new app
+  build that reaches the stores before 7 December.
 - **Open bug:** Google sign-in fails on Thomas's old Android phone ("Something
   went wrong", never reaches the server); cause not confirmed.
 
