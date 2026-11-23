@@ -7,6 +7,23 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**0.19.5 released and deployed (2026-11-23, NEST-45): own items tidied.**
+Thomas asked to clean up the households' own items, but only icons and
+capitals (no merging into built-in items, no deleting). `ItemMatcher.backfill`
+became `refreshOwnItems`, run at every start-up: each own item gets the icon
+and category the current matcher finds (users cannot pick these; items with
+no match keep theirs) and a capital (`ItemNames.capitalize`); list items
+using it follow, and get the capital when their name is the item's name.
+Already-right items are not touched, so later runs do nothing. Matcher words
+added from real lists: appels saus, kalkoengebraad, boontjes, kokosschilfers,
+vuilzakjes, speculaaspoeder, varkensmignonet. CI green on `9ade2e5`;
+deployed by Claude with Thomas's OK (`.env.bak-20261123-101848`, dump
+`nest-pre-update-20261123-101851.sql.gz`). Verified: ping 0.19.5, 46 of the
+48 own items changed (all 46 got a capital, 7 a better icon), none left in
+lower case, still 48 own items, no errors in the log. Own items that have
+the same name as a new built-in item (e.g. Witloof, Bloemkool, Cola) stay
+own items, as asked.
+
 **0.19.4 released and deployed (2026-11-23, NEST-45):** the bigger catalog
 and server-side capitalisation. CI (tests, analyze, format, server image) all
 green on `b4b4587`; deployed by Claude with Thomas's OK: Pi `.env`

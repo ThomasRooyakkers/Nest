@@ -10,7 +10,7 @@ The backlog is in Jira (`docs/JIRA.md`).
 
 - **Phase 9 (Dashboard + release) in progress.** Phases 0–8 are done and
   released. The dashboard is built; Google and Apple sign-in are live.
-- **Server:** 0.19.4 (Serverpod 4.1.1, API level 13, image `hoomly-server`) on Thomas's Pi at `nest.g3cko.be` /
+- **Server:** 0.19.5 (Serverpod 4.1.1, API level 13, image `hoomly-server`) on Thomas's Pi at `nest.g3cko.be` /
   `nest-api.g3cko.be`. Includes the admin portal packages A (management),
   B (logs, security events) and C (Overview metrics, admin alert emails).
   Resend is on for the Pi; a real alert email has not been seen yet.
@@ -28,7 +28,8 @@ The backlog is in Jira (`docs/JIRA.md`).
   not yet checked on a real iPhone.
 - **NEST-45 (2026-11-23):** shopping catalog grown from 152 to 599 built-in
   items (English + Dutch, Belgian staples), smarter word matching, own items
-  start with a capital. Server part live in 0.19.4; the 22 new icons and the
+  start with a capital; existing own items tidied at start-up. Server part
+  live in 0.19.4 and 0.19.5; the 22 new icons and the
   search changes in the app need a new app build.
 - **Open bug:** Google sign-in fails on Thomas's old Android phone ("Something
   went wrong", never reaches the server); cause not confirmed.
