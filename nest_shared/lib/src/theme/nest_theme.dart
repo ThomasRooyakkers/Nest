@@ -69,7 +69,7 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
   const sheetRadius = Radius.circular(NestRadii.sheet);
 
   final colorScheme = ColorScheme(
-    brightness: Brightness.light,
+    brightness: colors.brightness,
     primary: colors.accent,
     onPrimary: colors.onAccent,
     primaryContainer: colors.accentTint,
@@ -96,9 +96,9 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
     surfaceContainerHighest: colors.chip,
     outline: colors.borderStrong,
     outlineVariant: colors.border,
-    shadow: colors.ink,
+    shadow: colors.shadow,
     surfaceTint: Colors.transparent,
-    scrim: colors.ink.withValues(alpha: 0.35),
+    scrim: colors.shadow.withValues(alpha: 0.35),
     inverseSurface: colors.ink,
     onInverseSurface: colors.surface,
     inversePrimary: colors.accentTint,
@@ -115,6 +115,7 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
 
   return ThemeData(
     useMaterial3: true,
+    brightness: colors.brightness,
     colorScheme: colorScheme,
     scaffoldBackgroundColor: colors.background,
     canvasColor: colors.background,
@@ -234,7 +235,11 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
       style: SegmentedButton.styleFrom(
         backgroundColor: colors.chip,
         foregroundColor: colors.inkMuted,
-        selectedBackgroundColor: colors.surface,
+        // The selected segment is lifted off the track: a white segment in
+        // the light theme, a lighter navy one in the dark theme.
+        selectedBackgroundColor: colors.brightness == Brightness.dark
+            ? colors.borderStrong
+            : colors.surface,
         selectedForegroundColor: colors.ink,
         side: BorderSide(color: colors.chip, width: 2),
         minimumSize: minButtonSize,
@@ -359,7 +364,7 @@ ThemeData buildNestTheme({NestColors colors = NestColors.light}) {
       color: colors.surface,
       surfaceTintColor: Colors.transparent,
       elevation: 8,
-      shadowColor: colors.ink.withValues(alpha: 0.3),
+      shadowColor: colors.shadow.withValues(alpha: 0.3),
       textStyle: textTheme.bodyLarge,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(NestRadii.tile),

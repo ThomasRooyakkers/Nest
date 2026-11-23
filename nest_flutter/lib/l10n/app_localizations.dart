@@ -650,6 +650,30 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get languageSection;
 
+  /// Settings section title for the light/dark theme choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearanceSection;
+
+  /// Theme choice: follow the phone's light/dark setting.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get themeSystem;
+
+  /// Theme choice: always light.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// Theme choice: always dark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
   /// Bottom tab: dashboard.
   ///
   /// In en, this message translates to:

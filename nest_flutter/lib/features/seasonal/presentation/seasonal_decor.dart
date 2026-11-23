@@ -132,6 +132,7 @@ class _ChristmasLightsState extends State<ChristmasLights>
               _controller,
               partyUntil: _partyUntil,
               moving: seasonalMotionOn(context),
+              wireColor: NestColors.of(context).inkMuted,
             ),
           ),
         ),
@@ -141,12 +142,20 @@ class _ChristmasLightsState extends State<ChristmasLights>
 }
 
 class _LightsPainter extends CustomPainter {
-  _LightsPainter(this.time, {required this.partyUntil, required this.moving})
-    : super(repaint: time);
+  _LightsPainter(
+    this.time, {
+    required this.partyUntil,
+    required this.moving,
+    required this.wireColor,
+  }) : super(repaint: time);
 
   final Animation<double> time;
   final DateTime? partyUntil;
   final bool moving;
+
+  /// The wire and bulb caps: the theme's muted ink, so they show on ivory
+  /// and on navy.
+  final Color wireColor;
 
   /// How low each of the three arcs of wire hangs.
   static const _sag = 38.0;
@@ -172,13 +181,13 @@ class _LightsPainter extends CustomPainter {
       Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.5
-        ..color = const Color(0xFF586274).withValues(alpha: 0.55),
+        ..color = wireColor.withValues(alpha: 0.55),
     );
 
     final party =
         moving && partyUntil != null && DateTime.now().isBefore(partyUntil!);
     final seconds = time.value * 8;
-    final capPaint = Paint()..color = const Color(0xFF586274);
+    final capPaint = Paint()..color = wireColor;
     for (var i = 0; i < bulbs.length; i++) {
       final at = bulbs[i];
       final speed = party ? 5.0 : 1.0;
@@ -219,7 +228,9 @@ class _LightsPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_LightsPainter old) =>
-      old.partyUntil != partyUntil || old.moving != moving;
+      old.partyUntil != partyUntil ||
+      old.moving != moving ||
+      old.wireColor != wireColor;
 }
 
 Offset _quad(Offset a, Offset c, Offset b, double t) {
@@ -676,6 +687,7 @@ class SeasonalCardDecor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dark = NestColors.of(context).brightness == Brightness.dark;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -686,7 +698,9 @@ class SeasonalCardDecor extends StatelessWidget {
             child: IgnorePointer(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(NestRadii.card),
-                child: const CustomPaint(painter: _RibbonPainter(end: 40)),
+                child: CustomPaint(
+                  painter: _RibbonPainter(end: 40, dark: dark),
+                ),
               ),
             ),
           ),
@@ -708,11 +722,14 @@ class SeasonalCardDecor extends StatelessWidget {
           ),
         ],
         if (theme == SeasonalTheme.newYear)
-          const PositionedDirectional(
+          PositionedDirectional(
             top: -26,
             end: 8,
             child: IgnorePointer(
-              child: CustomPaint(size: Size(72, 60), painter: _PopperPainter()),
+              child: CustomPaint(
+                size: const Size(72, 60),
+                painter: _PopperPainter(dark: dark),
+              ),
             ),
           ),
       ],
@@ -743,9 +760,12 @@ class SeasonalTabBarTop extends StatelessWidget {
 
 /// A satin ribbon running down a card, [end] pixels from its end edge.
 class _RibbonPainter extends CustomPainter {
-  const _RibbonPainter({required this.end});
+  const _RibbonPainter({required this.end, this.dark = false});
 
   final double end;
+
+  /// On dark cards the drop shadow needs more strength to show.
+  final bool dark;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -755,7 +775,7 @@ class _RibbonPainter extends CustomPainter {
     canvas
       ..drawRect(
         rect.translate(1.5, 0),
-        Paint()..color = Colors.black.withValues(alpha: 0.08),
+        Paint()..color = Colors.black.withValues(alpha: dark ? 0.35 : 0.08),
       )
       ..drawRect(
         rect,
@@ -787,7 +807,7 @@ class _RibbonPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_RibbonPainter old) => old.end != end;
+  bool shouldRepaint(_RibbonPainter old) => old.end != end || old.dark != dark;
 }
 
 /// A soft, uneven layer of snow with shading, glints and (on cards)
@@ -961,7 +981,10 @@ class _BowPainter extends CustomPainter {
 
 /// A striped party popper with curly streamers and confetti coming out.
 class _PopperPainter extends CustomPainter {
-  const _PopperPainter();
+  const _PopperPainter({this.dark = false});
+
+  /// A navy cone would vanish on dark cards, so it turns a lighter blue.
+  final bool dark;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -1023,12 +1046,18 @@ class _PopperPainter extends CustomPainter {
       ..drawPath(
         cone,
         Paint()
-          ..shader = const LinearGradient(
-            colors: [
-              Color(0xFF2B4C78),
-              SeasonalPalette.navy,
-              Color(0xFF14283F),
-            ],
+          ..shader = LinearGradient(
+            colors: dark
+                ? const [
+                    Color(0xFF7FA3D6),
+                    Color(0xFF5B82B8),
+                    Color(0xFF3F6496),
+                  ]
+                : const [
+                    Color(0xFF2B4C78),
+                    SeasonalPalette.navy,
+                    Color(0xFF14283F),
+                  ],
           ).createShader(cone.getBounds()),
       );
     final stripe = Paint()
@@ -1086,7 +1115,7 @@ class _PopperPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_PopperPainter old) => false;
+  bool shouldRepaint(_PopperPainter old) => old.dark != dark;
 }
 
 /// A small shaded paper rectangle.

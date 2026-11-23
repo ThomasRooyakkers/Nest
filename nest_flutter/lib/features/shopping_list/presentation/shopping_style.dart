@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nest_client/nest_client.dart';
+import 'package:nest_shared/nest_shared.dart';
 
 import '../../../l10n/app_localizations.dart';
 import 'grocery_icons.dart';
@@ -192,6 +193,14 @@ StoreStyle storeStyle(StoreColor color) => switch (color) {
     tint: const Color(0xFFE9DFF8),
   ),
 };
+
+/// The chip tint of a store on [colors]: the light [StoreStyle.tint] in the
+/// light theme, and the store colour mixed 30% into the surface in the dark
+/// theme, so ink text stays readable on both (6.5:1 or more).
+Color storeTint(StoreStyle style, NestColors colors) =>
+    colors.brightness == Brightness.dark
+    ? Color.lerp(colors.surface, style.fill, 0.3)!
+    : style.tint;
 
 /// The store colours in the order the store editor offers them.
 const storeColorOrder = [

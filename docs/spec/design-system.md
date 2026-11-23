@@ -34,6 +34,22 @@ Implement these tokens once in `nest_shared` as a `ThemeData` plus a `NestColors
 
 The palette is "Navy & ivory", chosen 2026-10-31 from side-by-side options (inspired by a navy, ivory and gold marble image). Every text pair keeps 4.5:1 (checked in `nest_shared/test/nest_colors_test.dart`). Overdue is shown as warningInk text, not a filled badge. Token names (honey, apricot, …) are kept from the first palette.
 
+**Dark theme "Navy night"** (decided 2026-11-23, NEST-46). The family app follows the system setting by default; Settings → Appearance offers System / Light / Dark, saved on the device. The admin portal stays light. Same token names and roles; checked for 4.5:1 in the same test.
+
+| Token | Dark | | Token | Dark |
+| --- | --- | --- | --- | --- |
+| background | #12161F | | accent / onAccent | #A9C1E3 / #12213A |
+| surface | #1B2130 | | accentDark | #B9CDEA |
+| surfaceAlt | #161B27 | | accentTint | #243450 |
+| chip | #262D3D | | honey / honeyInk | #3A3224 / #E9D3AE |
+| border | #2A3243 | | apricot / apricotInk | #24324A / #C3D3EA |
+| borderStrong | #3A4357 | | lavender / lavenderInk | #2C2E48 / #CDD0F0 |
+| divider | #222939 | | rose / roseInk | #3A2C26 / #EDCBB6 |
+| checkboxIdle | #7F8AA0 | | warning / warningInk | #45251C / #F4B29C |
+| ink / inkMuted | #F3EEE4 / #AEB5C3 | | rating | #F5B301 |
+
+A `shadow` token (navy #1F2A3D in light, black in dark) colours shadows and scrims, so they never turn light. In dark, store chip tints are the store colour mixed 30% into surface (ink text stays above 6.5:1), and the seasonal decorations swap their few navy and grey parts for lighter ones.
+
 - **Type:** Nunito. Screen titles 28/800 with tight tracking (about −0.6), card titles 22/800, body 15/650, secondary 13–14/600, labels 11–12/800 with slight letter spacing. Pushed screens use a compact centred 17/800 title; tab screens draw their own large title.
 - **Shape:** cards radius 22–28, tiles 22, buttons fully rounded (pill), inputs radius 18, sheets and dialogs 30, small badges radius 8–10.
 - **Spacing:** 20 px screen padding, 10–16 px gaps between cards.

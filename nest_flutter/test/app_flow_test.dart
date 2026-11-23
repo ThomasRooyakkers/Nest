@@ -251,6 +251,10 @@ void main() {
         200,
         scrollable: mainScrollable,
       );
+      // Scrolled into view it can sit at the very bottom edge, under the
+      // screen's edge; bring it fully in before tapping.
+      await tester.drag(mainScrollable, const Offset(0, -200));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Delete account'));
       await tester.pumpAndSettle();
       expect(find.text('Delete your account?'), findsOneWidget);

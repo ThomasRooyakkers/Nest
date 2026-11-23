@@ -404,6 +404,22 @@
   "@languageSection": {
     "description": "Settings section title."
   },
+  "appearanceSection": "Appearance",
+  "@appearanceSection": {
+    "description": "Settings section title for the light/dark theme choice."
+  },
+  "themeSystem": "System",
+  "@themeSystem": {
+    "description": "Theme choice: follow the phone's light/dark setting."
+  },
+  "themeLight": "Light",
+  "@themeLight": {
+    "description": "Theme choice: always light."
+  },
+  "themeDark": "Dark",
+  "@themeDark": {
+    "description": "Theme choice: always dark."
+  },
   "tabHome": "Home",
   "@tabHome": {
     "description": "Bottom tab: dashboard."

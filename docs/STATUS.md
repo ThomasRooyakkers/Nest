@@ -31,6 +31,10 @@ The backlog is in Jira (`docs/JIRA.md`).
   start with a capital; existing own items tidied at start-up. Server part
   live in 0.19.4 and 0.19.5; the 22 new icons and the
   search changes in the app need a new app build.
+- **NEST-46 (2026-11-23):** dark theme "Navy night" built (app only, no
+  server change): follows the system, Settings → Appearance offers System /
+  Light / Dark (saved on the device), holiday decorations adapted, Android launch
+  screen dark (iOS launch screen still ivory, open). Checked on the iOS simulator; needs a new app build to ship.
 - **NEST-47 (2026-11-23):** holiday decorations; server 0.20.0 live (API 14,
   dump `nest-pre-update-20261123-121104`). App 1.2.0 (3): iOS build uploaded
   to App Store Connect (version 1.2 not yet created or submitted); Android AAB

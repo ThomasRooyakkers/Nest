@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/painting.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nest_shared/nest_shared.dart';
 
@@ -21,13 +21,27 @@ double contrast(Color a, Color b) {
 }
 
 void main() {
-  const c = NestColors.light;
+  for (final (palette, c) in const [
+    ('light', NestColors.light),
+    ('dark', NestColors.dark),
+  ]) {
+    group(palette, () => _checkPalette(c));
+  }
 
+  test('the palettes report their brightness', () {
+    expect(NestColors.light.brightness, Brightness.light);
+    expect(NestColors.dark.brightness, Brightness.dark);
+  });
+}
+
+void _checkPalette(NestColors c) {
   // Text colour on background colour pairs used by the design system.
   final pairs = <String, (Color, Color)>{
     'ink on background': (c.ink, c.background),
     'ink on surface': (c.ink, c.surface),
     'ink on chip': (c.ink, c.chip),
+    // The selected segment of a segmented control in the dark theme.
+    'ink on borderStrong': (c.ink, c.borderStrong),
     'inkMuted on background': (c.inkMuted, c.background),
     'inkMuted on surface': (c.inkMuted, c.surface),
     'inkMuted on chip': (c.inkMuted, c.chip),

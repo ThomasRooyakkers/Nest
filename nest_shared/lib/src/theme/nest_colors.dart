@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-/// Nest colour tokens (docs/spec/design-system.md): the "Navy & ivory" palette.
+/// Nest colour tokens (docs/spec/design-system.md): the "Navy & ivory" palette
+/// ([light]) and its "Navy night" counterpart ([dark]).
 /// Ivory surfaces, deep navy for actions and To buy tiles, and soft sand,
-/// mist, lilac and blush tints per feature with dark text (4.5:1 or more).
+/// mist, lilac and blush tints per feature with dark text (4.5:1 or more);
+/// in [dark] the same roles on deep navy surfaces with ivory text.
 ///
 /// Read them in widgets with `NestColors.of(context)`.
 @immutable
@@ -33,9 +35,9 @@ class NestColors extends ThemeExtension<NestColors> {
     required this.warning,
     required this.warningInk,
     required this.rating,
+    required this.shadow,
   });
 
-  /// The only palette for now; there is no dark theme in v1.
   static const light = NestColors(
     background: Color(0xFFF6F2EA),
     surface: Color(0xFFFFFDF9),
@@ -62,7 +64,42 @@ class NestColors extends ThemeExtension<NestColors> {
     warning: Color(0xFFF6DCD0),
     warningInk: Color(0xFF9A3B22),
     rating: Color(0xFFF5B301),
+    shadow: Color(0xFF1F2A3D),
   );
+
+  /// "Navy night": the dark palette (decided 2026-11-23, NEST-46). Same
+  /// roles as [light]; tints become deep, inks become light.
+  static const dark = NestColors(
+    background: Color(0xFF12161F),
+    surface: Color(0xFF1B2130),
+    surfaceAlt: Color(0xFF161B27),
+    chip: Color(0xFF262D3D),
+    border: Color(0xFF2A3243),
+    borderStrong: Color(0xFF3A4357),
+    divider: Color(0xFF222939),
+    checkboxIdle: Color(0xFF7F8AA0),
+    ink: Color(0xFFF3EEE4),
+    inkMuted: Color(0xFFAEB5C3),
+    accent: Color(0xFFA9C1E3),
+    onAccent: Color(0xFF12213A),
+    accentDark: Color(0xFFB9CDEA),
+    accentTint: Color(0xFF243450),
+    honey: Color(0xFF3A3224),
+    honeyInk: Color(0xFFE9D3AE),
+    apricot: Color(0xFF24324A),
+    apricotInk: Color(0xFFC3D3EA),
+    lavender: Color(0xFF2C2E48),
+    lavenderInk: Color(0xFFCDD0F0),
+    rose: Color(0xFF3A2C26),
+    roseInk: Color(0xFFEDCBB6),
+    warning: Color(0xFF45251C),
+    warningInk: Color(0xFFF4B29C),
+    rating: Color(0xFFF5B301),
+    shadow: Color(0xFF000000),
+  );
+
+  /// Whether this is a dark palette (light text on dark surfaces).
+  Brightness get brightness => ThemeData.estimateBrightnessForColor(background);
 
   /// Screen background (soft linen).
   final Color background;
@@ -132,6 +169,10 @@ class NestColors extends ThemeExtension<NestColors> {
   /// empty hearts use [checkboxIdle] outlines.
   final Color rating;
 
+  /// Shadows and scrims: navy in [light], black in [dark] (never [ink],
+  /// which is light in the dark palette).
+  final Color shadow;
+
   static NestColors of(BuildContext context) =>
       Theme.of(context).extension<NestColors>() ?? light;
 
@@ -162,6 +203,7 @@ class NestColors extends ThemeExtension<NestColors> {
     Color? warning,
     Color? warningInk,
     Color? rating,
+    Color? shadow,
   }) {
     return NestColors(
       background: background ?? this.background,
@@ -189,6 +231,7 @@ class NestColors extends ThemeExtension<NestColors> {
       warning: warning ?? this.warning,
       warningInk: warningInk ?? this.warningInk,
       rating: rating ?? this.rating,
+      shadow: shadow ?? this.shadow,
     );
   }
 
@@ -222,6 +265,7 @@ class NestColors extends ThemeExtension<NestColors> {
       warning: l(warning, other.warning),
       warningInk: l(warningInk, other.warningInk),
       rating: l(rating, other.rating),
+      shadow: l(shadow, other.shadow),
     );
   }
 }

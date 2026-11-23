@@ -315,7 +315,7 @@ class _WeekStrip extends StatelessWidget {
                   child: Material(
                     color: isToday ? colors.honey : colors.surface,
                     elevation: isToday ? 0 : 1,
-                    shadowColor: colors.ink.withValues(alpha: 0.18),
+                    shadowColor: colors.shadow.withValues(alpha: 0.18),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),

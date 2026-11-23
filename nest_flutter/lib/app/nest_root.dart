@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nest_client/nest_client.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
@@ -9,6 +9,7 @@ import '../core/server/server_address.dart';
 import '../core/server/server_session.dart';
 import '../core/server/server_store.dart';
 import 'app_locale.dart';
+import 'app_theme_mode.dart';
 import 'nest_app.dart';
 
 /// Holds the connection to the chosen server and restarts the app (a fresh
@@ -19,11 +20,15 @@ class NestRoot extends StatefulWidget {
     required this.database,
     required this.server,
     required this.client,
+    this.themeMode = ThemeMode.system,
   });
 
   final NestDatabase database;
   final ServerAddress server;
   final Client client;
+
+  /// The theme choice saved on the device, read before the first frame.
+  final ThemeMode themeMode;
 
   @override
   State<NestRoot> createState() => _NestRootState();
@@ -33,6 +38,7 @@ class _NestRootState extends State<NestRoot> implements ServerSwitcher {
   late ServerAddress _server = widget.server;
   late Client _client = widget.client;
   Locale? _locale;
+  late ThemeMode _themeMode = widget.themeMode;
   var _generation = 0;
 
   @override
@@ -43,11 +49,13 @@ class _NestRootState extends State<NestRoot> implements ServerSwitcher {
     await widget.database.clearAll();
     await writeChosenServer(widget.database, server);
     final client = await createNestClient(server.apiUrl);
+    final themeMode = await readThemeMode(widget.database);
     if (!mounted) return;
     setState(() {
       _server = server;
       _client = client;
       _locale = locale;
+      _themeMode = themeMode;
       _generation++;
     });
     WidgetsBinding.instance.addPostFrameCallback((_) => old.close());
@@ -68,6 +76,7 @@ class _NestRootState extends State<NestRoot> implements ServerSwitcher {
         nestDatabaseProvider.overrideWithValue(widget.database),
         currentServerProvider.overrideWithValue(_server),
         serverSwitcherProvider.overrideWithValue(this),
+        themeChoiceProvider.overrideWithBuild((ref, notifier) => _themeMode),
         if (_locale != null)
           localeChoiceProvider.overrideWithBuild((ref, notifier) => _locale),
       ],

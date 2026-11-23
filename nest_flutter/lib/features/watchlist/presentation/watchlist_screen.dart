@@ -191,7 +191,7 @@ class _StatusChips extends ConsumerWidget {
             child: Material(
               color: isSelected ? colors.ink : colors.surface,
               elevation: isSelected ? 0 : 1,
-              shadowColor: colors.ink.withValues(alpha: 0.18),
+              shadowColor: colors.shadow.withValues(alpha: 0.18),
               shape: const StadiumBorder(),
               child: InkWell(
                 customBorder: const StadiumBorder(),

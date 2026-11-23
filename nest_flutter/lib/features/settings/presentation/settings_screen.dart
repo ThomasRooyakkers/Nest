@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:nest_client/nest_client.dart';
 import 'package:nest_shared/nest_shared.dart';
 
+import '../../../app/app_theme_mode.dart';
 import '../../../app/router.dart';
 import '../../../core/backend/error_messages.dart';
 import '../../../core/backend/server_health_repository.dart';
@@ -44,6 +45,8 @@ class SettingsScreen extends ConsumerWidget {
             const _ProfileCard(),
             const SizedBox(height: NestSpacing.gap),
             const _LanguageCard(),
+            const SizedBox(height: NestSpacing.gap),
+            const _AppearanceCard(),
             if (ref.watch(serverSupportsProvider(seasonalApiVersion))) ...[
               const SizedBox(height: NestSpacing.gap),
               const _DecorationsCard(),
@@ -229,6 +232,41 @@ class _LanguageCard extends ConsumerWidget {
                     .save(name: user.name, locale: locale.languageCode),
               );
             },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// System / Light / Dark, saved on this device (NEST-46).
+class _AppearanceCard extends ConsumerWidget {
+  const _AppearanceCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    return NestCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _sectionTitle(context, l10n.appearanceSection),
+          SegmentedButton<ThemeMode>(
+            showSelectedIcon: false,
+            segments: [
+              ButtonSegment(
+                value: ThemeMode.system,
+                label: Text(l10n.themeSystem),
+              ),
+              ButtonSegment(
+                value: ThemeMode.light,
+                label: Text(l10n.themeLight),
+              ),
+              ButtonSegment(value: ThemeMode.dark, label: Text(l10n.themeDark)),
+            ],
+            selected: {ref.watch(themeChoiceProvider)},
+            onSelectionChanged: (selection) =>
+                ref.read(themeChoiceProvider.notifier).set(selection.single),
           ),
         ],
       ),

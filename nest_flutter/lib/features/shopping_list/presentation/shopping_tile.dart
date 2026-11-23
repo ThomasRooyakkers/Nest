@@ -51,7 +51,7 @@ class ShoppingTile extends StatelessWidget {
       child: Material(
         color: background,
         elevation: toBuy ? 0 : 1,
-        shadowColor: colors.ink.withValues(alpha: 0.18),
+        shadowColor: colors.shadow.withValues(alpha: 0.18),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(NestRadii.tile),
         ),

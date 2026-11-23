@@ -591,7 +591,7 @@ class _StoreChips extends ConsumerWidget {
     }) {
       final background = switch ((style, selected)) {
         (final style?, true) => style.fill,
-        (final style?, false) => style.tint,
+        (final style?, false) => storeTint(style, colors),
         (null, true) => colors.ink,
         (null, false) => colors.surface,
       };
@@ -608,7 +608,7 @@ class _StoreChips extends ConsumerWidget {
           child: Material(
             color: background,
             elevation: selected || style != null ? 0 : 1,
-            shadowColor: colors.ink.withValues(alpha: 0.18),
+            shadowColor: colors.shadow.withValues(alpha: 0.18),
             shape: StadiumBorder(
               side: selected && style != null
                   ? BorderSide(color: colors.ink, width: 2)

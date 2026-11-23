@@ -7,6 +7,28 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Dark theme "Navy night" (2026-11-23, NEST-46).** Palette agreed with
+Thomas and added to `docs/spec/design-system.md`. `NestColors.dark` next to
+`NestColors.light` in `nest_shared`, plus a `shadow` token (navy in light,
+black in dark) so shadows and scrims never turn light; `buildNestTheme`
+takes its brightness from the palette, and the selected segment of a
+segmented control is lifted (`borderStrong`) in dark. The contrast test
+runs every pair for both palettes (48 checks). App: `app_theme_mode.dart`
+(`ThemeChoice`, saved as the `device.themeMode` key so it survives sign-out
+and server switches), read in `main` before the first frame and passed in by
+`NestRoot`; `NestApp` sets `darkTheme`/`themeMode` and picks status-bar icon
+colours per theme. Settings → Appearance card (System / Light / Dark,
+EN + NL). Store chip tints are mixed into the surface in dark (`storeTint`),
+`shadowColor`s use the shadow token. Holiday decorations: light-string wire
+uses `inkMuted`, the New Year popper cone turns lighter blue and the ribbon
+shadow stronger on dark cards. The Android launch screen gets a dark background
+(`values-night/colors.xml`; builds, not yet seen on a device). The iOS launch
+screen stays ivory for now: a named colour with a dark variant was tried but
+the simulator kept showing ivory, so it was reverted (open point).
+The admin portal stays light. Tests: `app_theme_mode_test.dart` (3), app
+flow test scrolls further to "Delete account". Checked on the iOS simulator
+in dark mode: sign-in, all tabs, Settings, Christmas and New Year.
+
 **Holiday decorations drawn in more detail (2026-11-23, NEST-47).** Thomas
 found the first version too abstract. The painters in
 `seasonal_decor.dart` now draw pear-shaped glass bulbs with a metal socket,
