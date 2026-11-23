@@ -59,15 +59,17 @@ abstract class PushMessaging {
 
 /// Firebase options passed at build time, or null when they are missing.
 FirebaseOptions? firebaseOptionsFromEnvironment() {
-  const apiKey = String.fromEnvironment('FIREBASE_API_KEY');
+  // Firebase creates one API key per platform.
+  const iosApiKey = String.fromEnvironment('FIREBASE_IOS_API_KEY');
+  const androidApiKey = String.fromEnvironment('FIREBASE_ANDROID_API_KEY');
   const projectId = String.fromEnvironment('FIREBASE_PROJECT_ID');
   const senderId = String.fromEnvironment('FIREBASE_SENDER_ID');
   const iosAppId = String.fromEnvironment('FIREBASE_IOS_APP_ID');
   const androidAppId = String.fromEnvironment('FIREBASE_ANDROID_APP_ID');
-  if (apiKey.isEmpty || projectId.isEmpty || senderId.isEmpty) return null;
-  if (kIsWeb) return null;
+  if (kIsWeb || projectId.isEmpty || senderId.isEmpty) return null;
+  final apiKey = Platform.isIOS ? iosApiKey : androidApiKey;
   final appId = Platform.isIOS ? iosAppId : androidAppId;
-  if (appId.isEmpty) return null;
+  if (apiKey.isEmpty || appId.isEmpty) return null;
   return FirebaseOptions(
     apiKey: apiKey,
     appId: appId,
