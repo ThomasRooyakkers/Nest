@@ -7,6 +7,17 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Android notifications checked, notification icon (2026-11-23).** In the
+Android emulator ("nest pixel", started with `-gpu swiftshader_indirect` so
+screenshots work) a Firebase debug build on the live server, signed in as the
+verification account, received "New task for you" from Thomas. The status-bar
+icon was a grey square, so the app now has a white Lucide-house vector
+`res/drawable/ic_notification.xml`, registered as Firebase's
+`default_notification_icon` with `default_notification_color` (navy, light
+accent in night mode); checked again in the emulator. AAB 2.0.0 (4) rebuilt
+with it (nothing was uploaded to Play yet). Google sign-in does not work in
+debug builds (debug key not registered with Google); email sign-in does.
+
 **App 2.0 submitted, server 0.21.1 (2026-11-23).** Live push test with two
 simulators on `nest.g3cko.be` (Firebase build, `SERVER_URL` define): the
 verification account ("Apple", household "Verification", where Thomas is
