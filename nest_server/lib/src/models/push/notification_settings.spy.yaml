@@ -1,0 +1,5 @@
+### The signed-in user's notification switches as the app sees them.
+class: NotificationSettings
+fields:
+  taskAssigned: bool
+  shoppingAdded: bool

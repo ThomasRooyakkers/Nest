@@ -93,6 +93,10 @@ import 'my_household.dart' as _i46wom1w;
 import 'nest_error_code.dart' as _i11cf01m;
 import 'nest_exception.dart' as _id4drunt;
 import 'nest_user.dart' as _iasjmgi7;
+import 'push/notification_preference.dart' as _i68lwmcd;
+import 'push/notification_settings.dart' as _iwxhvig7;
+import 'push/push_device.dart' as _ip4fw7b0;
+import 'push/push_platform.dart' as _i3fbfryv;
 import 'recipes/recipe.dart' as _ihz7f6c5;
 import 'recipes/recipe_event.dart' as _ih8tv5ny;
 import 'recipes/recipe_ingredient.dart' as _i2xp5czv;
@@ -166,6 +170,10 @@ export 'my_household.dart';
 export 'nest_error_code.dart';
 export 'nest_exception.dart';
 export 'nest_user.dart';
+export 'push/notification_preference.dart';
+export 'push/notification_settings.dart';
+export 'push/push_device.dart';
+export 'push/push_platform.dart';
 export 'recipes/recipe.dart';
 export 'recipes/recipe_event.dart';
 export 'recipes/recipe_ingredient.dart';
@@ -254,6 +262,10 @@ class Protocol extends _isc.SerializationManager
           _isc.getType<_i11cf01m.NestErrorCode>,
           _isc.getType<_id4drunt.NestException>,
           _isc.getType<_iasjmgi7.NestUser>,
+          _isc.getType<_i68lwmcd.NotificationPreference>,
+          _isc.getType<_iwxhvig7.NotificationSettings>,
+          _isc.getType<_ip4fw7b0.PushDevice>,
+          _isc.getType<_i3fbfryv.PushPlatform>,
           _isc.getType<_ihz7f6c5.Recipe>,
           _isc.getType<_ih8tv5ny.RecipeEvent>,
           _isc.getType<_i2xp5czv.RecipeIngredient>,
@@ -327,6 +339,10 @@ class Protocol extends _isc.SerializationManager
           _isc.getType<_i11cf01m.NestErrorCode?>,
           _isc.getType<_id4drunt.NestException?>,
           _isc.getType<_iasjmgi7.NestUser?>,
+          _isc.getType<_i68lwmcd.NotificationPreference?>,
+          _isc.getType<_iwxhvig7.NotificationSettings?>,
+          _isc.getType<_ip4fw7b0.PushDevice?>,
+          _isc.getType<_i3fbfryv.PushPlatform?>,
           _isc.getType<_ihz7f6c5.Recipe?>,
           _isc.getType<_ih8tv5ny.RecipeEvent?>,
           _isc.getType<_i2xp5czv.RecipeIngredient?>,
@@ -462,6 +478,10 @@ class Protocol extends _isc.SerializationManager
           'NestErrorCode',
           'NestException',
           'NestUser',
+          'NotificationPreference',
+          'NotificationSettings',
+          'PushDevice',
+          'PushPlatform',
           'Recipe',
           'RecipeEvent',
           'RecipeIngredient',
@@ -653,6 +673,18 @@ class Protocol extends _isc.SerializationManager
     }
     if (t == _iasjmgi7.NestUser) {
       return _iasjmgi7.NestUser.fromJson(data) as T;
+    }
+    if (t == _i68lwmcd.NotificationPreference) {
+      return _i68lwmcd.NotificationPreference.fromJson(data) as T;
+    }
+    if (t == _iwxhvig7.NotificationSettings) {
+      return _iwxhvig7.NotificationSettings.fromJson(data) as T;
+    }
+    if (t == _ip4fw7b0.PushDevice) {
+      return _ip4fw7b0.PushDevice.fromJson(data) as T;
+    }
+    if (t == _i3fbfryv.PushPlatform) {
+      return _i3fbfryv.PushPlatform.fromJson(data) as T;
     }
     if (t == _ihz7f6c5.Recipe) {
       return _ihz7f6c5.Recipe.fromJson(data) as T;
@@ -924,6 +956,24 @@ class Protocol extends _isc.SerializationManager
     }
     if (t == _isc.getType<_iasjmgi7.NestUser?>()) {
       return (data != null ? _iasjmgi7.NestUser.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i68lwmcd.NotificationPreference?>()) {
+      return (data != null
+              ? _i68lwmcd.NotificationPreference.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_iwxhvig7.NotificationSettings?>()) {
+      return (data != null
+              ? _iwxhvig7.NotificationSettings.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_ip4fw7b0.PushDevice?>()) {
+      return (data != null ? _ip4fw7b0.PushDevice.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i3fbfryv.PushPlatform?>()) {
+      return (data != null ? _i3fbfryv.PushPlatform.fromJson(data) : null) as T;
     }
     if (t == _isc.getType<_ihz7f6c5.Recipe?>()) {
       return (data != null ? _ihz7f6c5.Recipe.fromJson(data) : null) as T;
@@ -1416,6 +1466,10 @@ class Protocol extends _isc.SerializationManager
       _i11cf01m.NestErrorCode => 'NestErrorCode',
       _id4drunt.NestException => 'NestException',
       _iasjmgi7.NestUser => 'NestUser',
+      _i68lwmcd.NotificationPreference => 'NotificationPreference',
+      _iwxhvig7.NotificationSettings => 'NotificationSettings',
+      _ip4fw7b0.PushDevice => 'PushDevice',
+      _i3fbfryv.PushPlatform => 'PushPlatform',
       _ihz7f6c5.Recipe => 'Recipe',
       _ih8tv5ny.RecipeEvent => 'RecipeEvent',
       _i2xp5czv.RecipeIngredient => 'RecipeIngredient',
@@ -1549,6 +1603,14 @@ class Protocol extends _isc.SerializationManager
         return 'NestException';
       case _iasjmgi7.NestUser():
         return 'NestUser';
+      case _i68lwmcd.NotificationPreference():
+        return 'NotificationPreference';
+      case _iwxhvig7.NotificationSettings():
+        return 'NotificationSettings';
+      case _ip4fw7b0.PushDevice():
+        return 'PushDevice';
+      case _i3fbfryv.PushPlatform():
+        return 'PushPlatform';
       case _ihz7f6c5.Recipe():
         return 'Recipe';
       case _ih8tv5ny.RecipeEvent():
@@ -1762,6 +1824,18 @@ class Protocol extends _isc.SerializationManager
     }
     if (dataClassName == 'NestUser') {
       return deserialize<_iasjmgi7.NestUser>(data['data']);
+    }
+    if (dataClassName == 'NotificationPreference') {
+      return deserialize<_i68lwmcd.NotificationPreference>(data['data']);
+    }
+    if (dataClassName == 'NotificationSettings') {
+      return deserialize<_iwxhvig7.NotificationSettings>(data['data']);
+    }
+    if (dataClassName == 'PushDevice') {
+      return deserialize<_ip4fw7b0.PushDevice>(data['data']);
+    }
+    if (dataClassName == 'PushPlatform') {
+      return deserialize<_i3fbfryv.PushPlatform>(data['data']);
     }
     if (dataClassName == 'Recipe') {
       return deserialize<_ihz7f6c5.Recipe>(data['data']);

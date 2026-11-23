@@ -124,4 +124,9 @@ const unscopedMethods = {
   'profile.updateMe',
   'profile.deleteMe',
   'profile.signInMethods',
+  // The caller's own phones and notification switches.
+  'notification.registerDevice',
+  'notification.unregisterDevice',
+  'notification.settings',
+  'notification.saveSettings',
 };

@@ -60,6 +60,9 @@ import 'package:nest_client/src/protocol/meals/meal_slot.dart' as _iebxn6ex;
 import 'package:nest_client/src/protocol/membership_role.dart' as _ilauueau;
 import 'package:nest_client/src/protocol/my_household.dart' as _itexq6j2;
 import 'package:nest_client/src/protocol/nest_user.dart' as _i7k4hj0f;
+import 'package:nest_client/src/protocol/push/notification_settings.dart'
+    as _i6se7d3u;
+import 'package:nest_client/src/protocol/push/push_platform.dart' as _ifnt3u2y;
 import 'package:nest_client/src/protocol/recipes/recipe.dart' as _iexyob0t;
 import 'package:nest_client/src/protocol/recipes/recipe_event.dart'
     as _im8ua6et;
@@ -1029,6 +1032,55 @@ class EndpointMealPlan extends _isc.EndpointRef {
       );
 }
 
+/// The signed-in user's phones and notification switches (2.0, NEST-49).
+/// Not household-scoped: everything here belongs to the caller only.
+/// {@category Endpoint}
+class EndpointNotification extends _isc.EndpointRef {
+  EndpointNotification(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'notification';
+
+  /// Registers this phone's FCM token for the caller. A token that was
+  /// registered for another user (the phone changed hands) moves over.
+  _ida.Future<void> registerDevice(
+    String token,
+    _ifnt3u2y.PushPlatform platform,
+  ) => caller.callServerEndpoint<void>(
+    'notification',
+    'registerDevice',
+    {
+      'token': token,
+      'platform': platform,
+    },
+  );
+
+  /// Forgets this phone's token for the caller, e.g. before signing out.
+  _ida.Future<void> unregisterDevice(String token) =>
+      caller.callServerEndpoint<void>(
+        'notification',
+        'unregisterDevice',
+        {'token': token},
+      );
+
+  /// The caller's switches; both on until changed.
+  _ida.Future<_i6se7d3u.NotificationSettings> settings() =>
+      caller.callServerEndpoint<_i6se7d3u.NotificationSettings>(
+        'notification',
+        'settings',
+        {},
+      );
+
+  /// Saves the caller's switches.
+  _ida.Future<_i6se7d3u.NotificationSettings> saveSettings(
+    _i6se7d3u.NotificationSettings settings,
+  ) => caller.callServerEndpoint<_i6se7d3u.NotificationSettings>(
+    'notification',
+    'saveSettings',
+    {'settings': settings},
+  );
+}
+
 /// The signed-in user's own profile. Not household-scoped.
 /// {@category Endpoint}
 class EndpointProfile extends _isc.EndpointRef {
@@ -1649,6 +1701,7 @@ class Client extends _isc.ServerpodClientShared {
     health = EndpointHealth(this);
     household = EndpointHousehold(this);
     mealPlan = EndpointMealPlan(this);
+    notification = EndpointNotification(this);
     profile = EndpointProfile(this);
     recipe = EndpointRecipe(this);
     shopping = EndpointShopping(this);
@@ -1690,6 +1743,8 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointMealPlan mealPlan;
 
+  late final EndpointNotification notification;
+
   late final EndpointProfile profile;
 
   late final EndpointRecipe recipe;
@@ -1722,6 +1777,7 @@ class Client extends _isc.ServerpodClientShared {
     'health': health,
     'household': household,
     'mealPlan': mealPlan,
+    'notification': notification,
     'profile': profile,
     'recipe': recipe,
     'shopping': shopping,

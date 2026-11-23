@@ -29,6 +29,7 @@ abstract class ServerPing
     this.appleSignIn,
     this.seasonalMode,
     this.seasonalThemes,
+    this.pushNotifications,
   });
 
   factory ServerPing({
@@ -41,6 +42,7 @@ abstract class ServerPing
     bool? appleSignIn,
     _irlh75k4.SeasonalMode? seasonalMode,
     List<String>? seasonalThemes,
+    bool? pushNotifications,
   }) = _ServerPingImpl;
 
   factory ServerPing.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -70,6 +72,11 @@ abstract class ServerPing
           ? null
           : _ilcqbmdc.Protocol().deserialize<List<String>>(
               jsonSerialization['seasonalThemes'],
+            ),
+      pushNotifications: jsonSerialization['pushNotifications'] == null
+          ? null
+          : _isc.BoolJsonExtension.fromJson(
+              jsonSerialization['pushNotifications'],
             ),
     );
   }
@@ -106,6 +113,10 @@ abstract class ServerPing
   /// always mode the one theme. The app ignores keys it does not know.
   List<String>? seasonalThemes;
 
+  /// Whether this server sends push notifications (it has a Firebase key).
+  /// Null on servers older than API level 15 (no push).
+  bool? pushNotifications;
+
   /// Returns a shallow copy of this [ServerPing]
   /// with some or all fields replaced by the given arguments.
   @_isc.useResult
@@ -119,6 +130,7 @@ abstract class ServerPing
     bool? appleSignIn,
     _irlh75k4.SeasonalMode? seasonalMode,
     List<String>? seasonalThemes = const _isc.$UndefinedList<String>(),
+    bool? pushNotifications,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -135,6 +147,7 @@ abstract class ServerPing
       if (appleSignIn != null) 'appleSignIn': appleSignIn,
       if (seasonalMode != null) 'seasonalMode': seasonalMode?.toJson(),
       if (seasonalThemes != null) 'seasonalThemes': seasonalThemes?.toJson(),
+      if (pushNotifications != null) 'pushNotifications': pushNotifications,
     };
   }
 
@@ -153,6 +166,7 @@ abstract class ServerPing
       if (appleSignIn != null) 'appleSignIn': appleSignIn,
       if (seasonalMode != null) 'seasonalMode': seasonalMode?.toJson(),
       if (seasonalThemes != null) 'seasonalThemes': seasonalThemes?.toJson(),
+      if (pushNotifications != null) 'pushNotifications': pushNotifications,
     };
   }
 
@@ -175,6 +189,7 @@ class _ServerPingImpl extends ServerPing {
     bool? appleSignIn,
     _irlh75k4.SeasonalMode? seasonalMode,
     List<String>? seasonalThemes,
+    bool? pushNotifications,
   }) : super._(
          serverTime: serverTime,
          version: version,
@@ -185,6 +200,7 @@ class _ServerPingImpl extends ServerPing {
          appleSignIn: appleSignIn,
          seasonalMode: seasonalMode,
          seasonalThemes: seasonalThemes,
+         pushNotifications: pushNotifications,
        );
 
   /// Returns a shallow copy of this [ServerPing]
@@ -201,6 +217,7 @@ class _ServerPingImpl extends ServerPing {
     Object? appleSignIn = _Undefined,
     Object? seasonalMode = _Undefined,
     List<String>? seasonalThemes = const _isc.$UndefinedList<String>(),
+    Object? pushNotifications = _Undefined,
   }) {
     return ServerPing(
       serverTime: serverTime ?? this.serverTime,
@@ -222,6 +239,9 @@ class _ServerPingImpl extends ServerPing {
       seasonalThemes: seasonalThemes is _isc.UndefinedSentinel
           ? this.seasonalThemes?.map((e0) => e0).toList()
           : seasonalThemes,
+      pushNotifications: pushNotifications is bool?
+          ? pushNotifications
+          : this.pushNotifications,
     );
   }
 }

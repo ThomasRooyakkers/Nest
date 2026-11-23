@@ -26,3 +26,6 @@ fields:
   ### Themes that may show: in automatic mode each on its own dates, in
   ### always mode the one theme. The app ignores keys it does not know.
   seasonalThemes: List<String>?
+  ### Whether this server sends push notifications (it has a Firebase key).
+  ### Null on servers older than API level 15 (no push).
+  pushNotifications: bool?

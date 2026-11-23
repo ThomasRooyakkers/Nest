@@ -1,0 +1,14 @@
+### Which push notifications a user wants (2.0). One row per user; without
+### a row every notification is on.
+class: NotificationPreference
+table: notification_preference
+fields:
+  user: NestUser?, relation(onDelete=Cascade)
+  ### Someone assigns a task to this user.
+  taskAssigned: bool, default=true
+  ### Someone adds items to a shopping list this user shares.
+  shoppingAdded: bool, default=true
+indexes:
+  notification_preference_user_idx:
+    fields: userId
+    unique: true

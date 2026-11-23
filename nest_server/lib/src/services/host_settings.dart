@@ -42,6 +42,12 @@ abstract final class HostSettings {
   /// token) for the watchlist. Without it the server uses fake film data.
   static String? get tmdbApiKey => _password('tmdbApiKey');
 
+  /// `fcmServiceAccount`: the JSON key of the Firebase service account
+  /// that may send push notifications (2.0). Only the app publisher's
+  /// Firebase project can reach the official app, so on other servers this
+  /// stays unset and pushes are only written to the log.
+  static String? get fcmServiceAccount => _password('fcmServiceAccount');
+
   /// `googleClientSecret`: the JSON file of the host's Google OAuth client
   /// of type "Web application". Google sign-in is on when it is set.
   static String? get googleClientSecret => _password('googleClientSecret');

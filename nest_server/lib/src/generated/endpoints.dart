@@ -21,6 +21,9 @@ import 'package:nest_server/src/generated/meals/meal_plan_entry.dart'
     as _i33h3ld7;
 import 'package:nest_server/src/generated/meals/meal_slot.dart' as _iliwnvwg;
 import 'package:nest_server/src/generated/membership_role.dart' as _i8f29ssg;
+import 'package:nest_server/src/generated/push/notification_settings.dart'
+    as _i1c8w7a3;
+import 'package:nest_server/src/generated/push/push_platform.dart' as _imr924sb;
 import 'package:nest_server/src/generated/recipes/recipe.dart' as _iei9bazg;
 import 'package:nest_server/src/generated/seasonal/seasonal_mode.dart'
     as _iyw0dezb;
@@ -57,6 +60,7 @@ import '../endpoints/admin/admin_users_endpoint.dart' as _iscnlbye;
 import '../endpoints/health_endpoint.dart' as _ica9y4w0;
 import '../endpoints/household_endpoint.dart' as _izqmqbob;
 import '../endpoints/meal_plan_endpoint.dart' as _ioif1jmi;
+import '../endpoints/notification_endpoint.dart' as _ihb11yhk;
 import '../endpoints/profile_endpoint.dart' as _i2cx2pww;
 import '../endpoints/recipe_endpoint.dart' as _iotgfwtb;
 import '../endpoints/shopping_endpoint.dart' as _i0uz9s3h;
@@ -162,6 +166,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'mealPlan',
+          null,
+        ),
+      'notification': _ihb11yhk.NotificationEndpoint()
+        ..initialize(
+          server,
+          'notification',
           null,
         ),
       'profile': _i2cx2pww.ProfileEndpoint()
@@ -1677,6 +1687,89 @@ class Endpoints extends _is.EndpointDispatch {
                 session,
                 params['householdId'],
               ),
+        ),
+      },
+    );
+    connectors['notification'] = _is.EndpointConnector(
+      name: 'notification',
+      endpoint: endpoints['notification']!,
+      methodConnectors: {
+        'registerDevice': _is.MethodConnector(
+          name: 'registerDevice',
+          params: {
+            'token': _is.ParameterDescription(
+              name: 'token',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'platform': _is.ParameterDescription(
+              name: 'platform',
+              type: _is.getType<_imr924sb.PushPlatform>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['notification'] as _ihb11yhk.NotificationEndpoint)
+                      .registerDevice(
+                        session,
+                        params['token'],
+                        params['platform'],
+                      ),
+        ),
+        'unregisterDevice': _is.MethodConnector(
+          name: 'unregisterDevice',
+          params: {
+            'token': _is.ParameterDescription(
+              name: 'token',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['notification'] as _ihb11yhk.NotificationEndpoint)
+                      .unregisterDevice(
+                        session,
+                        params['token'],
+                      ),
+        ),
+        'settings': _is.MethodConnector(
+          name: 'settings',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['notification'] as _ihb11yhk.NotificationEndpoint)
+                      .settings(session),
+        ),
+        'saveSettings': _is.MethodConnector(
+          name: 'saveSettings',
+          params: {
+            'settings': _is.ParameterDescription(
+              name: 'settings',
+              type: _is.getType<_i1c8w7a3.NotificationSettings>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['notification'] as _ihb11yhk.NotificationEndpoint)
+                      .saveSettings(
+                        session,
+                        params['settings'],
+                      ),
         ),
       },
     );

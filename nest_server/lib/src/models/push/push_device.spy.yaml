@@ -1,0 +1,18 @@
+### A phone that receives push notifications for a user (2.0, NEST-49).
+### Not household-scoped: a token belongs to the signed-in user. A token
+### that FCM reports as invalid is removed.
+class: PushDevice
+table: push_device
+fields:
+  user: NestUser?, relation(onDelete=Cascade)
+  ### The FCM registration token of the app on this phone.
+  token: String
+  platform: PushPlatform
+  ### Last time the app registered this token.
+  lastSeenAt: DateTime, default=now
+indexes:
+  push_device_token_idx:
+    fields: token
+    unique: true
+  push_device_user_idx:
+    fields: userId

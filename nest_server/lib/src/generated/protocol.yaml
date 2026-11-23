@@ -78,6 +78,11 @@ mealPlan:
   - swap:
   - remove:
   - watch:
+notification:
+  - registerDevice:
+  - unregisterDevice:
+  - settings:
+  - saveSettings:
 profile:
   - me:
   - updateMe:

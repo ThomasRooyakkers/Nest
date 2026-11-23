@@ -25,5 +25,7 @@ All feature tables carry `householdId`. Timestamps (`createdAt`, `updatedAt`) on
 | backup_runs | startedAt, finishedAt, status, sizeBytes, snapshotId, target, error | Written by the backup job |
 | backup_requests | requestedBy, requestedAt, pickedUpAt | "Back up now" from the admin portal |
 | admin_audit_log | adminId, action, targetType, targetId, details, at | Append-only |
+| push_devices (2.0) | userId, token (unique), platform (ios/android), lastSeenAt | A phone's FCM token; replaced on re-registration, removed on sign-out or when FCM reports it invalid. User-scoped, not household-scoped |
+| notification_preferences (2.0) | userId (unique), taskAssigned, shoppingAdded | One row per user; no row means both on |
 
 Child tables without `householdId` (recipe_ingredients, recipe_steps) are only reachable through their parent, after the guard has checked the parent's household.

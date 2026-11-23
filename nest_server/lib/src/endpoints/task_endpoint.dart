@@ -1,6 +1,7 @@
 import 'package:serverpod/serverpod.dart';
 
 import '../generated/protocol.dart';
+import '../services/push/push_notifications.dart';
 import '../services/household_guard.dart';
 import '../services/task_recurrence.dart';
 
@@ -53,6 +54,7 @@ class TaskEndpoint extends Endpoint {
     if (assigneeId != null) await _requireMember(session, access, assigneeId);
 
     final Task saved;
+    int? previousAssigneeId;
     if (task.id == null) {
       saved = await Task.db.insertRow(
         session,
@@ -68,6 +70,7 @@ class TaskEndpoint extends Endpoint {
       );
     } else {
       final existing = await _task(session, access, task.id!);
+      previousAssigneeId = existing.assigneeId;
       saved = await Task.db.updateRow(
         session,
         existing.copyWith(
@@ -82,6 +85,12 @@ class TaskEndpoint extends Endpoint {
       );
     }
     await _post(session, access, tasks: [saved]);
+    await PushNotifications.taskAssigned(
+      session,
+      actor: access.user,
+      task: saved,
+      previousAssigneeId: previousAssigneeId,
+    );
     return saved;
   }
 

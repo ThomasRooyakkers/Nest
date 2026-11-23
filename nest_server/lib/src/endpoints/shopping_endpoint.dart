@@ -1,6 +1,7 @@
 import 'package:serverpod/serverpod.dart';
 
 import '../generated/protocol.dart';
+import '../services/push/push_notifications.dart';
 import '../services/household_guard.dart';
 import '../services/item_matcher.dart';
 import '../services/item_names.dart';
@@ -245,13 +246,26 @@ class ShoppingEndpoint extends Endpoint {
   ) async {
     final access = await _guard(session, householdId);
     final list = await _list(session, access, listId);
-    final (item, catalogItem, _) = await _add(session, access, list, newItem);
+    final (item, catalogItem, wasToBuy) = await _add(
+      session,
+      access,
+      list,
+      newItem,
+    );
     await _post(
       session,
       access,
       catalogItems: catalogItem.householdId == null ? null : [catalogItem],
       items: [item],
     );
+    if (!wasToBuy) {
+      await PushNotifications.shoppingAdded(
+        session,
+        actor: access.user,
+        list: list,
+        count: 1,
+      );
+    }
     return item;
   }
 
@@ -309,6 +323,12 @@ class ShoppingEndpoint extends Endpoint {
         access,
         catalogItems: ownCatalogItems.isEmpty ? null : ownCatalogItems,
         items: added,
+      );
+      await PushNotifications.shoppingAdded(
+        session,
+        actor: access.user,
+        list: list,
+        count: added.length,
       );
     }
     return AddedShoppingItems(items: added, skippedNames: skipped);
@@ -429,6 +449,15 @@ class ShoppingEndpoint extends Endpoint {
       ),
     );
     await _post(session, access, items: [saved]);
+    if (status == ShoppingItemStatus.toBuy) {
+      final list = await _list(session, access, saved.listId);
+      await PushNotifications.shoppingAdded(
+        session,
+        actor: access.user,
+        list: list,
+        count: 1,
+      );
+    }
     return saved;
   }
 

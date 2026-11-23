@@ -54,6 +54,7 @@ services:
       SERVERPOD_PASSWORD_mailFrom: ${MAIL_FROM:-}
       # Film data for the watchlist. Without it, sample titles.
       SERVERPOD_PASSWORD_tmdbApiKey: ${TMDB_API_KEY:-}
+      SERVERPOD_PASSWORD_fcmServiceAccount: ${FCM_SERVICE_ACCOUNT:-}
       # Google and Apple sign-in in the iOS app. Each is off when not set.
       SERVERPOD_PASSWORD_googleClientSecret: ${GOOGLE_CLIENT_SECRET_JSON:-}
       SERVERPOD_PASSWORD_appleServiceId: ${APPLE_SERVICE_ID:-}

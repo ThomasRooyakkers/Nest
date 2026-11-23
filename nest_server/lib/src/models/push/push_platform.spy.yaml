@@ -1,0 +1,6 @@
+### The kind of phone a push token belongs to (2.0).
+enum: PushPlatform
+serialized: byName
+values:
+  - ios
+  - android

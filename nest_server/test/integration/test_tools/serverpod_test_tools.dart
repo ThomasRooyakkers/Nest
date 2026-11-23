@@ -64,6 +64,9 @@ import 'package:nest_server/src/generated/meals/meal_slot.dart' as _iliwnvwg;
 import 'package:nest_server/src/generated/membership_role.dart' as _i8f29ssg;
 import 'package:nest_server/src/generated/my_household.dart' as _i87acs67;
 import 'package:nest_server/src/generated/nest_user.dart' as _io4rmg6h;
+import 'package:nest_server/src/generated/push/notification_settings.dart'
+    as _i1c8w7a3;
+import 'package:nest_server/src/generated/push/push_platform.dart' as _imr924sb;
 import 'package:nest_server/src/generated/recipes/recipe.dart' as _iei9bazg;
 import 'package:nest_server/src/generated/recipes/recipe_event.dart'
     as _is6mk1ja;
@@ -267,6 +270,8 @@ class TestEndpoints {
 
   late final _MealPlanEndpoint mealPlan;
 
+  late final _NotificationEndpoint notification;
+
   late final _ProfileEndpoint profile;
 
   late final _RecipeEndpoint recipe;
@@ -348,6 +353,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     mealPlan = _MealPlanEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    notification = _NotificationEndpoint(
       endpoints,
       serializationManager,
     );
@@ -2662,6 +2671,144 @@ class _MealPlanEndpoint {
       _localTestStreamManager.outputStreamController,
     );
     return _localTestStreamManager.outputStreamController.stream;
+  }
+}
+
+class _NotificationEndpoint {
+  _NotificationEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<void> registerDevice(
+    _ist.TestSessionBuilder sessionBuilder,
+    String token,
+    _imr924sb.PushPlatform platform,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'notification',
+            method: 'registerDevice',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'notification',
+          methodName: 'registerDevice',
+          parameters: _ist.testObjectToJson({
+            'token': token,
+            'platform': platform,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<void> unregisterDevice(
+    _ist.TestSessionBuilder sessionBuilder,
+    String token,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'notification',
+            method: 'unregisterDevice',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'notification',
+          methodName: 'unregisterDevice',
+          parameters: _ist.testObjectToJson({'token': token}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_i1c8w7a3.NotificationSettings> settings(
+    _ist.TestSessionBuilder sessionBuilder,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'notification',
+            method: 'settings',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'notification',
+          methodName: 'settings',
+          parameters: _ist.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i1c8w7a3.NotificationSettings>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_i1c8w7a3.NotificationSettings> saveSettings(
+    _ist.TestSessionBuilder sessionBuilder,
+    _i1c8w7a3.NotificationSettings settings,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'notification',
+            method: 'saveSettings',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'notification',
+          methodName: 'saveSettings',
+          parameters: _ist.testObjectToJson({'settings': settings}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i1c8w7a3.NotificationSettings>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
   }
 }
 

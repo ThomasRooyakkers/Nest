@@ -12,7 +12,9 @@ Nest is a private, bilingual (English + Dutch) family app for iOS and Android, b
 
 **v1 features:** Dashboard, Shopping List (Bring!-style tiles, multiple lists, manually added stores), Recipes, Meal Planning, Tasks, Watchlist (TMDB), admin portal, and a self-hosting kit (published server image and hosting guide) so others can run their own server.
 
-**Out of scope for v1:** notifications of any kind (push, reminders, daily summary; removed 2026-10-28, may return later; the one exception, decided 2026-11-04, is alert emails about server problems to the server's own super-admin), expenses, notes, calendar, general file storage, recipe import from websites, sending a whole week's meal plan to the shopping list, paid subscriptions.
+**Version 2.0** (decided 2026-11-23) adds a dark theme (NEST-46) and push notifications (NEST-30) for two events only: someone assigns you a task, and someone adds items to a shopping list you share. Push goes through Firebase Cloud Messaging (FCM, which also delivers to iOS) and is sent only by a server whose host has configured the app publisher's Firebase key; in practice only Thomas's server, because Apple and Google accept pushes for the official app from its publisher only. Other servers work normally without push (no relay for now).
+
+**Out of scope:** other notifications (reminders, due dates, daily summary; the other exception, decided 2026-11-04, is alert emails about server problems to the server's own super-admin), expenses, notes, calendar, general file storage, recipe import from websites, sending a whole week's meal plan to the shopping list, paid subscriptions.
 
 **Production:** Thomas's server runs on a Raspberry Pi at home with Docker Compose, reachable through a Cloudflare Tunnel at `nest.g3cko.be` (the address users type in the app; serves a short page pointing to the app, the privacy policy and the config the app uses to find the API), `nest-api.g3cko.be` (API) and, later, `nest-admin.g3cko.be` (admin portal, behind Cloudflare Access). Other hosts use the same image and Compose file with their own domain, either behind a Cloudflare Tunnel or their own HTTPS proxy.
 
@@ -60,6 +62,7 @@ Nest is a private, bilingual (English + Dutch) family app for iOS and Android, b
 | Film data (later) | TMDB API, called from the server only. Fake service with fixtures in development |
 | Backups (later) | `pg_dump` + restic to an NFS share and to OneDrive (via rclone) |
 | Mail | Resend (HTTPS API) when a key is configured; codes in the server log otherwise |
+| Push (2.0) | `firebase_core` + `firebase_messaging` in the app; the server calls the FCM HTTP v1 API with a service account (`dart_jsonwebtoken` signs its token) when `fcmServiceAccount` is configured; pushes are written to the server log otherwise |
 | Admin portal | Flutter web app in the same repo |
 | Self-hosting | Multi-arch (arm64 + amd64) server image with the admin portal and a small static site built in, Docker Compose file, hosting guide |
 | CI (later) | GitHub Actions: tests, arm64 server image |
@@ -132,6 +135,7 @@ Changing what a spec file says is changing a decision: ask Thomas first.
 | --- | --- | --- |
 | Auth | email + password | + Google sign-in, Sign in with Apple on iOS |
 | Mail | codes written to the server log | Resend, with the host's own API key |
+| Push | notifications written to the server log; the app runs without Firebase | FCM with the publisher's service account (Thomas's server only) |
 | TMDB | `FakeTmdbService`: fixtures with placeholder posters | `TmdbService` with API key on the server |
 | Backups | restic to a local folder | restic to NFS + OneDrive via rclone |
 | Network | `localhost` | Cloudflare Tunnel or the host's own HTTPS proxy |
