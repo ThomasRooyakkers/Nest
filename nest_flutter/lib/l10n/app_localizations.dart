@@ -650,6 +650,42 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get languageSection;
 
+  /// Settings section title for push notification switches.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsSection;
+
+  /// Switch: push when someone assigns you a task.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks for me'**
+  String get notifyTaskAssignedTitle;
+
+  /// Subtitle of the task notification switch.
+  ///
+  /// In en, this message translates to:
+  /// **'When someone gives you a task'**
+  String get notifyTaskAssignedSubtitle;
+
+  /// Switch: push when someone adds items to a shared shopping list.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping list additions'**
+  String get notifyShoppingAddedTitle;
+
+  /// Subtitle of the shopping notification switch.
+  ///
+  /// In en, this message translates to:
+  /// **'When someone adds items to a list you share'**
+  String get notifyShoppingAddedSubtitle;
+
+  /// Shown when the phone does not allow notifications for the app.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off for Hoomly in your phone\'s settings.'**
+  String get notificationsBlocked;
+
   /// Settings section title for the light/dark theme choice.
   ///
   /// In en, this message translates to:

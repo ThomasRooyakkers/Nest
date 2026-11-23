@@ -7,6 +7,34 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Push notifications (2026-11-23, NEST-30/49/50, version 2.0).** Thomas
+chose two events (someone assigns you a task; someone adds items to a list
+you share), sending from his own server only (option 1, no relay) and
+Firebase + `dart_jsonwebtoken`. Server (API level 15, migration
+`20261123132228672`, additive): `push_device` and `notification_preference`
+tables, `notification` endpoint (register/unregister device, settings),
+`PushNotifications` service with an FCM HTTP v1 client (service account
+`fcmServiceAccount`, RS256 token via `dart_jsonwebtoken`) or a log sender
+without a key; `ServerPing.pushNotifications` (true when sending, and in
+development). Triggers in `task.save` (new assignee, not yourself) and
+`shopping.addItem`/`addItems`/`setItemStatus` (to the list's members or the
+whole household, not the actor, combined per list and person for two
+minutes); EN + NL texts; tokens FCM rejects are removed. App:
+`firebase_core` 5.2.0 + `firebase_messaging` 17.1.0, started only when the
+build carries `--dart-define-from-file=firebase.json` (untracked,
+`firebase.json.example`); permission asked and token registered while
+signed in on a server that sends push; token removed on sign-out and server
+switch; tapped notifications open the task list or that shopping list;
+Settings → Notifications with a switch per event. iOS: `aps-environment`
+entitlement and `remote-notification` background mode; `google_sign_in_ios`
+upgraded to 6.4.0 so Google sign-in and Firebase share `gtm-session-fetcher`.
+Uses the classic FCM token API (deprecated in firebase_messaging 17 for
+Installation IDs; moving needs a server change). Deploy: `FCM_SERVICE_ACCOUNT`
+in `.env.example` and Compose. Tests: 16 server (`notification_test.dart`),
+8 app (`notifications_test.dart`). Checked locally: Settings card saves to
+the server, assigning a task in the simulator produced the push in the
+server log. Not yet seen on a real phone (needs NEST-51).
+
 **Dark theme "Navy night" (2026-11-23, NEST-46).** Palette agreed with
 Thomas and added to `docs/spec/design-system.md`. `NestColors.dark` next to
 `NestColors.light` in `nest_shared`, plus a `shadow` token (navy in light,

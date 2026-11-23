@@ -7,6 +7,8 @@ import 'package:nest_shared/nest_shared.dart';
 
 import '../features/auth/data/auth_repository.dart';
 import '../core/backend/server_health_repository.dart';
+import '../core/notifications/push_open.dart';
+import '../core/notifications/push_registration.dart';
 import '../l10n/app_localizations.dart';
 import 'app_locale.dart';
 import 'app_theme_mode.dart';
@@ -24,6 +26,7 @@ class _NestAppState extends ConsumerState<NestApp> {
   // the app comes back to the foreground, so a sign-in the server no longer
   // accepts leads to the sign-in screen.
   late final AppLifecycleListener _lifecycle;
+  StreamSubscription<Map<String, String>>? _pushOpened;
 
   void _checkSignIn() {
     if (ref.read(signedInProvider)) unawaited(ref.read(signInCheckProvider)());
@@ -36,16 +39,27 @@ class _NestAppState extends ConsumerState<NestApp> {
   void initState() {
     super.initState();
     _lifecycle = AppLifecycleListener(onResume: _checkSignIn);
+    // Tapped notifications open their task list or shopping list.
+    final messaging = ref.read(pushMessagingProvider);
+    _pushOpened = messaging.opened.listen((data) => openPushTarget(ref, data));
+    unawaited(
+      messaging.initialOpened().then((data) {
+        if (data != null && mounted) unawaited(openPushTarget(ref, data));
+      }),
+    );
   }
 
   @override
   void dispose() {
+    unawaited(_pushOpened?.cancel());
     _lifecycle.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Keeps this phone registered for push while signed in.
+    ref.watch(pushRegistrationProvider);
     return MaterialApp.router(
       // `--dart-define=SCREENSHOTS=true` hides the debug ribbon for App Store
       // screenshots (the simulator only runs debug builds).

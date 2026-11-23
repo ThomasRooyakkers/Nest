@@ -306,6 +306,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageSection => 'Language';
 
   @override
+  String get notificationsSection => 'Notifications';
+
+  @override
+  String get notifyTaskAssignedTitle => 'Tasks for me';
+
+  @override
+  String get notifyTaskAssignedSubtitle => 'When someone gives you a task';
+
+  @override
+  String get notifyShoppingAddedTitle => 'Shopping list additions';
+
+  @override
+  String get notifyShoppingAddedSubtitle =>
+      'When someone adds items to a list you share';
+
+  @override
+  String get notificationsBlocked =>
+      'Notifications are off for Hoomly in your phone\'s settings.';
+
+  @override
   String get appearanceSection => 'Appearance';
 
   @override

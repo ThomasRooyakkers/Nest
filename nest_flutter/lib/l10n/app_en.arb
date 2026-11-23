@@ -404,6 +404,30 @@
   "@languageSection": {
     "description": "Settings section title."
   },
+  "notificationsSection": "Notifications",
+  "@notificationsSection": {
+    "description": "Settings section title for push notification switches."
+  },
+  "notifyTaskAssignedTitle": "Tasks for me",
+  "@notifyTaskAssignedTitle": {
+    "description": "Switch: push when someone assigns you a task."
+  },
+  "notifyTaskAssignedSubtitle": "When someone gives you a task",
+  "@notifyTaskAssignedSubtitle": {
+    "description": "Subtitle of the task notification switch."
+  },
+  "notifyShoppingAddedTitle": "Shopping list additions",
+  "@notifyShoppingAddedTitle": {
+    "description": "Switch: push when someone adds items to a shared shopping list."
+  },
+  "notifyShoppingAddedSubtitle": "When someone adds items to a list you share",
+  "@notifyShoppingAddedSubtitle": {
+    "description": "Subtitle of the shopping notification switch."
+  },
+  "notificationsBlocked": "Notifications are off for Hoomly in your phone's settings.",
+  "@notificationsBlocked": {
+    "description": "Shown when the phone does not allow notifications for the app."
+  },
   "appearanceSection": "Appearance",
   "@appearanceSection": {
     "description": "Settings section title for the light/dark theme choice."

@@ -308,6 +308,26 @@ class AppLocalizationsNl extends AppLocalizations {
   String get languageSection => 'Taal';
 
   @override
+  String get notificationsSection => 'Meldingen';
+
+  @override
+  String get notifyTaskAssignedTitle => 'Taken voor mij';
+
+  @override
+  String get notifyTaskAssignedSubtitle => 'Als iemand je een taak geeft';
+
+  @override
+  String get notifyShoppingAddedTitle => 'Nieuwe boodschappen';
+
+  @override
+  String get notifyShoppingAddedSubtitle =>
+      'Als iemand iets op een gedeelde lijst zet';
+
+  @override
+  String get notificationsBlocked =>
+      'Meldingen staan uit voor Hoomly in de instellingen van je telefoon.';
+
+  @override
   String get appearanceSection => 'Weergave';
 
   @override

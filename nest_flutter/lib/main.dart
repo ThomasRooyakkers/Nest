@@ -4,11 +4,13 @@ import 'app/app_theme_mode.dart';
 import 'app/nest_root.dart';
 import 'core/backend/nest_client.dart';
 import 'core/database/nest_database.dart';
+import 'core/notifications/push_messaging.dart';
 import 'core/server/server_store.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Bar icon colours follow the theme (`NestApp` sets them per frame).
+  await PushMessaging.init();
   final database = NestDatabase.defaults();
   final themeMode = await readThemeMode(database);
   final server = await startServer(database);

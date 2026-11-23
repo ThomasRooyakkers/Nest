@@ -8,6 +8,7 @@ import '../core/database/nest_database.dart';
 import '../core/server/server_address.dart';
 import '../core/server/server_session.dart';
 import '../core/server/server_store.dart';
+import '../features/auth/data/auth_repository.dart';
 import 'app_locale.dart';
 import 'app_theme_mode.dart';
 import 'nest_app.dart';
@@ -45,6 +46,7 @@ class _NestRootState extends State<NestRoot> implements ServerSwitcher {
   Future<void> switchTo(ServerAddress server, {Locale? locale}) async {
     final old = _client;
     // Signs out locally even when the old server cannot be reached.
+    await AuthRepository.forgetPushToken(old, widget.database);
     await old.auth.signOutDevice();
     await widget.database.clearAll();
     await writeChosenServer(widget.database, server);

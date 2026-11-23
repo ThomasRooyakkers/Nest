@@ -88,10 +88,7 @@ class FcmClient {
             'token': token,
             'notification': {'title': title, 'body': body},
             'data': data,
-            'android': {
-              'priority': 'high',
-              'notification': {'channel_id': 'hoomly_default'},
-            },
+            'android': {'priority': 'high'},
             'apns': {
               'payload': {
                 'aps': {'sound': 'default'},

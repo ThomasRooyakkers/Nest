@@ -44,3 +44,9 @@ deploy/rclone/
 
 # App Store screenshots (uploaded to App Store Connect, not kept in Git)
 store-screenshots/
+
+# Firebase client config for release builds (NEST-51); kept out of Git so
+# development and self-built apps run without the publisher's project.
+nest_flutter/firebase.json
+GoogleService-Info.plist
+google-services.json

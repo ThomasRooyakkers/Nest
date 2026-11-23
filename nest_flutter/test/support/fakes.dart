@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:drift/drift.dart' show DatabaseConnection;
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nest_client/nest_client.dart';
+import 'package:nest_flutter/core/notifications/push_messaging.dart';
+import 'package:nest_flutter/core/notifications/push_registration.dart';
+import 'package:nest_flutter/features/settings/data/notification_repository.dart';
 import 'package:nest_flutter/app/nest_app.dart';
 import 'package:nest_flutter/core/backend/nest_client.dart';
 import 'package:nest_flutter/core/backend/server_health_repository.dart';
@@ -109,8 +114,10 @@ class FakeHealthRepository implements ServerHealthRepository {
     this.appleSignIn,
     this.seasonalMode,
     this.seasonalThemes,
+    this.pushNotifications,
   });
 
+  final bool? pushNotifications;
   final SeasonalMode? seasonalMode;
   final List<String>? seasonalThemes;
   final int? apiVersion;
@@ -130,7 +137,57 @@ class FakeHealthRepository implements ServerHealthRepository {
     appleSignIn: appleSignIn,
     seasonalMode: seasonalMode,
     seasonalThemes: seasonalThemes,
+    pushNotifications: pushNotifications,
   );
+}
+
+/// Notification switches and registered tokens in memory.
+class FakeNotificationRepository implements NotificationRepository {
+  var current = NotificationSettings(taskAssigned: true, shoppingAdded: true);
+  final registered = <String>[];
+
+  @override
+  Future<void> registerDevice(String token, PushPlatform platform) async =>
+      registered.add(token);
+
+  @override
+  Future<NotificationSettings> settings() async => current;
+
+  @override
+  Future<NotificationSettings> save(NotificationSettings settings) async =>
+      current = settings;
+}
+
+/// A build with push: permission is granted and the token is fixed.
+class FakePushMessaging extends PushMessaging {
+  FakePushMessaging({this.granted = true});
+
+  final bool granted;
+  final opens = StreamController<Map<String, String>>.broadcast();
+
+  @override
+  bool get available => true;
+
+  @override
+  PushPlatform get platform => PushPlatform.ios;
+
+  @override
+  Future<bool> requestPermission() async => granted;
+
+  @override
+  Future<bool> permissionGranted() async => granted;
+
+  @override
+  Future<String?> token() async => granted ? 'test-token' : null;
+
+  @override
+  Stream<String> get tokenRefresh => const Stream.empty();
+
+  @override
+  Stream<Map<String, String>> get opened => opens.stream;
+
+  @override
+  Future<Map<String, String>?> initialOpened() async => null;
 }
 
 /// Records Google and Apple sign-ins instead of talking to the providers.
@@ -237,6 +294,8 @@ Future<ProviderContainer> pumpNestApp(
   FakeNestClient? client,
   FakeSocialSignInRepository? socialSignIn,
   DateTime Function()? clock,
+  FakeNotificationRepository? notifications,
+  PushMessaging? pushMessaging,
 }) async {
   tester.view.physicalSize = const Size(375, 812);
   tester.view.devicePixelRatio = 1;
@@ -266,6 +325,12 @@ Future<ProviderContainer> pumpNestApp(
             ),
       ),
       nestDatabaseProvider.overrideWithValue(db),
+      notificationRepositoryProvider.overrideWithValue(
+        notifications ?? FakeNotificationRepository(),
+      ),
+      pushMessagingProvider.overrideWithValue(
+        pushMessaging ?? NoPushMessaging(),
+      ),
       signedInProvider.overrideWithBuild((ref, notifier) => signedIn),
       profileRepositoryProvider.overrideWithValue(
         profile ?? FakeProfileRepository(user ?? testUser()),

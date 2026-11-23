@@ -31,6 +31,12 @@ The backlog is in Jira (`docs/JIRA.md`).
   start with a capital; existing own items tidied at start-up. Server part
   live in 0.19.4 and 0.19.5; the 22 new icons and the
   search changes in the app need a new app build.
+- **Version 2.0 (decided 2026-11-23):** the next app release is 2.0 with
+  dark mode (NEST-46) and push notifications (NEST-30: NEST-49 server,
+  NEST-50 app, NEST-51 Firebase setup by Thomas). Push is built and tested
+  locally (server API level 15, migration `20261123132228672`, additive);
+  it needs NEST-51 (Firebase project, APNs key, service account on the Pi,
+  `firebase.json` for release builds) before it works on real phones.
 - **NEST-46 (2026-11-23):** dark theme "Navy night" built (app only, no
   server change): follows the system, Settings → Appearance offers System /
   Light / Dark (saved on the device), holiday decorations adapted, Android launch

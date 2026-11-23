@@ -49,6 +49,9 @@ dependencies:
   serverpod_auth_idp_flutter: 4.1.1
   serverpod_flutter: 4.1.1
   wakelock_plus: 1.8.2
+  # Push notifications (2.0, NEST-50).
+  firebase_core: 5.2.0
+  firebase_messaging: 17.1.0
 
 dev_dependencies:
   # Used for agents to drive the app through the Dart MCP

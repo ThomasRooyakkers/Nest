@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,11 +14,13 @@ import '../../../app/router.dart';
 import '../../../core/backend/error_messages.dart';
 import '../../../core/backend/server_health_repository.dart';
 import '../../../core/household/household_repository.dart';
+import '../../../core/notifications/push_registration.dart';
 import '../../../core/widgets/language_picker.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../seasonal/data/seasonal_preference.dart';
 import '../../seasonal/domain/seasonal_logic.dart';
+import '../data/notification_repository.dart';
 import '../data/profile_repository.dart';
 import 'server_card.dart';
 import 'sign_in_methods_card.dart';
@@ -47,6 +51,10 @@ class SettingsScreen extends ConsumerWidget {
             const _LanguageCard(),
             const SizedBox(height: NestSpacing.gap),
             const _AppearanceCard(),
+            if (ref.watch(serverSendsPushProvider)) ...[
+              const SizedBox(height: NestSpacing.gap),
+              const _NotificationsCard(),
+            ],
             if (ref.watch(serverSupportsProvider(seasonalApiVersion))) ...[
               const SizedBox(height: NestSpacing.gap),
               const _DecorationsCard(),
@@ -234,6 +242,89 @@ class _LanguageCard extends ConsumerWidget {
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Push notification switches, stored on the server per user (NEST-50).
+/// Shown only when the server sends push.
+class _NotificationsCard extends ConsumerStatefulWidget {
+  const _NotificationsCard();
+
+  @override
+  ConsumerState<_NotificationsCard> createState() => _NotificationsCardState();
+}
+
+class _NotificationsCardState extends ConsumerState<_NotificationsCard> {
+  NotificationSettings? _pending;
+  bool? _allowed;
+
+  @override
+  void initState() {
+    super.initState();
+    final messaging = ref.read(pushMessagingProvider);
+    if (messaging.available) {
+      unawaited(
+        messaging.permissionGranted().then((allowed) {
+          if (mounted) setState(() => _allowed = allowed);
+        }),
+      );
+    }
+  }
+
+  Future<void> _save(NotificationSettings settings) async {
+    setState(() => _pending = settings);
+    await _guarded(
+      context,
+      () => ref.read(notificationRepositoryProvider).save(settings),
+    );
+    ref.invalidate(notificationSettingsProvider);
+    if (mounted) setState(() => _pending = null);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final colors = NestColors.of(context);
+    final settings = _pending ?? ref.watch(notificationSettingsProvider).value;
+    return NestCard(
+      child: Material(
+        type: MaterialType.transparency,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _sectionTitle(context, l10n.notificationsSection),
+            if (_allowed == false)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  l10n.notificationsBlocked,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: colors.warningInk),
+                ),
+              ),
+            SwitchListTile.adaptive(
+              contentPadding: EdgeInsets.zero,
+              title: Text(l10n.notifyTaskAssignedTitle),
+              subtitle: Text(l10n.notifyTaskAssignedSubtitle),
+              value: settings?.taskAssigned ?? true,
+              onChanged: settings == null
+                  ? null
+                  : (value) => _save(settings.copyWith(taskAssigned: value)),
+            ),
+            SwitchListTile.adaptive(
+              contentPadding: EdgeInsets.zero,
+              title: Text(l10n.notifyShoppingAddedTitle),
+              subtitle: Text(l10n.notifyShoppingAddedSubtitle),
+              value: settings?.shoppingAdded ?? true,
+              onChanged: settings == null
+                  ? null
+                  : (value) => _save(settings.copyWith(shoppingAdded: value)),
+            ),
+          ],
+        ),
       ),
     );
   }

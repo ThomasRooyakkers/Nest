@@ -6,6 +6,7 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 import '../../../core/backend/live_sync.dart';
 import '../../../core/backend/nest_client.dart';
 import '../../../core/database/nest_database.dart';
+import '../../../core/notifications/push_messaging.dart';
 import 'social_sign_in_repository.dart';
 
 part 'auth_repository.g.dart';
@@ -45,6 +46,7 @@ class AuthRepository {
   /// Signs out and removes the cached data, so the next user of the device
   /// sees nothing of this one.
   Future<void> signOut() async {
+    await forgetPushToken(_client, _db);
     await _client.auth.signOutDevice();
     await _forgetLocalData();
   }
@@ -69,6 +71,22 @@ class AuthRepository {
     if (isSignedIn) return true;
     await _forgetLocalData();
     return false;
+  }
+
+  /// Removes this phone's push token from the server (while still signed
+  /// in), so the next user of the phone gets none of this user's pushes.
+  /// Offline or on an older server it is simply forgotten locally.
+  static Future<void> forgetPushToken(Client client, NestDatabase db) async {
+    final token = await db.readValue(pushTokenKey);
+    if (token == null) return;
+    try {
+      await client.notification
+          .unregisterDevice(token)
+          .timeout(const Duration(seconds: 5));
+    } catch (_) {
+      // The server forgets tokens FCM no longer accepts.
+    }
+    await db.writeValue(pushTokenKey, null);
   }
 
   Future<void> _forgetLocalData() async {
