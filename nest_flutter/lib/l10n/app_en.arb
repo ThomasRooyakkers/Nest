@@ -1797,7 +1797,7 @@
   "@errorAlreadyLinked": {
     "description": "Error when linking an account that belongs to someone else"
   },
-  "seasonalNightsUntilChristmas": "{count, plural, =1{1 more night until Christmas} other{{count} more nights until Christmas}}",
+  "seasonalNightsUntilChristmas": "{count, plural, =1{1 more sleep until Christmas} other{{count} more sleeps until Christmas}}",
   "@seasonalNightsUntilChristmas": {
     "description": "Dashboard, under the greeting during the Christmas theme.",
     "placeholders": {

@@ -49,7 +49,7 @@ sealed class SeasonalGreeting {
   const SeasonalGreeting();
 }
 
-/// "2 nights until Christmas" (up to Christmas Eve).
+/// "2 more sleeps until Christmas" (up to Christmas Eve).
 class NightsUntilChristmas extends SeasonalGreeting {
   const NightsUntilChristmas(this.nights);
   final int nights;
@@ -81,7 +81,9 @@ class HappyNewYear extends SeasonalGreeting {
 SeasonalGreeting seasonalGreeting(SeasonalTheme theme, DateTime now) {
   switch (theme) {
     case SeasonalTheme.christmas:
-      if (now.month == 12 && now.day < 25) {
+      // Until Christmas Day (also before December when the theme is
+      // shown all the time).
+      if (now.isBefore(DateTime(now.year, 12, 25))) {
         final today = DateTime(now.year, now.month, now.day);
         final christmas = DateTime(now.year, 12, 25);
         return NightsUntilChristmas(christmas.difference(today).inDays);

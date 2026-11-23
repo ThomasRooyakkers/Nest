@@ -2351,7 +2351,7 @@ abstract class AppLocalizations {
   /// Dashboard, under the greeting during the Christmas theme.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =1{1 more night until Christmas} other{{count} more nights until Christmas}}'**
+  /// **'{count, plural, =1{1 more sleep until Christmas} other{{count} more sleeps until Christmas}}'**
   String seasonalNightsUntilChristmas(int count);
 
   /// Dashboard, under the greeting on 25 and 26 December.

@@ -17,6 +17,7 @@ import 'list_sheet.dart';
 import 'shopping_providers.dart';
 import 'shopping_style.dart';
 import 'shopping_tile.dart';
+import '../../seasonal/presentation/seasonal_background.dart';
 
 /// The shopping list: search to add, store chips, "To buy" and "Recently
 /// used" tile grids. Works offline and updates live.
@@ -66,52 +67,54 @@ class _ShoppingScreenState extends ConsumerState<ShoppingScreen> {
         : NestSpacing.screen;
 
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: RefreshIndicator(
-          onRefresh: () => ref
-              .read(shoppingRepositoryProvider)
-              .refresh(householdId)
-              .catchError((_) {}),
-          // Swiping moves between All stores and each store, like the chips.
-          child: SwipePages<int?>(
-            enabled: list != null && query.isEmpty,
-            pages: [null, for (final store in stores) store.id],
-            current: selectedStore,
-            onChanged: ref
-                .read(selectedStoreIdProvider(householdId).notifier)
-                .select,
-            child: ListView(
-              padding: EdgeInsets.fromLTRB(
-                side,
-                NestSpacing.screen,
-                side,
-                NestSpacing.screen + MediaQuery.paddingOf(context).bottom,
-              ),
-              children: [
-                _Header(householdId: householdId, list: list),
-                const SizedBox(height: NestSpacing.gap),
-                _SearchField(controller: _search, focusNode: _searchFocus),
-                if (syncState == ShoppingSyncState.offline) ...[
-                  const SizedBox(height: NestSpacing.gapSmall),
-                  _OfflineNotice(householdId: householdId),
+      body: SeasonalBackground(
+        child: SafeArea(
+          bottom: false,
+          child: RefreshIndicator(
+            onRefresh: () => ref
+                .read(shoppingRepositoryProvider)
+                .refresh(householdId)
+                .catchError((_) {}),
+            // Swiping moves between All stores and each store, like the chips.
+            child: SwipePages<int?>(
+              enabled: list != null && query.isEmpty,
+              pages: [null, for (final store in stores) store.id],
+              current: selectedStore,
+              onChanged: ref
+                  .read(selectedStoreIdProvider(householdId).notifier)
+                  .select,
+              child: ListView(
+                padding: EdgeInsets.fromLTRB(
+                  side,
+                  NestSpacing.screen,
+                  side,
+                  NestSpacing.screen + MediaQuery.paddingOf(context).bottom,
+                ),
+                children: [
+                  _Header(householdId: householdId, list: list),
+                  const SizedBox(height: NestSpacing.gap),
+                  _SearchField(controller: _search, focusNode: _searchFocus),
+                  if (syncState == ShoppingSyncState.offline) ...[
+                    const SizedBox(height: NestSpacing.gapSmall),
+                    _OfflineNotice(householdId: householdId),
+                  ],
+                  const SizedBox(height: NestSpacing.gap),
+                  if (list == null)
+                    const Center(child: CircularProgressIndicator.adaptive())
+                  else if (query.isNotEmpty)
+                    _SearchResults(
+                      householdId: householdId,
+                      list: list,
+                      query: query,
+                      onAdded: () {
+                        _search.clear();
+                        _searchFocus.requestFocus();
+                      },
+                    )
+                  else
+                    _Board(householdId: householdId, list: list),
                 ],
-                const SizedBox(height: NestSpacing.gap),
-                if (list == null)
-                  const Center(child: CircularProgressIndicator.adaptive())
-                else if (query.isNotEmpty)
-                  _SearchResults(
-                    householdId: householdId,
-                    list: list,
-                    query: query,
-                    onAdded: () {
-                      _search.clear();
-                      _searchFocus.requestFocus();
-                    },
-                  )
-                else
-                  _Board(householdId: householdId, list: list),
-              ],
+              ),
             ),
           ),
         ),

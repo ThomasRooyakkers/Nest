@@ -9,6 +9,7 @@ import 'support/fake_meal_plan_server.dart';
 import 'support/fake_recipe_server.dart';
 import 'support/fake_shopping_server.dart';
 import 'package:nest_flutter/features/seasonal/data/seasonal_preference.dart';
+import 'package:nest_flutter/features/seasonal/presentation/seasonal_background.dart';
 import 'package:nest_flutter/features/seasonal/presentation/seasonal_decor.dart';
 import 'support/fake_task_server.dart';
 import 'support/fake_watchlist_server.dart';
@@ -260,10 +261,19 @@ void main() {
     ) async {
       final container = await openAt(tester, DateTime(2026, 12, 23, 18));
       expect(find.bySemanticsLabel('Make the lights flash'), findsOneWidget);
-      expect(find.text('2 more nights until Christmas'), findsOneWidget);
+      expect(find.text('2 more sleeps until Christmas'), findsOneWidget);
       expect(find.byType(SeasonalBackdrop), findsOneWidget);
       expect(find.byType(SeasonalCardDecor), findsOneWidget);
       expect(find.byType(SeasonalTabBarTop), findsOneWidget);
+
+      // Snow falls behind the other main pages too.
+      await tester.tap(find.text('Shopping').last);
+      await tester.pumpAndSettle();
+      expect(find.byType(SeasonalBackground), findsOneWidget);
+      expect(find.byType(SeasonalBackdrop), findsOneWidget);
+      await tester.tap(find.text('Home').last);
+      await tester.pumpAndSettle();
+
       await tester.tap(find.byType(ChristmasLights));
       await tester.pump();
       expect(tester.takeException(), isNull);
@@ -303,7 +313,7 @@ void main() {
         textScale: 2,
       );
       expect(tester.takeException(), isNull);
-      expect(find.text('Nog 1 nachtje tot Kerstmis'), findsOneWidget);
+      expect(find.text('Nog 1 keer slapen tot Kerstmis'), findsOneWidget);
       await scrollTo(tester, find.text('Recepten'));
       expect(tester.takeException(), isNull);
     });

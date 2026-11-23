@@ -63,6 +63,7 @@ void main() {
         seasonalGreeting(SeasonalTheme.christmas, t);
     expect((at(DateTime(2026, 12, 23, 20)) as NightsUntilChristmas).nights, 2);
     expect((at(DateTime(2026, 12, 24, 8)) as NightsUntilChristmas).nights, 1);
+    expect((at(DateTime(2026, 11, 23, 9)) as NightsUntilChristmas).nights, 32);
     expect(at(DateTime(2026, 12, 25)), isA<MerryChristmas>());
     expect(at(DateTime(2026, 12, 26)), isA<MerryChristmas>());
     expect(at(DateTime(2026, 12, 27)), isA<HappyHolidays>());

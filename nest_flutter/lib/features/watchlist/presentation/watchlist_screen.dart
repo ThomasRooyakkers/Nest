@@ -16,6 +16,7 @@ import 'tonight_pick_sheet.dart';
 import 'watch_item_sheet.dart';
 import 'watchlist_providers.dart';
 import 'watchlist_style.dart';
+import '../../seasonal/presentation/seasonal_background.dart';
 
 /// The household's watchlist: a search button, status tabs (Want to watch,
 /// Watching, Watched), "Pick something for tonight" and a three-column
@@ -42,73 +43,75 @@ class WatchlistScreen extends ConsumerWidget {
     final shown = items == null ? null : itemsWithStatus(items, status);
 
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: RefreshIndicator(
-          onRefresh: () => ref
-              .read(watchlistRepositoryProvider)
-              .refresh(householdId)
-              .catchError((_) {}),
-          child: SwipePages(
-            pages: WatchStatus.values,
-            current: status,
-            onChanged: ref.read(selectedWatchStatusProvider.notifier).select,
-            child: ListView(
-              padding: EdgeInsets.fromLTRB(
-                side,
-                NestSpacing.screen,
-                side,
-                // Room for the floating tab bar.
-                NestSpacing.screen + MediaQuery.paddingOf(context).bottom,
-              ),
-              children: [
-                Text(l10n.featureWatchlist, style: textTheme.headlineMedium),
-                const SizedBox(height: NestSpacing.gap),
-                _SearchButton(
-                  onTap: syncState == LiveSyncState.offline
-                      ? null
-                      : () => context.push(Routes.watchSearch),
+      body: SeasonalBackground(
+        child: SafeArea(
+          bottom: false,
+          child: RefreshIndicator(
+            onRefresh: () => ref
+                .read(watchlistRepositoryProvider)
+                .refresh(householdId)
+                .catchError((_) {}),
+            child: SwipePages(
+              pages: WatchStatus.values,
+              current: status,
+              onChanged: ref.read(selectedWatchStatusProvider.notifier).select,
+              child: ListView(
+                padding: EdgeInsets.fromLTRB(
+                  side,
+                  NestSpacing.screen,
+                  side,
+                  // Room for the floating tab bar.
+                  NestSpacing.screen + MediaQuery.paddingOf(context).bottom,
                 ),
-                const SizedBox(height: NestSpacing.gapSmall),
-                _StatusChips(
-                  selected: status,
-                  counts: statusCounts(items ?? const []),
-                ),
-                if (syncState == LiveSyncState.offline) ...[
-                  const SizedBox(height: NestSpacing.gapSmall),
-                  NestNotice(l10n.watchOffline, tone: NestNoticeTone.info),
-                ],
-                SwipeContent(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (status == WatchStatus.want &&
-                          shown != null &&
-                          shown.isNotEmpty) ...[
-                        const SizedBox(height: NestSpacing.gapSmall),
-                        _PickButton(
-                          onTap: () => showTonightPick(
-                            context,
-                            householdId: householdId,
-                            items: items!,
-                          ),
-                        ),
-                      ],
-                      const SizedBox(height: NestSpacing.gap),
-                      if (shown == null)
-                        const Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        )
-                      else if (shown.isEmpty)
-                        _EmptyCard(status: status)
-                      else
-                        _PosterGrid(householdId: householdId, items: shown),
-                    ],
+                children: [
+                  Text(l10n.featureWatchlist, style: textTheme.headlineMedium),
+                  const SizedBox(height: NestSpacing.gap),
+                  _SearchButton(
+                    onTap: syncState == LiveSyncState.offline
+                        ? null
+                        : () => context.push(Routes.watchSearch),
                   ),
-                ),
-                const SizedBox(height: NestSpacing.gap),
-                const TmdbAttribution(),
-              ],
+                  const SizedBox(height: NestSpacing.gapSmall),
+                  _StatusChips(
+                    selected: status,
+                    counts: statusCounts(items ?? const []),
+                  ),
+                  if (syncState == LiveSyncState.offline) ...[
+                    const SizedBox(height: NestSpacing.gapSmall),
+                    NestNotice(l10n.watchOffline, tone: NestNoticeTone.info),
+                  ],
+                  SwipeContent(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        if (status == WatchStatus.want &&
+                            shown != null &&
+                            shown.isNotEmpty) ...[
+                          const SizedBox(height: NestSpacing.gapSmall),
+                          _PickButton(
+                            onTap: () => showTonightPick(
+                              context,
+                              householdId: householdId,
+                              items: items!,
+                            ),
+                          ),
+                        ],
+                        const SizedBox(height: NestSpacing.gap),
+                        if (shown == null)
+                          const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          )
+                        else if (shown.isEmpty)
+                          _EmptyCard(status: status)
+                        else
+                          _PosterGrid(householdId: householdId, items: shown),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: NestSpacing.gap),
+                  const TmdbAttribution(),
+                ],
+              ),
             ),
           ),
         ),

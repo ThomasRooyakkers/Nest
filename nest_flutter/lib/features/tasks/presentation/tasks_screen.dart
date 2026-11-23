@@ -18,6 +18,7 @@ import 'task_providers.dart';
 import 'task_row.dart';
 import 'task_sheet.dart';
 import 'task_style.dart';
+import '../../seasonal/presentation/seasonal_background.dart';
 
 /// The household's tasks: filter chips (Mine, Everyone, Overdue, Done), a
 /// list with check-off, due label, recurrence and assignee, and a "+"
@@ -72,62 +73,66 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
         label: l10n.taskNew,
         onPressed: () => showTaskSheet(context, householdId: householdId),
       ),
-      body: SafeArea(
-        bottom: false,
-        child: RefreshIndicator(
-          onRefresh: () => ref
-              .read(taskRepositoryProvider)
-              .refresh(householdId)
-              .catchError((_) {}),
-          child: SwipePages(
-            pages: TaskFilter.values,
-            current: filter,
-            onChanged: ref.read(selectedTaskFilterProvider.notifier).select,
-            child: ListView(
-              padding: EdgeInsets.fromLTRB(
-                side,
-                NestSpacing.screen,
-                side,
-                // Room for the "+" button above the tab bar.
-                NestSpacing.screen + 72 + MediaQuery.paddingOf(context).bottom,
-              ),
-              children: [
-                Text(l10n.featureTasks, style: textTheme.headlineMedium),
-                const SizedBox(height: NestSpacing.gap),
-                _FilterChips(
-                  selected: filter,
-                  overdueCount: tasks == null
-                      ? 0
-                      : filterTasks(
-                          tasks,
-                          TaskFilter.overdue,
-                          userId: userId,
-                          now: now,
-                        ).length,
+      body: SeasonalBackground(
+        child: SafeArea(
+          bottom: false,
+          child: RefreshIndicator(
+            onRefresh: () => ref
+                .read(taskRepositoryProvider)
+                .refresh(householdId)
+                .catchError((_) {}),
+            child: SwipePages(
+              pages: TaskFilter.values,
+              current: filter,
+              onChanged: ref.read(selectedTaskFilterProvider.notifier).select,
+              child: ListView(
+                padding: EdgeInsets.fromLTRB(
+                  side,
+                  NestSpacing.screen,
+                  side,
+                  // Room for the "+" button above the tab bar.
+                  NestSpacing.screen +
+                      72 +
+                      MediaQuery.paddingOf(context).bottom,
                 ),
-                if (syncState == LiveSyncState.offline) ...[
-                  const SizedBox(height: NestSpacing.gapSmall),
-                  _OfflineNotice(householdId: householdId),
-                ],
-                const SizedBox(height: NestSpacing.gap),
-                SwipeContent(
-                  child: tasks == null
-                      ? const Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        )
-                      : _TaskList(
-                          householdId: householdId,
-                          filter: filter,
-                          tasks: filterTasks(
+                children: [
+                  Text(l10n.featureTasks, style: textTheme.headlineMedium),
+                  const SizedBox(height: NestSpacing.gap),
+                  _FilterChips(
+                    selected: filter,
+                    overdueCount: tasks == null
+                        ? 0
+                        : filterTasks(
                             tasks,
-                            filter,
+                            TaskFilter.overdue,
                             userId: userId,
                             now: now,
+                          ).length,
+                  ),
+                  if (syncState == LiveSyncState.offline) ...[
+                    const SizedBox(height: NestSpacing.gapSmall),
+                    _OfflineNotice(householdId: householdId),
+                  ],
+                  const SizedBox(height: NestSpacing.gap),
+                  SwipeContent(
+                    child: tasks == null
+                        ? const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          )
+                        : _TaskList(
+                            householdId: householdId,
+                            filter: filter,
+                            tasks: filterTasks(
+                              tasks,
+                              filter,
+                              userId: userId,
+                              now: now,
+                            ),
+                            now: now,
                           ),
-                          now: now,
-                        ),
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -375,7 +375,7 @@
   "signInMethodLinkedLabel": "Gekoppeld",
   "signInMethodLinked": "{provider} is nu gekoppeld aan je account.",
   "errorAlreadyLinked": "Dit Apple- of Google-account hoort al bij een ander Hoomly-account.",
-  "seasonalNightsUntilChristmas": "{count, plural, =1{Nog 1 nachtje tot Kerstmis} other{Nog {count} nachtjes tot Kerstmis}}",
+  "seasonalNightsUntilChristmas": "{count, plural, =1{Nog 1 keer slapen tot Kerstmis} other{Nog {count} keer slapen tot Kerstmis}}",
   "seasonalMerryChristmas": "Vrolijk kerstfeest",
   "seasonalHappyHolidays": "Fijne feestdagen",
   "seasonalHoursUntilNewYear": "{count, plural, =1{Nog 1 uur tot {year}} other{Nog {count} uur tot {year}}}",

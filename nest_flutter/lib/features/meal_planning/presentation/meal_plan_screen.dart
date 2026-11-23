@@ -18,6 +18,7 @@ import '../domain/meal_plan_logic.dart';
 import 'meal_plan_providers.dart';
 import 'meal_plan_style.dart';
 import 'meal_sheet.dart';
+import '../../seasonal/presentation/seasonal_background.dart';
 
 /// The household's meal plan, a week at a time: previous/next week, a strip
 /// of the seven days, and a card per day with its dinner (and breakfast and
@@ -100,104 +101,109 @@ class _MealPlanScreenState extends ConsumerState<MealPlanScreen> {
 
     // The title, week and day strip stay put; the days scroll below them.
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(side, NestSpacing.screen, side, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          l10n.mealsTitle,
-                          style: textTheme.headlineMedium,
+      body: SeasonalBackground(
+        child: SafeArea(
+          bottom: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(side, NestSpacing.screen, side, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            l10n.mealsTitle,
+                            style: textTheme.headlineMedium,
+                          ),
                         ),
-                      ),
-                      if (recipesOn) ...[
-                        NestRoundButton(
-                          tooltip: l10n.mealRecipesButton,
-                          icon: LucideIcons.bookOpen,
-                          onPressed: () => context.push(Routes.mealRecipes),
-                        ),
+                        if (recipesOn) ...[
+                          NestRoundButton(
+                            tooltip: l10n.mealRecipesButton,
+                            icon: LucideIcons.bookOpen,
+                            onPressed: () => context.push(Routes.mealRecipes),
+                          ),
+                          if (household.role == MembershipRole.owner)
+                            const SizedBox(width: 8),
+                        ],
                         if (household.role == MembershipRole.owner)
-                          const SizedBox(width: 8),
+                          NestRoundButton(
+                            tooltip: l10n.mealSlotsButton,
+                            icon: LucideIcons.slidersHorizontal,
+                            onPressed: () =>
+                                _showSlotsSheet(context, household),
+                          ),
                       ],
-                      if (household.role == MembershipRole.owner)
-                        NestRoundButton(
-                          tooltip: l10n.mealSlotsButton,
-                          icon: LucideIcons.slidersHorizontal,
-                          onPressed: () => _showSlotsSheet(context, household),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: NestSpacing.gapSmall),
-                  _WeekHeader(weekStart: weekStart, today: today),
-                  const SizedBox(height: NestSpacing.gapSmall),
-                  _WeekStrip(
-                    days: days,
-                    today: today,
-                    slots: slots,
-                    entries: entries ?? const [],
-                    recipes: recipes,
-                    onSelect: _scrollToDay,
-                  ),
-                  if (syncState == LiveSyncState.offline) ...[
+                    ),
                     const SizedBox(height: NestSpacing.gapSmall),
-                    NestNotice(l10n.mealsOffline, tone: NestNoticeTone.info),
+                    _WeekHeader(weekStart: weekStart, today: today),
+                    const SizedBox(height: NestSpacing.gapSmall),
+                    _WeekStrip(
+                      days: days,
+                      today: today,
+                      slots: slots,
+                      entries: entries ?? const [],
+                      recipes: recipes,
+                      onSelect: _scrollToDay,
+                    ),
+                    if (syncState == LiveSyncState.offline) ...[
+                      const SizedBox(height: NestSpacing.gapSmall),
+                      NestNotice(l10n.mealsOffline, tone: NestNoticeTone.info),
+                    ],
                   ],
-                ],
-              ),
-            ),
-            const SizedBox(height: NestSpacing.gapSmall),
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: () async => ref
-                    .read(mealPlanSyncProvider(householdId, weekStart).notifier)
-                    .retryNow(),
-                // Not lazy, so the week strip can scroll to any day's card.
-                child: SingleChildScrollView(
-                  controller: _scroll,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.fromLTRB(
-                    side,
-                    0,
-                    side,
-                    // Room for the floating tab bar.
-                    NestSpacing.screen +
-                        72 +
-                        MediaQuery.paddingOf(context).bottom,
-                  ),
-                  child: entries == null
-                      ? const Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            for (final (index, day) in days.indexed) ...[
-                              if (index > 0)
-                                const SizedBox(height: NestSpacing.gapSmall),
-                              _DayCard(
-                                key: _dayKeys[index],
-                                householdId: householdId,
-                                day: day,
-                                isToday: day == today,
-                                slots: slots,
-                                entries: entries,
-                                recipes: recipes,
-                              ),
-                            ],
-                          ],
-                        ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: NestSpacing.gapSmall),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () async => ref
+                      .read(
+                        mealPlanSyncProvider(householdId, weekStart).notifier,
+                      )
+                      .retryNow(),
+                  // Not lazy, so the week strip can scroll to any day's card.
+                  child: SingleChildScrollView(
+                    controller: _scroll,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.fromLTRB(
+                      side,
+                      0,
+                      side,
+                      // Room for the floating tab bar.
+                      NestSpacing.screen +
+                          72 +
+                          MediaQuery.paddingOf(context).bottom,
+                    ),
+                    child: entries == null
+                        ? const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              for (final (index, day) in days.indexed) ...[
+                                if (index > 0)
+                                  const SizedBox(height: NestSpacing.gapSmall),
+                                _DayCard(
+                                  key: _dayKeys[index],
+                                  householdId: householdId,
+                                  day: day,
+                                  isToday: day == today,
+                                  slots: slots,
+                                  entries: entries,
+                                  recipes: recipes,
+                                ),
+                              ],
+                            ],
+                          ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
