@@ -40,7 +40,10 @@ The backlog is in Jira (`docs/JIRA.md`).
   NEST-51 done: Firebase project `hoomly-ca9f3` with iOS and Android apps,
   APNs key uploaded, service account in the Pi's `.env`, `firebase.json`
   local. App 2.0.0 (4) IPA built with Firebase (push entitlement
-  production); Thomas to upload with Transporter and test via TestFlight.
+  production) uploaded to App Store Connect 2026-11-23 via `xcodebuild
+  -exportArchive`. TestFlight external group "Family" (public link, limit 10)
+  with 2.0.0 (4) submitted for Beta App Review; the internal invite for Thomas
+  never arrived. Test Information filled in (reviewer account as for 1.1).
   Android AAB 2.0.0 not built yet.
 - **NEST-46 (2026-11-23):** dark theme "Navy night" built (app only, no
   server change): follows the system, Settings → Appearance offers System /
