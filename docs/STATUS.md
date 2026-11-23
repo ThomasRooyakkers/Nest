@@ -44,6 +44,12 @@ The backlog is in Jira (`docs/JIRA.md`).
   -exportArchive`. TestFlight external group "Family" (public link, limit 10)
   with 2.0.0 (4) submitted for Beta App Review; the internal invite for Thomas
   never arrived. Test Information filled in (reviewer account as for 1.1).
+  App Store version 2.0 (build 4) submitted for App Review 2026-11-23,
+  automatic release after approval; What's New EN + NL, review notes mention
+  push and Firebase. Server 0.21.1 deployed the same day (privacy policy
+  covers push and Firebase; dump `nest-pre-update-20261123-165905`). Push
+  tested end to end on the live server: task and shopping notifications
+  arrived in the simulator. Android AAB 2.0.0 not built or uploaded yet.
   Android AAB 2.0.0 not built yet.
 - **NEST-46 (2026-11-23):** dark theme "Navy night" built (app only, no
   server change): follows the system, Settings → Appearance offers System /

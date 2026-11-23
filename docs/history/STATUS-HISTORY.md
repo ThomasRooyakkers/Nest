@@ -7,6 +7,19 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**App 2.0 submitted, server 0.21.1 (2026-11-23).** Live push test with two
+simulators on `nest.g3cko.be` (Firebase build, `SERVER_URL` define): the
+verification account ("Apple", household "Verification", where Thomas is
+also a member) assigned Thomas a task and added groceries; "New task for
+you" arrived within seconds and "Apple added 2 items to Groceries" after the
+two-minute batch. Privacy policy (EN + NL) now covers the notification
+token and Firebase Cloud Messaging; server 0.21.1 deployed (dump
+`nest-pre-update-20261123-165905`). App Store version 2.0 created with build
+2.0.0 (4), What's New in English and Dutch, review notes updated (new in 2.0,
+Firebase under external services), submitted for App Review with automatic
+release. TestFlight external group "Family" (public link, limit 10) waits
+for Beta App Review.
+
 **Server 0.21.0 deployed, Firebase set up (2026-11-23, NEST-51).** Claude
 registered the iOS and Android apps (`be.g3cko.nest`) in Firebase project
 `hoomly-ca9f3` and wrote the client config to the untracked
