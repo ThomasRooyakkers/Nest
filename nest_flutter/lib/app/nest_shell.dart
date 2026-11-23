@@ -204,10 +204,10 @@ class _TabBar extends StatelessWidget {
               children: [
                 bar,
                 Positioned(
-                  top: -7,
-                  left: 24,
-                  right: 24,
-                  height: 14,
+                  top: -10,
+                  left: 22,
+                  right: 22,
+                  height: 16,
                   child: SeasonalTabBarTop(theme: theme!),
                 ),
               ],

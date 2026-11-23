@@ -166,7 +166,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ? tonight
                           : Padding(
                               // Room for the snow and the bow above the card.
-                              padding: const EdgeInsets.only(top: 6),
+                              padding: const EdgeInsets.only(top: 14),
                               child: SeasonalCardDecor(
                                 theme: theme,
                                 child: tonight,

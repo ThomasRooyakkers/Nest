@@ -7,6 +7,19 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Holiday decorations drawn in more detail (2026-11-23, NEST-47).** Thomas
+found the first version too abstract. The painters in
+`seasonal_decor.dart` now draw pear-shaped glass bulbs with a metal socket,
+highlights and a soft glow on a twisted dark-green wire (colours change
+around the colour wheel and hold, so no muddy mixes); six-armed snow
+crystals and soft round flakes at different depths; snow with shading and
+small icicles on tonight's card; a satin ribbon with a stitched edge and a
+shaded bow with notched tails; fireworks with a white flash, gradient
+streaks with glowing heads that droop, sparkles and rockets with sparks; a
+striped party popper with curly streamers and shaded confetti; confetti,
+curls and a star on the tab bar's edge. Checked in the iOS simulator
+against the local server; app tests 243, all green.
+
 **Holiday decorations: Christmas and New Year (2026-11-23, NEST-47, not yet
 released).** Designs agreed with Thomas on the design canvas
 (https://claude.ai/artifact/Uxr35wffq6rsFa5bt2WQHD). **Server** (API level
