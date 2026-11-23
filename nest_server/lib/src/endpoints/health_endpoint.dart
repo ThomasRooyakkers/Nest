@@ -6,7 +6,7 @@ import '../services/push/push_notifications.dart';
 import '../services/seasonal_themes.dart';
 
 /// Nest server version reported by the health check.
-const nestServerVersion = '0.21.0';
+const nestServerVersion = '0.21.1';
 
 /// API level of this server. Raise it when endpoints or models change in a
 /// way an app may depend on; the app compares it with the level it needs.
