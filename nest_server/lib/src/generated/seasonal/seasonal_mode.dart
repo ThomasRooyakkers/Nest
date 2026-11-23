@@ -1,0 +1,46 @@
+/* AUTOMATICALLY GENERATED CODE DO NOT MODIFY */
+/*   To generate run: "serverpod generate"    */
+
+// ignore_for_file: implementation_imports
+// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: public_member_api_docs
+// ignore_for_file: type_literal_in_constant_pattern
+// ignore_for_file: use_super_parameters
+// ignore_for_file: invalid_use_of_internal_member
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:serverpod/serverpod.dart' as _is;
+
+/// How a server shows holiday decorations in the apps.
+enum SeasonalMode implements _is.SerializableModel {
+  /// Each switched-on theme shows on its own dates.
+  automatic,
+
+  /// One theme shows all the time (for testing or a party).
+  always,
+
+  /// No decorations.
+  off;
+
+  static SeasonalMode fromJson(String name) {
+    switch (name) {
+      case 'automatic':
+        return SeasonalMode.automatic;
+      case 'always':
+        return SeasonalMode.always;
+      case 'off':
+        return SeasonalMode.off;
+      default:
+        throw ArgumentError(
+          'Value "$name" cannot be converted to "SeasonalMode"',
+        );
+    }
+  }
+
+  @override
+  String toJson() => name;
+
+  @override
+  String toString() => name;
+}

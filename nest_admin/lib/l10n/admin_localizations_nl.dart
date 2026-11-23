@@ -1030,4 +1030,53 @@ class AdminLocalizationsNl extends AdminLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get sectionSeasonal => 'Feestversiering';
+
+  @override
+  String get seasonalNote =>
+      'Kleine feestdecoraties in de app voor elk huishouden op deze server. Apps nemen een wijziging over wanneer ze opnieuw openen. Leden kunnen ze voor zichzelf uitzetten in de instellingen van de app.';
+
+  @override
+  String get seasonalAutomatic => 'Automatisch';
+
+  @override
+  String get seasonalAutomaticHint => 'Elk thema op zijn eigen data';
+
+  @override
+  String get seasonalAlways => 'Altijd één thema';
+
+  @override
+  String get seasonalAlwaysHint => 'Om te testen of voor een feestje';
+
+  @override
+  String get seasonalOff => 'Uit';
+
+  @override
+  String get seasonalOffHint => 'Geen versiering';
+
+  @override
+  String get seasonalThemeChristmas => 'Kerstmis';
+
+  @override
+  String get seasonalThemeNewYear => 'Oud en nieuw';
+
+  @override
+  String get seasonalDatesChristmas => '7 – 28 december';
+
+  @override
+  String get seasonalDatesNewYear => '31 december – 2 januari';
+
+  @override
+  String get seasonalNow => 'Nu';
+
+  @override
+  String get seasonalShowTheme => 'Thema om te tonen';
+
+  @override
+  String get seasonalSaved => 'Feestversiering opgeslagen';
+
+  @override
+  String get auditSeasonal => 'Feestversiering gewijzigd';
 }

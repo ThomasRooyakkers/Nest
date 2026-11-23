@@ -146,6 +146,7 @@ class AdminFormat {
     'household.setMemberRole' => l10n.auditMemberRole,
     'user.signOutEverywhere' => l10n.auditUserSignedOut,
     'system.testMail' => l10n.auditTestMail,
+    'system.seasonalThemes' => l10n.auditSeasonal,
     _ => action,
   };
 }

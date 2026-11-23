@@ -1,0 +1,65 @@
+{
+  "__className__": "serverpod.DatabaseMigration",
+  "actions": [
+    {
+      "__className__": "serverpod.DatabaseMigrationAction",
+      "type": "createTable",
+      "createTable": {
+        "__className__": "serverpod.TableDefinition",
+        "name": "seasonal_setting",
+        "dartName": "SeasonalSetting",
+        "module": "nest",
+        "schema": "public",
+        "columns": [
+          {
+            "__className__": "serverpod.ColumnDefinition",
+            "name": "id",
+            "fieldName": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "serial",
+            "dartType": "int?"
+          },
+          {
+            "__className__": "serverpod.ColumnDefinition",
+            "name": "mode",
+            "fieldName": "mode",
+            "columnType": 0,
+            "isNullable": false,
+            "dartType": "protocol:SeasonalMode"
+          },
+          {
+            "__className__": "serverpod.ColumnDefinition",
+            "name": "enabledThemes",
+            "fieldName": "enabledThemes",
+            "columnType": 8,
+            "isNullable": false,
+            "dartType": "List<String>"
+          },
+          {
+            "__className__": "serverpod.ColumnDefinition",
+            "name": "alwaysTheme",
+            "fieldName": "alwaysTheme",
+            "columnType": 0,
+            "isNullable": true,
+            "dartType": "String?"
+          },
+          {
+            "__className__": "serverpod.ColumnDefinition",
+            "name": "updatedAt",
+            "fieldName": "updatedAt",
+            "columnType": 4,
+            "isNullable": false,
+            "columnDefault": "now",
+            "dartType": "DateTime"
+          }
+        ],
+        "foreignKeys": [],
+        "indexes": [],
+        "managed": true
+      }
+    }
+  ],
+  "warnings": [],
+  "migrationApiVersion": 1
+}

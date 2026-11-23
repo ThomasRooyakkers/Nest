@@ -314,6 +314,27 @@ class FakeAdminRepository implements AdminRepository {
   @override
   Future<AdminCheckResult> testFilmData() async => AdminCheckResult(ok: true);
 
+  AdminSeasonalSettings seasonal = AdminSeasonalSettings(
+    mode: SeasonalMode.automatic,
+    enabledThemes: ['christmas', 'newYear'],
+    availableThemes: ['christmas', 'newYear'],
+  );
+
+  @override
+  Future<AdminSeasonalSettings> seasonalSettings() async => seasonal;
+
+  @override
+  Future<AdminSeasonalSettings> saveSeasonal(
+    SeasonalMode mode,
+    List<String> enabledThemes,
+    String? alwaysTheme,
+  ) async => seasonal = AdminSeasonalSettings(
+    mode: mode,
+    enabledThemes: enabledThemes,
+    alwaysTheme: alwaysTheme,
+    availableThemes: seasonal.availableThemes,
+  );
+
   @override
   Future<AdminUpdateStatus> updateStatus() async => AdminUpdateStatus(
     currentVersion: '0.13.1',

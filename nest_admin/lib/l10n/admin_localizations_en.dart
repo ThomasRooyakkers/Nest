@@ -1027,4 +1027,53 @@ class AdminLocalizationsEn extends AdminLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get sectionSeasonal => 'Holiday decorations';
+
+  @override
+  String get seasonalNote =>
+      'Small holiday decorations in the app for every household on this server. Apps pick up a change the next time they open. Members can still switch them off for themselves in the app\'s Settings.';
+
+  @override
+  String get seasonalAutomatic => 'Automatic';
+
+  @override
+  String get seasonalAutomaticHint => 'Each theme shows on its own dates';
+
+  @override
+  String get seasonalAlways => 'Always one theme';
+
+  @override
+  String get seasonalAlwaysHint => 'For testing or a party';
+
+  @override
+  String get seasonalOff => 'Off';
+
+  @override
+  String get seasonalOffHint => 'No decorations';
+
+  @override
+  String get seasonalThemeChristmas => 'Christmas';
+
+  @override
+  String get seasonalThemeNewYear => 'New Year';
+
+  @override
+  String get seasonalDatesChristmas => '7 – 28 December';
+
+  @override
+  String get seasonalDatesNewYear => '31 December – 2 January';
+
+  @override
+  String get seasonalNow => 'Now';
+
+  @override
+  String get seasonalShowTheme => 'Theme to show';
+
+  @override
+  String get seasonalSaved => 'Holiday decorations saved';
+
+  @override
+  String get auditSeasonal => 'Holiday decorations changed';
 }

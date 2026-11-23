@@ -44,6 +44,9 @@ adminLogs:
   - summary:
 adminMetrics:
   - metrics:
+adminSeasonal:
+  - settings:
+  - save:
 adminSystem:
   - health:
   - settings:

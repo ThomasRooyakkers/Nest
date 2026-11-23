@@ -75,6 +75,15 @@ class AdminRepository {
   Future<AdminServerSettings> serverSettings() =>
       _client.adminSystem.settings();
 
+  Future<AdminSeasonalSettings> seasonalSettings() =>
+      _client.adminSeasonal.settings();
+
+  Future<AdminSeasonalSettings> saveSeasonal(
+    SeasonalMode mode,
+    List<String> enabledThemes,
+    String? alwaysTheme,
+  ) => _client.adminSeasonal.save(mode, enabledThemes, alwaysTheme);
+
   Future<AdminCheckResult> sendTestMail() => _client.adminSystem.sendTestMail();
 
   Future<AdminCheckResult> testFilmData() => _client.adminSystem.testFilmData();
@@ -267,6 +276,10 @@ class Users extends _$Users {
 @riverpod
 Future<AdminServerSettings> serverSettings(Ref ref) =>
     ref.watch(adminRepositoryProvider).serverSettings();
+
+@riverpod
+Future<AdminSeasonalSettings> seasonalSettings(Ref ref) =>
+    ref.watch(adminRepositoryProvider).seasonalSettings();
 
 @riverpod
 Future<AdminUpdateStatus> updateStatus(Ref ref) =>

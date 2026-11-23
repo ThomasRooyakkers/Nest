@@ -7,6 +7,7 @@ import 'package:nest_shared/nest_shared.dart';
 import '../../data/admin_repository.dart';
 import '../../l10n/admin_localizations.dart';
 import '../widgets/admin_widgets.dart';
+import '../widgets/seasonal_section.dart';
 
 /// The settings this server runs with (read-only; they live in `.env`),
 /// tests for mail and film data, and whether an update is available.
@@ -23,6 +24,7 @@ class ServerPage extends ConsumerWidget {
       onRefresh: () async {
         ref
           ..invalidate(serverSettingsProvider)
+          ..invalidate(seasonalSettingsProvider)
           ..invalidate(updateStatusProvider);
         await ref.read(serverSettingsProvider.future);
       },
@@ -161,6 +163,8 @@ class _Content extends ConsumerWidget {
             ),
           ]),
         ),
+        const SizedBox(height: NestSpacing.gap),
+        const SeasonalSection(),
       ],
     );
   }

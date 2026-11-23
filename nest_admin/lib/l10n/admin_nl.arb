@@ -295,5 +295,21 @@
   "settingUptime": "Externe uptimecontrole",
   "alertNeverBackedUp": "Er is nog nooit een back-up gelukt",
   "alertLastBackup": "Laatste geslaagde back-up: {when}",
-  "alertErrorCount": "{count, plural, =1{1 fout in 15 minuten} other{{count} fouten in 15 minuten}}"
+  "alertErrorCount": "{count, plural, =1{1 fout in 15 minuten} other{{count} fouten in 15 minuten}}",
+  "sectionSeasonal": "Feestversiering",
+  "seasonalNote": "Kleine feestdecoraties in de app voor elk huishouden op deze server. Apps nemen een wijziging over wanneer ze opnieuw openen. Leden kunnen ze voor zichzelf uitzetten in de instellingen van de app.",
+  "seasonalAutomatic": "Automatisch",
+  "seasonalAutomaticHint": "Elk thema op zijn eigen data",
+  "seasonalAlways": "Altijd één thema",
+  "seasonalAlwaysHint": "Om te testen of voor een feestje",
+  "seasonalOff": "Uit",
+  "seasonalOffHint": "Geen versiering",
+  "seasonalThemeChristmas": "Kerstmis",
+  "seasonalThemeNewYear": "Oud en nieuw",
+  "seasonalDatesChristmas": "7 – 28 december",
+  "seasonalDatesNewYear": "31 december – 2 januari",
+  "seasonalNow": "Nu",
+  "seasonalShowTheme": "Thema om te tonen",
+  "seasonalSaved": "Feestversiering opgeslagen",
+  "auditSeasonal": "Feestversiering gewijzigd"
 }

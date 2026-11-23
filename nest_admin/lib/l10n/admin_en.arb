@@ -1392,5 +1392,69 @@
         "type": "int"
       }
     }
+  },
+  "sectionSeasonal": "Holiday decorations",
+  "@sectionSeasonal": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalNote": "Small holiday decorations in the app for every household on this server. Apps pick up a change the next time they open. Members can still switch them off for themselves in the app's Settings.",
+  "@seasonalNote": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalAutomatic": "Automatic",
+  "@seasonalAutomatic": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalAutomaticHint": "Each theme shows on its own dates",
+  "@seasonalAutomaticHint": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalAlways": "Always one theme",
+  "@seasonalAlways": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalAlwaysHint": "For testing or a party",
+  "@seasonalAlwaysHint": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalOff": "Off",
+  "@seasonalOff": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalOffHint": "No decorations",
+  "@seasonalOffHint": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalThemeChristmas": "Christmas",
+  "@seasonalThemeChristmas": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalThemeNewYear": "New Year",
+  "@seasonalThemeNewYear": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalDatesChristmas": "7 – 28 December",
+  "@seasonalDatesChristmas": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalDatesNewYear": "31 December – 2 January",
+  "@seasonalDatesNewYear": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalNow": "Now",
+  "@seasonalNow": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalShowTheme": "Theme to show",
+  "@seasonalShowTheme": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalSaved": "Holiday decorations saved",
+  "@seasonalSaved": {
+    "description": "Server page, holiday decorations."
+  },
+  "auditSeasonal": "Holiday decorations changed",
+  "@auditSeasonal": {
+    "description": "Audit action."
   }
 }

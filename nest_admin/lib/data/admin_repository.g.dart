@@ -499,6 +499,47 @@ final class ServerSettingsProvider
 
 String _$serverSettingsHash() => r'c14e89e40c51e8cbbb20a3f617ddc17b8a206cc9';
 
+@ProviderFor(seasonalSettings)
+final seasonalSettingsProvider = SeasonalSettingsProvider._();
+
+final class SeasonalSettingsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<AdminSeasonalSettings>,
+          AdminSeasonalSettings,
+          FutureOr<AdminSeasonalSettings>
+        >
+    with
+        $FutureModifier<AdminSeasonalSettings>,
+        $FutureProvider<AdminSeasonalSettings> {
+  SeasonalSettingsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'seasonalSettingsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$seasonalSettingsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<AdminSeasonalSettings> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<AdminSeasonalSettings> create(Ref ref) {
+    return seasonalSettings(ref);
+  }
+}
+
+String _$seasonalSettingsHash() => r'14c3f94fd77935c7ea1cc7cdffb5e0caaf7f9375';
+
 @ProviderFor(updateStatus)
 final updateStatusProvider = UpdateStatusProvider._();
 

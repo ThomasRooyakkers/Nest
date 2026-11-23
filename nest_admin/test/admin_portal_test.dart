@@ -319,6 +319,31 @@ void main() {
     expect(find.text('Not set up on this server.'), findsOneWidget);
   });
 
+  testWidgets('server page: holiday decorations switch to one theme', (
+    tester,
+  ) async {
+    final repository = FakeAdminRepository();
+    final container = await pumpPortal(tester, repository);
+    await go(container, tester, '/server');
+
+    final always = find.text('Always one theme');
+    await tester.ensureVisible(always);
+    await tester.pumpAndSettle();
+    expect(find.text('Christmas'), findsOneWidget);
+    expect(find.text('31 December – 2 January'), findsOneWidget);
+
+    await tester.tap(always);
+    await tester.pumpAndSettle();
+    final save = find.widgetWithText(FilledButton, 'Save');
+    await tester.ensureVisible(save);
+    await tester.tap(save);
+    await tester.pumpAndSettle();
+
+    expect(repository.seasonal.mode, SeasonalMode.always);
+    expect(repository.seasonal.alwaysTheme, 'christmas');
+    expect(find.text('Holiday decorations saved'), findsOneWidget);
+  });
+
   testWidgets('detail pages fit a phone in Dutch with large text', (
     tester,
   ) async {

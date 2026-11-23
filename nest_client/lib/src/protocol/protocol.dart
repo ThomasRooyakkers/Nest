@@ -65,6 +65,7 @@ import 'admin/admin_log_summary.dart' as _iv7hdcmn;
 import 'admin/admin_metric_point.dart' as _ifczr9hk;
 import 'admin/admin_metric_series.dart' as _iz1k9427;
 import 'admin/admin_metrics.dart' as _i8533ftt;
+import 'admin/admin_seasonal_settings.dart' as _iofviff9;
 import 'admin/admin_security_event.dart' as _isq3d78n;
 import 'admin/admin_server_settings.dart' as _i3d9qk19;
 import 'admin/admin_system_health.dart' as _i9cu0zbm;
@@ -96,6 +97,8 @@ import 'recipes/recipe.dart' as _ihz7f6c5;
 import 'recipes/recipe_event.dart' as _ih8tv5ny;
 import 'recipes/recipe_ingredient.dart' as _i2xp5czv;
 import 'recipes/recipe_step.dart' as _i24txk3r;
+import 'seasonal/seasonal_mode.dart' as _irlh75k4;
+import 'seasonal/seasonal_setting.dart' as _ix1bqvlk;
 import 'server_ping.dart' as _i7aj6ss6;
 import 'shopping/added_shopping_items.dart' as _i3qdje8t;
 import 'shopping/catalog_item.dart' as _ivm0zj1y;
@@ -135,6 +138,7 @@ export 'admin/admin_log_summary.dart';
 export 'admin/admin_metric_point.dart';
 export 'admin/admin_metric_series.dart';
 export 'admin/admin_metrics.dart';
+export 'admin/admin_seasonal_settings.dart';
 export 'admin/admin_security_event.dart';
 export 'admin/admin_server_settings.dart';
 export 'admin/admin_system_health.dart';
@@ -166,6 +170,8 @@ export 'recipes/recipe.dart';
 export 'recipes/recipe_event.dart';
 export 'recipes/recipe_ingredient.dart';
 export 'recipes/recipe_step.dart';
+export 'seasonal/seasonal_mode.dart';
+export 'seasonal/seasonal_setting.dart';
 export 'server_ping.dart';
 export 'shopping/added_shopping_items.dart';
 export 'shopping/catalog_item.dart';
@@ -220,6 +226,7 @@ class Protocol extends _isc.SerializationManager
           _isc.getType<_ifczr9hk.AdminMetricPoint>,
           _isc.getType<_iz1k9427.AdminMetricSeries>,
           _isc.getType<_i8533ftt.AdminMetrics>,
+          _isc.getType<_iofviff9.AdminSeasonalSettings>,
           _isc.getType<_isq3d78n.AdminSecurityEvent>,
           _isc.getType<_i3d9qk19.AdminServerSettings>,
           _isc.getType<_i9cu0zbm.AdminSystemHealth>,
@@ -251,6 +258,8 @@ class Protocol extends _isc.SerializationManager
           _isc.getType<_ih8tv5ny.RecipeEvent>,
           _isc.getType<_i2xp5czv.RecipeIngredient>,
           _isc.getType<_i24txk3r.RecipeStep>,
+          _isc.getType<_irlh75k4.SeasonalMode>,
+          _isc.getType<_ix1bqvlk.SeasonalSetting>,
           _isc.getType<_i7aj6ss6.ServerPing>,
           _isc.getType<_i3qdje8t.AddedShoppingItems>,
           _isc.getType<_ivm0zj1y.CatalogItem>,
@@ -290,6 +299,7 @@ class Protocol extends _isc.SerializationManager
           _isc.getType<_ifczr9hk.AdminMetricPoint?>,
           _isc.getType<_iz1k9427.AdminMetricSeries?>,
           _isc.getType<_i8533ftt.AdminMetrics?>,
+          _isc.getType<_iofviff9.AdminSeasonalSettings?>,
           _isc.getType<_isq3d78n.AdminSecurityEvent?>,
           _isc.getType<_i3d9qk19.AdminServerSettings?>,
           _isc.getType<_i9cu0zbm.AdminSystemHealth?>,
@@ -321,6 +331,8 @@ class Protocol extends _isc.SerializationManager
           _isc.getType<_ih8tv5ny.RecipeEvent?>,
           _isc.getType<_i2xp5czv.RecipeIngredient?>,
           _isc.getType<_i24txk3r.RecipeStep?>,
+          _isc.getType<_irlh75k4.SeasonalMode?>,
+          _isc.getType<_ix1bqvlk.SeasonalSetting?>,
           _isc.getType<_i7aj6ss6.ServerPing?>,
           _isc.getType<_i3qdje8t.AddedShoppingItems?>,
           _isc.getType<_ivm0zj1y.CatalogItem?>,
@@ -363,6 +375,7 @@ class Protocol extends _isc.SerializationManager
           _isc.getType<List<_i24txk3r.RecipeStep>?>,
           _isc.getType<List<_ihz7f6c5.Recipe>>,
           _isc.getType<List<_ihz7f6c5.Recipe>?>,
+          _isc.getType<List<String>?>,
           _isc.getType<List<_iiy01kib.ShoppingItem>>,
           _isc.getType<List<_i8tkdv3k.ShoppingList>>,
           _isc.getType<List<_i8tkdv3k.ShoppingList>?>,
@@ -381,6 +394,7 @@ class Protocol extends _isc.SerializationManager
           _isc.getType<List<_iejl7hre.HouseholdFeature>>,
           _isc.getType<List<_ia00uqin.AdminLogSession>>,
           _isc.getType<List<_imgyvk57.AdminSecurityEvent>>,
+          _isc.getType<List<String>>,
           _isc.getType<List<_iavs2480.AdminUserSummary>>,
           _isc.getType<List<_itexq6j2.MyHousehold>>,
           _isc.getType<List<_ihqqoxyh.HouseholdMember>>,
@@ -420,6 +434,7 @@ class Protocol extends _isc.SerializationManager
           'AdminMetricPoint',
           'AdminMetricSeries',
           'AdminMetrics',
+          'AdminSeasonalSettings',
           'AdminSecurityEvent',
           'AdminServerSettings',
           'AdminSystemHealth',
@@ -451,6 +466,8 @@ class Protocol extends _isc.SerializationManager
           'RecipeEvent',
           'RecipeIngredient',
           'RecipeStep',
+          'SeasonalMode',
+          'SeasonalSetting',
           'ServerPing',
           'AddedShoppingItems',
           'CatalogItem',
@@ -553,6 +570,9 @@ class Protocol extends _isc.SerializationManager
     if (t == _i8533ftt.AdminMetrics) {
       return _i8533ftt.AdminMetrics.fromJson(data) as T;
     }
+    if (t == _iofviff9.AdminSeasonalSettings) {
+      return _iofviff9.AdminSeasonalSettings.fromJson(data) as T;
+    }
     if (t == _isq3d78n.AdminSecurityEvent) {
       return _isq3d78n.AdminSecurityEvent.fromJson(data) as T;
     }
@@ -645,6 +665,12 @@ class Protocol extends _isc.SerializationManager
     }
     if (t == _i24txk3r.RecipeStep) {
       return _i24txk3r.RecipeStep.fromJson(data) as T;
+    }
+    if (t == _irlh75k4.SeasonalMode) {
+      return _irlh75k4.SeasonalMode.fromJson(data) as T;
+    }
+    if (t == _ix1bqvlk.SeasonalSetting) {
+      return _ix1bqvlk.SeasonalSetting.fromJson(data) as T;
     }
     if (t == _i7aj6ss6.ServerPing) {
       return _i7aj6ss6.ServerPing.fromJson(data) as T;
@@ -790,6 +816,12 @@ class Protocol extends _isc.SerializationManager
     if (t == _isc.getType<_i8533ftt.AdminMetrics?>()) {
       return (data != null ? _i8533ftt.AdminMetrics.fromJson(data) : null) as T;
     }
+    if (t == _isc.getType<_iofviff9.AdminSeasonalSettings?>()) {
+      return (data != null
+              ? _iofviff9.AdminSeasonalSettings.fromJson(data)
+              : null)
+          as T;
+    }
     if (t == _isc.getType<_isq3d78n.AdminSecurityEvent?>()) {
       return (data != null ? _isq3d78n.AdminSecurityEvent.fromJson(data) : null)
           as T;
@@ -905,6 +937,13 @@ class Protocol extends _isc.SerializationManager
     }
     if (t == _isc.getType<_i24txk3r.RecipeStep?>()) {
       return (data != null ? _i24txk3r.RecipeStep.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_irlh75k4.SeasonalMode?>()) {
+      return (data != null ? _irlh75k4.SeasonalMode.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ix1bqvlk.SeasonalSetting?>()) {
+      return (data != null ? _ix1bqvlk.SeasonalSetting.fromJson(data) : null)
+          as T;
     }
     if (t == _isc.getType<_i7aj6ss6.ServerPing?>()) {
       return (data != null ? _i7aj6ss6.ServerPing.fromJson(data) : null) as T;
@@ -1108,6 +1147,12 @@ class Protocol extends _isc.SerializationManager
               : null)
           as T;
     }
+    if (t == _isc.getType<List<String>?>()) {
+      return (data != null
+              ? (data as List).map((e) => deserialize<String>(e)).toList()
+              : null)
+          as T;
+    }
     if (t == List<_iiy01kib.ShoppingItem>) {
       return (data as List)
               .map((e) => deserialize<_iiy01kib.ShoppingItem>(e))
@@ -1223,6 +1268,9 @@ class Protocol extends _isc.SerializationManager
               .map((e) => deserialize<_imgyvk57.AdminSecurityEvent>(e))
               .toList()
           as T;
+    }
+    if (t == List<String>) {
+      return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
     if (t == List<_iavs2480.AdminUserSummary>) {
       return (data as List)
@@ -1340,6 +1388,7 @@ class Protocol extends _isc.SerializationManager
       _ifczr9hk.AdminMetricPoint => 'AdminMetricPoint',
       _iz1k9427.AdminMetricSeries => 'AdminMetricSeries',
       _i8533ftt.AdminMetrics => 'AdminMetrics',
+      _iofviff9.AdminSeasonalSettings => 'AdminSeasonalSettings',
       _isq3d78n.AdminSecurityEvent => 'AdminSecurityEvent',
       _i3d9qk19.AdminServerSettings => 'AdminServerSettings',
       _i9cu0zbm.AdminSystemHealth => 'AdminSystemHealth',
@@ -1371,6 +1420,8 @@ class Protocol extends _isc.SerializationManager
       _ih8tv5ny.RecipeEvent => 'RecipeEvent',
       _i2xp5czv.RecipeIngredient => 'RecipeIngredient',
       _i24txk3r.RecipeStep => 'RecipeStep',
+      _irlh75k4.SeasonalMode => 'SeasonalMode',
+      _ix1bqvlk.SeasonalSetting => 'SeasonalSetting',
       _i7aj6ss6.ServerPing => 'ServerPing',
       _i3qdje8t.AddedShoppingItems => 'AddedShoppingItems',
       _ivm0zj1y.CatalogItem => 'CatalogItem',
@@ -1442,6 +1493,8 @@ class Protocol extends _isc.SerializationManager
         return 'AdminMetricSeries';
       case _i8533ftt.AdminMetrics():
         return 'AdminMetrics';
+      case _iofviff9.AdminSeasonalSettings():
+        return 'AdminSeasonalSettings';
       case _isq3d78n.AdminSecurityEvent():
         return 'AdminSecurityEvent';
       case _i3d9qk19.AdminServerSettings():
@@ -1504,6 +1557,10 @@ class Protocol extends _isc.SerializationManager
         return 'RecipeIngredient';
       case _i24txk3r.RecipeStep():
         return 'RecipeStep';
+      case _irlh75k4.SeasonalMode():
+        return 'SeasonalMode';
+      case _ix1bqvlk.SeasonalSetting():
+        return 'SeasonalSetting';
       case _i7aj6ss6.ServerPing():
         return 'ServerPing';
       case _i3qdje8t.AddedShoppingItems():
@@ -1622,6 +1679,9 @@ class Protocol extends _isc.SerializationManager
     if (dataClassName == 'AdminMetrics') {
       return deserialize<_i8533ftt.AdminMetrics>(data['data']);
     }
+    if (dataClassName == 'AdminSeasonalSettings') {
+      return deserialize<_iofviff9.AdminSeasonalSettings>(data['data']);
+    }
     if (dataClassName == 'AdminSecurityEvent') {
       return deserialize<_isq3d78n.AdminSecurityEvent>(data['data']);
     }
@@ -1714,6 +1774,12 @@ class Protocol extends _isc.SerializationManager
     }
     if (dataClassName == 'RecipeStep') {
       return deserialize<_i24txk3r.RecipeStep>(data['data']);
+    }
+    if (dataClassName == 'SeasonalMode') {
+      return deserialize<_irlh75k4.SeasonalMode>(data['data']);
+    }
+    if (dataClassName == 'SeasonalSetting') {
+      return deserialize<_ix1bqvlk.SeasonalSetting>(data['data']);
     }
     if (dataClassName == 'ServerPing') {
       return deserialize<_i7aj6ss6.ServerPing>(data['data']);

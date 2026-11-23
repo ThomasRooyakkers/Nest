@@ -22,6 +22,8 @@ import 'package:nest_server/src/generated/meals/meal_plan_entry.dart'
 import 'package:nest_server/src/generated/meals/meal_slot.dart' as _iliwnvwg;
 import 'package:nest_server/src/generated/membership_role.dart' as _i8f29ssg;
 import 'package:nest_server/src/generated/recipes/recipe.dart' as _iei9bazg;
+import 'package:nest_server/src/generated/seasonal/seasonal_mode.dart'
+    as _iyw0dezb;
 import 'package:nest_server/src/generated/shopping/new_shopping_item.dart'
     as _i97lm970;
 import 'package:nest_server/src/generated/shopping/shopping_item_status.dart'
@@ -49,6 +51,7 @@ import '../endpoints/admin/admin_backups_endpoint.dart' as _ihn2grnq;
 import '../endpoints/admin/admin_households_endpoint.dart' as _iy84ve0g;
 import '../endpoints/admin/admin_logs_endpoint.dart' as _izofvlmy;
 import '../endpoints/admin/admin_metrics_endpoint.dart' as _i05ggqjm;
+import '../endpoints/admin/admin_seasonal_endpoint.dart' as _i090wbml;
 import '../endpoints/admin/admin_system_endpoint.dart' as _ip4fayzs;
 import '../endpoints/admin/admin_users_endpoint.dart' as _iscnlbye;
 import '../endpoints/health_endpoint.dart' as _ica9y4w0;
@@ -123,6 +126,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'adminMetrics',
+          null,
+        ),
+      'adminSeasonal': _i090wbml.AdminSeasonalEndpoint()
+        ..initialize(
+          server,
+          'adminSeasonal',
           null,
         ),
       'adminSystem': _ip4fayzs.AdminSystemEndpoint()
@@ -1092,6 +1101,57 @@ class Endpoints extends _is.EndpointDispatch {
                       .metrics(
                         session,
                         params['range'],
+                      ),
+        ),
+      },
+    );
+    connectors['adminSeasonal'] = _is.EndpointConnector(
+      name: 'adminSeasonal',
+      endpoint: endpoints['adminSeasonal']!,
+      methodConnectors: {
+        'settings': _is.MethodConnector(
+          name: 'settings',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminSeasonal']
+                          as _i090wbml.AdminSeasonalEndpoint)
+                      .settings(session),
+        ),
+        'save': _is.MethodConnector(
+          name: 'save',
+          params: {
+            'mode': _is.ParameterDescription(
+              name: 'mode',
+              type: _is.getType<_iyw0dezb.SeasonalMode>(),
+              nullable: false,
+            ),
+            'enabledThemes': _is.ParameterDescription(
+              name: 'enabledThemes',
+              type: _is.getType<List<String>>(),
+              nullable: false,
+            ),
+            'alwaysTheme': _is.ParameterDescription(
+              name: 'alwaysTheme',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['adminSeasonal']
+                          as _i090wbml.AdminSeasonalEndpoint)
+                      .save(
+                        session,
+                        params['mode'],
+                        params['enabledThemes'],
+                        params['alwaysTheme'],
                       ),
         ),
       },

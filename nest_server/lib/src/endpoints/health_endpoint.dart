@@ -2,6 +2,7 @@ import 'package:serverpod/serverpod.dart';
 
 import '../generated/protocol.dart';
 import '../services/host_settings.dart';
+import '../services/seasonal_themes.dart';
 
 /// Nest server version reported by the health check.
 const nestServerVersion = '0.19.5';
@@ -17,7 +18,8 @@ const nestServerVersion = '0.19.5';
 /// 10: linking Google and Apple to an account. 11: admin portal management
 /// (household and user detail, server settings). 12: a household's default
 /// store (`Store.isDefault`). 13: swapping planned meals (`mealPlan.swap`).
-const nestApiVersion = 13;
+/// 14: holiday decorations (`ServerPing.seasonalMode`, `adminSeasonal`).
+const nestApiVersion = 14;
 
 /// Oldest app API level this server still works with. Raise it only when a
 /// change breaks older apps.
@@ -27,8 +29,10 @@ const nestMinClientApiVersion = 1;
 class HealthEndpoint extends Endpoint {
   /// Returns the server time, version, API levels and sign-up mode, so the
   /// app can show it is connected, check that it is a compatible Nest server
-  /// and ask for an invite code when signing up needs one.
+  /// ask for an invite code when signing up needs one, and show the holiday
+  /// decorations the super-admin switched on.
   Future<ServerPing> ping(Session session) async {
+    final seasonal = await SeasonalThemes.current(session);
     return ServerPing(
       serverTime: DateTime.now().toUtc(),
       version: nestServerVersion,
@@ -37,6 +41,8 @@ class HealthEndpoint extends Endpoint {
       signUpMode: HostSettings.signUpMode,
       googleServerClientId: HostSettings.googleServerClientId,
       appleSignIn: HostSettings.appleSignInEnabled,
+      seasonalMode: seasonal.mode,
+      seasonalThemes: SeasonalThemes.shownThemes(seasonal),
     );
   }
 }

@@ -31,6 +31,8 @@ import 'package:nest_client/src/protocol/admin/admin_log_session_detail.dart'
 import 'package:nest_client/src/protocol/admin/admin_log_summary.dart'
     as _iebc61nc;
 import 'package:nest_client/src/protocol/admin/admin_metrics.dart' as _idg4ah8z;
+import 'package:nest_client/src/protocol/admin/admin_seasonal_settings.dart'
+    as _ixsmj4wf;
 import 'package:nest_client/src/protocol/admin/admin_security_event.dart'
     as _imgyvk57;
 import 'package:nest_client/src/protocol/admin/admin_server_settings.dart'
@@ -61,6 +63,8 @@ import 'package:nest_client/src/protocol/nest_user.dart' as _i7k4hj0f;
 import 'package:nest_client/src/protocol/recipes/recipe.dart' as _iexyob0t;
 import 'package:nest_client/src/protocol/recipes/recipe_event.dart'
     as _im8ua6et;
+import 'package:nest_client/src/protocol/seasonal/seasonal_mode.dart'
+    as _i9oeyims;
 import 'package:nest_client/src/protocol/server_ping.dart' as _i4l166nw;
 import 'package:nest_client/src/protocol/shopping/added_shopping_items.dart'
     as _i2y92sha;
@@ -672,6 +676,37 @@ class EndpointAdminMetrics extends _isc.EndpointRef {
       );
 }
 
+/// Holiday decorations in the apps, for the admin portal's Server page.
+/// {@category Endpoint}
+class EndpointAdminSeasonal extends _isc.EndpointRef {
+  EndpointAdminSeasonal(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'adminSeasonal';
+
+  _ida.Future<_ixsmj4wf.AdminSeasonalSettings> settings() =>
+      caller.callServerEndpoint<_ixsmj4wf.AdminSeasonalSettings>(
+        'adminSeasonal',
+        'settings',
+        {},
+      );
+
+  /// Saves the mode and themes. Audited.
+  _ida.Future<_ixsmj4wf.AdminSeasonalSettings> save(
+    _i9oeyims.SeasonalMode mode,
+    List<String> enabledThemes,
+    String? alwaysTheme,
+  ) => caller.callServerEndpoint<_ixsmj4wf.AdminSeasonalSettings>(
+    'adminSeasonal',
+    'save',
+    {
+      'mode': mode,
+      'enabledThemes': enabledThemes,
+      'alwaysTheme': alwaysTheme,
+    },
+  );
+}
+
 /// System health for the admin portal: versions, database, disk, counts,
 /// configuration and the last backups. No household content.
 /// {@category Endpoint}
@@ -783,7 +818,8 @@ class EndpointHealth extends _isc.EndpointRef {
 
   /// Returns the server time, version, API levels and sign-up mode, so the
   /// app can show it is connected, check that it is a compatible Nest server
-  /// and ask for an invite code when signing up needs one.
+  /// ask for an invite code when signing up needs one, and show the holiday
+  /// decorations the super-admin switched on.
   _ida.Future<_i4l166nw.ServerPing> ping() =>
       caller.callServerEndpoint<_i4l166nw.ServerPing>(
         'health',
@@ -1607,6 +1643,7 @@ class Client extends _isc.ServerpodClientShared {
     adminHouseholds = EndpointAdminHouseholds(this);
     adminLogs = EndpointAdminLogs(this);
     adminMetrics = EndpointAdminMetrics(this);
+    adminSeasonal = EndpointAdminSeasonal(this);
     adminSystem = EndpointAdminSystem(this);
     adminUsers = EndpointAdminUsers(this);
     health = EndpointHealth(this);
@@ -1640,6 +1677,8 @@ class Client extends _isc.ServerpodClientShared {
   late final EndpointAdminLogs adminLogs;
 
   late final EndpointAdminMetrics adminMetrics;
+
+  late final EndpointAdminSeasonal adminSeasonal;
 
   late final EndpointAdminSystem adminSystem;
 
@@ -1677,6 +1716,7 @@ class Client extends _isc.ServerpodClientShared {
     'adminHouseholds': adminHouseholds,
     'adminLogs': adminLogs,
     'adminMetrics': adminMetrics,
+    'adminSeasonal': adminSeasonal,
     'adminSystem': adminSystem,
     'adminUsers': adminUsers,
     'health': health,

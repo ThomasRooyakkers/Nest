@@ -1,0 +1,10 @@
+### How a server shows holiday decorations in the apps.
+enum: SeasonalMode
+serialized: byName
+values:
+  ### Each switched-on theme shows on its own dates.
+  - automatic
+  ### One theme shows all the time (for testing or a party).
+  - always
+  ### No decorations.
+  - off

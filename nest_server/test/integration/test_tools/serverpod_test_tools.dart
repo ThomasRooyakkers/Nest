@@ -34,6 +34,8 @@ import 'package:nest_server/src/generated/admin/admin_log_summary.dart'
     as _iy76yd10;
 import 'package:nest_server/src/generated/admin/admin_metrics.dart'
     as _iqow2mae;
+import 'package:nest_server/src/generated/admin/admin_seasonal_settings.dart'
+    as _iikgffwm;
 import 'package:nest_server/src/generated/admin/admin_security_event.dart'
     as _iaiaweev;
 import 'package:nest_server/src/generated/admin/admin_server_settings.dart'
@@ -65,6 +67,8 @@ import 'package:nest_server/src/generated/nest_user.dart' as _io4rmg6h;
 import 'package:nest_server/src/generated/recipes/recipe.dart' as _iei9bazg;
 import 'package:nest_server/src/generated/recipes/recipe_event.dart'
     as _is6mk1ja;
+import 'package:nest_server/src/generated/seasonal/seasonal_mode.dart'
+    as _iyw0dezb;
 import 'package:nest_server/src/generated/server_ping.dart' as _ij8oiwn4;
 import 'package:nest_server/src/generated/shopping/added_shopping_items.dart'
     as _ihwfcu0g;
@@ -251,6 +255,8 @@ class TestEndpoints {
 
   late final _AdminMetricsEndpoint adminMetrics;
 
+  late final _AdminSeasonalEndpoint adminSeasonal;
+
   late final _AdminSystemEndpoint adminSystem;
 
   late final _AdminUsersEndpoint adminUsers;
@@ -318,6 +324,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     adminMetrics = _AdminMetricsEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    adminSeasonal = _AdminSeasonalEndpoint(
       endpoints,
       serializationManager,
     );
@@ -1678,6 +1688,84 @@ class _AdminMetricsEndpoint {
                   _localCallContext.arguments,
                 )
                 as _ida.Future<_iqow2mae.AdminMetrics>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _AdminSeasonalEndpoint {
+  _AdminSeasonalEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<_iikgffwm.AdminSeasonalSettings> settings(
+    _ist.TestSessionBuilder sessionBuilder,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'adminSeasonal',
+            method: 'settings',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'adminSeasonal',
+          methodName: 'settings',
+          parameters: _ist.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_iikgffwm.AdminSeasonalSettings>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_iikgffwm.AdminSeasonalSettings> save(
+    _ist.TestSessionBuilder sessionBuilder,
+    _iyw0dezb.SeasonalMode mode,
+    List<String> enabledThemes,
+    String? alwaysTheme,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'adminSeasonal',
+            method: 'save',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'adminSeasonal',
+          methodName: 'save',
+          parameters: _ist.testObjectToJson({
+            'mode': mode,
+            'enabledThemes': enabledThemes,
+            'alwaysTheme': alwaysTheme,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_iikgffwm.AdminSeasonalSettings>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

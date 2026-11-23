@@ -84,6 +84,8 @@ const adminMethods = {
   'adminLogs.summary',
   'adminMetrics.metrics',
   'adminAlerts.overview',
+  'adminSeasonal.settings',
+  'adminSeasonal.save',
 };
 
 /// Methods that are deliberately not household-scoped.

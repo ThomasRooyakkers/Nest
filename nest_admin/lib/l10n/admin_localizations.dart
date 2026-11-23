@@ -1873,6 +1873,102 @@ abstract class AdminLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 error in 15 minutes} other{{count} errors in 15 minutes}}'**
   String alertErrorCount(int count);
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Holiday decorations'**
+  String get sectionSeasonal;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Small holiday decorations in the app for every household on this server. Apps pick up a change the next time they open. Members can still switch them off for themselves in the app\'s Settings.'**
+  String get seasonalNote;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get seasonalAutomatic;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Each theme shows on its own dates'**
+  String get seasonalAutomaticHint;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Always one theme'**
+  String get seasonalAlways;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'For testing or a party'**
+  String get seasonalAlwaysHint;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get seasonalOff;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'No decorations'**
+  String get seasonalOffHint;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Christmas'**
+  String get seasonalThemeChristmas;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'New Year'**
+  String get seasonalThemeNewYear;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'7 – 28 December'**
+  String get seasonalDatesChristmas;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'31 December – 2 January'**
+  String get seasonalDatesNewYear;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get seasonalNow;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme to show'**
+  String get seasonalShowTheme;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Holiday decorations saved'**
+  String get seasonalSaved;
+
+  /// Audit action.
+  ///
+  /// In en, this message translates to:
+  /// **'Holiday decorations changed'**
+  String get auditSeasonal;
 }
 
 class _AdminLocalizationsDelegate

@@ -1,0 +1,12 @@
+### The server's holiday decoration setting, set by the super-admin. One
+### row at most; without a row the defaults of `SeasonalThemes` apply.
+class: SeasonalSetting
+table: seasonal_setting
+fields:
+  mode: SeasonalMode
+  ### Theme keys (`christmas`, `newYear`, ...) that show on their dates in
+  ### automatic mode.
+  enabledThemes: List<String>
+  ### The theme shown in `always` mode.
+  alwaysTheme: String?
+  updatedAt: DateTime, default=now

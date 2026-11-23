@@ -79,6 +79,13 @@ void main() {
       ),
       'adminSystem.health': (s) => endpoints.adminSystem.health(s),
       'adminSystem.settings': (s) => endpoints.adminSystem.settings(s),
+      'adminSeasonal.settings': (s) => endpoints.adminSeasonal.settings(s),
+      'adminSeasonal.save': (s) => endpoints.adminSeasonal.save(
+        s,
+        SeasonalMode.off,
+        const [],
+        null,
+      ),
       'adminSystem.sendTestMail': (s) => endpoints.adminSystem.sendTestMail(s),
       'adminSystem.testFilmData': (s) => endpoints.adminSystem.testFilmData(s),
       'adminSystem.updateStatus': (s) => endpoints.adminSystem.updateStatus(s),

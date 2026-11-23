@@ -20,3 +20,9 @@ fields:
   googleServerClientId: String?
   ### Whether the server accepts Sign in with Apple. Null on older servers.
   appleSignIn: bool?
+  ### Holiday decorations: null on servers older than API level 14 (the
+  ### app then shows none).
+  seasonalMode: SeasonalMode?
+  ### Themes that may show: in automatic mode each on its own dates, in
+  ### always mode the one theme. The app ignores keys it does not know.
+  seasonalThemes: List<String>?

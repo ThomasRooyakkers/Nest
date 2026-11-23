@@ -1,0 +1,8 @@
+### Holiday decorations for the admin portal's Server page.
+class: AdminSeasonalSettings
+fields:
+  mode: SeasonalMode
+  enabledThemes: List<String>
+  alwaysTheme: String?
+  ### Every theme this server knows, in calendar order.
+  availableThemes: List<String>
