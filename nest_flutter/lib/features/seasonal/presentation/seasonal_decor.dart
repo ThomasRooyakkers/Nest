@@ -25,7 +25,13 @@ abstract final class SeasonalPalette {
   static const leafGreen = Color(0xFF26A65B);
   static const navy = Color(0xFF1F3A5F);
 
-  static const lights = [gold, red, green, blue];
+  /// The light string's colours, as in the agreed design.
+  static const lights = [
+    Color(0xFFE2B13C),
+    Color(0xFFC8463D),
+    Color(0xFF2F7D5B),
+    Color(0xFF9FB6D3),
+  ];
   static const confetti = [gold, blue, red, purple, leafGreen];
 }
 
@@ -119,7 +125,7 @@ class _ChristmasLightsState extends State<ChristmasLights>
         behavior: HitTestBehavior.opaque,
         onTap: _party,
         child: SizedBox(
-          height: 60,
+          height: 48,
           width: double.infinity,
           child: CustomPaint(
             painter: _LightsPainter(
@@ -142,135 +148,73 @@ class _LightsPainter extends CustomPainter {
   final DateTime? partyUntil;
   final bool moving;
 
-  static const _sag = 26.0;
+  /// How low each of the three arcs of wire hangs.
+  static const _sag = 38.0;
 
   @override
   void paint(Canvas canvas, Size size) {
     final w = size.width;
     final third = w / 3;
-    final wire = Path()..moveTo(-4, 4);
-    final bulbs = <(Offset, double)>[];
+    final wire = Path()..moveTo(0, 6);
+    final bulbs = <Offset>[];
     for (var i = 0; i < 3; i++) {
       final x0 = i * third;
-      final start = Offset(i == 0 ? -4 : x0, i == 0 ? 4 : 8);
-      final control = Offset(x0 + third / 2, 8 + _sag * 2);
-      final end = Offset(i == 2 ? w + 4 : x0 + third, i == 2 ? 4 : 8);
+      final start = Offset(x0, i == 0 ? 6 : 10);
+      final control = Offset(x0 + third / 2, _sag + 6);
+      final end = Offset(x0 + third, i == 2 ? 6 : 10);
       wire.quadraticBezierTo(control.dx, control.dy, end.dx, end.dy);
-      for (final t in const [0.2, 0.4, 0.6, 0.8]) {
-        final at = _quad(start, control, end, t);
-        // Bulbs hang straight down, tilted a little with the wire.
-        final tangent =
-            (control - start) * (2 * (1 - t)) + (end - control) * (2 * t);
-        bulbs.add((at, math.atan2(tangent.dy, tangent.dx) * 0.35));
+      for (final t in const [0.25, 0.5, 0.75]) {
+        bulbs.add(_quad(start, control, end, t));
       }
     }
-
-    // A twisted two-strand wire.
-    canvas
-      ..drawPath(
-        wire,
-        Paint()
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2.4
-          ..color = SeasonalPalette.wire,
-      )
-      ..drawPath(
-        wire.shift(const Offset(0, -0.7)),
-        Paint()
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 0.8
-          ..color = _lighter(SeasonalPalette.wire, 0.45),
-      );
+    canvas.drawPath(
+      wire,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.5
+        ..color = const Color(0xFF586274).withValues(alpha: 0.55),
+    );
 
     final party =
         moving && partyUntil != null && DateTime.now().isBefore(partyUntil!);
     final seconds = time.value * 8;
+    final capPaint = Paint()..color = const Color(0xFF586274);
     for (var i = 0; i < bulbs.length; i++) {
-      final (at, tilt) = bulbs[i];
+      final at = bulbs[i];
       final speed = party ? 5.0 : 1.0;
       final colour = _cycle(
         SeasonalPalette.lights,
         (seconds * speed / 8 + i * 0.27) % 1,
       );
       final twinkleSpeed = party ? 6.0 : 1.0;
-      final glow =
-          0.8 +
-          0.2 *
+      // Twinkles between 45 % and full brightness.
+      final twinkle =
+          0.725 +
+          0.275 *
               math.cos(
                 (seconds * twinkleSpeed / 2.6 + i * 0.37) * 2 * math.pi,
               );
-      canvas
-        ..save()
-        ..translate(at.dx, at.dy)
-        ..rotate(tilt);
-      _bulb(canvas, colour, glow);
-      canvas.restore();
-    }
-  }
-
-  /// One bulb hanging from (0, 0): socket, glass with highlights and glow.
-  static void _bulb(Canvas canvas, Color colour, double glow) {
-    // Light on the wall behind it.
-    _glow(
-      canvas,
-      const Offset(0, 15),
-      18,
-      colour.withValues(alpha: 0.38 * glow),
-    );
-
-    // The glass: a pear shape, round at the bottom.
-    final glass = Path()
-      ..moveTo(-3.6, 6)
-      ..cubicTo(-3.8, 9, -6.6, 12, -6.6, 16.5)
-      ..cubicTo(-6.6, 21.5, -3.4, 24.5, 0, 24.5)
-      ..cubicTo(3.4, 24.5, 6.6, 21.5, 6.6, 16.5)
-      ..cubicTo(6.6, 12, 3.8, 9, 3.6, 6)
-      ..close();
-    final lit = Color.lerp(_lighter(colour, 0.1), colour, glow)!;
-    canvas.drawPath(
-      glass,
-      Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(-0.35, 0.1),
-          radius: 0.85,
-          colors: [_lighter(lit, 0.65 * glow), lit, _darker(lit, 0.35)],
-          stops: const [0, 0.55, 1],
-        ).createShader(const Rect.fromLTRB(-6.6, 6, 6.6, 24.5)),
-    );
-    // Highlights on the glass.
-    canvas
-      ..drawOval(
-        const Rect.fromLTWH(-4.6, 11, 2.2, 6.5),
-        Paint()..color = Colors.white.withValues(alpha: 0.55),
-      )
-      ..drawCircle(
-        const Offset(-2.6, 20),
-        0.9,
-        Paint()..color = Colors.white.withValues(alpha: 0.4),
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromCenter(center: at, width: 4, height: 4),
+          const Radius.circular(1),
+        ),
+        capPaint,
       );
-
-    // The socket with two ridges.
-    final socket = RRect.fromRectAndCorners(
-      const Rect.fromLTRB(-4, -1, 4, 7.5),
-      topLeft: const Radius.circular(2),
-      topRight: const Radius.circular(2),
-      bottomLeft: const Radius.circular(1),
-      bottomRight: const Radius.circular(1),
-    );
-    canvas.drawRRect(
-      socket,
-      Paint()
-        ..shader = const LinearGradient(
-          colors: [Color(0xFF3B424C), Color(0xFF9AA2AD), Color(0xFF4A515B)],
-          stops: [0, 0.45, 1],
-        ).createShader(socket.outerRect),
-    );
-    final ridge = Paint()
-      ..color = Colors.black.withValues(alpha: 0.25)
-      ..strokeWidth = 0.7;
-    canvas
-      ..drawLine(const Offset(-4, 2.2), const Offset(4, 2.2), ridge)
-      ..drawLine(const Offset(-4, 4.6), const Offset(4, 4.6), ridge);
+      final bulb = Rect.fromCenter(
+        center: at + const Offset(0, 6),
+        width: 8,
+        height: 11,
+      );
+      canvas
+        ..drawOval(
+          bulb.inflate(3),
+          Paint()
+            ..color = colour.withValues(alpha: 0.4 * twinkle)
+            ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3),
+        )
+        ..drawOval(bulb, Paint()..color = colour.withValues(alpha: twinkle));
+    }
   }
 
   @override
