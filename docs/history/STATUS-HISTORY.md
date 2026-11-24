@@ -7,6 +7,12 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**App 2.0 live in both stores (2026-11-24, NEST-30/46).** Thomas reported
+that Google Play published Android 2.0.0 (4) and that Apple's App Review
+approved App Store version 2.0 (build 4, automatic release). The live
+server (0.21.1) pings `pushNotifications: true`, so pushes reach users as
+soon as they run 2.0, are signed in and (on iOS) have allowed notifications.
+
 **Holiday dates set on the server (2026-11-24, follows NEST-47, server
 0.21.2, tag `v0.21.2`, not yet deployed).** Thomas wanted to plan the holiday decorations from the server.
 Chosen with Thomas: the server decides, with dates that repeat every year.

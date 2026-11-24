@@ -6,7 +6,7 @@ details to the top of the "Log" section in `docs/history/STATUS-HISTORY.md`
 and leave one line here. Deviations from the spec go in `docs/DEVIATIONS.md`.
 The backlog is in Jira (`docs/JIRA.md`).
 
-## Current state (2026-11-11)
+## Current state (2026-11-24)
 
 - **Phase 9 (Dashboard + release) in progress.** Phases 0–8 are done and
   released. The dashboard is built; Google and Apple sign-in are live.
@@ -31,6 +31,9 @@ The backlog is in Jira (`docs/JIRA.md`).
   start with a capital; existing own items tidied at start-up. Server part
   live in 0.19.4 and 0.19.5; the 22 new icons and the
   search changes in the app need a new app build.
+- **App 2.0 released (2026-11-24):** Google Play has published 2.0.0 (4);
+  Apple approved App Store 2.0 (automatic release). Push now reaches users
+  once they update, sign in and (iOS) allow notifications.
 - **Version 2.0 (decided 2026-11-23):** the next app release is 2.0 with
   dark mode (NEST-46) and push notifications (NEST-30: NEST-49 server,
   NEST-50 app, NEST-51 Firebase setup by Thomas). Push is built and tested
