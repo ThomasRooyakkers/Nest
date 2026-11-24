@@ -7,8 +7,8 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
-**Holiday dates set on the server (2026-11-24, follows NEST-47, not yet
-released).** Thomas wanted to plan the holiday decorations from the server.
+**Holiday dates set on the server (2026-11-24, follows NEST-47, server
+0.21.2, tag `v0.21.2`, not yet deployed).** Thomas wanted to plan the holiday decorations from the server.
 Chosen with Thomas: the server decides, with dates that repeat every year.
 **Server** (API level 16): `SeasonalThemeDates` (theme, start and end month
 and day; an end before the start runs over the new year) stored in

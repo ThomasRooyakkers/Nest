@@ -66,7 +66,8 @@ The backlog is in Jira (`docs/JIRA.md`).
   snow, ribbon) and New Year (fireworks, popper, confetti) on the app's
   dashboard, with a switch in Settings. Needs a server release and a new app
   build that reaches the stores before 7 December.
-- **Holiday dates on the server (2026-11-24, not yet released):** the
+- **Holiday dates on the server (2026-11-24, server 0.21.2, tagged, not yet
+  deployed; waiting for Thomas's go):** the
   super-admin sets each holiday's yearly dates on the admin Server page; the
   server (API level 16, migration `20261124171203562`, additive) decides by
   its `TZ` which theme shows, so the 2.0 app follows without a new build.
