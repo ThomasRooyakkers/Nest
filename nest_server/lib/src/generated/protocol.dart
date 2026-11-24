@@ -28,6 +28,8 @@ import 'package:nest_server/src/generated/meals/meal_plan_entry.dart'
 import 'package:nest_server/src/generated/meals/meal_slot.dart' as _iliwnvwg;
 import 'package:nest_server/src/generated/my_household.dart' as _i87acs67;
 import 'package:nest_server/src/generated/recipes/recipe.dart' as _iei9bazg;
+import 'package:nest_server/src/generated/seasonal/seasonal_theme_dates.dart'
+    as _igf28wpg;
 import 'package:nest_server/src/generated/shopping/catalog_item.dart'
     as _iped7yon;
 import 'package:nest_server/src/generated/shopping/new_shopping_item.dart'
@@ -104,6 +106,7 @@ import 'recipes/recipe_ingredient.dart' as _i2xp5czv;
 import 'recipes/recipe_step.dart' as _i24txk3r;
 import 'seasonal/seasonal_mode.dart' as _irlh75k4;
 import 'seasonal/seasonal_setting.dart' as _ix1bqvlk;
+import 'seasonal/seasonal_theme_dates.dart' as _iio832w4;
 import 'server_ping.dart' as _i7aj6ss6;
 import 'shopping/added_shopping_items.dart' as _i3qdje8t;
 import 'shopping/catalog_item.dart' as _ivm0zj1y;
@@ -182,6 +185,7 @@ export 'recipes/recipe_ingredient.dart';
 export 'recipes/recipe_step.dart';
 export 'seasonal/seasonal_mode.dart';
 export 'seasonal/seasonal_setting.dart';
+export 'seasonal/seasonal_theme_dates.dart';
 export 'server_ping.dart';
 export 'shopping/added_shopping_items.dart';
 export 'shopping/catalog_item.dart';
@@ -274,6 +278,7 @@ class Protocol extends _is.DatabaseSerializationManager
           _is.getType<_i24txk3r.RecipeStep>,
           _is.getType<_irlh75k4.SeasonalMode>,
           _is.getType<_ix1bqvlk.SeasonalSetting>,
+          _is.getType<_iio832w4.SeasonalThemeDates>,
           _is.getType<_i7aj6ss6.ServerPing>,
           _is.getType<_i3qdje8t.AddedShoppingItems>,
           _is.getType<_ivm0zj1y.CatalogItem>,
@@ -352,6 +357,7 @@ class Protocol extends _is.DatabaseSerializationManager
           _is.getType<_i24txk3r.RecipeStep?>,
           _is.getType<_irlh75k4.SeasonalMode?>,
           _is.getType<_ix1bqvlk.SeasonalSetting?>,
+          _is.getType<_iio832w4.SeasonalThemeDates?>,
           _is.getType<_i7aj6ss6.ServerPing?>,
           _is.getType<_i3qdje8t.AddedShoppingItems?>,
           _is.getType<_ivm0zj1y.CatalogItem?>,
@@ -383,6 +389,7 @@ class Protocol extends _is.DatabaseSerializationManager
           _is.getType<List<_i4ntnh9u.AdminLogMessage>>,
           _is.getType<List<_ifczr9hk.AdminMetricPoint>>,
           _is.getType<List<_iz1k9427.AdminMetricSeries>>,
+          _is.getType<List<_iio832w4.SeasonalThemeDates>>,
           _is.getType<List<_ixoux1a1.AdminUserHousehold>>,
           _is.getType<List<_irc89x16.MealSlot>?>,
           _is.getType<List<_ieufxm3y.MealPlanEntry>>,
@@ -395,6 +402,7 @@ class Protocol extends _is.DatabaseSerializationManager
           _is.getType<List<_i24txk3r.RecipeStep>?>,
           _is.getType<List<_ihz7f6c5.Recipe>>,
           _is.getType<List<_ihz7f6c5.Recipe>?>,
+          _is.getType<List<_iio832w4.SeasonalThemeDates>?>,
           _is.getType<List<String>?>,
           _is.getType<List<_iiy01kib.ShoppingItem>>,
           _is.getType<List<_i8tkdv3k.ShoppingList>>,
@@ -415,6 +423,8 @@ class Protocol extends _is.DatabaseSerializationManager
           _is.getType<List<_iq0dwtsv.AdminLogSession>>,
           _is.getType<List<_iaiaweev.AdminSecurityEvent>>,
           _is.getType<List<String>>,
+          _is.getType<List<_igf28wpg.SeasonalThemeDates>>,
+          _is.getType<List<_igf28wpg.SeasonalThemeDates>?>,
           _is.getType<List<_ik5zjdct.AdminUserSummary>>,
           _is.getType<List<_i87acs67.MyHousehold>>,
           _is.getType<List<_i9scnr3x.HouseholdMember>>,
@@ -493,6 +503,7 @@ class Protocol extends _is.DatabaseSerializationManager
           'RecipeStep',
           'SeasonalMode',
           'SeasonalSetting',
+          'SeasonalThemeDates',
           'ServerPing',
           'AddedShoppingItems',
           'CatalogItem',
@@ -1758,6 +1769,12 @@ class Protocol extends _is.DatabaseSerializationManager
           dartType: 'String?',
         ),
         _isp.ColumnDefinition(
+          name: 'themeDates',
+          columnType: _isp.ColumnType.json,
+          isNullable: true,
+          dartType: 'List<protocol:SeasonalThemeDates>?',
+        ),
+        _isp.ColumnDefinition(
           name: 'updatedAt',
           columnType: _isp.ColumnType.timestampWithoutTimeZone,
           isNullable: false,
@@ -2746,6 +2763,9 @@ class Protocol extends _is.DatabaseSerializationManager
     if (t == _ix1bqvlk.SeasonalSetting) {
       return _ix1bqvlk.SeasonalSetting.fromJson(data) as T;
     }
+    if (t == _iio832w4.SeasonalThemeDates) {
+      return _iio832w4.SeasonalThemeDates.fromJson(data) as T;
+    }
     if (t == _i7aj6ss6.ServerPing) {
       return _i7aj6ss6.ServerPing.fromJson(data) as T;
     }
@@ -3040,6 +3060,10 @@ class Protocol extends _is.DatabaseSerializationManager
       return (data != null ? _ix1bqvlk.SeasonalSetting.fromJson(data) : null)
           as T;
     }
+    if (t == _is.getType<_iio832w4.SeasonalThemeDates?>()) {
+      return (data != null ? _iio832w4.SeasonalThemeDates.fromJson(data) : null)
+          as T;
+    }
     if (t == _is.getType<_i7aj6ss6.ServerPing?>()) {
       return (data != null ? _i7aj6ss6.ServerPing.fromJson(data) : null) as T;
     }
@@ -3166,6 +3190,12 @@ class Protocol extends _is.DatabaseSerializationManager
               .toList()
           as T;
     }
+    if (t == List<_iio832w4.SeasonalThemeDates>) {
+      return (data as List)
+              .map((e) => deserialize<_iio832w4.SeasonalThemeDates>(e))
+              .toList()
+          as T;
+    }
     if (t == List<_ixoux1a1.AdminUserHousehold>) {
       return (data as List)
               .map((e) => deserialize<_ixoux1a1.AdminUserHousehold>(e))
@@ -3241,6 +3271,14 @@ class Protocol extends _is.DatabaseSerializationManager
       return (data != null
               ? (data as List)
                     .map((e) => deserialize<_ihz7f6c5.Recipe>(e))
+                    .toList()
+              : null)
+          as T;
+    }
+    if (t == _is.getType<List<_iio832w4.SeasonalThemeDates>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_iio832w4.SeasonalThemeDates>(e))
                     .toList()
               : null)
           as T;
@@ -3369,6 +3407,20 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
+    }
+    if (t == List<_igf28wpg.SeasonalThemeDates>) {
+      return (data as List)
+              .map((e) => deserialize<_igf28wpg.SeasonalThemeDates>(e))
+              .toList()
+          as T;
+    }
+    if (t == _is.getType<List<_igf28wpg.SeasonalThemeDates>?>()) {
+      return (data != null
+              ? (data as List)
+                    .map((e) => deserialize<_igf28wpg.SeasonalThemeDates>(e))
+                    .toList()
+              : null)
+          as T;
     }
     if (t == List<_ik5zjdct.AdminUserSummary>) {
       return (data as List)
@@ -3524,6 +3576,7 @@ class Protocol extends _is.DatabaseSerializationManager
       _i24txk3r.RecipeStep => 'RecipeStep',
       _irlh75k4.SeasonalMode => 'SeasonalMode',
       _ix1bqvlk.SeasonalSetting => 'SeasonalSetting',
+      _iio832w4.SeasonalThemeDates => 'SeasonalThemeDates',
       _i7aj6ss6.ServerPing => 'ServerPing',
       _i3qdje8t.AddedShoppingItems => 'AddedShoppingItems',
       _ivm0zj1y.CatalogItem => 'CatalogItem',
@@ -3672,6 +3725,8 @@ class Protocol extends _is.DatabaseSerializationManager
         return 'SeasonalMode';
       case _ix1bqvlk.SeasonalSetting():
         return 'SeasonalSetting';
+      case _iio832w4.SeasonalThemeDates():
+        return 'SeasonalThemeDates';
       case _i7aj6ss6.ServerPing():
         return 'ServerPing';
       case _i3qdje8t.AddedShoppingItems():
@@ -3909,6 +3964,9 @@ class Protocol extends _is.DatabaseSerializationManager
     }
     if (dataClassName == 'SeasonalSetting') {
       return deserialize<_ix1bqvlk.SeasonalSetting>(data['data']);
+    }
+    if (dataClassName == 'SeasonalThemeDates') {
+      return deserialize<_iio832w4.SeasonalThemeDates>(data['data']);
     }
     if (dataClassName == 'ServerPing') {
       return deserialize<_i7aj6ss6.ServerPing>(data['data']);

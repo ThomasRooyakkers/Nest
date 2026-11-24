@@ -1060,10 +1060,31 @@ class AdminLocalizationsEn extends AdminLocalizations {
   String get seasonalThemeNewYear => 'New Year';
 
   @override
-  String get seasonalDatesChristmas => '7 – 28 December';
+  String get seasonalChangeDates => 'Change dates';
 
   @override
-  String get seasonalDatesNewYear => '31 December – 2 January';
+  String seasonalDatesTitle(String theme) {
+    return 'Dates for $theme';
+  }
+
+  @override
+  String get seasonalStarts => 'Starts';
+
+  @override
+  String get seasonalEnds => 'Ends';
+
+  @override
+  String get seasonalDay => 'Day';
+
+  @override
+  String get seasonalMonth => 'Month';
+
+  @override
+  String get seasonalDatesHint =>
+      'Every year, both days included. When the end comes before the start, the dates run over the new year. Days follow the server\'s time zone.';
+
+  @override
+  String get seasonalDatesDone => 'Done';
 
   @override
   String get seasonalNow => 'Now';

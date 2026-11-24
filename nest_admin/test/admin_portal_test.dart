@@ -344,6 +344,45 @@ void main() {
     expect(find.text('Holiday decorations saved'), findsOneWidget);
   });
 
+  testWidgets('server page: holiday dates can be changed', (tester) async {
+    final repository = FakeAdminRepository();
+    final container = await pumpPortal(tester, repository);
+    await go(container, tester, '/server');
+
+    expect(find.text('7 – 28 December'), findsOneWidget);
+    final change = find.text('Change dates').first;
+    await tester.ensureVisible(change);
+    await tester.pumpAndSettle();
+    await tester.tap(change);
+    await tester.pumpAndSettle();
+    expect(find.text('Dates for Christmas'), findsOneWidget);
+
+    // Start on 5 December instead of the 7th.
+    await tester.tap(
+      find
+          .descendant(
+            of: find.byType(AlertDialog),
+            matching: find.byType(DropdownButtonFormField<int>),
+          )
+          .first,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(DropdownMenuItem<int>, '5').last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Done'));
+    await tester.pumpAndSettle();
+    expect(find.text('5 – 28 December'), findsOneWidget);
+
+    final save = find.widgetWithText(FilledButton, 'Save');
+    await tester.ensureVisible(save);
+    await tester.tap(save);
+    await tester.pumpAndSettle();
+
+    final christmas = repository.seasonal.themeDates.first;
+    expect((christmas.startMonth, christmas.startDay), (12, 5));
+    expect(repository.seasonal.themeDates.last.endDay, 2);
+  });
+
   testWidgets('detail pages fit a phone in Dutch with large text', (
     tester,
   ) async {

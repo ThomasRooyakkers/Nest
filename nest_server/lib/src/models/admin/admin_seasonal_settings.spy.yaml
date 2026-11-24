@@ -6,3 +6,8 @@ fields:
   alwaysTheme: String?
   ### Every theme this server knows, in calendar order.
   availableThemes: List<String>
+  ### The dates of every available theme, in calendar order (the defaults
+  ### where none are saved).
+  themeDates: List<SeasonalThemeDates>
+  ### The theme the apps show right now, by the server's date; null for none.
+  activeTheme: String?

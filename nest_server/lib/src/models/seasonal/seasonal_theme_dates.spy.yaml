@@ -1,0 +1,11 @@
+### The dates a holiday theme shows on, every year. Both days are
+### included; when the end comes before the start (31 Dec – 2 Jan) the
+### dates run over the new year.
+class: SeasonalThemeDates
+fields:
+  ### Theme key (`christmas`, `newYear`, ...).
+  theme: String
+  startMonth: int
+  startDay: int
+  endMonth: int
+  endDay: int

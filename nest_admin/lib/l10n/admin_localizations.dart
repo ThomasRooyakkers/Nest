@@ -1937,14 +1937,50 @@ abstract class AdminLocalizations {
   /// Server page, holiday decorations.
   ///
   /// In en, this message translates to:
-  /// **'7 – 28 December'**
-  String get seasonalDatesChristmas;
+  /// **'Change dates'**
+  String get seasonalChangeDates;
 
   /// Server page, holiday decorations.
   ///
   /// In en, this message translates to:
-  /// **'31 December – 2 January'**
-  String get seasonalDatesNewYear;
+  /// **'Dates for {theme}'**
+  String seasonalDatesTitle(String theme);
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts'**
+  String get seasonalStarts;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends'**
+  String get seasonalEnds;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get seasonalDay;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get seasonalMonth;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Every year, both days included. When the end comes before the start, the dates run over the new year. Days follow the server\'s time zone.'**
+  String get seasonalDatesHint;
+
+  /// Server page, holiday decorations.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get seasonalDatesDone;
 
   /// Server page, holiday decorations.
   ///

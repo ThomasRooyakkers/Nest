@@ -21,7 +21,9 @@ const nestServerVersion = '0.21.1';
 /// store (`Store.isDefault`). 13: swapping planned meals (`mealPlan.swap`).
 /// 14: holiday decorations (`ServerPing.seasonalMode`, `adminSeasonal`).
 /// 15: push notifications (`ServerPing.pushNotifications`, `notification`).
-const nestApiVersion = 15;
+/// 16: holiday dates set on the server (`adminSeasonal.save` takes
+/// `themeDates`); the ping sends the theme that is on as `always`.
+const nestApiVersion = 16;
 
 /// Oldest app API level this server still works with. Raise it only when a
 /// change breaks older apps.
@@ -34,7 +36,10 @@ class HealthEndpoint extends Endpoint {
   /// ask for an invite code when signing up needs one, and show the holiday
   /// decorations the super-admin switched on.
   Future<ServerPing> ping(Session session) async {
-    final seasonal = await SeasonalThemes.current(session);
+    final (seasonalMode, seasonalThemes) = SeasonalThemes.forPing(
+      await SeasonalThemes.current(session),
+      DateTime.now(),
+    );
     return ServerPing(
       serverTime: DateTime.now().toUtc(),
       version: nestServerVersion,
@@ -43,8 +48,8 @@ class HealthEndpoint extends Endpoint {
       signUpMode: HostSettings.signUpMode,
       googleServerClientId: HostSettings.googleServerClientId,
       appleSignIn: HostSettings.appleSignInEnabled,
-      seasonalMode: seasonal.mode,
-      seasonalThemes: SeasonalThemes.shownThemes(seasonal),
+      seasonalMode: seasonalMode,
+      seasonalThemes: seasonalThemes,
       pushNotifications: PushNotifications.reported,
     );
   }

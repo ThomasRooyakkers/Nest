@@ -43,6 +43,8 @@ services:
       SERVERPOD_PASSWORD_alerts: ${ALERTS:-on}
       SERVERPOD_PASSWORD_alertEmail: ${ALERT_EMAIL:-}
       SERVERPOD_PASSWORD_uptimePingUrl: ${UPTIME_PING_URL:-}
+      # Local time: the days holiday decorations start and end.
+      TZ: ${TZ:-UTC}
       # Secrets.
       SERVERPOD_DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       SERVERPOD_SERVICE_SECRET: ${SERVICE_SECRET:?set in .env}

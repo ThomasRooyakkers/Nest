@@ -40,6 +40,9 @@ RUN mkdir -p config web migrations
 FROM alpine:3.22
 WORKDIR /app
 
+# Time zone data, so TZ (holiday decoration dates) works.
+RUN apk add --no-cache tzdata
+
 ARG NEST_VERSION=dev
 LABEL org.opencontainers.image.title="Hoomly server" \
       org.opencontainers.image.description="Hoomly family app server with the admin portal built in" \

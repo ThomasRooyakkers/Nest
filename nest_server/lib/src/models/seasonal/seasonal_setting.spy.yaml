@@ -9,4 +9,8 @@ fields:
   enabledThemes: List<String>
   ### The theme shown in `always` mode.
   alwaysTheme: String?
+  ### Dates per theme set by the super-admin. Themes without an entry (or
+  ### a null list, on rows from before API level 16) use the defaults of
+  ### `SeasonalThemes`.
+  themeDates: List<SeasonalThemeDates>?
   updatedAt: DateTime, default=now

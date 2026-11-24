@@ -7,6 +7,32 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Holiday dates set on the server (2026-11-24, follows NEST-47, not yet
+released).** Thomas wanted to plan the holiday decorations from the server.
+Chosen with Thomas: the server decides, with dates that repeat every year.
+**Server** (API level 16): `SeasonalThemeDates` (theme, start and end month
+and day; an end before the start runs over the new year) stored in
+`seasonal_setting.themeDates` (migration `20261124171203562`, one nullable
+json column, additive); themes without dates keep the defaults (Christmas
+7–28 Dec, New Year 31 Dec – 2 Jan). `SeasonalThemes.activeTheme` picks the
+switched-on theme whose dates include today in the server's local time;
+when dates overlap the one that started last wins. The ping sends that
+theme as `always` (and `automatic` with no themes otherwise), so the 2.0 app
+already in review follows the server's dates without an app change.
+`adminSeasonal.save` takes optional `themeDates` (null keeps them; invalid
+days, unknown or repeated themes refused; changed dates in the audit
+details); `AdminSeasonalSettings` gained `themeDates` and `activeTheme`.
+**Admin portal:** a "Change dates" button per theme on the Holiday
+decorations card opens a day/month dialog (English and Dutch); the "Now"
+badge comes from the server. **Deploy:** the server container now gets `TZ`
+from `.env` and the image has `tzdata`. Tests: server 509, admin 25, all
+green. Checked in Docker with the real image and Postgres 16: migrations
+apply, container clock CET, ping API 16; a row without dates shows nothing on
+24 Nov, Christmas 20 Nov – 28 Dec shows `always christmas`, switched off
+shows nothing, 25 Nov only shows nothing in Brussels and `always christmas`
+with `TZ=Pacific/Kiritimati`. The Pi needs the new `docker-compose.yml` (for
+`TZ`) along with the image.
+
 **Android notifications checked, notification icon (2026-11-23).** In the
 Android emulator ("nest pixel", started with `-gpu swiftshader_indirect` so
 screenshots work) a Firebase debug build on the live server, signed in as the

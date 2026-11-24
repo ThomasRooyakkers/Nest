@@ -318,6 +318,22 @@ class FakeAdminRepository implements AdminRepository {
     mode: SeasonalMode.automatic,
     enabledThemes: ['christmas', 'newYear'],
     availableThemes: ['christmas', 'newYear'],
+    themeDates: [
+      SeasonalThemeDates(
+        theme: 'christmas',
+        startMonth: 12,
+        startDay: 7,
+        endMonth: 12,
+        endDay: 28,
+      ),
+      SeasonalThemeDates(
+        theme: 'newYear',
+        startMonth: 12,
+        startDay: 31,
+        endMonth: 1,
+        endDay: 2,
+      ),
+    ],
   );
 
   @override
@@ -328,11 +344,13 @@ class FakeAdminRepository implements AdminRepository {
     SeasonalMode mode,
     List<String> enabledThemes,
     String? alwaysTheme,
+    List<SeasonalThemeDates> themeDates,
   ) async => seasonal = AdminSeasonalSettings(
     mode: mode,
     enabledThemes: enabledThemes,
     alwaysTheme: alwaysTheme,
     availableThemes: seasonal.availableThemes,
+    themeDates: themeDates,
   );
 
   @override

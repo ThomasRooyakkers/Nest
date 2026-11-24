@@ -1433,12 +1433,41 @@
   "@seasonalThemeNewYear": {
     "description": "Server page, holiday decorations."
   },
-  "seasonalDatesChristmas": "7 – 28 December",
-  "@seasonalDatesChristmas": {
+  "seasonalChangeDates": "Change dates",
+  "@seasonalChangeDates": {
     "description": "Server page, holiday decorations."
   },
-  "seasonalDatesNewYear": "31 December – 2 January",
-  "@seasonalDatesNewYear": {
+  "seasonalDatesTitle": "Dates for {theme}",
+  "@seasonalDatesTitle": {
+    "description": "Server page, holiday decorations.",
+    "placeholders": {
+      "theme": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonalStarts": "Starts",
+  "@seasonalStarts": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalEnds": "Ends",
+  "@seasonalEnds": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalDay": "Day",
+  "@seasonalDay": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalMonth": "Month",
+  "@seasonalMonth": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalDatesHint": "Every year, both days included. When the end comes before the start, the dates run over the new year. Days follow the server's time zone.",
+  "@seasonalDatesHint": {
+    "description": "Server page, holiday decorations."
+  },
+  "seasonalDatesDone": "Done",
+  "@seasonalDatesDone": {
     "description": "Server page, holiday decorations."
   },
   "seasonalNow": "Now",

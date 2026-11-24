@@ -68,6 +68,8 @@ import 'package:nest_client/src/protocol/recipes/recipe_event.dart'
     as _im8ua6et;
 import 'package:nest_client/src/protocol/seasonal/seasonal_mode.dart'
     as _i9oeyims;
+import 'package:nest_client/src/protocol/seasonal/seasonal_theme_dates.dart'
+    as _i1fv2hze;
 import 'package:nest_client/src/protocol/server_ping.dart' as _i4l166nw;
 import 'package:nest_client/src/protocol/shopping/added_shopping_items.dart'
     as _i2y92sha;
@@ -694,18 +696,21 @@ class EndpointAdminSeasonal extends _isc.EndpointRef {
         {},
       );
 
-  /// Saves the mode and themes. Audited.
+  /// Saves the mode, themes and (API level 16) the dates of each theme;
+  /// [themeDates] null keeps the saved dates. Audited.
   _ida.Future<_ixsmj4wf.AdminSeasonalSettings> save(
     _i9oeyims.SeasonalMode mode,
     List<String> enabledThemes,
-    String? alwaysTheme,
-  ) => caller.callServerEndpoint<_ixsmj4wf.AdminSeasonalSettings>(
+    String? alwaysTheme, [
+    List<_i1fv2hze.SeasonalThemeDates>? themeDates,
+  ]) => caller.callServerEndpoint<_ixsmj4wf.AdminSeasonalSettings>(
     'adminSeasonal',
     'save',
     {
       'mode': mode,
       'enabledThemes': enabledThemes,
       'alwaysTheme': alwaysTheme,
+      'themeDates': themeDates,
     },
   );
 }

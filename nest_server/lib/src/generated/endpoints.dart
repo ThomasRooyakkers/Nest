@@ -27,6 +27,8 @@ import 'package:nest_server/src/generated/push/push_platform.dart' as _imr924sb;
 import 'package:nest_server/src/generated/recipes/recipe.dart' as _iei9bazg;
 import 'package:nest_server/src/generated/seasonal/seasonal_mode.dart'
     as _iyw0dezb;
+import 'package:nest_server/src/generated/seasonal/seasonal_theme_dates.dart'
+    as _igf28wpg;
 import 'package:nest_server/src/generated/shopping/new_shopping_item.dart'
     as _i97lm970;
 import 'package:nest_server/src/generated/shopping/shopping_item_status.dart'
@@ -1149,6 +1151,11 @@ class Endpoints extends _is.EndpointDispatch {
               type: _is.getType<String?>(),
               nullable: true,
             ),
+            'themeDates': _is.ParameterDescription(
+              name: 'themeDates',
+              type: _is.getType<List<_igf28wpg.SeasonalThemeDates>?>(),
+              nullable: true,
+            ),
           },
           call:
               (
@@ -1162,6 +1169,7 @@ class Endpoints extends _is.EndpointDispatch {
                         params['mode'],
                         params['enabledThemes'],
                         params['alwaysTheme'],
+                        params['themeDates'],
                       ),
         ),
       },

@@ -82,7 +82,8 @@ class AdminRepository {
     SeasonalMode mode,
     List<String> enabledThemes,
     String? alwaysTheme,
-  ) => _client.adminSeasonal.save(mode, enabledThemes, alwaysTheme);
+    List<SeasonalThemeDates> themeDates,
+  ) => _client.adminSeasonal.save(mode, enabledThemes, alwaysTheme, themeDates);
 
   Future<AdminCheckResult> sendTestMail() => _client.adminSystem.sendTestMail();
 

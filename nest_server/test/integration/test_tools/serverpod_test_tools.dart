@@ -72,6 +72,8 @@ import 'package:nest_server/src/generated/recipes/recipe_event.dart'
     as _is6mk1ja;
 import 'package:nest_server/src/generated/seasonal/seasonal_mode.dart'
     as _iyw0dezb;
+import 'package:nest_server/src/generated/seasonal/seasonal_theme_dates.dart'
+    as _igf28wpg;
 import 'package:nest_server/src/generated/server_ping.dart' as _ij8oiwn4;
 import 'package:nest_server/src/generated/shopping/added_shopping_items.dart'
     as _ihwfcu0g;
@@ -1749,8 +1751,9 @@ class _AdminSeasonalEndpoint {
     _ist.TestSessionBuilder sessionBuilder,
     _iyw0dezb.SeasonalMode mode,
     List<String> enabledThemes,
-    String? alwaysTheme,
-  ) async {
+    String? alwaysTheme, [
+    List<_igf28wpg.SeasonalThemeDates>? themeDates,
+  ]) async {
     return _ist.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
@@ -1766,6 +1769,7 @@ class _AdminSeasonalEndpoint {
             'mode': mode,
             'enabledThemes': enabledThemes,
             'alwaysTheme': alwaysTheme,
+            'themeDates': themeDates,
           }),
           serializationManager: _serializationManager,
         );

@@ -14,6 +14,7 @@ import 'dart:async' as _ida;
 import 'package:nest_server/src/generated/protocol.dart' as _imc1swab;
 import 'package:serverpod/serverpod.dart' as _is;
 import '../seasonal/seasonal_mode.dart' as _i2islgpn;
+import '../seasonal/seasonal_theme_dates.dart' as _iah3amtv;
 
 /// The server's holiday decoration setting, set by the super-admin. One
 /// row at most; without a row the defaults of `SeasonalThemes` apply.
@@ -24,6 +25,7 @@ abstract class SeasonalSetting
     required this.mode,
     required this.enabledThemes,
     this.alwaysTheme,
+    this.themeDates,
     DateTime? updatedAt,
   }) : updatedAt = updatedAt ?? DateTime.now();
 
@@ -32,6 +34,7 @@ abstract class SeasonalSetting
     required _i2islgpn.SeasonalMode mode,
     required List<String> enabledThemes,
     String? alwaysTheme,
+    List<_iah3amtv.SeasonalThemeDates>? themeDates,
     DateTime? updatedAt,
   }) = _SeasonalSettingImpl;
 
@@ -45,6 +48,12 @@ abstract class SeasonalSetting
         jsonSerialization['enabledThemes'],
       ),
       alwaysTheme: jsonSerialization['alwaysTheme'] as String?,
+      themeDates: jsonSerialization['themeDates'] == null
+          ? null
+          : _imc1swab.Protocol()
+                .deserialize<List<_iah3amtv.SeasonalThemeDates>>(
+                  jsonSerialization['themeDates'],
+                ),
       updatedAt: jsonSerialization['updatedAt'] == null
           ? null
           : _is.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
@@ -67,6 +76,11 @@ abstract class SeasonalSetting
   /// The theme shown in `always` mode.
   String? alwaysTheme;
 
+  /// Dates per theme set by the super-admin. Themes without an entry (or
+  /// a null list, on rows from before API level 16) use the defaults of
+  /// `SeasonalThemes`.
+  List<_iah3amtv.SeasonalThemeDates>? themeDates;
+
   DateTime updatedAt;
 
   @override
@@ -80,6 +94,8 @@ abstract class SeasonalSetting
     _i2islgpn.SeasonalMode? mode,
     List<String>? enabledThemes,
     String? alwaysTheme,
+    List<_iah3amtv.SeasonalThemeDates>? themeDates =
+        const _is.$UndefinedList<_iah3amtv.SeasonalThemeDates>(),
     DateTime? updatedAt,
   });
   @override
@@ -90,6 +106,8 @@ abstract class SeasonalSetting
       'mode': mode.toJson(),
       'enabledThemes': enabledThemes.toJson(),
       if (alwaysTheme != null) 'alwaysTheme': alwaysTheme,
+      if (themeDates != null)
+        'themeDates': themeDates?.toJson(valueToJson: (v) => v.toJson()),
       'updatedAt': updatedAt.toJson(),
     };
   }
@@ -102,6 +120,10 @@ abstract class SeasonalSetting
       'mode': mode.toJson(),
       'enabledThemes': enabledThemes.toJson(),
       if (alwaysTheme != null) 'alwaysTheme': alwaysTheme,
+      if (themeDates != null)
+        'themeDates': themeDates?.toJson(
+          valueToJson: (v) => v.toJsonForProtocol(),
+        ),
       'updatedAt': updatedAt.toJson(),
     };
   }
@@ -142,12 +164,14 @@ class _SeasonalSettingImpl extends SeasonalSetting {
     required _i2islgpn.SeasonalMode mode,
     required List<String> enabledThemes,
     String? alwaysTheme,
+    List<_iah3amtv.SeasonalThemeDates>? themeDates,
     DateTime? updatedAt,
   }) : super._(
          id: id,
          mode: mode,
          enabledThemes: enabledThemes,
          alwaysTheme: alwaysTheme,
+         themeDates: themeDates,
          updatedAt: updatedAt,
        );
 
@@ -160,6 +184,8 @@ class _SeasonalSettingImpl extends SeasonalSetting {
     _i2islgpn.SeasonalMode? mode,
     List<String>? enabledThemes,
     Object? alwaysTheme = _Undefined,
+    List<_iah3amtv.SeasonalThemeDates>? themeDates =
+        const _is.$UndefinedList<_iah3amtv.SeasonalThemeDates>(),
     DateTime? updatedAt,
   }) {
     return SeasonalSetting(
@@ -168,6 +194,9 @@ class _SeasonalSettingImpl extends SeasonalSetting {
       enabledThemes:
           enabledThemes ?? this.enabledThemes.map((e0) => e0).toList(),
       alwaysTheme: alwaysTheme is String? ? alwaysTheme : this.alwaysTheme,
+      themeDates: themeDates is _is.UndefinedSentinel
+          ? this.themeDates?.map((e0) => e0.copyWith()).toList()
+          : themeDates,
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
@@ -195,6 +224,15 @@ class SeasonalSettingUpdateTable extends _is.UpdateTable<SeasonalSettingTable> {
     value,
   );
 
+  _is.ColumnValue<
+    List<_iah3amtv.SeasonalThemeDates>,
+    List<_iah3amtv.SeasonalThemeDates>
+  >
+  themeDates(List<_iah3amtv.SeasonalThemeDates>? value) => _is.ColumnValue(
+    table.themeDates,
+    value,
+  );
+
   _is.ColumnValue<DateTime, DateTime> updatedAt(DateTime value) =>
       _is.ColumnValue(
         table.updatedAt,
@@ -219,6 +257,10 @@ class SeasonalSettingTable extends _is.Table<int?> {
       'alwaysTheme',
       this,
     );
+    themeDates = _is.ColumnSerializable<List<_iah3amtv.SeasonalThemeDates>>(
+      'themeDates',
+      this,
+    );
     updatedAt = _is.ColumnDateTime(
       'updatedAt',
       this,
@@ -237,6 +279,12 @@ class SeasonalSettingTable extends _is.Table<int?> {
   /// The theme shown in `always` mode.
   late final _is.ColumnString alwaysTheme;
 
+  /// Dates per theme set by the super-admin. Themes without an entry (or
+  /// a null list, on rows from before API level 16) use the defaults of
+  /// `SeasonalThemes`.
+  late final _is.ColumnSerializable<List<_iah3amtv.SeasonalThemeDates>>
+  themeDates;
+
   late final _is.ColumnDateTime updatedAt;
 
   @override
@@ -245,6 +293,7 @@ class SeasonalSettingTable extends _is.Table<int?> {
     mode,
     enabledThemes,
     alwaysTheme,
+    themeDates,
     updatedAt,
   ];
 }

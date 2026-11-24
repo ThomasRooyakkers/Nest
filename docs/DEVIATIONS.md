@@ -81,4 +81,7 @@ Check the entries for the area you are working on.
   Server page (automatic by date, one theme always, or off); every member can
   switch them off in Settings. Their colours (`SeasonalPalette`) are drawings,
   never text, so they sit outside the design system's colour tokens. Christmas
-  runs 7–28 December, New Year 31 December – 2 January.
+  runs 7–28 December, New Year 31 December – 2 January by default; since
+  2026-11-24 (API level 16, Thomas's choice) the super-admin sets each theme's
+  yearly dates on the Server page and the server decides which theme shows, by
+  its own time zone (`TZ`), instead of each app by the member's time zone.
