@@ -10,7 +10,7 @@ The backlog is in Jira (`docs/JIRA.md`).
 
 - **Phase 9 (Dashboard + release) in progress.** Phases 0–8 are done and
   released. The dashboard is built; Google and Apple sign-in are live.
-- **Server:** 0.20.0 (Serverpod 4.1.1, API level 13, image `hoomly-server`) on Thomas's Pi at `nest.g3cko.be` /
+- **Server:** 0.21.2 (Serverpod 4.1.1, API level 16, image `hoomly-server`) on Thomas's Pi at `nest.g3cko.be` /
   `nest-api.g3cko.be`. Includes the admin portal packages A (management),
   B (logs, security events) and C (Overview metrics, admin alert emails).
   Resend is on for the Pi; a real alert email has not been seen yet.
@@ -69,12 +69,11 @@ The backlog is in Jira (`docs/JIRA.md`).
   snow, ribbon) and New Year (fireworks, popper, confetti) on the app's
   dashboard, with a switch in Settings. Needs a server release and a new app
   build that reaches the stores before 7 December.
-- **Holiday dates on the server (2026-11-24, server 0.21.2, tagged, not yet
-  deployed; waiting for Thomas's go):** the
+- **Holiday dates on the server (2026-11-24, server 0.21.2, deployed
+  2026-11-25, dump `nest-pre-update-20261125-181632`):** the
   super-admin sets each holiday's yearly dates on the admin Server page; the
   server (API level 16, migration `20261124171203562`, additive) decides by
   its `TZ` which theme shows, so the 2.0 app follows without a new build.
-  Deploy needs the new image and the new `docker-compose.yml` (passes `TZ`).
   No Jira item yet (Jira site not reachable from that session).
 - **Open bug:** Google sign-in fails on Thomas's old Android phone ("Something
   went wrong", never reaches the server); cause not confirmed.

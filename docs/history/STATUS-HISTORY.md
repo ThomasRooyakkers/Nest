@@ -7,6 +7,15 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Server 0.21.2 deployed (2026-11-25).** With Thomas's go: Pi `.env`
+`NEST_VERSION=0.21.2` (backup `.env.bak-20261125-181621`; `TZ=Europe/Brussels`
+was already set), `deploy/deploy.sh` (dump
+`nest-pre-update-20261125-181632.sql.gz`, new `docker-compose.yml` that passes
+`TZ` to the server). Verified: server and backup containers on 0.21.2, server
+clock CET, migration `20261124171203562` applied, no errors in the log, live
+ping 0.21.2 / API 16 / `automatic` with no theme (25 Nov) / push on. The Pi
+has no saved holiday setting yet, so the default dates apply.
+
 **App 2.0 live in both stores (2026-11-24, NEST-30/46).** Thomas reported
 that Google Play published Android 2.0.0 (4) and that Apple's App Review
 approved App Store version 2.0 (build 4, automatic release). The live
