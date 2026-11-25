@@ -7,6 +7,20 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Server 0.21.3 deployed (2026-11-25): access tokens last one hour.** Quick
+relief for the refresh-token sign-outs below: `JwtConfigFromPasswords` gets
+`accessTokenLifetime: 1 h` instead of Serverpod's 10 min, so the app rotates
+its refresh token about six times less often. Why a lost refresh reply signs
+the user out: on a stale rotating secret Serverpod 4.1.1 treats it as reuse
+and deletes the refresh token (hence the `RefreshTokenNotFoundException`s that
+follow); there is no grace option. Disabled users are still refused on every
+call (`NestUsers.require`). All 509 server tests pass. Tag `v0.21.3`, Pi
+`.env` `NEST_VERSION=0.21.3` (backup `.env.bak-*`), `deploy/deploy.sh` (dump
+`nest-pre-update-20261125-191935.sql.gz`). Verified: ping 0.21.3 / API 16,
+no errors in the server log; the only tunnel errors were "origin unreachable"
+during the restart. Lasting fix (accept the previous refresh secret for a
+few minutes) not built yet.
+
 **Tunnel on http2 (2026-11-25).** Users saw long timeouts everywhere and
 Iris kept being signed out of Google sign-in. Server logs: the server answers
 in 10-20 ms; cloudflared's QUIC connection 3 kept dropping (1-5 a day until

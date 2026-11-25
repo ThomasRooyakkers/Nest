@@ -10,13 +10,14 @@ The backlog is in Jira (`docs/JIRA.md`).
 
 - **Phase 9 (Dashboard + release) in progress.** Phases 0–8 are done and
   released. The dashboard is built; Google and Apple sign-in are live.
-- **Server:** 0.21.2 (Serverpod 4.1.1, API level 16, image `hoomly-server`) on Thomas's Pi at `nest.g3cko.be` /
+- **Server:** 0.21.3 (Serverpod 4.1.1, API level 16, image `hoomly-server`) on Thomas's Pi at `nest.g3cko.be` /
   `nest-api.g3cko.be`. Includes the admin portal packages A (management),
   B (logs, security events) and C (Overview metrics, admin alert emails).
   Resend is on for the Pi; a real alert email has not been seen yet.
   `UPTIME_PING_URL` is not set (needs Thomas's healthchecks.io account).
   Tunnel on http2 since 2026-11-25 (QUIC kept dropping: timeouts).
-  Open: refresh-token sign-outs when a refresh reply is lost (see history).
+  Access tokens last 1 h (0.21.3) to cut refresh-token sign-outs; lasting
+  fix (grace for the previous refresh secret) still open (see history).
 - **App Store:** 1.0 is live (Ready for Distribution). Version 1.1 created
   2026-11-09 with What's New in English and Dutch, description says
   Hoomly; build 1.1.0 (2) uploaded and selected. Thomas still has to click
