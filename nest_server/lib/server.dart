@@ -60,7 +60,11 @@ Future<Serverpod> createServerpod(
   pod.initializeAuthServices(
     tokenManagerBuilders: [
       // Use JWT for authentication keys towards the server.
-      JwtConfigFromPasswords(),
+      // One hour instead of Serverpod's 10 minutes: every refresh rotates
+      // the refresh token, and a refresh whose reply is lost (bad network,
+      // app suspended) signs the user out, so refresh less often. Disabled
+      // users are still refused on every request (`NestUsers.require`).
+      JwtConfigFromPasswords(accessTokenLifetime: const Duration(hours: 1)),
     ],
     identityProviderBuilders: [
       // Email/password sign-in. Codes are emailed through Resend when a
