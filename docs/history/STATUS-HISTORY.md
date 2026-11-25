@@ -7,6 +7,21 @@ work is finished; search this file rather than reading it whole.
 
 ## Log
 
+**Tunnel on http2 (2026-11-25).** Users saw long timeouts everywhere and
+Iris kept being signed out of Google sign-in. Server logs: the server answers
+in 10-20 ms; cloudflared's QUIC connection 3 kept dropping (1-5 a day until
+19 Nov, 400-500 a day since 21 Nov), also after a restart and to other
+Cloudflare addresses. Fix: `deploy/docker-compose.yml` sets
+`TUNNEL_TRANSPORT_PROTOCOL=${TUNNEL_PROTOCOL:-http2}` (new optional
+`TUNNEL_PROTOCOL` in `.env.example`); deployed with `deploy/deploy.sh`. All
+four connections registered on http2, no tunnel errors in the first minutes,
+API answers in about 0.15 s. Sign-outs: every forced Google re-sign-in of
+Iris (12, 14, 19 Nov) follows a `RefreshTokenInvalidSecretException` or
+`RefreshTokenNotFoundException` a few seconds before; other users hit it too.
+Likely cause: the server rotates the refresh token but the reply never
+reaches the app (dropped connection, app suspended), so the app keeps the
+old secret and is signed out on the next refresh. Not fixed in code yet.
+
 **Server 0.21.2 deployed (2026-11-25).** With Thomas's go: Pi `.env`
 `NEST_VERSION=0.21.2` (backup `.env.bak-20261125-181621`; `TZ=Europe/Brussels`
 was already set), `deploy/deploy.sh` (dump

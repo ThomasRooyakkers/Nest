@@ -15,6 +15,8 @@ The backlog is in Jira (`docs/JIRA.md`).
   B (logs, security events) and C (Overview metrics, admin alert emails).
   Resend is on for the Pi; a real alert email has not been seen yet.
   `UPTIME_PING_URL` is not set (needs Thomas's healthchecks.io account).
+  Tunnel on http2 since 2026-11-25 (QUIC kept dropping: timeouts).
+  Open: refresh-token sign-outs when a refresh reply is lost (see history).
 - **App Store:** 1.0 is live (Ready for Distribution). Version 1.1 created
   2026-11-09 with What's New in English and Dutch, description says
   Hoomly; build 1.1.0 (2) uploaded and selected. Thomas still has to click
